@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.Data
+﻿namespace SegmentSniper.Services
 {
     public class Class1
     {
