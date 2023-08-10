@@ -1,16 +1,14 @@
 
 
+using Microsoft.AspNetCore.Diagnostics;
+using SegmentSniper.Api.Helpers;
+using System.Net;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var builder = WebApplicationBuilderConfig.ConfigureBuilder();
 
 var app = builder.Build();
+// Add services to the container.
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -21,8 +19,38 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseIdentityServer();
 app.UseAuthorization();
 
+app.UseSwagger();
+
+app.UseSwaggerUI();
+
 app.MapControllers();
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "api/");
+
+app.UseExceptionHandler(
+ options => {
+     options.Run(
+     async context =>
+     {
+         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+         context.Response.ContentType = "text/html";
+         var ex = context.Features.Get<IExceptionHandlerFeature>();
+         if (ex != null)
+         {
+             var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
+             await context.Response.WriteAsync(err).ConfigureAwait(false);
+         }
+     });
+ }
+);
 
 app.Run();

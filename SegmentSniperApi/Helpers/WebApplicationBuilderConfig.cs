@@ -8,14 +8,15 @@ using System.Text;
 
 namespace SegmentSniper.Api.Helpers
 {
-    public class WebApplicationBuilderConfig
+    public static class WebApplicationBuilderConfig
     {
         public static WebApplicationBuilder ConfigureBuilder()
         {
             var builder = WebApplication.CreateBuilder();
+            
 
 
-            var authConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var authConnectionString = builder.Configuration.GetConnectionString("SegmentSniper");
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(authConnectionString));
@@ -50,6 +51,11 @@ namespace SegmentSniper.Api.Helpers
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
+
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             return builder;
         }
