@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
 using System.Text;
@@ -50,7 +49,7 @@ namespace SegmentSniper.Api.Helpers
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
-            
+
             return builder;
         }
     }
