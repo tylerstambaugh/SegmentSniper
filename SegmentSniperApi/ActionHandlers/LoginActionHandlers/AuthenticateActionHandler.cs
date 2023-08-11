@@ -7,12 +7,10 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
     public class AuthenticateActionHandler : IAuthenticateActionHandler
     {
-        private readonly UserLogin _user;
         private readonly SegmentSniperDbContext _context;
 
-        public AuthenticateActionHandler(UserLogin user, SegmentSniperDbContext context)
+        public AuthenticateActionHandler(SegmentSniperDbContext context)
         {
-            _user = user;
             _context = context;
         }
 
