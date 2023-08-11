@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
 using System.Text;
@@ -13,8 +14,6 @@ namespace SegmentSniper.Api.Helpers
         public static WebApplicationBuilder ConfigureBuilder()
         {
             var builder = WebApplication.CreateBuilder();
-            
-
 
             var authConnectionString = builder.Configuration.GetConnectionString("SegmentSniper");
 
@@ -53,9 +52,14 @@ namespace SegmentSniper.Api.Helpers
                 });
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //register services:
+
+            builder.Services.AddScoped<IAuthenticateActionHandler, AuthenticateActionHandler>();
 
             return builder;
         }
