@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.Api.Models.User
+﻿namespace SegmentSniper.Models.Models.User
 {
     public class UserLogin
     {

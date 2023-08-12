@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
-    <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
-  </ItemGroup>
-
 </Project>

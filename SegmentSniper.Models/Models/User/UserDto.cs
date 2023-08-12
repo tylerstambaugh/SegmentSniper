@@ -1,9 +1,9 @@
-﻿namespace SegmentSniper.Api.Models.User
+﻿namespace SegmentSniper.Models.Models.User
 {
-    public class User
+    public class UserDto
     {
 
-        public User(string id, string firstName, string email)
+        public UserDto(string id, string firstName, string email)
         {
             Id = id;
             FirstName = firstName;

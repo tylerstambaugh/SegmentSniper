@@ -1,42 +1,44 @@
-﻿using SegmentSniper.Api.Models.User;
-using SegmentSniper.Data;
+﻿using SegmentSniper.Data;
+using SegmentSniper.Models.Models.User;
+using System.Security.Cryptography;
 using System.Text;
-using XSystem.Security.Cryptography;
-
-namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
+namespace SegmentSniper.Services.AuthServices
 {
-    public class AuthenticateActionHandler : IAuthenticateActionHandler
+    public class AuthenticateUser : IAuthenticateUser
     {
-        private readonly SegmentSniperDbContext _context;
+        private readonly ISegmentSniperDbContext _context;
 
-        public AuthenticateActionHandler(SegmentSniperDbContext context)
+        public AuthenticateUser(ISegmentSniperDbContext context)
         {
             _context = context;
         }
 
-        public AuthenticateUserLoginContract.Result Execute(AuthenticateUserLoginContract contract)
+        public AuthenticateUserContract.Result Execute(AuthenticateUserContract contract)
         {
-            var result = new AuthenticateUserLoginContract.Result();
+            var result = new AuthenticateUserContract.Result();
             var dbUser = _context.Users.Where(x => x.UserName == contract.UserLogin.UserName).FirstOrDefault();
-
             if (dbUser != null)
             {
                 var hashedPassword = GetHash(dbUser.PasswordHash, "salt string");
                 var isCorrectPassword = CompareHash(contract.UserLogin.Password, hashedPassword, "salt string");
                 if (isCorrectPassword)
                 {
-                    result.User = new User(dbUser.Email, dbUser.FirstName, dbUser.Id);
+                     result = new AuthenticateUserContract.Result
+                    {
+                        AuthenticatedUser = new UserDto(dbUser.Email, dbUser.FirstName, dbUser.Id)
+                    };
                 }
             }
             return result;
+
         }
 
         public static byte[] GetHash(string password, string salt)
         {
             byte[] unhashedBytes = Encoding.Unicode.GetBytes(String.Concat(salt, password));
 
-            SHA256Managed sha256 = new SHA256Managed();
-            byte[] hashedBytes = sha256.ComputeHash(unhashedBytes);
+            var hmac = new HMACSHA512();
+            byte[] hashedBytes = hmac.ComputeHash(unhashedBytes);
 
             return hashedBytes;
         }

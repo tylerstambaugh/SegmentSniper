@@ -1,32 +1,37 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
-using SegmentSniper.Api.Models.User;
+using SegmentSniper.Models.Models.User;
 
 namespace SegmentSniper.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly IAuthenticateActionHandler _authenticateActionHandler;
 
-        public LoginController(IConfiguration config, IAuthenticateActionHandler authenticateActionHandler)
+        public AuthController(IConfiguration config, IAuthenticateActionHandler authenticateActionHandler)
         {
             _config = config;
             _authenticateActionHandler = authenticateActionHandler;
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register()
+        {
+            throw new NotImplementedException();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] UserLogin userLogin)
         {
-            var authenticateUser = _authenticateActionHandler.Execute(new AuthenticateUserLoginContract(userLogin));
+            var authenticateUser = _authenticateActionHandler.Handle(new AuthenticateUserLoginRequest(userLogin));
 
-            if(authenticateUser.User != null)
+            if (authenticateUser.User != null)
             {
                 var token = Generate(authenticateUser);
                 return Ok(token);
