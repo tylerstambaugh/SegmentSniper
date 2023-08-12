@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
+using SegmentSniper.Services.AuthServices;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
@@ -59,8 +61,16 @@ namespace SegmentSniper.Api.Helpers
 
             //register services:
 
-            builder.Services.AddScoped<IAuthenticateActionHandler, AuthenticateActionHandler>();
+            builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
+
+            //action handlers
+            builder.Services.AddScoped<IAuthenticateActionHandler, AuthenticateActionHandler>();
+            builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
+
+            //services
+            builder.Services.AddScoped<IAuthenticateUser, AuthenticateUser>();
+            builder.Services.AddScoped<IRegisterUser, RegisterUser>();
             return builder;
         }
     }

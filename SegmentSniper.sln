@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Api", "SegmentSniperApi\SegmentSniper.Api.csproj", "{7B28D3F7-8272-4D62-8A66-7ACC2A214480}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Api", "SegmentSniperApi\SegmentSniper.Api.csproj", "{7B28D3F7-8272-4D62-8A66-7ACC2A214480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Data", "SegmentSniper.Data\SegmentSniper.Data.csproj", "{91F10D0D-1051-466A-9965-EB98ABED217B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Data", "SegmentSniper.Data\SegmentSniper.Data.csproj", "{91F10D0D-1051-466A-9965-EB98ABED217B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Services", "SegmentSniper.Services\SegmentSniper.Services.csproj", "{B4B935DF-9EBE-4DA7-8437-7B2CC4CB85E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Services", "SegmentSniper.Services\SegmentSniper.Services.csproj", "{B4B935DF-9EBE-4DA7-8437-7B2CC4CB85E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StravaApiClient", "StravaApiClient\StravaApiClient.csproj", "{17E11C54-F962-4EE7-B368-95EC8572F559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaApiClient", "StravaApiClient\StravaApiClient.csproj", "{17E11C54-F962-4EE7-B368-95EC8572F559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Models", "SegmentSniper.Models\SegmentSniper.Models.csproj", "{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{17E11C54-F962-4EE7-B368-95EC8572F559}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17E11C54-F962-4EE7-B368-95EC8572F559}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17E11C54-F962-4EE7-B368-95EC8572F559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

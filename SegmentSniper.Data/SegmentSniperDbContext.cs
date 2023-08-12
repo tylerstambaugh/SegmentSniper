@@ -8,7 +8,7 @@ using SegmentSniper.Data.Entities;
 
 namespace SegmentSniper.Data
 {
-    public class SegmentSniperDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class SegmentSniperDbContext : ApiAuthorizationDbContext<ApplicationUser>, ISegmentSniperDbContext
     {
         public SegmentSniperDbContext(DbContextOptions<SegmentSniperDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
