@@ -30,7 +30,6 @@ namespace SegmentSniper.Services.AuthServices
                 }
             }
             return result;
-
         }
 
         public static byte[] GetHash(string password, string salt)
