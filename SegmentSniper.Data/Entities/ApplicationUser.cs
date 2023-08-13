@@ -9,7 +9,7 @@ namespace SegmentSniper.Data.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string FirstName { get; }
-        public string LastName { get; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

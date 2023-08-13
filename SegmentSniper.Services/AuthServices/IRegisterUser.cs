@@ -4,12 +4,16 @@ namespace SegmentSniper.Services.AuthServices
 {
     public interface IRegisterUser
     {
-        void Execute(RegisterUserContract contract);
+        Task<UserDto> ExecuteAsync(RegisterUserContract contract);
     }
 
     public class RegisterUserContract
     {
-        public RegisterUserDto RegisterUser { get; set; }
+        public RegisterUserContract(RegisterUserDto registerUser)
+        {
+            RegisterUser = registerUser;
+        }
+        public RegisterUserDto RegisterUser { get; }
         public class Result
         {
             public UserDto RegisteredUser { get; set; }

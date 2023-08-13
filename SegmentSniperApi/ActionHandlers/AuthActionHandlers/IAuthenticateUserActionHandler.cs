@@ -2,7 +2,7 @@
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
-    public interface IAuthenticateActionHandler
+    public interface IAuthenticateUserActionHandler
     {
         AuthenticateUserLoginRequest.Response Handle(AuthenticateUserLoginRequest contract);
     }

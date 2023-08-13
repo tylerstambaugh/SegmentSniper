@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
   </ItemGroup>

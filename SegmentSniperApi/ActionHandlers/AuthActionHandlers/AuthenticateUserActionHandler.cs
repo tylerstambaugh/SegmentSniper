@@ -3,19 +3,19 @@ using SegmentSniper.Services.AuthServices;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
-    public class AuthenticateActionHandler : IAuthenticateActionHandler
+    public class AuthenticateUserActionHandler : IAuthenticateUserActionHandler
     {
         private readonly IAuthenticateUser _authenticateUserService;
 
-        public AuthenticateActionHandler(IAuthenticateUser authenticateUserService)
+        public AuthenticateUserActionHandler(IAuthenticateUser authenticateUserService)
         {
             _authenticateUserService = authenticateUserService;
         }
 
-        public AuthenticateUserLoginRequest.Response Handle(AuthenticateUserLoginRequest contract)
+        public AuthenticateUserLoginRequest.Response Handle(AuthenticateUserLoginRequest request)
         {
             var response = new AuthenticateUserLoginRequest.Response();
-            var result = _authenticateUserService.Execute(new AuthenticateUserContract(contract.UserLogin));
+            var result = _authenticateUserService.Execute(new AuthenticateUserContract(request.UserLogin));
 
             if (result.AuthenticatedUser != null)
             {
@@ -23,6 +23,14 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             }
 
             return response;
+        }
+
+        private void ValidateRequest(AuthenticateUserLoginRequest request)
+        {
+            if(request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
         }
     }
 }

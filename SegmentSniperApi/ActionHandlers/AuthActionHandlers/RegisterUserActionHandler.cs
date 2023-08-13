@@ -1,32 +1,44 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using SegmentSniper.Data;
 using SegmentSniper.Models.Models.User;
-using System.Security.Cryptography;
+using SegmentSniper.Services.AuthServices;
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
     public class RegisterUserActionHandler : IRegisterUserActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly IRegisterUser _registerUserService;
 
-        public RegisterUserActionHandler(ISegmentSniperDbContext context)
+        public RegisterUserActionHandler(ISegmentSniperDbContext context, IRegisterUser registerUserService)
         {
             _context = context;
+            _registerUserService = registerUserService;
         }
 
         public async Task<UserDto> Handle(RegisterUserRequest request)
         {
-            CreatePasswordHash(request.User.Password, out byte[] passwordHash);
+            ValidateRequest(request);
 
-            throw new NotImplementedException();
-
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash)
-        {
-            using (var hmac = new HMACSHA512())
+            var contract = new RegisterUserContract(new RegisterUserDto
             {
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
+                UserName = request.User.UserName,
+                Email = request.User.Email,
+                FirstName = request.User.FirstName,
+                LastName = request.User.LastName,
+                Password = request.User.Password,
+            });
+           
+
+            var user = await _registerUserService.ExecuteAsync(contract);
+
+            return user;
         }
+
+        private void ValidateRequest(RegisterUserRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

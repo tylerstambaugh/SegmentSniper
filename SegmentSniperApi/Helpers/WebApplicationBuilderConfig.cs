@@ -65,7 +65,7 @@ namespace SegmentSniper.Api.Helpers
 
 
             //action handlers
-            builder.Services.AddScoped<IAuthenticateActionHandler, AuthenticateActionHandler>();
+            builder.Services.AddScoped<IAuthenticateUserActionHandler, AuthenticateUserActionHandler>();
             builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
 
             //services
