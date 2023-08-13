@@ -10,9 +10,9 @@ namespace SegmentSniper.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IAuthenticateActionHandler _authenticateActionHandler;
+        private readonly IAuthenticateUserActionHandler _authenticateActionHandler;
 
-        public AuthController(IConfiguration config, IAuthenticateActionHandler authenticateActionHandler)
+        public AuthController(IConfiguration config, IAuthenticateUserActionHandler authenticateActionHandler)
         {
             _config = config;
             _authenticateActionHandler = authenticateActionHandler;

@@ -1,5 +1,7 @@
-﻿using SegmentSniper.Data;
-using System.Net.Mail;
+﻿using Microsoft.AspNetCore.Identity;
+using SegmentSniper.Data;
+using SegmentSniper.Data.Entities;
+using SegmentSniper.Models.Models.User;
 using System.Text.RegularExpressions;
 
 namespace SegmentSniper.Services.AuthServices
@@ -13,7 +15,7 @@ namespace SegmentSniper.Services.AuthServices
             _context = context;
         }
 
-        public void Execute(RegisterUserContract contract)
+        public async Task<RegisterUserContract.Result> ExecuteAsync(RegisterUserContract contract)
         {
             ValidateContract(contract);
 
@@ -21,17 +23,40 @@ namespace SegmentSniper.Services.AuthServices
 
             //create user 
 
+            ApplicationUser userToAdd = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = contract.RegisterUser.UserName,
+                NormalizedUserName = contract.RegisterUser.UserName,
+                FirstName = contract.RegisterUser.FirstName,
+                LastName = contract.RegisterUser.LastName,
+                Email = contract.RegisterUser.Email,
+                NormalizedEmail = contract.RegisterUser.Email,
+                PasswordHash = new PasswordHasher<object>().HashPassword(null, contract.RegisterUser.Password),
+                SecurityStamp = Guid.NewGuid().ToString(),
+
+            };
+
             //insert into db
+
+            return new RegisterUserContract.Result
+            {
+                RegisteredUser = new UserDto("1", "firstName", "lname")
+            };
         }
+
+
+
+
 
         private void ValidateContract(RegisterUserContract contract)
         {
-            if(contract is null)
+            if (contract is null)
             {
                 throw new ArgumentNullException(nameof(contract));
             }
 
-            if(string.IsNullOrWhiteSpace(contract.RegisterUser.FirstName))
+            if (string.IsNullOrWhiteSpace(contract.RegisterUser.FirstName))
             {
                 throw new ArgumentNullException(nameof(contract.RegisterUser.FirstName));
             }
@@ -53,7 +78,7 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentNullException(nameof(contract.RegisterUser.Password));
             }
-            if(!IsValidPassword(contract.RegisterUser.Password))
+            if (!IsValidPassword(contract.RegisterUser.Password))
             {
                 throw new ArgumentException("Password does not meet criteria", nameof(contract.RegisterUser.Password));
             }
