@@ -9,40 +9,53 @@ namespace SegmentSniper.Services.AuthServices
     public class RegisterUser : IRegisterUser
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RegisterUser(SegmentSniperDbContext context)
+        public RegisterUser(ISegmentSniperDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<RegisterUserContract.Result> ExecuteAsync(RegisterUserContract contract)
         {
             ValidateContract(contract);
 
-            //check to see if user already exists
-
-            //create user 
-
-            ApplicationUser userToAdd = new ApplicationUser
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                UserName = contract.RegisterUser.UserName,
-                NormalizedUserName = contract.RegisterUser.UserName,
-                FirstName = contract.RegisterUser.FirstName,
-                LastName = contract.RegisterUser.LastName,
-                Email = contract.RegisterUser.Email,
-                NormalizedEmail = contract.RegisterUser.Email,
-                PasswordHash = new PasswordHasher<object>().HashPassword(null, contract.RegisterUser.Password),
-                SecurityStamp = Guid.NewGuid().ToString(),
+                ApplicationUser userToAdd = new ApplicationUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = contract.RegisterUser.UserName,
+                    NormalizedUserName = contract.RegisterUser.UserName,
+                    FirstName = contract.RegisterUser.FirstName,
+                    LastName = contract.RegisterUser.LastName,
+                    Email = contract.RegisterUser.Email,
+                    NormalizedEmail = contract.RegisterUser.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
 
-            };
+                };
+                var createUser = await _userManager.CreateAsync(userToAdd);
 
-            //insert into db
+                if(createUser.Succeeded)
+                {
 
-            return new RegisterUserContract.Result
+                    var dbUser = _context.Users.Where(x => x.Email ==  contract.RegisterUser.Email).FirstOrDefault();
+
+                    var registeredUser = new RegisterUserContract.Result
+                    {
+                        RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email)
+                    };
+
+                    return registeredUser;
+                }
+            }
+            catch (Exception ex)
             {
-                RegisteredUser = new UserDto("1", "firstName", "lname")
-            };
+                throw new ArgumentException("unable to create user");
+            }
+
+            return null;
         }
 
 
@@ -70,14 +83,22 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentNullException(nameof(contract.RegisterUser.Email));
             }
+
+            if (_userManager.FindByEmailAsync(contract.RegisterUser.Email) != null)
+            {
+                throw new ArgumentException("Account with email already exists.", nameof(contract));
+            }
+
             if (!IsValidEmail(contract.RegisterUser.Email))
             {
                 throw new ArgumentException("Invalid email address", nameof(contract.RegisterUser.Email));
             }
+
             if (string.IsNullOrWhiteSpace(contract.RegisterUser.Password))
             {
                 throw new ArgumentNullException(nameof(contract.RegisterUser.Password));
             }
+
             if (!IsValidPassword(contract.RegisterUser.Password))
             {
                 throw new ArgumentException("Password does not meet criteria", nameof(contract.RegisterUser.Password));
