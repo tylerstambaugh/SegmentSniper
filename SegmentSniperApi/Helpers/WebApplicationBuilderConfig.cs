@@ -17,10 +17,10 @@ namespace SegmentSniper.Api.Helpers
         {
             var builder = WebApplication.CreateBuilder();
 
-            var authConnectionString = builder.Configuration.GetConnectionString("SegmentSniper");
+            var connectionString = builder.Configuration.GetConnectionString("SegmentSniper");
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
-                    options.UseSqlServer(authConnectionString));
+                    options.UseSqlServer(connectionString));
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -36,6 +36,10 @@ namespace SegmentSniper.Api.Helpers
             });
 
             builder.Services.AddIdentityServer()
+                .AddOperationalStore( options =>
+                {
+                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
+                })
                 .AddApiAuthorization<ApplicationUser, SegmentSniperDbContext>();
 
             builder.Services.AddAuthentication("Bearer")
