@@ -21,6 +21,8 @@ namespace SegmentSniper.Services.AuthServices
         {
             ValidateContract(contract);
 
+            var user = new RegisterUserContract.Result();
+
             try
             {
                 ApplicationUser userToAdd = new ApplicationUser
@@ -42,12 +44,8 @@ namespace SegmentSniper.Services.AuthServices
 
                     var dbUser = _context.Users.Where(x => x.Email ==  contract.RegisterUser.Email).FirstOrDefault();
 
-                    var registeredUser = new RegisterUserContract.Result
-                    {
-                        RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email)
-                    };
+                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email);
 
-                    return registeredUser;
                 }
             }
             catch (Exception ex)
@@ -55,11 +53,9 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentException("unable to create user");
             }
 
-            return null;
+            return user;
+            
         }
-
-
-
 
 
         private void ValidateContract(RegisterUserContract contract)
