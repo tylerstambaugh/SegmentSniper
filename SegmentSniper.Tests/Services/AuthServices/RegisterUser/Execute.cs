@@ -37,8 +37,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
             };
 
             _contract = new RegisterUserContract(registerUser);
-
-            Context.Setup(m => m.Users).Returns(MockHelper)
         }
     }
 }
