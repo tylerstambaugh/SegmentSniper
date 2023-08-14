@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Services", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StravaApiClient", "StravaApiClient\StravaApiClient.csproj", "{17E11C54-F962-4EE7-B368-95EC8572F559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Models", "SegmentSniper.Models\SegmentSniper.Models.csproj", "{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Models", "SegmentSniper.Models\SegmentSniper.Models.csproj", "{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.Tests", "SegmentSniper.Tests\SegmentSniper.Tests.csproj", "{F1302796-52AB-4214-9C90-73E6E006FCD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1844ACF-6EAD-4700-A29A-EADCBD1808E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1302796-52AB-4214-9C90-73E6E006FCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1302796-52AB-4214-9C90-73E6E006FCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1302796-52AB-4214-9C90-73E6E006FCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1302796-52AB-4214-9C90-73E6E006FCD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
