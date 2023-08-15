@@ -14,20 +14,27 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
     {
         protected SegmentSniper.Services.AuthServices.RegisterUser Service;
         protected ISegmentSniperDbContext Context;
-        protected Mock<UserManager<ApplicationUser>> UserMgr;
+        protected UserManager<ApplicationUser> UserMgr;
 
         [TestInitialize]
         public virtual void Arrange()
         {
             var dbOptions = new DbContextOptionsBuilder<SegmentSniperDbContext>()
-                .UseInMemoryDatabase(databaseName: "AxisCore")
+                .UseInMemoryDatabase(databaseName: "SegmentSniper")
                 .Options;
 
             var operationalStoreOptions = Options.Create(new OperationalStoreOptions());
             Context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
 
-            UserMgr = new Mock<UserManager<ApplicationUser>>();
-            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context, UserMgr.Object);
+            var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
+            var userManagerOptions = Options.Create(new IdentityOptions());
+            UserMgr = new UserManager<ApplicationUser>(userStoreMock.Object, userManagerOptions, null, null, null, null, null, null, null);
+
+            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context, UserMgr);
+
+            InternalArrange();
         }
+
+        protected abstract void InternalArrange();
     }
 }

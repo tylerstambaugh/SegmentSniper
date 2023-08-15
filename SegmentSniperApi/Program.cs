@@ -2,9 +2,15 @@
 
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Helpers;
+using System.Configuration;
 using System.Net;
 
-var builder = WebApplicationBuilderConfig.ConfigureBuilder();
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var builder = WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
 // Add services to the container.
@@ -24,7 +30,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseIdentityServer();
+
+
+
 app.UseAuthorization();
 
 app.UseSwagger();

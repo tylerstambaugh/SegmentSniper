@@ -33,7 +33,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
         private void ValidateRequest(RegisterUserRequest request)
         {
-            throw new NotImplementedException();
+            
         }
 
     }
