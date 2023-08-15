@@ -15,13 +15,10 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         private string FirstName = "Harry";
         private string LastName = "Ballsagna";
         private string Email = "ballsagana.H@gmail.com";
-        private string Password = "Puteminyourmoth!";
+        private string Password = "Puteminyourmouth1!";
 
-        [TestInitialize]
         protected override void InternalArrange()
         {
-            base.Arrange();
-
             registerUser = new RegisterUserDto
             {
                 UserName = UserName,
