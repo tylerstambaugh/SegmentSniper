@@ -1,6 +1,4 @@
-﻿using Duende.IdentityServer.AspNetIdentity;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,14 +7,12 @@ using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
 using SegmentSniper.Services.AuthServices;
-using System.Configuration;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
 {
     public static class WebApplicationBuilderConfig
-    {        
+    {
 
         public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
