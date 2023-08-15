@@ -1,12 +1,7 @@
-﻿using Azure.Identity;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using SegmentSniper.Models.Models.User;
+﻿using SegmentSniper.Models.Models.User;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Services.AuthServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SegmentSniper.Data.Entities;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 {
@@ -23,7 +18,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         private string Password = "Puteminyourmoth!";
 
         [TestInitialize]
-        public override void Arrange()
+        protected override void InternalArrange()
         {
             base.Arrange();
 
@@ -36,7 +31,23 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
                 Password = Password,
             };
 
-            _contract = new RegisterUserContract(registerUser);
+            _contract = new RegisterUserContract(registerUser);            
         }
+
+        private async Task ActAsync()
+        {
+           await Service.ExecuteAsync(_contract);
+        }
+
+        [TestMethod]
+        public async Task ShouldCreateUser()
+        {
+           await ActAsync();
+
+            var newUser = Context.Users.FirstOrDefault(x => x.UserName == UserName);
+
+            Assert.IsNotNull(newUser);
+        }
+
     }
 }

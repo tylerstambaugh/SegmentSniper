@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Duende.IdentityServer.AspNetIdentity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,14 +9,19 @@ using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
 using SegmentSniper.Services.AuthServices;
+using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
 {
     public static class WebApplicationBuilderConfig
-    {
-        public static WebApplicationBuilder ConfigureBuilder()
+    {        
+
+        public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
+            var thumbPrint = configuration["CertificateThumbprint"];
+
             var builder = WebApplication.CreateBuilder();
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniper");
@@ -28,6 +35,9 @@ namespace SegmentSniper.Api.Helpers
                .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<SegmentSniperDbContext>();
 
+            IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
+
+            serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
 
             builder.Services.AddAuthorization(options =>
             {
@@ -35,12 +45,6 @@ namespace SegmentSniper.Api.Helpers
                      policy => policy.RequireRole("Administrator"));
             });
 
-            builder.Services.AddIdentityServer()
-                .AddOperationalStore( options =>
-                {
-                    options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString);
-                })
-                .AddApiAuthorization<ApplicationUser, SegmentSniperDbContext>();
 
             builder.Services.AddAuthentication("Bearer")
                 .AddIdentityServerJwt().AddJwtBearer(options =>
@@ -77,5 +81,10 @@ namespace SegmentSniper.Api.Helpers
             builder.Services.AddScoped<IRegisterUser, RegisterUser>();
             return builder;
         }
+
+
     }
+
+
+
 }

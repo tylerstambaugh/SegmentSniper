@@ -37,7 +37,7 @@ namespace SegmentSniper.Services.AuthServices
                     SecurityStamp = Guid.NewGuid().ToString(),
 
                 };
-                var createUser = await _userManager.CreateAsync(userToAdd);
+                var createUser = await _userManager.CreateAsync(userToAdd, contract.RegisterUser.Password);
 
                 if(createUser.Succeeded)
                 {
@@ -80,7 +80,7 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentNullException(nameof(contract.RegisterUser.Email));
             }
 
-            if (_userManager.FindByEmailAsync(contract.RegisterUser.Email) != null)
+            if (_userManager.Users.Where(x => x.Email == contract.RegisterUser.Email).Count() > 0)
             {
                 throw new ArgumentException("Account with email already exists.", nameof(contract));
             }
