@@ -41,11 +41,9 @@ namespace SegmentSniper.Services.AuthServices
 
                 if(createUser.Succeeded)
                 {
-
                     var dbUser = _context.Users.Where(x => x.Email ==  contract.RegisterUser.Email).FirstOrDefault();
 
                     user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email);
-
                 }
             }
             catch (Exception ex)

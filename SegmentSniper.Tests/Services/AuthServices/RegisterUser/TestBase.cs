@@ -33,15 +33,11 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
               }
             };
 
-            UserMgr = MockUserManager.MockUserMgr<ApplicationUser>(_users);
+            UserMgr = MockUserManager.MockUserMgr(_users);
 
             Context = new Mock<ISegmentSniperDbContext>();
                         
             Users = new Mock<DbSet<ApplicationUser>>();
-
-            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
-
-            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
 
             InternalArrange();
         }
