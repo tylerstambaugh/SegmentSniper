@@ -1,10 +1,9 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Moq;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
+using SegmentSniper.Tests.Helpers;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
@@ -13,24 +12,36 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
     public abstract class TestBase
     {
         protected SegmentSniper.Services.AuthServices.RegisterUser Service;
-        protected ISegmentSniperDbContext Context;
-        protected UserManager<ApplicationUser> UserMgr;
+        protected Mock<ISegmentSniperDbContext> Context;
+        protected Mock<UserManager<ApplicationUser>> UserMgr;
+        protected Mock<DbSet<ApplicationUser>> Users;
 
         [TestInitialize]
         public virtual void Arrange()
         {
-            var dbOptions = new DbContextOptionsBuilder<SegmentSniperDbContext>()
-                .UseInMemoryDatabase(databaseName: "SegmentSniper")
-                .Options;
+            List<ApplicationUser> _users = new List<ApplicationUser>
+            {
+              new ApplicationUser
+              {
+                  Id = "testId 1",
+                  FirstName = "Test",
+                  LastName = "Test",
+                  Email = "Test@email.com",
+                  UserName = "Test",
+                  NormalizedEmail = "Test",
+                  NormalizedUserName = "Test",
+              }
+            };
 
-            var operationalStoreOptions = Options.Create(new OperationalStoreOptions());
-            Context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
+            UserMgr = MockUserManager.MockUserMgr<ApplicationUser>(_users);
 
-            var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
-            var userManagerOptions = Options.Create(new IdentityOptions());
-            UserMgr = new UserManager<ApplicationUser>(userStoreMock.Object, userManagerOptions, null, null, null, null, null, null, null);
+            Context = new Mock<ISegmentSniperDbContext>();
+                        
+            Users = new Mock<DbSet<ApplicationUser>>();
 
-            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context, UserMgr);
+            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
+
+            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
 
             InternalArrange();
         }
