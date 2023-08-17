@@ -13,7 +13,7 @@ namespace SegmentSniper.Data
         {
 
         }
-        public DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

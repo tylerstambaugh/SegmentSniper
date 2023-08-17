@@ -1,8 +1,6 @@
-﻿using SegmentSniper.Models.Models.User;
-using Microsoft.EntityFrameworkCore;
+﻿using SegmentSniper.Data.Entities;
+using SegmentSniper.Models.Models.User;
 using SegmentSniper.Services.AuthServices;
-using SegmentSniper.Data.Entities;
-using SevenCorners.UnitTest.Helper;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 {
@@ -17,7 +15,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         private string LastName = "Ballsagna";
         private string Email = "ballsagana.H@gmail.com";
         private string Password = "Puteminyourmouth1!";
-        private List<ApplicationUser> _users = new List<ApplicationUser>();
         private RegisterUserContract.Result newUser = new RegisterUserContract.Result();
 
         protected override void InternalArrange()
@@ -35,20 +32,20 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             _users.Add(new ApplicationUser
             {
-                FirstName = "fname1",
-                LastName = "lname1",
-
+                Id = "testId 1",
+                FirstName = "Test",
+                LastName = "Test",
+                Email = "Test@email.com",
+                UserName = "Test",
+                NormalizedEmail = "Test",
+                NormalizedUserName = "Test",
             });
 
-            var dbUsers = MockHelper.CreateMockDbSet(_users);
-            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
-
-            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
         }
 
         private async Task ActAsync()
         {
-           newUser = await Service.ExecuteAsync(_contract);
+            newUser = await Service.ExecuteAsync(_contract);
         }
 
         [TestMethod]
@@ -58,6 +55,5 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             Assert.IsNotNull(newUser);
         }
-
     }
 }

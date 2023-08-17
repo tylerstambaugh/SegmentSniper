@@ -1,13 +1,11 @@
 ﻿using Moq;
 using SegmentSniper.Tests.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
+//using Microsoft.EntityFrameworkCore;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Linq.Expressions;
 
-namespace SevenCorners.UnitTest.Helper
+namespace SegmentSniper.Tests.Helper
 {
     public static class MockHelper
     {
@@ -124,7 +122,7 @@ namespace SevenCorners.UnitTest.Helper
                     data.AddRange(t);
                 })
                 .Returns(returnCollection);
-                
+
         }
 
         private static void ConfigureAddOrUpdate<T>(List<T> data, Mock<MockableDbSetWithExtensions<T>> mockSet) where T : class
