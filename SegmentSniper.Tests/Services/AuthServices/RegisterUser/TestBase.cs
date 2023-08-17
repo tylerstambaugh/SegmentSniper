@@ -4,7 +4,6 @@ using Moq;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities;
 using SegmentSniper.Tests.Helpers;
-using System.Linq;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
@@ -20,13 +19,23 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
         [TestInitialize]
         public virtual void Arrange()
-        {            
+        {
 
             UserMgr = MockUserManager.MockUserMgr(_users);
 
             Context = new Mock<ISegmentSniperDbContext>().As<ISegmentSniperDbContext>();
-                        
+
             Users = new Mock<DbSet<ApplicationUser>>();
+
+            IQueryable<ApplicationUser> queryableUsers = _users.AsQueryable();
+            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Provider).Returns(queryableUsers.Provider);
+            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Expression).Returns(queryableUsers.Expression);
+            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.ElementType).Returns(queryableUsers.ElementType);
+            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.GetEnumerator()).Returns(() => queryableUsers.GetEnumerator());
+
+            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
+
+            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
 
             InternalArrange();
         }
