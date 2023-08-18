@@ -43,7 +43,7 @@ namespace SegmentSniper.Services.AuthServices
                 {
                     var dbUser = _context.Users.Where(x => x.Email ==  contract.RegisterUser.Email).FirstOrDefault();
 
-                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email);
+                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.UserName, dbUser.FirstName, dbUser.Email);
                 }
             }
             catch (Exception ex)
@@ -51,8 +51,7 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentException("unable to create user");
             }
 
-            return user;
-            
+            return user;            
         }
 
 
@@ -61,6 +60,11 @@ namespace SegmentSniper.Services.AuthServices
             if (contract is null)
             {
                 throw new ArgumentNullException(nameof(contract));
+            }
+
+            if (string.IsNullOrWhiteSpace(contract.RegisterUser.UserName))
+            {
+                throw new ArgumentNullException(nameof(contract.RegisterUser.UserName));
             }
 
             if (string.IsNullOrWhiteSpace(contract.RegisterUser.FirstName))
@@ -93,7 +97,7 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentNullException(nameof(contract.RegisterUser.Password));
             }
 
-            if (!IsValidPassword(contract.RegisterUser.Password))
+            if (!IsValidPassword(contract.RegisterUser.Password).Result)
             {
                 throw new ArgumentException("Password does not meet criteria", nameof(contract.RegisterUser.Password));
             }
@@ -106,9 +110,13 @@ namespace SegmentSniper.Services.AuthServices
             var regex = new Regex(pattern);
             return regex.IsMatch(email);
         }
-        private bool IsValidPassword(string password)
+        private async Task<bool> IsValidPassword(string password)
         {
-            return password.Length > 5;
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var result =  await passwordValidator.ValidateAsync(_userManager, null, password);
+
+            return result.Succeeded;
+
         }
     }
 }
