@@ -19,7 +19,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 
             if (result.AuthenticatedUser != null)
             {
-                response.User = new UserDto(result.AuthenticatedUser.Email, result.AuthenticatedUser.FirstName, result.AuthenticatedUser.Id);
+                response.User = new UserDto(result.AuthenticatedUser.Id, result.AuthenticatedUser.Email, result.AuthenticatedUser.FirstName, result.AuthenticatedUser.Id);
             }
 
             return response;

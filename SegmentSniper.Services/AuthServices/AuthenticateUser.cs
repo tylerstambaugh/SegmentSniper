@@ -28,9 +28,17 @@ namespace SegmentSniper.Services.AuthServices
                 {
                      result = new AuthenticateUserContract.Result
                     {
-                        AuthenticatedUser = new UserDto(dbUser.Email, dbUser.FirstName, dbUser.Id)
+                        AuthenticatedUser = new UserDto(dbUser.Email, dbUser.UserName, dbUser.FirstName, dbUser.Id)
                     };
                 }
+                else
+                {
+                    throw new ArgumentException("Invalid login", nameof(contract));
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid login", nameof(contract));
             }
             return result;
         }

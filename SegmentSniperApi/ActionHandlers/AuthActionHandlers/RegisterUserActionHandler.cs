@@ -33,7 +33,10 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
         private void ValidateRequest(RegisterUserRequest request)
         {
-            
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
         }
 
     }
