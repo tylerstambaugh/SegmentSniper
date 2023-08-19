@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities;
+using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.User;
 using System.Text.RegularExpressions;
 

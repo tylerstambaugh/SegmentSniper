@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SegmentSniper.Data.Entities
+namespace SegmentSniper.Data.Entities.Auth
 {
     public class ApplicationUser : IdentityUser
     {

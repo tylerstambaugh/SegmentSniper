@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities;
+using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
 using System.Text;
 
@@ -80,11 +80,11 @@ namespace SegmentSniper.Api.Helpers
 
 
             //action handlers
-            builder.Services.AddScoped<IAuthenticateUserActionHandler, AuthenticateUserActionHandler>();
+            builder.Services.AddScoped<IAuthenticateUserActionHandler, LoginUserActionHandler>();
             builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
 
             //services
-            builder.Services.AddScoped<IAuthenticateUser, AuthenticateUser>();
+            builder.Services.AddScoped<ILoginUser, LoginUser>();
             builder.Services.AddScoped<IRegisterUser, RegisterUser>();
             return builder;
         }

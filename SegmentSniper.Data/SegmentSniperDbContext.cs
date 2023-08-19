@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using SegmentSniper.Data.Entities;
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Data
 {

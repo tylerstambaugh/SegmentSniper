@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SegmentSniper.Data.Entities;
-
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Data
 {

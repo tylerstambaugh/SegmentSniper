@@ -1,5 +1,5 @@
 ﻿using SegmentSniper.Data.Entities;
-using SegmentSniper.Models.Models.User;
+using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 using System.Web;
 
