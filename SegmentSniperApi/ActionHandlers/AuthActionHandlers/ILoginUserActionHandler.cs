@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Models.Models.Auth.User;
+﻿using SegmentSniper.Models.Models.Auth;
+using SegmentSniper.Models.Models.Auth.User;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -18,6 +19,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         public class Response
         {
             public UserDto? User { get; set; }
+            public TokenModel TokenData { get; set; }
         }
     }
 }
