@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities;
+using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Tests.Helpers;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser

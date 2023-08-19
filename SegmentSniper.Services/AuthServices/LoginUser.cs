@@ -1,34 +1,33 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.User;
-using System.Security.Cryptography;
-using System.Text;
+using SegmentSniper.Models.Models.Auth.User;
+
 namespace SegmentSniper.Services.AuthServices
 {
-    public class AuthenticateUser : IAuthenticateUser
+    public class LoginUser : ILoginUser
     {
         private readonly ISegmentSniperDbContext _context;
 
-        public AuthenticateUser(ISegmentSniperDbContext context)
+        public LoginUser(ISegmentSniperDbContext context)
         {
             _context = context;
         }
 
-        public AuthenticateUserContract.Result Execute(AuthenticateUserContract contract)
+        public LoginUserContract.Result Execute(LoginUserContract contract)
         {
-            var result = new AuthenticateUserContract.Result();
+            var result = new LoginUserContract.Result();
 
             var dbUser = _context.Users.Where(x => x.UserName == contract.UserLogin.UserName).FirstOrDefault();
-            
+
             if (dbUser != null)
             {
 
                 var isCorrectPassword = new PasswordHasher<object>().VerifyHashedPassword(null, dbUser.PasswordHash, contract.UserLogin.Password);
                 if (isCorrectPassword == PasswordVerificationResult.Success)
                 {
-                     result = new AuthenticateUserContract.Result
+                    result = new LoginUserContract.Result
                     {
-                        AuthenticatedUser = new UserDto(dbUser.Email, dbUser.UserName, dbUser.FirstName, dbUser.Id)
+                        LoggedInUser = new UserDto(dbUser.Email, dbUser.UserName, dbUser.FirstName, dbUser.Id)
                     };
                 }
                 else

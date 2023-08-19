@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.User;
+﻿using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
