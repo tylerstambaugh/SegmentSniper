@@ -6,7 +6,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
     public interface ILoginUserActionHandler
 
     {
-        LoginUserRequest.Response Handle(LoginUserRequest contract);
+        Task<LoginUserRequest.Response> Handle(LoginUserRequest request);
     }
 
     public class LoginUserRequest
