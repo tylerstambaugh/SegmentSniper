@@ -11,29 +11,34 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
     public class LoginUserActionHandler : ILoginUserActionHandler
     {
-        private readonly ILoginUser _authenticateUserService;
+        private readonly IAuthenticateUser _authenticateUserService;
         private readonly ICreateToken _createTokenService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IGenerateRefreshToken _generateRefreshToken;
 
-        public LoginUserActionHandler(ILoginUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration, IGenerateRefreshToken generateRefreshToken)
         {
             _authenticateUserService = authenticateUserService;
             _createTokenService = createTokenService;
             _userManager = userManager;
             _configuration = configuration;
+            _generateRefreshToken = generateRefreshToken;
         }
 
         public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.UserLogin.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, request.UserLogin.Password))
+            ValidateRequest(request);
+
+            var user = await _authenticateUserService.Execute(new AuthenticateUserContract(request.UserLogin));
+            var authenticatedUser = user.LoggedInUser;
+            if (authenticatedUser != null)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(authenticatedUser);
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, authenticatedUser.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -43,23 +48,34 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                 }
 
                 var token = _createTokenService.Execute(authClaims);
-                var refreshToken = GenerateRefreshToken();
+                var refreshToken = _generateRefreshToken.Execute();
 
                 _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidityInDays);
+                authenticatedUser.RefreshToken = refreshToken;
+                authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
 
-                await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(authenticatedUser);
 
-                return new TokenModel
+                var tokenModel = new TokenModel
                 {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                     RefreshToken = refreshToken,
                     Expiration = token.ValidTo
                 };
+
+                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.UserName, authenticatedUser.FirstName, authenticatedUser.Email);
+
+                return new LoginUserRequest.Response
+                {
+                    User = userDto,
+                    TokenData = tokenModel
+                };
             }
-            return Unauthorized();
+            else
+            {
+                throw new ApplicationException("Unable to login user");
+            }
         }
 
         private void ValidateRequest(LoginUserRequest request)
