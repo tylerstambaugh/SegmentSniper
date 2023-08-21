@@ -51,15 +51,23 @@ namespace SegmentSniper.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLogin userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
         {
-            var authenticateUser = _loginUserActionHandler.Handle(new LoginUserRequest(userLogin));
-
-            if (authenticateUser.User != null)
+            try
             {
-                login
+
+            var authenticatedUser = await _loginUserActionHandler.Handle(new LoginUserRequest(userLogin));
+
+            if (authenticatedUser.TokenData != null)
+            {
+                return Ok(authenticatedUser);
             }
-            return NotFound("Username or password is incorrect");
+            return Unauthorized("Username or password is incorrect");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}");
+            }
         }
 
  

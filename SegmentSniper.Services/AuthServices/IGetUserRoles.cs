@@ -10,6 +10,10 @@ namespace SegmentSniper.Services.AuthServices
 
     public class GetUserRolesContract
     {
+        public GetUserRolesContract(ApplicationUser user)
+        {
+            User = user;
+        }
         public ApplicationUser User { get; set; }
         public class Result
         {
