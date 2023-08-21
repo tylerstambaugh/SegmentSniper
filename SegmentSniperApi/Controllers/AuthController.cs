@@ -55,14 +55,13 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
+                var authenticatedUser = await _loginUserActionHandler.Handle(new LoginUserRequest(userLogin));
 
-            var authenticatedUser = await _loginUserActionHandler.Handle(new LoginUserRequest(userLogin));
-
-            if (authenticatedUser.TokenData != null)
-            {
-                return Ok(authenticatedUser);
-            }
-            return Unauthorized("Username or password is incorrect");
+                if (authenticatedUser.TokenData != null)
+                {
+                    return Ok(authenticatedUser);
+                }
+                return Unauthorized("Username or password is incorrect");
             }
             catch (Exception ex)
             {
@@ -70,7 +69,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
- 
+
 
         [HttpPost]
         [Route("refresh-token")]
@@ -90,14 +89,6 @@ namespace SegmentSniper.Api.Controllers
         }
 
 
-
-        private static string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[64];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
-        }
 
         private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
         {

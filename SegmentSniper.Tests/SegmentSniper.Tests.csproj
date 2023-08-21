@@ -24,4 +24,12 @@
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\AuthServices\AuthticateUser\" />
+    <Folder Include="Services\AuthServices\GetUserRoles\" />
+    <Folder Include="Services\AuthServices\RefreshToken\" />
+    <Folder Include="Services\AuthServices\TokenServices\CreateToken\" />
+    <Folder Include="Services\AuthServices\TokenServices\GenerateRefreshToken\" />
+  </ItemGroup>
+
 </Project>

@@ -7,6 +7,7 @@ using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
+using SegmentSniper.Services.AuthServices.Token;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
@@ -80,12 +81,17 @@ namespace SegmentSniper.Api.Helpers
 
 
             //action handlers
-            builder.Services.AddScoped<IAuthenticateUserActionHandler, LoginUserActionHandler>();
+            builder.Services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
 
             //services
-            builder.Services.AddScoped<ILoginUser, LoginUser>();
+            builder.Services.AddScoped<ICreateToken, CreateToken>();
+            builder.Services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
+            builder.Services.AddScoped<IAuthenticateUser, AuthenticateUser>();
+            builder.Services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
+            builder.Services.AddScoped<IGetUserRoles, GetUserRoles>();
             builder.Services.AddScoped<IRegisterUser, RegisterUser>();
+
             return builder;
         }
 
