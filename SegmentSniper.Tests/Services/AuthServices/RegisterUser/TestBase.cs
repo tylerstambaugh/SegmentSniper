@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SegmentSniper.Data.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using SegmentSniper.Data;
