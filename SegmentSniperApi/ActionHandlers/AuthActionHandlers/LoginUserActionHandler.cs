@@ -12,18 +12,20 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
     public class LoginUserActionHandler : ILoginUserActionHandler
     {
         private readonly IAuthenticateUser _authenticateUserService;
-        private readonly ICreateToken _createTokenService;
+        private readonly ICreateToken _createToken;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IGenerateRefreshToken _generateRefreshToken;
+        private readonly IGetUserRoles _getUserRoles;
 
-        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration, IGenerateRefreshToken generateRefreshToken)
+        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration, IGenerateRefreshToken generateRefreshToken, IGetUserRoles getUserRoles)
         {
             _authenticateUserService = authenticateUserService;
-            _createTokenService = createTokenService;
+            _createToken = createTokenService;
             _userManager = userManager;
             _configuration = configuration;
             _generateRefreshToken = generateRefreshToken;
+            _getUserRoles = getUserRoles;
         }
 
         public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
@@ -34,20 +36,10 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             var authenticatedUser = user.LoggedInUser;
             if (authenticatedUser != null)
             {
-                var userRoles = await _userManager.GetRolesAsync(authenticatedUser);
+                var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
 
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, authenticatedUser.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+                var token = _createToken.Execute(authClaims);
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
-
-                var token = _createTokenService.Execute(authClaims);
                 var refreshToken = _generateRefreshToken.Execute();
 
                 _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);

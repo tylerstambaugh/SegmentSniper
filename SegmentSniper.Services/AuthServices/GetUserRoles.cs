@@ -25,7 +25,7 @@ namespace SegmentSniper.Services.AuthServices
 
             var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, contract.User),
+                    new Claim(ClaimTypes.Name, contract.User.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
