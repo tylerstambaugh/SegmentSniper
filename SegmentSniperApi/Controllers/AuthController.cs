@@ -7,7 +7,6 @@ using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace SegmentSniper.Api.Controllers
@@ -20,7 +19,7 @@ namespace SegmentSniper.Api.Controllers
         private readonly ILoginUserActionHandler _loginUserActionHandler;
         private readonly IRegisterUserActionHandler _registerUserActionHandler;
 
-        public AuthController(IConfiguration config, ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, )
+        public AuthController(IConfiguration config, ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler)
         {
             _config = config;
             _loginUserActionHandler = loginUserActionHandler;
@@ -31,21 +30,18 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserDto registerUser)
         {
-            if (registerUser != null)
+            try
             {
                 var registeredUser = await _registerUserActionHandler.Handle(new RegisterUserRequest { User = registerUser });
                 if (registeredUser != null)
                 {
                     return Ok(registeredUser);
                 }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            else
-            {
                 return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}");
             }
         }
 
@@ -69,16 +65,12 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-
-
         [HttpPost]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken(TokenModel tokenModel)
         {
             throw new NotImplementedException();
         }
-
-
 
         [Authorize]
         [HttpPost]
@@ -87,30 +79,5 @@ namespace SegmentSniper.Api.Controllers
         {
             throw new NotImplementedException();
         }
-
-
-
-        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"])),
-                ValidateLifetime = false
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
-
-        }
-
     }
-
-
 }

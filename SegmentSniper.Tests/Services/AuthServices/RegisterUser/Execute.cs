@@ -1,7 +1,6 @@
-﻿using SegmentSniper.Data.Entities;
+﻿using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
-using System.Web;
 
 namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 {
@@ -53,7 +52,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         public async Task ShouldMatchAddedUser()
         {
             await ActAsync();
-            
+
             Assert.IsNotNull(Context.Object.Users.Where(u => u.UserName == _contract.RegisterUser.UserName).FirstOrDefault());
         }
 
@@ -67,14 +66,14 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'UserName')");
         }
-        
+
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]
         [DataRow(" ")]
         public async Task ShouldThrowArgumentNullException_GivenMissingFirstName(string data)
         {
-            registerUser.FirstName = data;  
+            registerUser.FirstName = data;
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'FirstName')");
         }
