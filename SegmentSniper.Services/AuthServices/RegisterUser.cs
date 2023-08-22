@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Models.Models.User;
+using SegmentSniper.Models.Models.Auth.User;
 using System.Text.RegularExpressions;
 
 namespace SegmentSniper.Services.AuthServices
@@ -39,9 +39,9 @@ namespace SegmentSniper.Services.AuthServices
                 };
                 var createUser = await _userManager.CreateAsync(userToAdd, contract.RegisterUser.Password);
 
-                if(createUser.Succeeded)
+                if (createUser.Succeeded)
                 {
-                    var dbUser = _context.Users.Where(x => x.Email ==  contract.RegisterUser.Email).FirstOrDefault();
+                    var dbUser = _context.Users.Where(x => x.Email == contract.RegisterUser.Email).FirstOrDefault();
 
                     user.RegisteredUser = new UserDto(dbUser.Id, dbUser.UserName, dbUser.FirstName, dbUser.Email);
                 }
@@ -51,7 +51,7 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentException("unable to create user");
             }
 
-            return user;            
+            return user;
         }
 
 
@@ -113,7 +113,7 @@ namespace SegmentSniper.Services.AuthServices
         private async Task<bool> IsValidPassword(string password)
         {
             var passwordValidator = new PasswordValidator<ApplicationUser>();
-            var result =  await passwordValidator.ValidateAsync(_userManager, null, password);
+            var result = await passwordValidator.ValidateAsync(_userManager, null, password);
 
             return result.Succeeded;
 
