@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
@@ -18,12 +19,14 @@ namespace SegmentSniper.Api.Controllers
         private readonly IConfiguration _config;
         private readonly ILoginUserActionHandler _loginUserActionHandler;
         private readonly IRegisterUserActionHandler _registerUserActionHandler;
+        private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
 
-        public AuthController(IConfiguration config, ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler)
+        public AuthController(IConfiguration config, ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler)
         {
             _config = config;
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
+            _refreshTokenActionHandler = refreshTokenActionHandler;
         }
 
         [AllowAnonymous]
@@ -69,7 +72,22 @@ namespace SegmentSniper.Api.Controllers
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken(TokenModel tokenModel)
         {
-            throw new NotImplementedException();
+            if (tokenModel is null)
+            {
+                return BadRequest("Invalid client request");
+            }
+            else
+            {
+                try
+                {
+                var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(tokenModel));
+                    return Ok(refreshedToken);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Invalid access or refresh token: {nameof(tokenModel)}");
+                }
+            }
         }
 
         [Authorize]

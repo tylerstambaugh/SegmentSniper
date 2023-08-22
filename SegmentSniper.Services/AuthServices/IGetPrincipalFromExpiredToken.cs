@@ -10,9 +10,7 @@ namespace SegmentSniper.Services.AuthServices
         {
             public GetPrincipalFromExpiredTokenContract(string accessToken)
             {
-
                 AccessToken = accessToken;
-
             }
 
             public string AccessToken { get; }
