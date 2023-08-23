@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\AuthServices\AuthticateUser\" />
+    <Folder Include="Handlers\" />
     <Folder Include="Services\AuthServices\GetUserRoles\" />
     <Folder Include="Services\AuthServices\RefreshToken\" />
     <Folder Include="Services\AuthServices\TokenServices\CreateToken\" />
