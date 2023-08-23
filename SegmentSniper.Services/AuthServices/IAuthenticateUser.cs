@@ -5,7 +5,7 @@ namespace SegmentSniper.Services.AuthServices
 {
     public interface IAuthenticateUser
     {
-        Task<AuthenticateUserContract.Result> Execute(AuthenticateUserContract contract);
+        Task<AuthenticateUserContract.Result> ExecuteAsync(AuthenticateUserContract contract);
     }
     public class AuthenticateUserContract
     {

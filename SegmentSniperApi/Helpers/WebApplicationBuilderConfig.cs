@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +26,22 @@ namespace SegmentSniper.Api.Helpers
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
+
+            builder.Services.Configure<OperationalStoreOptions>(options =>
+            {
+                options.ConfigureDbContext = builder =>
+                    builder.UseSqlServer(connectionString,
+                                         sql => sql.MigrationsAssembly("SegmentSniper.Data"));
+
+                // Token cleanup interval (default is 1 hour)
+                options.TokenCleanupInterval = 3600; // in seconds, e.g., 1 hour
+
+                // Tokens to be cleaned
+                options.TokenCleanupBatchSize = 100; // number of tokens to be cleaned in each batch
+
+                // Automatic token cleanup (default is true)
+                options.EnableTokenCleanup = true;
+            });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

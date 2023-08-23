@@ -15,9 +15,9 @@ namespace SegmentSniper.Services.AuthServices
             _userMgr = userMgr;
         }
 
-        public async Task<AuthenticateUserContract.Result> Execute(AuthenticateUserContract contract)
+        public async Task<AuthenticateUserContract.Result> ExecuteAsync(AuthenticateUserContract contract)
         {
-            ValidateContract();
+            ValidateContract(contract);
 
             var user = await _userMgr.FindByNameAsync(contract.UserLogin.UserName);
             if (user != null && await _userMgr.CheckPasswordAsync(user, contract.UserLogin.Password))
@@ -30,9 +30,22 @@ namespace SegmentSniper.Services.AuthServices
             return null;
         }
 
-        private void ValidateContract()
+        private void ValidateContract(AuthenticateUserContract contract)
         {
-            throw new NotImplementedException();
+           if(contract is null)
+            {
+                throw new ArgumentNullException(nameof(contract));
+            }
+
+           if(string.IsNullOrWhiteSpace(contract.UserLogin.UserName))
+            {
+                throw new ArgumentNullException(nameof(contract.UserLogin.UserName));
+            }
+
+           if(string.IsNullOrWhiteSpace(contract.UserLogin.Password))
+            {
+                throw new ArgumentNullException(nameof(contract.UserLogin.Password));
+            }
         }
     }
 }

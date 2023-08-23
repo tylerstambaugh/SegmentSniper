@@ -6,6 +6,7 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static SegmentSniper.Services.AuthServices.Token.ICreateToken;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -32,13 +33,13 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         {
             ValidateRequest(request);
 
-            var user = await _authenticateUserService.Execute(new AuthenticateUserContract(request.UserLogin));
+            var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
             var authenticatedUser = user.LoggedInUser;
             if (authenticatedUser != null)
             {
                 var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
 
-                var token = _createToken.Execute(authClaims);
+                var token = _createToken.Execute(new CreateTokenContract(authClaims));
 
                 var refreshToken = _generateRefreshToken.Execute();
 
