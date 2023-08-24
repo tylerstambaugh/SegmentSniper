@@ -44,7 +44,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
             UserMgr = new UserManager<ApplicationUser>(
                new UserStore<ApplicationUser>(Context),
                null, // TODO: Provide IOptions<IdentityOptions>
-               new PasswordHasher<ApplicationUser>(), // TODO: Provide IPasswordHasher<ApplicationUser>
+               new PasswordHasher<ApplicationUser>(), 
                null, // TODO: Provide IEnumerable<IUserValidator<ApplicationUser>>
                null, // TODO: Provide IEnumerable<IPasswordValidator<ApplicationUser>>
                 null, // TODO: Provide ILookupNormalizer
