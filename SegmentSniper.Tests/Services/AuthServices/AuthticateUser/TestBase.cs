@@ -19,7 +19,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
         protected List<ApplicationUser> _users = new List<ApplicationUser>();
 
         [TestInitialize]
-        public virtual void Arrage()
+        public virtual async Task ArrangeAsync()
         {
 
             var services = new ServiceCollection();
@@ -27,8 +27,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
                 options.UseInMemoryDatabase(databaseName: "SegmentSniper"));
 
             var serviceProvider = services.BuildServiceProvider();
-
-
 
             var dbOptions = new DbContextOptionsBuilder<SegmentSniperDbContext>()
                 .UseInMemoryDatabase(databaseName: "SegmentSniper")
@@ -44,23 +42,21 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
             Context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
 
             UserMgr = new UserManager<ApplicationUser>(
-   new UserStore<ApplicationUser>(Context),
-   null, // TODO: Provide IOptions<IdentityOptions>
-   null, // TODO: Provide IPasswordHasher<ApplicationUser>
-   null, // TODO: Provide IEnumerable<IUserValidator<ApplicationUser>>
-   null, // TODO: Provide IEnumerable<IPasswordValidator<ApplicationUser>>
-    null, // TODO: Provide ILookupNormalizer
-   null, // TODO: Provide IdentityErrorDescriber
-   serviceProvider, // This is the service provider
-   null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
+               new UserStore<ApplicationUser>(Context),
+               null, // TODO: Provide IOptions<IdentityOptions>
+               new PasswordHasher<ApplicationUser>(), // TODO: Provide IPasswordHasher<ApplicationUser>
+               null, // TODO: Provide IEnumerable<IUserValidator<ApplicationUser>>
+               null, // TODO: Provide IEnumerable<IPasswordValidator<ApplicationUser>>
+                null, // TODO: Provide ILookupNormalizer
+               null, // TODO: Provide IdentityErrorDescriber
+               serviceProvider, // This is the service provider
+               null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
 
             Service = new AuthenticateUser(Context, UserMgr);
 
-            InternalArrange();
+            InternalArrangeAsync();
         }
 
-        protected abstract void InternalArrange();
+        protected abstract Task InternalArrangeAsync();
     }
-
-
 }
