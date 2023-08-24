@@ -7,23 +7,26 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
 {
     [TestClass]
-    public class Execute: TestBase
+    public class Execute : TestBase
     {
 
-        private AuthenticateUserContract _contract;
+        private AuthenticateUserContract? _contract;
         private UserLogin _userLogin;
         private string UserName = "HarryB";
         private string FirstName = "Harry";
         private string LastName = "Ballsagna";
         private string Email = "ballsagana.H@gmail.com";
         private string Password = "Puteminyourmouth1!";
-        protected override void InternalArrange()
+        private AuthenticateUserContract.Result _loggedInUser;
+
+        protected override async Task InternalArrangeAsync()
         {
 
             ApplicationUser userToAdd = new ApplicationUser
@@ -38,25 +41,37 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
                 SecurityStamp = Guid.NewGuid().ToString(),
 
             };
-            var createUser = UserMgr.CreateAsync(userToAdd, Password);
+            var createUser = await UserMgr.CreateAsync(userToAdd, Password);
 
             _userLogin = new UserLogin
             {
                 UserName = UserName,
                 Password = Password,
             };
+
             _contract = new AuthenticateUserContract(_userLogin);
         }
 
         private async Task ActAsync()
         {
-            await Service.ExecuteAsync(_contract);
+           _loggedInUser = await Service.ExecuteAsync(_contract);
         }
 
         [TestMethod]
         public async Task ShouldReturnUser_GivenSuccessfulLogin()
         {
             await ActAsync();
+
+            Assert.IsNotNull(_loggedInUser);
+        }
+
+        [TestMethod]
+        public async Task ShouldThrowArguementNullExceptin_GivenNullUserLogin()
+        {
+            _userLogin = null;
+            _contract = new AuthenticateUserContract(_userLogin);
+
+            Assert.ThrowsException<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'UserLogin')");
         }
     }
 }

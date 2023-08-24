@@ -36,6 +36,10 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentNullException(nameof(contract));
             }
+           if(contract.UserLogin == null)
+            {
+                throw new ArgumentNullException(nameof(contract.UserLogin));
+            }
 
            if(string.IsNullOrWhiteSpace(contract.UserLogin.UserName))
             {
