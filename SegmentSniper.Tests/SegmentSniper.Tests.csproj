@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
+    <ProjectReference Include="..\SegmentSniperApi\SegmentSniper.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\" />
     <Folder Include="Services\AuthServices\GetUserRoles\" />
     <Folder Include="Services\AuthServices\RefreshToken\" />
     <Folder Include="Services\AuthServices\TokenServices\CreateToken\" />

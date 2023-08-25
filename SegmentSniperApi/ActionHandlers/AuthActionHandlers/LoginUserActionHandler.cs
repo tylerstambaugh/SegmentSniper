@@ -45,6 +45,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 
                 _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
+                // set the refresh token on the user in the db:
                 authenticatedUser.RefreshToken = refreshToken;
                 authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
 
