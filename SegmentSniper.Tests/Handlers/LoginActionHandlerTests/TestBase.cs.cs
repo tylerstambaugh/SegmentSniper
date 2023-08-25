@@ -2,25 +2,32 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
+using SegmentSniper.Services.AuthServices.Token;
 
-namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
+namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
 {
     [TestClass]
     public abstract class TestBase
     {
-        protected UserManager<ApplicationUser> UserMgr;
-        protected AuthenticateUser Service;
-        protected SegmentSniperDbContext Context;        
+        protected LoginUserActionHandler Handler;
+        protected AuthenticateUser _authenticateUserService;
+        protected CreateToken _createToken;
+        protected UserManager<ApplicationUser> _userMgr;
+        protected IConfiguration _configuration;
+        protected GenerateRefreshToken _generateRefreshToken;
+        protected GetUserRoles _getUserRoles;
+        protected SegmentSniperDbContext _context;
 
         [TestInitialize]
         public virtual async Task ArrangeAsync()
         {
-
             var services = new ServiceCollection();
             services.AddDbContext<SegmentSniperDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "SegmentSniper"));
@@ -38,12 +45,12 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
                     builder.UseInMemoryDatabase("SegmentSniper");
                 }
             });
-            Context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
+            _context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
 
-            UserMgr = new UserManager<ApplicationUser>(
-               new UserStore<ApplicationUser>(Context),
+            _userMgr = new UserManager<ApplicationUser>(
+               new UserStore<ApplicationUser>(_context),
                null, // TODO: Provide IOptions<IdentityOptions>
-               new PasswordHasher<ApplicationUser>(), 
+               new PasswordHasher<ApplicationUser>(),
                null, // TODO: Provide IEnumerable<IUserValidator<ApplicationUser>>
                null, // TODO: Provide IEnumerable<IPasswordValidator<ApplicationUser>>
                 null, // TODO: Provide ILookupNormalizer
@@ -51,7 +58,26 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
                serviceProvider, // This is the service provider
                null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
 
-            Service = new AuthenticateUser(Context, UserMgr);
+            _getUserRoles = new GetUserRoles(_userMgr);
+
+            var inMemorySettings = new Dictionary<string, string> {
+                {"TopLevelKey", "TopLevelValue"},
+                {"JWT:Secret", "random string"},
+                {"JWT:TokenValidityInMinutes", "30"},
+                {"JWT:ValidIssuer", "*"},
+                {"JWT:ValidAudience", "*"},
+                {"JWT:RefreshTokenValidityInDays", "7"},
+            };
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
+            _authenticateUserService = new AuthenticateUser(_context, _userMgr);
+            _createToken = new CreateToken(_configuration);
+            _generateRefreshToken = new GenerateRefreshToken();
+
+            Handler = new LoginUserActionHandler(_authenticateUserService, _createToken, _userMgr, _configuration, _generateRefreshToken, _getUserRoles);
 
             InternalArrangeAsync();
         }
