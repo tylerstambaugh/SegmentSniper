@@ -69,7 +69,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
                 {"JWT:RefreshTokenValidityInDays", "7"},
             };
 
-            IConfiguration configuration = new ConfigurationBuilder()
+           _configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
 
