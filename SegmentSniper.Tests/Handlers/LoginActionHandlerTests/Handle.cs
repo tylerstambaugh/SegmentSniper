@@ -1,12 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
+﻿using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
 {
@@ -54,7 +48,45 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
         public async Task ShouldReturnResponseWithJWTToken_GivenValidRequest()
         {
             _request = new LoginUserRequest(_userLogin);
-            ActAsync();
+            await ActAsync();
+
+            Assert.IsNotNull(_response.TokenData.AccessToken);
+        }
+
+        [TestMethod]
+        public async Task ShouldThrowArgumentNullException_GivenNullRequest()
+        {
+            _request = null;
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'Request')");
+        }
+
+        [TestMethod]
+        public async Task ShouldThrowArgumentNullException_GivenNullUserLogin()
+        {
+            _userLogin = null;
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'UserLogin')");
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task ShouldThrowArgumentException_GivenMissingUserName(string data)
+        {
+            _userLogin.UserName = data;
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'Username')");
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task ShouldThrowArgumentException_GivenMissingPassword(string data)
+        {
+            _userLogin.Password = data;
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'Password')");
         }
     }
 }
