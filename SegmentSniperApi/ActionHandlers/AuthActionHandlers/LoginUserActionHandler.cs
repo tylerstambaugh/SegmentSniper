@@ -78,6 +78,18 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
+            if(request.UserLogin == null)
+            {
+                throw new ArgumentNullException(nameof(request.UserLogin));
+            }
+            if(string.IsNullOrWhiteSpace(request.UserLogin.UserName))
+            {
+                throw new ArgumentException(nameof(request.UserLogin.UserName));
+            }
+            if (string.IsNullOrWhiteSpace(request.UserLogin.Password))
+            {
+                throw new ArgumentException(nameof(request.UserLogin.Password));
+            }
         }
     }
 }
