@@ -96,6 +96,9 @@ namespace SegmentSniper.Api.Helpers
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
+            builder.Services.AddSpaStaticFiles(configuration => {
+                configuration.RootPath = "SegmentSniper.React/dist";
+            });
 
             //action handlers
             builder.Services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
