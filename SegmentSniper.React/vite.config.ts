@@ -8,6 +8,9 @@ export default defineConfig({
   server: {
     https: true,
     port: 6767,
+    proxy: {
+      "/api": { target: "https://localhost:44351", secure: false },
+    },
   },
   plugins: [react(), mkcert()],
 });

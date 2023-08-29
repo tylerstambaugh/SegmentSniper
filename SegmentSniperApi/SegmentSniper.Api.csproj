@@ -5,7 +5,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>1b80279b-4e95-470b-a29a-f5bb4eecff6e</UserSecretsId>
-	  
+	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+	<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+	<IsPackable>false</IsPackable>
+	<SpaRoot>SegmentSniper.React\</SpaRoot>
+	<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+	<SpaProxyServerUrl>https://localhost:6767</SpaProxyServerUrl>
+	<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand> 
   </PropertyGroup>
 
   <ItemGroup>
@@ -47,10 +53,6 @@
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
   </ItemGroup>
-
-	<PropertyGroup>
-		<SpaRoot>SegmentSniper.React\</SpaRoot>
-	</PropertyGroup>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
 		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
