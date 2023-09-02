@@ -1,11 +1,12 @@
 import { Container } from "react-bootstrap";
+import LoginWidget from "../components/LoginWidget";
 
 function Login() {
   return (
-    <div>
+    <>
       <h1>This is the login page</h1>
-      <Container></Container>
-    </div>
+      <LoginWidget />
+    </>
   );
 }
 
