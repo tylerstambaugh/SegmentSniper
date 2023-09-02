@@ -1,16 +1,18 @@
 import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../enums/appRoutes";
+import { AppRoutes } from "../enums/AppRoutes";
+import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 function Header() {
   return (
-    <Navbar>
-      <Container>
-        <Navbar.Brand href="#app">Segment Sniper</Navbar.Brand>
+    <Navbar bg="light" expand="lg">
+      <Container fluid>
+        <Link to={AppRoutes.Home}>
+          <Navbar.Brand>Segment Sniper</Navbar.Brand>
+        </Link>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
+          <Navbar.Text className="d-flex justify-content-end">
             Signed in as: <Link to={AppRoutes.Login}>Bobe Sniper</Link>
           </Navbar.Text>
         </Navbar.Collapse>

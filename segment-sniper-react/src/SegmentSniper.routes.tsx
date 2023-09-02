@@ -6,10 +6,12 @@ import {
   useNavigate,
   Outlet,
 } from "react-router-dom";
-import { AppRoutes } from "./enums/appRoutes";
 import SegmentSniper from "./SegmentSniper";
 import Register from "./pages/Register";
 import Login from "./pages/Home";
+import { AppRoutes } from "./enums/AppRoutes";
+import "./index.css";
+import "./App.css";
 
 interface Props {
   defaultPage?: string;
@@ -23,7 +25,7 @@ export default function Routes({ defaultPage }: Props) {
     if (defaultPage) {
       navigate(defaultPage);
     } else {
-      navigate(AppRoutes.Home);
+      navigate(location.pathname);
     }
   }, []);
 
