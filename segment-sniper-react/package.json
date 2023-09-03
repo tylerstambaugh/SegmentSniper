@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.1",
+    "formik": "^2.4.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

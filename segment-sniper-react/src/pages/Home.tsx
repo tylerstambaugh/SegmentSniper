@@ -1,9 +1,9 @@
-function Login() {
+function Home() {
   return (
-    <div>
-      <h1>This is the login page</h1>
-    </div>
+    <>
+      <div>Segment sniper home, show main menu, else show register / login</div>
+    </>
   );
 }
 
-export default Login;
+export default Home;
