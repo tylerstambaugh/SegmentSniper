@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function LoginWidget() {
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import "./App.css";
@@ -7,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Header from "./components/Header";
 import { AppRoutes } from "./enums/AppRoutes";
 import Routes from "./SegmentSniper.routes";
-import { Container } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const client = new QueryClient();
 

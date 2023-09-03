@@ -2,6 +2,7 @@ import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Header() {
   return (
