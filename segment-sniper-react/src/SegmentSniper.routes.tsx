@@ -6,12 +6,12 @@ import {
   useNavigate,
   Outlet,
 } from "react-router-dom";
-import SegmentSniper from "./SegmentSniper";
+import Home from "./pages/Home";
 import Register from "./pages/Register";
-import Login from "./pages/Home";
 import { AppRoutes } from "./enums/AppRoutes";
 import "./index.css";
 import "./App.css";
+import Login from "./pages/Login";
 
 interface Props {
   defaultPage?: string;
@@ -33,7 +33,7 @@ export default function Routes({ defaultPage }: Props) {
     <>
       <RRRoutes>
         <Route path="/app" element={<Outlet />}>
-          <Route path={AppRoutes.Home} element={<SegmentSniper />} />
+          <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
         </Route>
