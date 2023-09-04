@@ -7,7 +7,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
     [TestClass]
     public class Execute : TestBase
     {
-
         private RegisterUserContract _contract;
         private RegisterUserDto registerUser;
         private string FirstName = "Harry";
@@ -49,7 +48,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
             Assert.IsNotNull(Context.Object.Users.Where(u => u.Email == _contract.RegisterUser.Email).FirstOrDefault());
         }
 
-
         [DataTestMethod]
         [DataRow(null)]
         [DataRow("")]
@@ -60,7 +58,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'FirstName')");
         }
-
 
         [DataTestMethod]
         [DataRow(null)]
@@ -83,7 +80,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'Password')");
         }
-
         public async Task ShouldThrowArgumentNullException_GivenInvalidEmail()
         {
             registerUser.Email = "not@nemail";

@@ -53,7 +53,6 @@ namespace SegmentSniper.Services.AuthServices
             return user;
         }
 
-
         private void ValidateContract(RegisterUserContract contract)
         {
             if (contract is null)
