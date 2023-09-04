@@ -24,7 +24,6 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
                 UserName = UserName,
                 NormalizedUserName = UserName,
                 FirstName = FirstName,
-                LastName = LastName,
                 Email = Email,
                 NormalizedEmail = Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
