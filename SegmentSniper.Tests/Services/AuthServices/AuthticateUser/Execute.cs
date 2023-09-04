@@ -25,7 +25,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.AuthticateUser
                 UserName = UserName,
                 NormalizedUserName = UserName,
                 FirstName = FirstName,
-                LastName = LastName,
                 Email = Email,
                 NormalizedEmail = Email,
                 SecurityStamp = Guid.NewGuid().ToString(),

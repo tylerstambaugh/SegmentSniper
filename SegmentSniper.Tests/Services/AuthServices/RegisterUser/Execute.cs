@@ -10,9 +10,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
         private RegisterUserContract _contract;
         private RegisterUserDto registerUser;
-        private string UserName = "HarryB";
         private string FirstName = "Harry";
-        private string LastName = "Ballsagna";
         private string Email = "ballsagana.H@gmail.com";
         private string Password = "Puteminyourmouth1!";
         private RegisterUserContract.Result newUser = new RegisterUserContract.Result();
@@ -21,9 +19,7 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         {
             registerUser = new RegisterUserDto
             {
-                UserName = UserName,
                 FirstName = FirstName,
-                LastName = LastName,
                 Email = Email,
                 Password = Password,
             };
@@ -34,13 +30,10 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
             {
                 Id = "testId 1",
                 FirstName = "Test",
-                LastName = "Test",
                 Email = "Test@email.com",
-                UserName = "Test",
                 NormalizedEmail = "Test",
                 NormalizedUserName = "Test",
             });
-
         }
 
         private async Task ActAsync()
@@ -53,19 +46,9 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
         {
             await ActAsync();
 
-            Assert.IsNotNull(Context.Object.Users.Where(u => u.UserName == _contract.RegisterUser.UserName).FirstOrDefault());
+            Assert.IsNotNull(Context.Object.Users.Where(u => u.Email == _contract.RegisterUser.Email).FirstOrDefault());
         }
 
-        [DataTestMethod]
-        [DataRow(null)]
-        [DataRow("")]
-        [DataRow(" ")]
-        public async Task ShouldThrowArgumentNullException_GivenMissingUserName(string data)
-        {
-            registerUser.UserName = data;
-
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'UserName')");
-        }
 
         [DataTestMethod]
         [DataRow(null)]
@@ -78,16 +61,6 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'FirstName')");
         }
 
-        [DataTestMethod]
-        [DataRow(null)]
-        [DataRow("")]
-        [DataRow(" ")]
-        public async Task ShouldThrowArgumentNullException_GivenMissingLastName(string data)
-        {
-            registerUser.LastName = data;
-
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await ActAsync(), "Value cannot be null. (Parameter 'LastName')");
-        }
 
         [DataTestMethod]
         [DataRow(null)]
@@ -131,6 +104,5 @@ namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await ActAsync(), "Password does not meet criteria. (Parameter 'Password')");
         }
-
     }
 }

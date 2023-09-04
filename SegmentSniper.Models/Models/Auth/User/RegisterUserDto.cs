@@ -4,8 +4,6 @@ namespace SegmentSniper.Models.Models.Auth.User
 {
     public class RegisterUserDto
     {
-        [Required(ErrorMessage = "Username is required")]
-        public string UserName { get; set; } = string.Empty;
 
         [EmailAddress]
         [Required(ErrorMessage = "Email is required")]
@@ -16,8 +14,5 @@ namespace SegmentSniper.Models.Models.Auth.User
 
         [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Last name is required")]
-        public string LastName { get; set; } = string.Empty;
     }
 }

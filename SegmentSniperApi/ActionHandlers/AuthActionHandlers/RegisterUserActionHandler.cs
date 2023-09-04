@@ -18,13 +18,10 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
             var contract = new RegisterUserContract(new RegisterUserDto
             {
-                UserName = request.User.UserName,
                 Email = request.User.Email,
                 FirstName = request.User.FirstName,
-                LastName = request.User.LastName,
                 Password = request.User.Password,
             });
-
 
             var user = await _registerUserService.ExecuteAsync(contract);
 

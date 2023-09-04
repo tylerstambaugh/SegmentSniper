@@ -9,8 +9,6 @@ import {
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { AppRoutes } from "./enums/AppRoutes";
-import "./index.css";
-import "./App.css";
 import Login from "./pages/Login";
 
 interface Props {

@@ -28,10 +28,9 @@ namespace SegmentSniper.Services.AuthServices
                 ApplicationUser userToAdd = new ApplicationUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = contract.RegisterUser.UserName,
-                    NormalizedUserName = contract.RegisterUser.UserName,
+                    UserName = contract.RegisterUser.Email,
+                    NormalizedUserName = contract.RegisterUser.Email,
                     FirstName = contract.RegisterUser.FirstName,
-                    LastName = contract.RegisterUser.LastName,
                     Email = contract.RegisterUser.Email,
                     NormalizedEmail = contract.RegisterUser.Email,
                     SecurityStamp = Guid.NewGuid().ToString(),
@@ -62,19 +61,10 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ArgumentNullException(nameof(contract));
             }
 
-            if (string.IsNullOrWhiteSpace(contract.RegisterUser.UserName))
-            {
-                throw new ArgumentNullException(nameof(contract.RegisterUser.UserName));
-            }
 
             if (string.IsNullOrWhiteSpace(contract.RegisterUser.FirstName))
             {
                 throw new ArgumentNullException(nameof(contract.RegisterUser.FirstName));
-            }
-
-            if (string.IsNullOrWhiteSpace(contract.RegisterUser.LastName))
-            {
-                throw new ArgumentNullException(nameof(contract.RegisterUser.LastName));
             }
 
             if (string.IsNullOrWhiteSpace(contract.RegisterUser.Email))
