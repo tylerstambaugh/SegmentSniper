@@ -58,7 +58,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                     Expiration = token.ValidTo
                 };
 
-                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.UserName, authenticatedUser.FirstName, authenticatedUser.Email);
+                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email);
 
                 return new LoginUserRequest.Response
                 {
