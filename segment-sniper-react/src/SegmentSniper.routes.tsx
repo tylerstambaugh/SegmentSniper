@@ -10,6 +10,9 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { AppRoutes } from "./enums/AppRoutes";
 import Login from "./pages/Login";
+import ProtectedPage from "./pages/ProtectedPage";
+import UnprotectedPage from "./pages/UnprotectedPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 interface Props {
   defaultPage?: string;
@@ -34,6 +37,18 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
+          <Route
+            path={AppRoutes.SampleProtectedRoute}
+            element={
+              <PrivateRoute>
+                <ProtectedPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.SampleUnprotectedRoute}
+            element={<UnprotectedPage />}
+          />
         </Route>
       </RRRoutes>
     </>
