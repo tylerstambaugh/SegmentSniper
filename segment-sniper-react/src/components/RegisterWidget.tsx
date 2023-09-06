@@ -2,9 +2,12 @@ import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { RegisterUserRequest } from "../services/Api/postRegisterUser";
+import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
 
 export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
+  const registerUser = usePostRegisterUser();
 
   const [emailAddress, setEmailAddress] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -48,7 +51,14 @@ export default function RegisterWidget() {
       password: null,
       confirmPassword: null,
     },
-    onSubmit: () => {},
+    onSubmit: (values: RegisterForm) => {
+      const registerUserRequest: RegisterUserRequest = {
+        firstName: values.firstName!,
+        emailAddress: values.emailAddress!,
+        password: values.password!,
+      };
+      registerUser.mutate(registerUserRequest);
+    },
     validationSchema,
     validateOnChange: validated,
     validateOnBlur: validated,

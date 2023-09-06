@@ -8,7 +8,7 @@ export type RegisterUserRequest = {
   password: string;
 };
 
-interface RegisterUserResponse {
+export interface RegisterUserResponse {
   id: string;
   firstName: string;
   emailAddress: string;
@@ -18,7 +18,7 @@ export default async function postRegisterUser(
   contract: ApiContract<RegisterUserRequest>
 ) {
   const response = apiPost<RegisterUserRequest, RegisterUserResponse>(
-    `${contract.baseUrl}/api/auth/register`,
+    `${contract.baseUrl}/auth/register`,
     contract
   );
 
