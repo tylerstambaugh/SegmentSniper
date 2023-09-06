@@ -1,4 +1,3 @@
-import { useMutation } from "react-query";
 import { useNeuron } from "../../store/AppStore";
 import postRegisterUser, {
   RegisterUserRequest,
@@ -7,6 +6,7 @@ import postRegisterUser, {
 import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
 import { User } from "../../store/types/user";
 import { ApiConfig } from "../../store/types/apiConfig";
+import { useMutation } from "@tanstack/react-query";
 
 export const usePostRegisterUser = () => {
   const { mutate, isLoading } = useMutation(trigger);
