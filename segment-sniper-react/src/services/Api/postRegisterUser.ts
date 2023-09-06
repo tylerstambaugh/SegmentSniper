@@ -18,7 +18,7 @@ export default async function postRegisterUser(
   contract: ApiContract<RegisterUserRequest>
 ) {
   const response = apiPost<RegisterUserRequest, RegisterUserResponse>(
-    `${contract.baseUrl}/api/auth/register`,
+    `${contract.baseUrl}/auth/register`,
     contract
   );
 
