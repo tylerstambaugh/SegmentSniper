@@ -18,7 +18,7 @@ namespace SegmentSniper.Api.Helpers
 
         public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
-            var thumbPrint = configuration["CertificateThumbprint"];
+           //var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
@@ -85,6 +85,18 @@ namespace SegmentSniper.Api.Helpers
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    corsBuilder =>
+                    {
+                        //builder.Configuration["AllowedOrigins"]
+                        corsBuilder.WithOrigins("https://localhost:6767")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
 
             builder.Services.AddControllers();
 
