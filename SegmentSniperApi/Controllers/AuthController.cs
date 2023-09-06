@@ -1,17 +1,14 @@
-﻿using IdentityModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace SegmentSniper.Api.Controllers
 {
+    [EnableCors("AllowReactApp")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -80,7 +77,7 @@ namespace SegmentSniper.Api.Controllers
             {
                 try
                 {
-                var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(tokenModel));
+                    var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(tokenModel));
                     return Ok(refreshedToken);
                 }
                 catch (Exception ex)
