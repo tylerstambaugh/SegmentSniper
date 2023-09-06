@@ -11,7 +11,7 @@
 			"id": "748bcfe4-4832-4049-8855-2b9bb681e4ba"
 		},
 		{
-			"name": "New Request",
+			"name": "Register",
 			"id": "241c4689-989f-4ab0-b29b-e79d59707cb5",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
