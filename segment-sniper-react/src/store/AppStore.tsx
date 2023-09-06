@@ -1,14 +1,22 @@
 import NeuronGSM from "@neurongsm/react";
 import { Token, initialTokenState } from "./types/token";
 import { User, initialUserState } from "./types/user";
+import { ApiConfig, initialApiConfigState } from "./types/apiConfig";
 
-export const { State, useNeuron } = NeuronGSM.Store();
+interface State {
+  tokenData: Token;
+  user: User;
+  apiConfig: ApiConfig;
+}
+
+export const { State, useNeuron } = NeuronGSM.Store<State>();
 
 export default function AppStore() {
   return (
     <>
-      <State name={"tokenData"} state={initialTokenState} />
-      <State name={"user"} state={initialUserState} />
+      <State<Token> name={"tokenData"} state={initialTokenState} />
+      <State<User> name={"user"} state={initialUserState} />
+      <State<ApiConfig> name={"apiConfig"} state={initialApiConfigState} />
     </>
   );
 }

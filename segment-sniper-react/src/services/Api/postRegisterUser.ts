@@ -8,7 +8,7 @@ export type RegisterUserRequest = {
   password: string;
 };
 
-interface RegisterUserResponse {
+export interface RegisterUserResponse {
   id: string;
   firstName: string;
   emailAddress: string;
