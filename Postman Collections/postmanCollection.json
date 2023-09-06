@@ -17,8 +17,18 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\":\"bobe\",\"emailAddress\":\"tyler.stambaugh@icloud.com\",\"password\":\"Password1!234\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:44351/api/auth/register"
 			},
 			"response": []
 		}
