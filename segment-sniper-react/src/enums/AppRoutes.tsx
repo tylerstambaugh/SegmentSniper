@@ -1,5 +1,6 @@
 export enum AppRoutes {
   Home = `/app`,
+  Dashboard = `/app/dashboard`,
   Register = "/app/register",
   Login = "/app/login",
   Snipe = `/app/snipe`,

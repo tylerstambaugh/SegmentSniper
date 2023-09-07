@@ -115,14 +115,16 @@ namespace SegmentSniper.Api.Helpers
             //action handlers
             builder.Services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
+            builder.Services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
 
             //services
+            builder.Services.AddScoped<IRegisterUser, RegisterUser>();
             builder.Services.AddScoped<ICreateToken, CreateToken>();
-            builder.Services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
+            builder.Services.AddScoped<IRefreshToken, RefreshToken>();
             builder.Services.AddScoped<IAuthenticateUser, AuthenticateUser>();
+            builder.Services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
             builder.Services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
             builder.Services.AddScoped<IGetUserRoles, GetUserRoles>();
-            builder.Services.AddScoped<IRegisterUser, RegisterUser>();
 
             return builder;
         }
