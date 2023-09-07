@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import { AppRoutes } from "./enums/AppRoutes";
 import Routes from "./SegmentSniper.routes";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { createRoot } from "react-dom/client";
 import AppStore from "./store/AppStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,7 +18,7 @@ root.render(
     <AppStore />
     <Router basename="/">
       <Header />
-      <Routes defaultPage={AppRoutes.Home} />
+      <Routes />
     </Router>
   </QueryClientProvider>
 );

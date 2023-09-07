@@ -1,13 +1,24 @@
 import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import { RegisterUserRequest } from "../services/Api/postRegisterUser";
 import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
 
 export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
 
   const [emailAddress, setEmailAddress] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -65,7 +76,22 @@ export default function RegisterWidget() {
   });
 
   function handleReset() {
+    console.log("resetting form");
+    formik.setValues({
+      firstName: "",
+      emailAddress: "",
+      password: "",
+      confirmPassword: "",
+    });
     formik.resetForm();
+  }
+
+  function togglePasswordVisibility() {
+    setShowPassword(!showPassword);
+  }
+
+  function toggleConfirmPasswordVisibility() {
+    setShowConfirmPassword(!showConfirmPassword);
   }
 
   return (
@@ -74,13 +100,25 @@ export default function RegisterWidget() {
         <Col md={6} lg={6} xs={10}>
           <Card>
             <Card.Title className="d-flex justify-content-center">
-              Register New User
+              Register Sniper
             </Card.Title>
             <Card.Body>
-              <p>Fill out the form to register a new user:</p>
+              <p>Fill out the form to register a new sniper</p>
               <Form
                 name="registerForm"
                 onSubmit={(e) => {
+                  console.log(`store first name ${firstName}`);
+                  console.log(`formik isValid ${formik.isValid}`);
+                  console.log(`formik name errors ${formik.errors.firstName}`);
+                  console.log(
+                    `formik email errors ${formik.errors.emailAddress}`
+                  );
+                  console.log(
+                    `formik password errors ${formik.errors.password}`
+                  );
+                  console.log(
+                    `formik confirmpassword errors ${formik.errors.confirmPassword}`
+                  );
                   setValidated(true);
                   formik.handleSubmit(e);
                 }}
@@ -116,31 +154,57 @@ export default function RegisterWidget() {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Control
-                    type="text"
-                    placeholder="Password"
-                    name="password"
-                    isInvalid={!!formik.errors.password}
-                    onChange={(e) => {
-                      formik.setFieldValue("password", e.target.value);
-                      setPassword(e.target.value);
-                    }}
-                  />
+                  <div className="input-group">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      name="password"
+                      isInvalid={!!formik.errors.password}
+                      onChange={(e) => {
+                        formik.setFieldValue("password", e.target.value);
+                        setPassword(e.target.value);
+                      }}
+                    />
+                    <div className="input-group-append">
+                      <div
+                        className="password-toggle-icon input-group-text"
+                        onClick={togglePasswordVisibility}
+                      >
+                        <i
+                          className={`bi bi-eye${showPassword ? "" : "-slash"}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.password}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formConfirmPassword">
-                  <Form.Control
-                    type="text"
-                    placeholder="Confirm Password"
-                    name="confirmPassword"
-                    isInvalid={!!formik.errors.confirmPassword}
-                    onChange={(e) => {
-                      formik.setFieldValue("confirmPassword", e.target.value);
-                      setConfirmPassword(e.target.value);
-                    }}
-                  />
+                  <div className="input-group">
+                    <Form.Control
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Password"
+                      name="password"
+                      isInvalid={!!formik.errors.confirmPassword}
+                      onChange={(e) => {
+                        formik.setFieldValue("confirmPassword", e.target.value);
+                        setPassword(e.target.value);
+                      }}
+                    />
+                    <div className="input-group-append">
+                      <div
+                        className="password-toggle-icon input-group-text"
+                        onClick={toggleConfirmPasswordVisibility}
+                      >
+                        <i
+                          className={`bi bi-eye${
+                            showConfirmPassword ? "" : "-slash"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.confirmPassword}
                   </Form.Control.Feedback>
