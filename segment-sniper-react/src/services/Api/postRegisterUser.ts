@@ -1,5 +1,6 @@
 import { useNeuron } from "../../store/AppStore";
 import { ApiContract } from "./ApiCommon/ApiContract";
+import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "./BaseApiService";
 
 export type RegisterUserRequest = {
@@ -17,10 +18,16 @@ export interface RegisterUserResponse {
 export default async function postRegisterUser(
   contract: ApiContract<RegisterUserRequest>
 ) {
-  const response = apiPost<RegisterUserRequest, RegisterUserResponse>(
-    `${contract.baseUrl}/auth/register`,
-    contract
-  );
-
-  return response;
+  try {
+    const response = apiPost<RegisterUserRequest, RegisterUserResponse>(
+      `${contract.baseUrl}/auth/register`,
+      contract
+    );
+    return response;
+  } catch (error) {
+    if (error instanceof UnsuccessfulHttpResponseError) {
+      throw error;
+    }
+    throw error;
+  }
 }
