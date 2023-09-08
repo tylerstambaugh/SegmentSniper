@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
@@ -7,8 +7,8 @@ import {
   Col,
   Container,
   Form,
-  InputGroup,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { RegisterUserRequest } from "../services/Api/postRegisterUser";
 import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
@@ -65,7 +65,7 @@ export default function RegisterWidget() {
     onSubmit: (values: RegisterForm) => {
       const registerUserRequest: RegisterUserRequest = {
         firstName: values.firstName!,
-        emailAddress: values.emailAddress!,
+        email: values.emailAddress!,
         password: values.password!,
       };
       registerUser.mutate(registerUserRequest);
@@ -77,13 +77,13 @@ export default function RegisterWidget() {
 
   function handleReset() {
     console.log("resetting form");
+    formik.resetForm();
     formik.setValues({
       firstName: "",
       emailAddress: "",
       password: "",
       confirmPassword: "",
     });
-    formik.resetForm();
   }
 
   function togglePasswordVisibility() {
@@ -93,6 +93,14 @@ export default function RegisterWidget() {
   function toggleConfirmPasswordVisibility() {
     setShowConfirmPassword(!showConfirmPassword);
   }
+  useEffect(() => {
+    if (registerUser.data && !registerUser.isError && !registerUser.isLoading) {
+      console.log(`useEffect registerUser.data=${registerUser.data}`);
+    }
+    //call to log in
+  }, [registerUser.data]);
+
+  //another useEffect to handle navigation to dashboard?
 
   return (
     <Container>
@@ -175,10 +183,10 @@ export default function RegisterWidget() {
                         />
                       </div>
                     </div>
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.password}
+                    </Form.Control.Feedback>
                   </div>
-                  <Form.Control.Feedback type="invalid">
-                    {formik.errors.password}
-                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formConfirmPassword">
                   <div className="input-group">
@@ -189,7 +197,7 @@ export default function RegisterWidget() {
                       isInvalid={!!formik.errors.confirmPassword}
                       onChange={(e) => {
                         formik.setFieldValue("confirmPassword", e.target.value);
-                        setPassword(e.target.value);
+                        setConfirmPassword(e.target.value);
                       }}
                     />
                     <div className="input-group-append">
@@ -204,16 +212,33 @@ export default function RegisterWidget() {
                         />
                       </div>
                     </div>
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.confirmPassword}
+                    </Form.Control.Feedback>
                   </div>
-                  <Form.Control.Feedback type="invalid">
-                    {formik.errors.confirmPassword}
-                  </Form.Control.Feedback>
                 </Form.Group>
                 <Row>
                   <Col className="d-flex justify-content-around">
-                    <Button variant="primary" type="submit">
-                      Register
-                    </Button>
+                    {registerUser.isLoading ? (
+                      <Button
+                        type="submit"
+                        variant="secondary"
+                        className={"me-1"}
+                      >
+                        <Spinner
+                          as="span"
+                          variant="light"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          animation="border"
+                        />
+                      </Button>
+                    ) : (
+                      <Button variant="primary" type="submit">
+                        Register
+                      </Button>
+                    )}
                     <Button variant="secondary" onClick={(e) => handleReset()}>
                       Reset
                     </Button>
