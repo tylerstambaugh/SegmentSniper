@@ -7,9 +7,10 @@ import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
 import { User } from "../../store/types/user";
 import { ApiConfig } from "../../store/types/apiConfig";
 import { useMutation } from "@tanstack/react-query";
+import { Token } from "../../store/types/token";
 
 export const usePostRegisterUser = () => {
-  const { mutate, isLoading } = useMutation(trigger);
+  const { mutate, isLoading, isError, data } = useMutation(trigger);
   const [user, setUser] = useNeuron<User>("user");
   const [apiConfig] = useNeuron<ApiConfig>("apiConfig");
 
@@ -32,5 +33,5 @@ export const usePostRegisterUser = () => {
     setUser(registeredUser);
   }
 
-  return { mutate, isLoading };
+  return { mutate, isLoading, isError, data };
 };

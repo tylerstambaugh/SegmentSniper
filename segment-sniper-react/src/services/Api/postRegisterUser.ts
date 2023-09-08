@@ -4,7 +4,7 @@ import { apiPost } from "./BaseApiService";
 
 export type RegisterUserRequest = {
   firstName: string;
-  emailAddress: string;
+  email: string;
   password: string;
 };
 

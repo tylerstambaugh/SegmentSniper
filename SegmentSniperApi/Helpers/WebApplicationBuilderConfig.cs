@@ -128,10 +128,5 @@ namespace SegmentSniper.Api.Helpers
 
             return builder;
         }
-
-
     }
-
-
-
 }
