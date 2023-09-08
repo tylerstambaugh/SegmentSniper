@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { RegisterUserRequest } from "../services/Api/postRegisterUser";
 import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
+import toast from "react-hot-toast";
 
 export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
@@ -99,6 +100,10 @@ export default function RegisterWidget() {
     }
     //call to log in
   }, [registerUser.data]);
+
+  useEffect(() => {
+    toast.error(`${registerUser.error}`);
+  }, [registerUser.isError]);
 
   //another useEffect to handle navigation to dashboard?
 
