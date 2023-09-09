@@ -105,7 +105,7 @@ export default function RegisterWidget() {
     toast.error(`${registerUser.error}`);
   }, [registerUser.isError]);
 
-  //another useEffect to handle navigation to dashboard?
+  //another useEffect to handle navigation to dashboard once logged in?
 
   return (
     <Container>
@@ -244,7 +244,7 @@ export default function RegisterWidget() {
                         Register
                       </Button>
                     )}
-                    <Button variant="secondary" onClick={(e) => handleReset()}>
+                    <Button variant="secondary" onClick={() => handleReset()}>
                       Reset
                     </Button>
                   </Col>

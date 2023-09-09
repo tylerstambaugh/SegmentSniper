@@ -1,4 +1,3 @@
-import { useNeuron } from "../../store/AppStore";
 import { ApiContract } from "./ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "./BaseApiService";
