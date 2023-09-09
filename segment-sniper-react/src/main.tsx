@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import AppStore from "./store/AppStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const client = new QueryClient();
 
@@ -21,5 +22,6 @@ root.render(
       <Header />
       <Routes />
     </Router>
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );
