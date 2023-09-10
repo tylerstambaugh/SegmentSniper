@@ -13,10 +13,20 @@ import {
 import { RegisterUserRequest } from "../services/Api/postRegisterUser";
 import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
 import toast from "react-hot-toast";
+import { usePostLogin } from "../hooks/Api/usePostLogin";
+import { LoginRequest } from "../services/Api/postLogin";
+import { useNeuron } from "../store/AppStore";
+import { Token } from "../store/types/token";
+import { User } from "../store/types/user";
+import { redirect } from "react-router-dom";
 
 export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
+  const loginUser = usePostLogin();
+  const [user, setUser] = useNeuron<User>("user");
+  const [token, setToken] = useNeuron<Token>("tokenData");
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -63,28 +73,53 @@ export default function RegisterWidget() {
       password: null,
       confirmPassword: null,
     },
-    onSubmit: (values: RegisterForm) => {
-      const registerUserRequest: RegisterUserRequest = {
-        firstName: values.firstName!,
-        email: values.emailAddress!,
-        password: values.password!,
-      };
-      registerUser.mutate(registerUserRequest);
+    onSubmit: async (values: RegisterForm) => {
+      await handleRegisterUser();
+      handleLoginUser();
     },
     validationSchema,
     validateOnChange: validated,
     validateOnBlur: validated,
   });
 
+  async function handleRegisterUser() {
+    const registerUserRequest: RegisterUserRequest = {
+      firstName: firstName!,
+      email: emailAddress!,
+      password: password!,
+    };
+    try {
+      const response = await registerUser.mutateAsync(registerUserRequest);
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error(`Registration error: ${error}`);
+    }
+  }
+
+  async function handleLoginUser() {
+    if (!registerUser.isError && !registerUser.isLoading) {
+      let loginRequest: LoginRequest = {
+        userName: emailAddress ?? "",
+        password: password ?? "",
+      };
+
+      loginUser.mutate(loginRequest);
+    }
+  }
+
   function handleReset() {
     console.log("resetting form");
     formik.resetForm();
-    formik.setValues({
-      firstName: "",
-      emailAddress: "",
-      password: "",
-      confirmPassword: "",
-    });
+    // formik.setFieldValue("firstName", "");
+    // formik.setFieldValue("emailAddress", "");
+    // formik.setFieldValue("password", "");
+    // formik.setFieldValue("confirmPassword", "");
+    // formik.setErrors({});
+    setFirstName("");
+    setEmailAddress("");
+    setPassword("");
+    setConfirmPassword("");
+    setValidated(false);
   }
 
   function togglePasswordVisibility() {
@@ -94,18 +129,16 @@ export default function RegisterWidget() {
   function toggleConfirmPasswordVisibility() {
     setShowConfirmPassword(!showConfirmPassword);
   }
-  useEffect(() => {
-    if (registerUser.data && !registerUser.isError && !registerUser.isLoading) {
-      console.log(`useEffect registerUser.data=${registerUser.data}`);
-    }
-    //call to log in
-  }, [registerUser.data]);
 
   useEffect(() => {
-    toast.error(`${registerUser.error}`);
+    if (registerUser.error) {
+      toast.error(`${registerUser.error}`);
+    }
   }, [registerUser.isError]);
 
-  //another useEffect to handle navigation to dashboard once logged in?
+  useEffect(() => {
+    redirect("/dashboard");
+  }, [token.accessToken]);
 
   return (
     <Container>
@@ -197,8 +230,8 @@ export default function RegisterWidget() {
                   <div className="input-group">
                     <Form.Control
                       type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Password"
-                      name="password"
+                      placeholder="Confirm Password"
+                      name="confirmPassword"
                       isInvalid={!!formik.errors.confirmPassword}
                       onChange={(e) => {
                         formik.setFieldValue("confirmPassword", e.target.value);

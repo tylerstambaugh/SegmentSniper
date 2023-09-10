@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Token } from "../../store/types/token";
 
 export const usePostRegisterUser = () => {
-  const { mutate, isLoading, isError, error, data } = useMutation(trigger);
+  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
   const [user, setUser] = useNeuron<User>("user");
   const [apiConfig] = useNeuron<ApiConfig>("apiConfig");
 
@@ -31,5 +31,5 @@ export const usePostRegisterUser = () => {
     setUser(registeredUser);
   }
 
-  return { mutate, isLoading, isError, error, data };
+  return { mutateAsync, isLoading, isError, error, data };
 };

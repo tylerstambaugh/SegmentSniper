@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import postLogin, {
   LoginRequest,
   LoginResponse,
@@ -10,13 +10,12 @@ import { Token } from "../../store/types/token";
 import { User } from "../../store/types/user";
 
 export const usePostLogin = () => {
-  const query = useQuery({
-    queryKey: ["login"],
-    queryFn: trigger,
-  });
   const [apiConfig] = useNeuron<ApiConfig>("apiConfig");
   const [user, setUser] = useNeuron<User>("user");
   const [token, setToken] = useNeuron<Token>("tokenData");
+
+  //const query = useQuery({ queryKey: ["login"], queryFn: trigger });
+  const { mutate, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: LoginRequest) {
     const contract: ApiContract = {
@@ -27,9 +26,9 @@ export const usePostLogin = () => {
     const response: LoginResponse = await postLogin(contract);
 
     setUser(response.userData);
-
     setToken(response.tokenData);
   }
 
-  return { query };
+  //return { query };
+  return { mutate, isLoading, isError, error, data };
 };
