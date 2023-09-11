@@ -15,18 +15,18 @@ import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/usePostLogin";
 import { LoginRequest } from "../services/Api/postLogin";
-import { useNeuron } from "../store/AppStore";
-import { Token } from "../store/types/token";
-import { User } from "../store/types/user";
+
 import { redirect, useNavigate, useNavigation } from "react-router-dom";
+import useUserStore from "../store/useUserStore";
+import useTokenDataStore from "../store/useTokenStore";
 
 export default function RegisterWidget() {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
   const loginUser = usePostLogin();
-  const [user, setUser] = useNeuron<User>("user");
-  const [token, setToken] = useNeuron<Token>("tokenData");
+  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
+  const [user] = useUserStore((state) => [state.user]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -106,9 +106,9 @@ export default function RegisterWidget() {
 
       try {
         const response = await loginUser.mutateAsync(loginRequest);
-        console.log(`token data = ${token}`);
+        console.log(`token data = ${tokenData}`);
 
-        if (!loginUser.error && token.accessToken !== null) {
+        if (!loginUser.error && tokenData!.accessToken !== null) {
           navigate("/dashboard");
         }
       } catch (error) {
@@ -119,7 +119,15 @@ export default function RegisterWidget() {
   }
 
   function handleReset() {
-    formik.resetForm();
+    formik.resetForm({
+      values: {
+        firstName: "",
+        emailAddress: "",
+        password: "",
+        confirmPassword: "",
+      },
+      errors: {},
+    });
     setValidated(false);
   }
 

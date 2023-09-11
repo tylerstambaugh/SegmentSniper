@@ -7,14 +7,14 @@ import { useFormik } from "formik";
 import { LoginRequest } from "../services/Api/postLogin";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/usePostLogin";
-import { useNeuron } from "../store/AppStore";
-import { Token } from "../store/types/token";
+
+import useTokenDataStore from "../store/useTokenStore";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useNeuron<Token>("tokenData");
+  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
   const loginUser = usePostLogin();
   const navigate = useNavigate();
   interface LoginForm {
@@ -51,9 +51,9 @@ export default function LoginWidget() {
 
     try {
       const response = await loginUser.mutateAsync(loginRequest);
-      console.log(`token data = ${token}`);
+      console.log(`token data = ${tokenData!}`);
 
-      if (!loginUser.error && token.accessToken !== null) {
+      if (!loginUser.error && tokenData!.accessToken !== null) {
         navigate("/dashboard");
       }
     } catch (error) {
