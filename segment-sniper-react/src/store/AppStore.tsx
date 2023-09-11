@@ -14,8 +14,8 @@ export const { State, useNeuron } = NeuronGSM.Store<State>();
 export default function AppStore() {
   return (
     <>
-      <State<Token> name={"tokenData"} state={initialTokenState} />
-      <State<User> name={"user"} state={initialUserState} />
+      <State<Token> name={"tokenData"} state={initialTokenState} persist />
+      <State<User> name={"user"} state={initialUserState} persist />
       <State<ApiConfig> name={"apiConfig"} state={initialApiConfigState} />
     </>
   );

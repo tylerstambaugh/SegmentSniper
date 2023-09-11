@@ -14,8 +14,11 @@ export const usePostLogin = () => {
   const [user, setUser] = useNeuron<User>("user");
   const [token, setToken] = useNeuron<Token>("tokenData");
 
-  //const query = useQuery({ queryKey: ["login"], queryFn: trigger });
-  const { mutate, isLoading, isError, error, data } = useMutation(trigger);
+  // const query = useQuery({
+  //   queryKey: ["Login"],
+  //   queryFn: trigger,
+  // });
+  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: LoginRequest) {
     const contract: ApiContract = {
@@ -30,5 +33,5 @@ export const usePostLogin = () => {
   }
 
   //return { query };
-  return { mutate, isLoading, isError, error, data };
+  return { mutateAsync, isLoading, isError, error, data };
 };

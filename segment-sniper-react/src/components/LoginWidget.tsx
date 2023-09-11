@@ -1,14 +1,22 @@
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { LoginRequest } from "../services/Api/postLogin";
+import toast from "react-hot-toast";
+import { usePostLogin } from "../hooks/Api/usePostLogin";
+import { useNeuron } from "../store/AppStore";
+import { Token } from "../store/types/token";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useNeuron<Token>("tokenData");
+  const loginUser = usePostLogin();
+  const navigate = useNavigate();
   interface LoginForm {
     emailAddress: string | null;
     password: string | null;
@@ -27,11 +35,32 @@ export default function LoginWidget() {
       emailAddress: null,
       password: null,
     },
-    onSubmit: () => {},
+    onSubmit: async () => {
+      await handleLoginUser();
+    },
     validationSchema,
     validateOnChange: validated,
     validateOnBlur: validated,
   });
+
+  async function handleLoginUser() {
+    let loginRequest: LoginRequest = {
+      userName: emailAddress ?? "",
+      password: password ?? "",
+    };
+
+    try {
+      const response = await loginUser.mutateAsync(loginRequest);
+      console.log(`token data = ${token}`);
+
+      if (!loginUser.error && token.accessToken !== null) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error(`login error: ${error}`);
+    }
+  }
 
   return (
     <>
