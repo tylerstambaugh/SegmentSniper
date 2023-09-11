@@ -1,5 +1,6 @@
-import { Token } from "../../store/types/token";
-import { User } from "../../store/types/user";
+import { TokenData } from "../../store/useTokenStore";
+import { User } from "../../store/useUserStore";
+
 import { ApiContract } from "./ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "./BaseApiService";
@@ -10,7 +11,7 @@ export type LoginRequest = {
 };
 
 export type LoginResponse = {
-  tokenData: Token;
+  tokenData: TokenData;
   userData: User;
 };
 

@@ -1,22 +1,20 @@
 import { Link, Navigate, Route, redirect, useLocation } from "react-router-dom";
-import { useNeuron } from "../store/AppStore";
-import { Token } from "../store/types/token";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import useTokenDataStore from "../store/useTokenStore";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  let location = useLocation();
-
-  const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useNeuron<Token>("tokenData");
+  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
 
   useEffect(() => {
-    if (token.expiration !== null && token.expiration.getTime() > Date.now()) {
+    if (
+      tokenData!.expiration !== null &&
+      tokenData!.expiration.getTime() > Date.now()
+    ) {
       setIsAuthenticated(true);
-      setLoading(false);
     }
-  }, [token]);
+  }, [tokenData]);
 
   if (!isAuthenticated) {
     return (

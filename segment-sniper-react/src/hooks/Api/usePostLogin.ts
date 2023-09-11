@@ -4,15 +4,14 @@ import postLogin, {
   LoginResponse,
 } from "../../services/Api/postLogin";
 import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
-import { ApiConfig } from "../../store/types/apiConfig";
-import { useNeuron } from "../../store/AppStore";
-import { Token } from "../../store/types/token";
-import { User } from "../../store/types/user";
+import useTokenDataStore from "../../store/useTokenStore";
+import useUserStore from "../../store/useUserStore";
+import useApiConfigStore from "../../store/useApiConfigStore";
 
 export const usePostLogin = () => {
-  const [apiConfig] = useNeuron<ApiConfig>("apiConfig");
-  const [user, setUser] = useNeuron<User>("user");
-  const [token, setToken] = useNeuron<Token>("tokenData");
+  const apiConfig = useApiConfigStore((state) => state.apiConfig);
+  const [setTokenData] = useTokenDataStore((state) => [state.setTokenData]);
+  const [setUser] = useUserStore((state) => [state.setUser]);
 
   // const query = useQuery({
   //   queryKey: ["Login"],
@@ -22,14 +21,14 @@ export const usePostLogin = () => {
 
   async function trigger(request: LoginRequest) {
     const contract: ApiContract = {
-      baseUrl: apiConfig.baseUrl,
+      baseUrl: apiConfig!.baseUrl,
       request: request,
     };
 
     const response: LoginResponse = await postLogin(contract);
 
     setUser(response.userData);
-    setToken(response.tokenData);
+    setTokenData(response.tokenData);
   }
 
   //return { query };
