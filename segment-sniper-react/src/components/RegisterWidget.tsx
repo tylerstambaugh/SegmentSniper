@@ -18,9 +18,10 @@ import { LoginRequest } from "../services/Api/postLogin";
 import { useNeuron } from "../store/AppStore";
 import { Token } from "../store/types/token";
 import { User } from "../store/types/user";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate, useNavigation } from "react-router-dom";
 
 export default function RegisterWidget() {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
   const loginUser = usePostLogin();
@@ -75,7 +76,7 @@ export default function RegisterWidget() {
     },
     onSubmit: async (values: RegisterForm) => {
       await handleRegisterUser();
-      handleLoginUser();
+      await handleLoginUser();
     },
     validationSchema,
     validateOnChange: validated,
@@ -103,22 +104,22 @@ export default function RegisterWidget() {
         password: password ?? "",
       };
 
-      loginUser.mutate(loginRequest);
+      try {
+        const response = await loginUser.mutateAsync(loginRequest);
+        console.log(`token data = ${token}`);
+
+        if (!loginUser.error && token.accessToken !== null) {
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        toast.error(`login error: ${error}`);
+      }
     }
   }
 
   function handleReset() {
-    console.log("resetting form");
     formik.resetForm();
-    // formik.setFieldValue("firstName", "");
-    // formik.setFieldValue("emailAddress", "");
-    // formik.setFieldValue("password", "");
-    // formik.setFieldValue("confirmPassword", "");
-    // formik.setErrors({});
-    setFirstName("");
-    setEmailAddress("");
-    setPassword("");
-    setConfirmPassword("");
     setValidated(false);
   }
 
@@ -135,10 +136,6 @@ export default function RegisterWidget() {
       toast.error(`${registerUser.error}`);
     }
   }, [registerUser.isError]);
-
-  useEffect(() => {
-    redirect("/dashboard");
-  }, [token.accessToken]);
 
   return (
     <Container>
@@ -277,7 +274,11 @@ export default function RegisterWidget() {
                         Register
                       </Button>
                     )}
-                    <Button variant="secondary" onClick={() => handleReset()}>
+                    <Button
+                      variant="secondary"
+                      type="reset"
+                      onClick={handleReset}
+                    >
                       Reset
                     </Button>
                   </Col>
