@@ -1,22 +1,22 @@
-import { useNeuron } from "../../store/AppStore";
 import postRegisterUser, {
   RegisterUserRequest,
   RegisterUserResponse,
 } from "../../services/Api/postRegisterUser";
 import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
-import { User } from "../../store/types/user";
-import { ApiConfig } from "../../store/types/apiConfig";
+
 import { useMutation } from "@tanstack/react-query";
-import { Token } from "../../store/types/token";
+import useApiConfigStore from "../../store/useApiConfigStore";
+import useUserStore, { User } from "../../store/useUserStore";
 
 export const usePostRegisterUser = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
-  const [user, setUser] = useNeuron<User>("user");
-  const [apiConfig] = useNeuron<ApiConfig>("apiConfig");
+  const apiConfig = useApiConfigStore((state) => state.apiConfig);
+
+  const [setUser] = useUserStore((state) => [state.setUser]);
 
   async function trigger(request: RegisterUserRequest) {
     const contract: ApiContract = {
-      baseUrl: apiConfig.baseUrl,
+      baseUrl: apiConfig!.baseUrl,
       request: request,
     };
 

@@ -11,6 +11,18 @@ const devtoolOptions = {
   name: "Token Data Store",
 };
 
+export type TokenData = {
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiration: Date | null;
+};
+
+const initialTokenState: TokenData = {
+  accessToken: null,
+  refreshToken: null,
+  expiration: null,
+};
+
 const useTokenDataStore = create<TokenDataStore>()(
   immer(
     devtools(
@@ -35,14 +47,3 @@ interface TokenDataStore {
   tokenData: TokenData | null;
   setTokenData: (tokenData: TokenData) => void;
 }
-export type TokenData = {
-  accessToken: string | null;
-  refreshToken: string | null;
-  expiration: Date | null;
-};
-
-export const initialTokenState: TokenData = {
-  accessToken: null,
-  refreshToken: null,
-  expiration: null,
-};

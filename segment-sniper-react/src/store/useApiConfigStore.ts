@@ -11,6 +11,14 @@ const devtoolOptions = {
   name: "Api Config Store",
 };
 
+export type ApiConfig = {
+  baseUrl: string;
+};
+
+const initialApiConfigState: ApiConfig = {
+  baseUrl: "https://localhost:44351/api",
+};
+
 const useApiConfigStore = create<ApiConfigStore>()(
   immer(
     devtools(
@@ -34,11 +42,3 @@ export default useApiConfigStore;
 interface ApiConfigStore {
   apiConfig: ApiConfig | null;
 }
-
-export type ApiConfig = {
-  baseUrl: string;
-};
-
-export const initialApiConfigState: ApiConfig = {
-  baseUrl: "https://localhost:44351/api",
-};
