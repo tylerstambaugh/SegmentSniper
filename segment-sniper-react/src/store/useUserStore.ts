@@ -11,6 +11,18 @@ const devtoolOptions = {
   name: "User Store",
 };
 
+export type User = {
+  id: string | null;
+  firstName: string | null;
+  emailAddress: string | null;
+};
+
+const initialUserState: User = {
+  id: null,
+  firstName: null,
+  emailAddress: null,
+};
+
 const useUserStore = create<UserStore>()(
   immer(
     devtools(
@@ -30,18 +42,6 @@ const useUserStore = create<UserStore>()(
 );
 
 export default useUserStore;
-
-export type User = {
-  id: string | null;
-  firstName: string | null;
-  emailAddress: string | null;
-};
-
-export const initialUserState: User = {
-  id: null,
-  firstName: null,
-  emailAddress: null,
-};
 
 interface UserStore {
   user: User | null;
