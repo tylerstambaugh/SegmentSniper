@@ -62,7 +62,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 
                 return new LoginUserRequest.Response
                 {
-                    User = userDto,
+                    UserData = userDto,
                     TokenData = tokenModel
                 };
             }
