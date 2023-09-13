@@ -29,7 +29,7 @@ const useUserStore = create<UserStore>()(
       persist(
         (set) => ({
           user: initialUserState,
-          setUser: (user: User) =>
+          setUser: (user: User | null) =>
             set((state) => {
               state.user = user;
             }),
@@ -45,5 +45,5 @@ export default useUserStore;
 
 interface UserStore {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 }
