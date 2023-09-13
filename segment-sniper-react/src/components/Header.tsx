@@ -20,9 +20,14 @@ function Header() {
 
         <Navbar.Collapse className="justify-content-end">
           {tokenData!.accessToken && user!.id ? (
-            <Navbar.Text className="d-flex justify-content-end">
-              Signed in as: {user!.firstName}
-            </Navbar.Text>
+            <>
+              <Navbar.Text className="d-flex justify-content-end">
+                Signed in as: {user!.firstName}
+              </Navbar.Text>
+              <Navbar.Text>
+                <Link to={AppRoutes.Logout}>Logout</Link>
+              </Navbar.Text>
+            </>
           ) : (
             <Navbar.Text className="d-flex justify-content-end">
               <Link to={AppRoutes.Login}>Login</Link>

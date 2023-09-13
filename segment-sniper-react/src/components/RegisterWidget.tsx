@@ -15,9 +15,7 @@ import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/usePostLogin";
 import { LoginRequest } from "../services/Api/postLogin";
-
-import { redirect, useNavigate, useNavigation } from "react-router-dom";
-import useUserStore from "../store/useUserStore";
+import { useNavigate } from "react-router-dom";
 import useTokenDataStore from "../store/useTokenStore";
 
 export default function RegisterWidget() {
@@ -26,7 +24,6 @@ export default function RegisterWidget() {
   const registerUser = usePostRegisterUser();
   const loginUser = usePostLogin();
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
-  const [user] = useUserStore((state) => [state.user]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -90,9 +87,8 @@ export default function RegisterWidget() {
       password: password!,
     };
     try {
-      const response = await registerUser.mutateAsync(registerUserRequest);
+      await registerUser.mutateAsync(registerUserRequest);
     } catch (error) {
-      console.error("Registration error:", error);
       toast.error(`Registration error: ${error}`);
     }
   }
@@ -105,8 +101,7 @@ export default function RegisterWidget() {
       };
 
       try {
-        const response = await loginUser.mutateAsync(loginRequest);
-        console.log(`token data = ${tokenData}`);
+        await loginUser.mutateAsync(loginRequest);
 
         if (!loginUser.error && tokenData!.accessToken !== null) {
           navigate("/dashboard");
@@ -158,18 +153,6 @@ export default function RegisterWidget() {
               <Form
                 name="registerForm"
                 onSubmit={(e) => {
-                  console.log(`store first name ${firstName}`);
-                  console.log(`formik isValid ${formik.isValid}`);
-                  console.log(`formik name errors ${formik.errors.firstName}`);
-                  console.log(
-                    `formik email errors ${formik.errors.emailAddress}`
-                  );
-                  console.log(
-                    `formik password errors ${formik.errors.password}`
-                  );
-                  console.log(
-                    `formik confirmpassword errors ${formik.errors.confirmPassword}`
-                  );
                   setValidated(true);
                   formik.handleSubmit(e);
                 }}

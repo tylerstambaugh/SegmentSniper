@@ -29,7 +29,7 @@ const useTokenDataStore = create<TokenDataStore>()(
       persist(
         (set) => ({
           tokenData: initialTokenState,
-          setTokenData: (tokenData: TokenData) =>
+          setTokenData: (tokenData: TokenData | null) =>
             set((state) => {
               state.tokenData = tokenData;
             }),
@@ -45,5 +45,5 @@ export default useTokenDataStore;
 
 interface TokenDataStore {
   tokenData: TokenData | null;
-  setTokenData: (tokenData: TokenData) => void;
+  setTokenData: (tokenData: TokenData | null) => void;
 }
