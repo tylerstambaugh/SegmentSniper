@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Data.Entities.StravaToken;
 
 namespace SegmentSniper.Data
 {
@@ -9,6 +10,7 @@ namespace SegmentSniper.Data
                
 
         DbSet<ApplicationUser> Users { get; set; }
+        DbSet<StravaToken> StravaToken { get; set; }
 
         int SaveChanges();
     }
