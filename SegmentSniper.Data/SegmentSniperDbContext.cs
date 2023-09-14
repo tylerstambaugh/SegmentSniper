@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Data.Entities.StravaToken;
 
 namespace SegmentSniper.Data
 {
@@ -14,6 +15,7 @@ namespace SegmentSniper.Data
 
         }
         public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<StravaToken> StravaToken { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

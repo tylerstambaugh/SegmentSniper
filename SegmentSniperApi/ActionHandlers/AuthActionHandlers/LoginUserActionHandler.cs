@@ -4,6 +4,7 @@ using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
+using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using static SegmentSniper.Services.AuthServices.Token.ICreateToken;
@@ -18,8 +19,9 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         private readonly IConfiguration _configuration;
         private readonly IGenerateRefreshToken _generateRefreshToken;
         private readonly IGetUserRoles _getUserRoles;
+        private readonly IGetStravaTokenForUser _getStravaTokenForUser;
 
-        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration, IGenerateRefreshToken generateRefreshToken, IGetUserRoles getUserRoles)
+        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, ICreateToken createTokenService, UserManager<ApplicationUser> userManager, IConfiguration configuration, IGenerateRefreshToken generateRefreshToken, IGetUserRoles getUserRoles, IGetStravaTokenForUser getStravaTokenForUser)
         {
             _authenticateUserService = authenticateUserService;
             _createToken = createTokenService;
@@ -27,6 +29,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             _configuration = configuration;
             _generateRefreshToken = generateRefreshToken;
             _getUserRoles = getUserRoles;
+            _getStravaTokenForUser = getStravaTokenForUser;
         }
 
         public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
@@ -58,7 +61,10 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                     Expiration = token.ValidTo
                 };
 
-                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email);
+                var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken != null);
+
+                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email, hasStravaTokenData);
+
 
                 return new LoginUserRequest.Response
                 {
