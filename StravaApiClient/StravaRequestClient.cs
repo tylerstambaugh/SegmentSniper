@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StravaApiClient
 {
-    internal class StravaRequestClient
+    public class StravaRequestClient : IStravaRequestClient
     {
         private readonly IStravaRequestClientConfiguration _config;
 
@@ -13,7 +13,7 @@ namespace StravaApiClient
         private DateTime _tokenExpiration { get; set; }
         private int _tokenExpirationBufferMinutes = 10;
 
-        private HttpMessageHandler _handler {  get; set; }
+        private HttpMessageHandler _handler { get; set; }
         private HttpMessageHandler Handler
         {
             get => _handler ?? new HttpClientHandler();
@@ -21,7 +21,7 @@ namespace StravaApiClient
         }
 
         public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config)
-        {            
+        {
         }
 
         internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config)

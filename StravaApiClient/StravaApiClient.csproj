@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
+    <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
   </ItemGroup>
 
 </Project>
