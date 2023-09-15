@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SegmentSniper.Data.Entities.Auth;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.StravaToken
 {
@@ -6,7 +8,10 @@ namespace SegmentSniper.Data.Entities.StravaToken
     {
         [Key]
         public int Id { get; set; }
+
+        [ForeignKey("ApplicationUser")]
         public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public string? AuthorizationToken { get; set; }
 

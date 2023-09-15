@@ -52,6 +52,7 @@
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
+    <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
   </ItemGroup>
 
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">

@@ -10,6 +10,7 @@ using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
+using StravaApiClient;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
@@ -126,6 +127,9 @@ namespace SegmentSniper.Api.Helpers
             builder.Services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
             builder.Services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
             builder.Services.AddScoped<IGetUserRoles, GetUserRoles>();
+
+            //strava API service
+            builder.Services.AddScoped<IStravaRequestClient, StravaRequestClient>();
 
             //services
             builder.Services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
