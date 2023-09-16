@@ -8,7 +8,7 @@ namespace SegmentSniper.Models.Models.Strava.Token
         [JsonProperty("access_token")]
         public string AccessToken { get; }
         [JsonProperty("expires_at")]
-        public int ExpiersAt { get; }
+        public int ExpiresAt { get; }
         [JsonProperty("expires_in")]
         public int ExpiresIn { get; }
         [JsonProperty("refresh_token")]

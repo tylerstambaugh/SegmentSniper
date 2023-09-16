@@ -7,6 +7,7 @@ namespace StravaApiClient.Services
     {
         Task<ExchangeAuthCodeForTokenContract.Result> ExecuteAsync(ExchangeAuthCodeForTokenContract contract);
 
+    }
         public class ExchangeAuthCodeForTokenContract
         {
             public string AuthCode { get; set; }
@@ -20,5 +21,4 @@ namespace StravaApiClient.Services
                 public StravaApiTokenModel StravaToken { get; set; }
             }
         }
-    }
 }

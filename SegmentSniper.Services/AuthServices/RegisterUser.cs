@@ -43,7 +43,7 @@ namespace SegmentSniper.Services.AuthServices
                 {
                     var dbUser = _context.Users.Where(x => x.Email == contract.RegisterUser.Email).FirstOrDefault();
 
-                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email);
+                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email, false);
                 }
             }
             catch (Exception ex)

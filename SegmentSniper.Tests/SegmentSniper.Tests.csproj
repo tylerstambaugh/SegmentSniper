@@ -30,6 +30,7 @@
     <Folder Include="Services\AuthServices\RefreshToken\" />
     <Folder Include="Services\AuthServices\TokenServices\CreateToken\" />
     <Folder Include="Services\AuthServices\TokenServices\GenerateRefreshToken\" />
+    <Folder Include="Services\StravaTokenServices\GetStravaToken\" />
   </ItemGroup>
 
 </Project>

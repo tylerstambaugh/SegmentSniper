@@ -1,4 +1,6 @@
 ﻿using SegmentSniper.Data;
+using SegmentSniper.Services.StravaTokenServices;
+using StravaApiClient.Services;
 using static SegmentSniper.Api.ActionHandlers.StravaApiToken.IExchangeAuthCodeForTokenHandler;
 
 namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
@@ -6,21 +8,29 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
     public class ExchangeAuthCodeForTokenHandler : IExchangeAuthCodeForTokenHandler
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly IExchangeAuthCodeForToken _exchangeAuthCodeForToken;
+        private readonly IAddStravaToken _addStravaToken;
 
-        public ExchangeAuthCodeForTokenHandler(ISegmentSniperDbContext context)
+        public ExchangeAuthCodeForTokenHandler(ISegmentSniperDbContext context, IExchangeAuthCodeForToken exchangeAuthCodeForToken, IAddStravaToken addStravaToken)
         {
             _context = context;
+            _exchangeAuthCodeForToken = exchangeAuthCodeForToken;
+            _addStravaToken = addStravaToken;
         }
 
         public async Task<ExchangeAuthCodeForTokenRequest.Response> Execute(ExchangeAuthCodeForTokenRequest request)
         {
             ValidateRequest(request);
+            bool tokenWasAdded = false;
 
+            var tokenData = await _exchangeAuthCodeForToken.ExecuteAsync(new ExchangeAuthCodeForTokenContract { AuthCode = request.AuthCode });
 
-            return new ExchangeAuthCodeForTokenRequest.Response
+            if (tokenData != null)
             {
-                TokenWasAdded = false,
-            };
+                tokenWasAdded = _addStravaToken.Execute(new AddStravaTokenContract(request.UserId, tokenData.StravaToken)).Success;
+            }
+
+            return new ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };
         }
 
         public void ValidateRequest(ExchangeAuthCodeForTokenRequest request)
