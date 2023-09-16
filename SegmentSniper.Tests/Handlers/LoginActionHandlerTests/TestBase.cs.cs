@@ -10,6 +10,7 @@ using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
+using SegmentSniper.Services.StravaToken;
 
 namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
 {
@@ -23,6 +24,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
         protected IConfiguration _configuration;
         protected GenerateRefreshToken _generateRefreshToken;
         protected GetUserRoles _getUserRoles;
+        protected GetStravaTokenForUser _getStravaTokenForUser;
         protected SegmentSniperDbContext _context;
 
         [TestInitialize]
@@ -59,6 +61,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
                null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
 
             _getUserRoles = new GetUserRoles(_userMgr);
+            _getStravaTokenForUser = new GetStravaTokenForUser(_context);
 
             var inMemorySettings = new Dictionary<string, string> {
                 {"TopLevelKey", "TopLevelValue"},
@@ -77,7 +80,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
             _createToken = new CreateToken(_configuration);
             _generateRefreshToken = new GenerateRefreshToken();
 
-            Handler = new LoginUserActionHandler(_authenticateUserService, _createToken, _userMgr, _configuration, _generateRefreshToken, _getUserRoles);
+            Handler = new LoginUserActionHandler(_authenticateUserService, _createToken, _userMgr, _configuration, _generateRefreshToken, _getUserRoles, _getStravaTokenForUser);
 
             InternalArrangeAsync();
         }

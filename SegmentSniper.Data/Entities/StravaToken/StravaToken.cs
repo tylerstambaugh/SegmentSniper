@@ -9,7 +9,7 @@ namespace SegmentSniper.Data.Entities.StravaToken
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("ApplicationUser")]
+        [ForeignKey("Users")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
