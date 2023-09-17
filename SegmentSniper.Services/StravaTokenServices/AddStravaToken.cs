@@ -15,10 +15,9 @@ namespace SegmentSniper.Services.StravaTokenServices
         {
             ValidateContract(contract);
 
-            var tokenToAdd = new Data.Entities.StravaToken.StravaToken
+            var tokenToAdd = new Data.Entities.StravaToken.StravaApiToken
             {
                 UserId = contract.UserId,
-                AuthorizationToken = contract.Token.AccessToken,
                 ExpiresAt = contract.Token.ExpiresAt,
                 ExpiresIn = contract.Token.ExpiresIn,
                 RefreshToken = contract.Token.RefreshToken,

@@ -10,6 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\AuthServices\GetUserRoles\**" />
+    <Compile Remove="Services\AuthServices\RefreshToken\**" />
+    <Compile Remove="Services\AuthServices\TokenServices\**" />
+    <EmbeddedResource Remove="Services\AuthServices\GetUserRoles\**" />
+    <EmbeddedResource Remove="Services\AuthServices\RefreshToken\**" />
+    <EmbeddedResource Remove="Services\AuthServices\TokenServices\**" />
+    <None Remove="Services\AuthServices\GetUserRoles\**" />
+    <None Remove="Services\AuthServices\RefreshToken\**" />
+    <None Remove="Services\AuthServices\TokenServices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.10" />
@@ -26,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\AuthServices\GetUserRoles\" />
-    <Folder Include="Services\AuthServices\RefreshToken\" />
-    <Folder Include="Services\AuthServices\TokenServices\CreateToken\" />
-    <Folder Include="Services\AuthServices\TokenServices\GenerateRefreshToken\" />
     <Folder Include="Services\StravaTokenServices\GetStravaToken\" />
   </ItemGroup>
 

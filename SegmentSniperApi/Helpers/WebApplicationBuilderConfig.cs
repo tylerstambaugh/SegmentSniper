@@ -3,15 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
-using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Services.AuthServices;
-using SegmentSniper.Services.AuthServices.Token;
-using SegmentSniper.Services.StravaToken;
-using SegmentSniper.Services.StravaTokenServices;
-using StravaApiClient;
 using System.Text;
 
 namespace SegmentSniper.Api.Helpers
@@ -21,7 +14,7 @@ namespace SegmentSniper.Api.Helpers
 
         public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
-           //var thumbPrint = configuration["CertificateThumbprint"];
+            //var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
@@ -107,34 +100,17 @@ namespace SegmentSniper.Api.Helpers
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //register services:
-
-            builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
-
-            builder.Services.AddSpaStaticFiles(configuration => {
+            builder.Services.AddSpaStaticFiles(configuration =>
+            {
                 configuration.RootPath = "SegmentSniper.React/dist";
             });
 
-            //action handlers
-            builder.Services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
-            builder.Services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
-            builder.Services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
+            builder.Services.AddAutoMapper(typeof(Program));
 
-            //auth services
-            builder.Services.AddScoped<IRegisterUser, RegisterUser>();
-            builder.Services.AddScoped<ICreateToken, CreateToken>();
-            builder.Services.AddScoped<IRefreshToken, RefreshToken>();
-            builder.Services.AddScoped<IAuthenticateUser, AuthenticateUser>();
-            builder.Services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
-            builder.Services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
-            builder.Services.AddScoped<IGetUserRoles, GetUserRoles>();
+            //register services:
+            builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
-            //strava API service
-            builder.Services.AddScoped<IStravaRequestClient, StravaRequestClient>();
-
-            //services
-            builder.Services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
-            builder.Services.AddScoped<IAddStravaToken, AddStravaToken>();
+            ServiceRegistrations.RegisterServices(builder.Services);
 
             return builder;
         }

@@ -15,7 +15,7 @@ namespace SegmentSniper.Data
 
         }
         public virtual DbSet<ApplicationUser> Users { get; set; }
-        public virtual DbSet<StravaToken> StravaToken { get; set; }
+        public virtual DbSet<StravaApiToken> StravaToken { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
