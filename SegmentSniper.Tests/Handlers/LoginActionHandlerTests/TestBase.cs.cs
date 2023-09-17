@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
+﻿using AutoMapper;
+using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
+using SegmentSniper.Api.Helpers.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;
@@ -18,6 +20,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
     public abstract class TestBase
     {
         protected LoginUserActionHandler Handler;
+        protected IMapper _mapper;
         protected AuthenticateUser _authenticateUserService;
         protected CreateToken _createToken;
         protected UserManager<ApplicationUser> _userMgr;
@@ -31,6 +34,15 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
         public virtual async Task ArrangeAsync()
         {
             var services = new ServiceCollection();
+
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfiles>(); // Replace with your AutoMapper profile
+            });
+
+            _mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(_mapper);
+
             services.AddDbContext<SegmentSniperDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "SegmentSniper"));
 
@@ -61,7 +73,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
                null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
 
             _getUserRoles = new GetUserRoles(_userMgr);
-            _getStravaTokenForUser = new GetStravaTokenForUser(_context);
+            _getStravaTokenForUser = new GetStravaTokenForUser(_context, _mapper);
 
             var inMemorySettings = new Dictionary<string, string> {
                 {"TopLevelKey", "TopLevelValue"},

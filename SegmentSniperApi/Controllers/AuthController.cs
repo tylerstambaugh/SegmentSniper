@@ -13,14 +13,12 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _config;
         private readonly ILoginUserActionHandler _loginUserActionHandler;
         private readonly IRegisterUserActionHandler _registerUserActionHandler;
         private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
 
-        public AuthController(IConfiguration config, ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler)
         {
-            _config = config;
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
             _refreshTokenActionHandler = refreshTokenActionHandler;

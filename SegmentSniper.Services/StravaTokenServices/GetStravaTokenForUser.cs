@@ -1,19 +1,19 @@
-﻿using SegmentSniper.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Models.Models.Strava.Token;
 
 namespace SegmentSniper.Services.StravaToken
 {
     public class GetStravaTokenForUser : IGetStravaTokenForUser
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly IMapper _mapper;
 
-        public GetStravaTokenForUser(ISegmentSniperDbContext context)
+        public GetStravaTokenForUser(ISegmentSniperDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public GetStravaTokenForUserContract.Result Execute(GetStravaTokenForUserContract contract)
@@ -24,7 +24,7 @@ namespace SegmentSniper.Services.StravaToken
 
             return new GetStravaTokenForUserContract.Result
             {
-                StravaToken = stravaToken
+                StravaToken = _mapper.Map<StravaApiToken, StravaApiTokenModel>(stravaToken)
             };
         }
 
@@ -34,7 +34,7 @@ namespace SegmentSniper.Services.StravaToken
             {
                 throw new ArgumentNullException(nameof(contract));
             }
-            if(String.IsNullOrWhiteSpace(contract.UserId))
+            if (String.IsNullOrWhiteSpace(contract.UserId))
             {
                 throw new ArgumentNullException(nameof(contract.UserId));
             }

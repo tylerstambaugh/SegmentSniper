@@ -10,7 +10,7 @@ namespace SegmentSniper.Data
                
 
         DbSet<ApplicationUser> Users { get; set; }
-        DbSet<StravaToken> StravaToken { get; set; }
+        DbSet<StravaApiToken> StravaToken { get; set; }
 
         int SaveChanges();
     }

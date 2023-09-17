@@ -44,7 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\MappingProfiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
