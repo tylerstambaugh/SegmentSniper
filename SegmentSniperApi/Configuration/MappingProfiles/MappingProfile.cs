@@ -2,7 +2,7 @@
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.Models.Strava.Token;
 
-namespace SegmentSniper.Api.Helpers.MappingProfiles
+namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
     public class MappingProfiles : Profile
     {

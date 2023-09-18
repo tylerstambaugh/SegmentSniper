@@ -7,7 +7,7 @@ using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using System.Text;
 
-namespace SegmentSniper.Api.Helpers
+namespace SegmentSniper.Api.Configuration
 {
     public static class WebApplicationBuilderConfig
     {

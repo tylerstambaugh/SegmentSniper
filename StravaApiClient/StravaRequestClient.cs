@@ -8,6 +8,8 @@ namespace StravaApiClient
     public class StravaRequestClient : IStravaRequestClient
     {
         private readonly IStravaRequestClientConfiguration _config;
+       
+        private string _refreshToken { get; set; }
 
         private string _accessToken { get; set; }
         private DateTime _tokenExpiration { get; set; }
@@ -20,14 +22,15 @@ namespace StravaApiClient
             set => _handler = value;
         }
 
-        public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config)
+        public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config, null)
         {
         }
 
-        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config)
+        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config, string refreshToken)
         {
             _handler = handler;
             _config = config;
+            _refreshToken = refreshToken;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string url) where TResponse : class
@@ -158,7 +161,7 @@ namespace StravaApiClient
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                var query = $"client_id=${_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_config.RefreshToken}&grant_type=refresh_token";
+                var query = $"client_id=${_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_refreshToken}&grant_type=refresh_token";
 
                 var response = await httpClient.PostAsync($"token?{query}", null);
 
@@ -169,6 +172,7 @@ namespace StravaApiClient
                 var result = JsonConvert.DeserializeObject<RefreshTokenResponse>(stringResult);
 
                 _accessToken = result.AccessToken;
+                _refreshToken = result.RefreshToken;
                 _tokenExpiration = DateTime.Now.AddSeconds(result.ExpiresIn);
             }
         }

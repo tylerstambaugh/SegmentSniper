@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Net.Http.Headers;
-using SegmentSniper.Api.Helpers;
+using SegmentSniper.Api.Configuration;
 using System.Configuration;
 using System.Net;
 
