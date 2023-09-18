@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
-using SegmentSniper.Api.Helpers.MappingProfiles;
+using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.AuthServices;

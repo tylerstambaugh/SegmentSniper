@@ -8,7 +8,7 @@ using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient;
 using StravaApiClient.Services.Activity;
 
-namespace SegmentSniper.Api.Helpers
+namespace SegmentSniper.Api.Configuration
 {
     public static class ServiceRegistrations
     {

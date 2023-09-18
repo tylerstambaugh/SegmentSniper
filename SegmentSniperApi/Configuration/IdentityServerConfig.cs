@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data.Entities.Auth;
 using System.Configuration;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SegmentSniper.Api.Helpers
+namespace SegmentSniper.Api.Configuration
 {
     public static class IdentityServerConfig
     {
