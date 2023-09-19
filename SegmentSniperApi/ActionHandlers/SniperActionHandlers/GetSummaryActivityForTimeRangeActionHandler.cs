@@ -7,9 +7,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         private readonly IStravaRequestClient _stravaRequestClient;
 
-        public GetSummaryActivityForTimeRangeActionHandler(IStravaRequestClient stravaRequestClient)
+        public GetSummaryActivityForTimeRangeActionHandler()
         {
-            _stravaRequestClient = stravaRequestClient;
         }
 
         public async GetSummaryActivityForTimeRangeRequest.Response Handle(GetSummaryActivityForTimeRangeRequest request)

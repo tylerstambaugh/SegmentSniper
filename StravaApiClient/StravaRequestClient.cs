@@ -22,15 +22,14 @@ namespace StravaApiClient
             set => _handler = value;
         }
 
-        public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config, null)
+        public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config)
         {
         }
 
-        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config, string refreshToken)
+        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config)
         {
             _handler = handler;
             _config = config;
-            _refreshToken = refreshToken;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string url) where TResponse : class
@@ -161,7 +160,7 @@ namespace StravaApiClient
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                var query = $"client_id=${_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_refreshToken}&grant_type=refresh_token";
+                var query = $"client_id=${_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_config.RefreshToken}&grant_type=refresh_token";
 
                 var response = await httpClient.PostAsync($"token?{query}", null);
 
