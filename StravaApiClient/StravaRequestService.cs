@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StravaApiClient
 {
-    public  class StravaRequestService
+    public class StravaRequestService : IStravaRequestService
     {
         private readonly IStravaRequestClientConfiguration _config;
         private readonly string _refreshToken;
@@ -24,8 +24,7 @@ namespace StravaApiClient
 
         public Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract)
         {
-            var service = new GetSummaryActivityForTimeRange(_client, _config);
-
+            var service = new GetSummaryActivityForTimeRange(_client);
             return service.ExecuteAsync(contract);
         }
     }

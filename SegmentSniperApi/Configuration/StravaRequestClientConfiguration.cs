@@ -16,10 +16,11 @@ namespace SegmentSniper.Api.Configuration
         }
 
 
-        string ClientId => _stravaApiSettings.ClientId;
-        string ClientSecret => _stravaApiSettings.ClientSecret;
-        string BaseUrl => _stravaApiSettings.BaseUrl;
-        string OauthBaseUrl => _stravaApiSettings.OAuthBaseUrl;
+        string IStravaRequestClientConfiguration.ClientId => _stravaApiSettings.ClientId;
+        string IStravaRequestClientConfiguration.ClientSecret => _stravaApiSettings.ClientSecret;
+        string IStravaRequestClientConfiguration.BaseUrl => _stravaApiSettings.BaseUrl;
+        string IStravaRequestClientConfiguration.OauthBaseUrl => _stravaApiSettings.OAuthBaseUrl;
+        string IStravaRequestClientConfiguration.RefreshToken { get; set; }
     }
 
     public class StravaApiSettings
@@ -31,8 +32,3 @@ namespace SegmentSniper.Api.Configuration
 
     }
 }
-
-
-//{
-//    "StravaAPICodes": {
-//        "ClientId": 
