@@ -33,6 +33,7 @@ namespace SegmentSniper.Api.Configuration
 
             //strava API service
             services.AddScoped<IStravaRequestClient, StravaRequestClient>();
+            services.AddScoped<IStravaRequestService, StravaRequestService>();
 
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
