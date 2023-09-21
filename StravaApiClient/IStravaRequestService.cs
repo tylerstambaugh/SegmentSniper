@@ -5,5 +5,7 @@ namespace StravaApiClient
     public interface IStravaRequestService
     {
         Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract);
+        
+        string RefreshToken { get; set;  }
     }
 }

@@ -9,7 +9,6 @@ namespace StravaApiClient
     {
         private readonly IStravaRequestClientConfiguration _config;
        
-        private string _refreshToken { get; set; }
 
         private string _accessToken { get; set; }
         private DateTime _tokenExpiration { get; set; }
@@ -171,7 +170,6 @@ namespace StravaApiClient
                 var result = JsonConvert.DeserializeObject<RefreshTokenResponse>(stringResult);
 
                 _accessToken = result.AccessToken;
-                _refreshToken = result.RefreshToken;
                 _tokenExpiration = DateTime.Now.AddSeconds(result.ExpiresIn);
             }
         }

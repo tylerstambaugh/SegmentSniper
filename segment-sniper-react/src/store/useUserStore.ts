@@ -15,7 +15,7 @@ export type User = {
   id: string | null;
   firstName: string | null;
   emailAddress: string | null;
-  hasStravaTokenData: boolean;
+  hasStravaTokenData?: boolean;
 };
 
 const initialUserState: User = {
