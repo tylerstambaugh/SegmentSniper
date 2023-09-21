@@ -10,12 +10,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
     public class GetSummaryActivityForTimeRangeRequest
     {
-        public GetSummaryActivityForTimeRangeRequest(DateTime startDate, DateTime endDate, string activityType)
+        public GetSummaryActivityForTimeRangeRequest(string userId, DateTime startDate, DateTime endDate, string activityType)
         {
+            UserId = userId;
             StartDate = startDate;
             EndDate = endDate;
             ActivityType = activityType;
         }
+        public string UserId { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

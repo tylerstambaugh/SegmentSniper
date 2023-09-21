@@ -27,14 +27,14 @@ namespace SegmentSniper.Api.Controllers
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
 
-            GetSummaryActivityForTimeRangeRequest request = new GetSummaryActivityForTimeRangeRequest((DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
+            GetSummaryActivityForTimeRangeRequest request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
             var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request);
 
             if (returnList != null)
                 return Ok(returnList);
             else
-                return BadRequest("No activity found with that Id");
+                return StatusCode(421, "Unable to fetch activities.");
         }
         //get detailed activity by ID
 

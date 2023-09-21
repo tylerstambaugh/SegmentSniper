@@ -11,15 +11,18 @@ namespace StravaApiClient
     public class StravaRequestService : IStravaRequestService
     {
         private readonly IStravaRequestClientConfiguration _config;
-        private readonly string _refreshToken;
         private readonly IStravaRequestClient _client;
 
-        public StravaRequestService(IStravaRequestClientConfiguration config, string refreshToken)
+        public StravaRequestService(IStravaRequestClientConfiguration config)
         {
             _config = config;
-            _config.RefreshToken = refreshToken;
             _client = new StravaRequestClient(config);
+        }
 
+        public string RefreshToken
+        {
+            get => _config.RefreshToken;
+            set => _config.RefreshToken = value;
         }
 
         public Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract)

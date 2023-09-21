@@ -1,4 +1,5 @@
-﻿using StravaApiClient;
+﻿using SegmentSniper.Data;
+using StravaApiClient;
 using StravaApiClient.Services.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
@@ -6,32 +7,47 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
     public class GetSummaryActivityForTimeRangeActionHandler : IGetSummaryActivityForTimeRangeActionHandler
     {
+        private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
 
-        public GetSummaryActivityForTimeRangeActionHandler(IStravaRequestService stravaRequestService)
+        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService)
         {
+            _context = context;
             _stravaRequestService = stravaRequestService;
         }
 
         public async Task<GetSummaryActivityForTimeRangeRequest.Response> Handle(GetSummaryActivityForTimeRangeRequest request)
         {
+            var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
 
-            ActivityType parsedActivity;
-            if (Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity))
+            if (token == null)
             {
-                var endDate = request.EndDate.AddDays(1);
+                try
+                {
+                _stravaRequestService.RefreshToken = token.RefreshToken;
+                ActivityType parsedActivity;
+                Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
+                {
+                    var endDate = request.EndDate.AddDays(1);
 
-                var unixStartDate = ConvertToEpochTime(request.StartDate);
-                var unixEndDate = ConvertToEpochTime(endDate);
+                    var unixStartDate = ConvertToEpochTime(request.StartDate);
+                    var unixEndDate = ConvertToEpochTime(endDate);
 
-                var summaryActivitiesReturnList = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
-                return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = summaryActivitiesReturnList.SummaryActivities };
+                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
+
+                    return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = response.SummaryActivities };
+                }
+                }
+                catch (Exception ex)
+                {
+                    //do something different here instead of throwing the exception. log it and return null?
+                    throw new ApplicationException("Something went wrong handling the request.", ex);
+                }
             }
             else
             {
-                throw new ArgumentException("Activity type could not be found", nameof(request.ActivityType));
+                throw new ApplicationException("Something went wrong 'handling' the request");
             }
-
         }
 
         private int ConvertToEpochTime(DateTime date)
