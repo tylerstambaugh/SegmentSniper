@@ -9,6 +9,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   useEffect(() => {
     if (
+      tokenData !== null &&
       tokenData!.expiration !== null &&
       tokenData!.expiration.getTime() > Date.now()
     ) {
@@ -19,7 +20,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   if (!isAuthenticated) {
     return (
       <>
-        <p>you must be logged in to access this resource.</p>
+        <p>You must be logged in to access this resource.</p>
         <Link to="/app/login">
           <Button>Login</Button>
         </Link>

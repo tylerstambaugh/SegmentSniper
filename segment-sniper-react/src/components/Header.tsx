@@ -19,7 +19,7 @@ function Header() {
         <Navbar.Toggle />
 
         <Navbar.Collapse className="justify-content-end">
-          {tokenData!.accessToken && user!.id ? (
+          {tokenData !== null && tokenData!.accessToken && user!.id ? (
             <>
               <Navbar.Text className="d-flex justify-content-end">
                 Signed in as: {user!.firstName}

@@ -1,5 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import useUserStore from "../store/useUserStore";
+import MainMenu from "../components/MainMenu";
+import ConnectWithStrava from "../components/ConnectWithStrava";
 
 export default function Dashboard() {
   const user = useUserStore((state) => state.user);
@@ -11,9 +13,15 @@ export default function Dashboard() {
         className="d-flex flex-column justify-content-center mb-2 bg-light text-dark border rounded mx-auto "
         style={{ width: "50%" }}
       >
-        <Row>
-          <Col></Col>
-        </Row>
+        {user?.hasStravaTokenData ? (
+          <Row>
+            <Col>
+              <MainMenu />
+            </Col>
+          </Row>
+        ) : (
+          <ConnectWithStrava />
+        )}
       </Container>
     </>
   );

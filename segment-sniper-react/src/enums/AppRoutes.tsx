@@ -6,6 +6,4 @@ export enum AppRoutes {
   Logout = "/app/logout",
   Snipe = `/app/snipe`,
   Admin = `/app/admin`,
-  SampleProtectedRoute = `/app/sampleProtectedRoute`,
-  SampleUnprotectedRoute = `/app/unprotectedRoute`,
 }
