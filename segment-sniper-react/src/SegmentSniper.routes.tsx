@@ -12,6 +12,7 @@ import { AppRoutes } from "./enums/AppRoutes";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
+import Logout from "./pages/Logout";
 
 interface Props {
   defaultPage?: string;
@@ -36,6 +37,7 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
+          <Route path={AppRoutes.Logout} element={<Logout />} />
           <Route
             path={AppRoutes.Dashboard}
             element={

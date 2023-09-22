@@ -6,6 +6,7 @@ using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient;
+using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
 
 namespace SegmentSniper.Api.Configuration
@@ -34,6 +35,8 @@ namespace SegmentSniper.Api.Configuration
             //strava API service
             services.AddScoped<IStravaRequestClient, StravaRequestClient>();
             services.AddScoped<IStravaRequestService, StravaRequestService>();
+            services.AddScoped<IStravaRequestClientConfiguration, StravaRequestClientConfiguration>();
+
 
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();

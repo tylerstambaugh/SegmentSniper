@@ -64,80 +64,98 @@ export default function LoginWidget() {
 
   return (
     <>
-      <Row className="vh-100 d-flex justify-content-center mt-5">
-        <Col md={6} lg={5} xs={10}>
-          <div className="border "></div>
-          <Card className="shadow">
-            <Card.Body>
-              <div className="mb-3 ">
-                <h2 className="fw-bold mb-2 ">Segment Sniper Pro</h2>
-                <p className=" mb-3">
-                  Please enter your email and password to login
-                </p>
-                <div className="mb-3">
-                  <Form
-                    name="loginForm"
-                    onSubmit={(e) => {
-                      setValidated(true);
-                      formik.handleSubmit(e);
-                    }}
-                  >
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter email"
-                        name="emailAddress"
-                        isInvalid={!!formik.errors.emailAddress}
-                        onChange={(e) => {
-                          formik.setFieldValue("emailAddress", e.target.value);
-                          setEmailAddress(e.target.value);
-                        }}
-                        onBlur={formik.handleBlur}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.emailAddress}
-                      </Form.Control.Feedback>
-                    </Form.Group>
+      {tokenData?.accessToken === null ? (
+        <Row className="vh-100 d-flex justify-content-center mt-5">
+          <Col md={6} lg={5} xs={10}>
+            <div className="border "></div>
+            <Card className="shadow">
+              <Card.Body>
+                <div className="mb-3 ">
+                  <h2 className="fw-bold mb-2 ">Segment Sniper Pro</h2>
+                  <p className=" mb-3">
+                    Please enter your email and password to login
+                  </p>
+                  <div className="mb-3">
+                    <Form
+                      name="loginForm"
+                      onSubmit={(e) => {
+                        setValidated(true);
+                        formik.handleSubmit(e);
+                      }}
+                    >
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter email"
+                          name="emailAddress"
+                          isInvalid={!!formik.errors.emailAddress}
+                          onChange={(e) => {
+                            formik.setFieldValue(
+                              "emailAddress",
+                              e.target.value
+                            );
+                            setEmailAddress(e.target.value);
+                          }}
+                          onBlur={formik.handleBlur}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.emailAddress}
+                        </Form.Control.Feedback>
+                      </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                      <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        isInvalid={!!formik.errors.password}
-                        onChange={(e) => {
-                          formik.setFieldValue("password", e.target.value);
-                          setPassword(e.target.value);
-                        }}
-                        onBlur={formik.handleBlur}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.password}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <div className="d-grid">
-                      <Button variant="primary" type="submit">
-                        Login
-                      </Button>
-                    </div>
-                  </Form>
-                  <div className="mt-3">
-                    <p className="mb-0  text-center">
-                      Don't have an account?{" "}
-                      <Link
-                        to={AppRoutes.Register}
-                        className="text-primary fw-bold"
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formBasicPassword"
                       >
-                        Sign Up
-                      </Link>
-                    </p>
+                        <Form.Control
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          isInvalid={!!formik.errors.password}
+                          onChange={(e) => {
+                            formik.setFieldValue("password", e.target.value);
+                            setPassword(e.target.value);
+                          }}
+                          onBlur={formik.handleBlur}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {formik.errors.password}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <div className="d-grid">
+                        <Button variant="primary" type="submit">
+                          Login
+                        </Button>
+                      </div>
+                    </Form>
+                    <div className="mt-3">
+                      <p className="mb-0  text-center">
+                        Don't have an account?{" "}
+                        <Link
+                          to={AppRoutes.Register}
+                          className="text-primary fw-bold"
+                        >
+                          Sign Up
+                        </Link>
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : (
+        <>
+          <h3>
+            You are already logged in. Click{" "}
+            <Link to={AppRoutes.Dashboard}>
+              <Button>here</Button>
+            </Link>{" "}
+            to return to the dashboard.
+          </h3>
+        </>
+      )}
     </>
   );
 }
