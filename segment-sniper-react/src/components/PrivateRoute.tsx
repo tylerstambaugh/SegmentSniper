@@ -4,18 +4,10 @@ import { Button } from "react-bootstrap";
 import useTokenDataStore from "../store/useTokenStore";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
-
-  useEffect(() => {
-    if (
-      tokenData !== null &&
-      tokenData!.expiration !== null &&
-      tokenData!.expiration.getTime() > Date.now()
-    ) {
-      setIsAuthenticated(true);
-    }
-  }, [tokenData]);
+  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
+    state.tokenData,
+    state.isAuthenticated,
+  ]);
 
   if (!isAuthenticated) {
     return (

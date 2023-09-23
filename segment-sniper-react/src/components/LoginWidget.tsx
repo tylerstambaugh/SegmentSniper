@@ -1,7 +1,7 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { LoginRequest } from "../services/Api/postLogin";
@@ -14,6 +14,9 @@ export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [isAuthenticated] = useTokenDataStore((state) => [
+    state.isAuthenticated,
+  ]);
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
   const loginUser = usePostLogin();
   const navigate = useNavigate();
@@ -53,7 +56,7 @@ export default function LoginWidget() {
       const response = await loginUser.mutateAsync(loginRequest);
       console.log(`token data = ${tokenData!}`);
 
-      if (!loginUser.error && tokenData!.accessToken !== null) {
+      if (isAuthenticated) {
         navigate("/dashboard");
       }
     } catch (error) {
@@ -62,9 +65,15 @@ export default function LoginWidget() {
     }
   }
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(AppRoutes.Dashboard);
+    }
+  }, [isAuthenticated]);
+
   return (
     <>
-      {tokenData?.accessToken === null ? (
+      {!isAuthenticated ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>
@@ -150,7 +159,7 @@ export default function LoginWidget() {
           <h3>
             You are already logged in. Click{" "}
             <Link to={AppRoutes.Dashboard}>
-              <Button>here</Button>
+              <Button className={"p-1 mb-2"}>here</Button>
             </Link>{" "}
             to return to the dashboard.
           </h3>
