@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InitializeApp from "./components/InitializeApp";
+import AuthenticatedUserMonitor from "./components/AuthenticatedUserMonitor";
 
 const client = new QueryClient();
 const clientId = "93654";
@@ -17,6 +18,7 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={client}>
+    <AuthenticatedUserMonitor />
     <Router basename="/">
       <InitializeApp clientId={clientId} />
       <Header />
