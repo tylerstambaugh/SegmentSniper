@@ -2,11 +2,16 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 
 import connectWithStravaImage from "../assets/stravaImages/btn_strava_connectwith_orange/btn_strava_connectwith_orange@2x.png";
 import useUserStore from "../store/useUserStore";
+import useAppConfigStore from "../store/useAppConfigStore";
 const baseUrl = window.origin;
 
 export default function ConnectWithStrava() {
   const user = useUserStore((state) => state.user);
-  async function handleConnectWithStrava() {}
+  const appConfig = useAppConfigStore((state) => state.appConfig);
+
+  async function handleConnectWithStrava() {
+    window.location.href = `http://www.strava.com/oauth/authorize?client_id=${appConfig?.clientId}&response_type=code&redirect_uri=${baseUrl}/api/ConnectWithStrava/ExchangeToken/${user?.id}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all,profile:write`;
+  }
 
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">

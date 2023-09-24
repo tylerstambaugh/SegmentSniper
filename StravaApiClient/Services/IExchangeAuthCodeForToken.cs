@@ -1,5 +1,4 @@
-﻿using SegmentSniper.Models.Models.Auth;
-using SegmentSniper.Models.Models.Strava.Token;
+﻿using SegmentSniper.Models.Models.Strava.Token;
 
 namespace StravaApiClient.Services
 {
@@ -8,17 +7,17 @@ namespace StravaApiClient.Services
         Task<ExchangeAuthCodeForTokenContract.Result> ExecuteAsync(ExchangeAuthCodeForTokenContract contract);
 
     }
-        public class ExchangeAuthCodeForTokenContract
-        {
-            public string AuthCode { get; set; }
+    public class ExchangeAuthCodeForTokenContract
+    {
+        public string AuthCode { get; set; }
 
-            public class Result
+        public class Result
+        {
+            public Result(StravaApiTokenModel stravaToken)
             {
-                public Result(StravaApiTokenModel stravaToken)
-                {
-                    StravaToken = stravaToken;
-                }
-                public StravaApiTokenModel StravaToken { get; set; }
+                StravaToken = stravaToken;
             }
+            public StravaApiTokenModel StravaToken { get; set; }
         }
+    }
 }
