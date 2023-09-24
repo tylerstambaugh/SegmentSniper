@@ -1,7 +1,6 @@
 ﻿using SegmentSniper.Data;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Services;
-using static SegmentSniper.Api.ActionHandlers.StravaApiToken.IExchangeAuthCodeForTokenHandler;
 
 namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
 {
@@ -18,7 +17,7 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
             _addStravaToken = addStravaToken;
         }
 
-        public async Task<ExchangeAuthCodeForTokenRequest.Response> Execute(ExchangeAuthCodeForTokenRequest request)
+        public async Task<IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest.Response> Execute(IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest request)
         {
             ValidateRequest(request);
             bool tokenWasAdded = false;
@@ -30,10 +29,10 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
                 tokenWasAdded = _addStravaToken.Execute(new AddStravaTokenContract(request.UserId, tokenData.StravaToken)).Success;
             }
 
-            return new ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };
+            return new IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };
         }
 
-        public void ValidateRequest(ExchangeAuthCodeForTokenRequest request)
+        public void ValidateRequest(IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest request)
         {
             if (request == null)
             {

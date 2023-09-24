@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import { useEffect, useState } from "react";
@@ -79,7 +79,7 @@ export default function LoginWidget() {
             <div className="border "></div>
             <Card className="shadow">
               <Card.Body>
-                <div className="mb-3 ">
+                <div className="mb-3 text-center">
                   <h2 className="fw-bold mb-2 ">Segment Sniper Pro</h2>
                   <p className=" mb-3">
                     Please enter your email and password to login
@@ -132,9 +132,31 @@ export default function LoginWidget() {
                         </Form.Control.Feedback>
                       </Form.Group>
                       <div className="d-grid">
-                        <Button variant="primary" type="submit">
-                          Login
-                        </Button>
+                        {loginUser.isLoading ? (
+                          <Button
+                            type="submit"
+                            variant="secondary"
+                            className={"me-1"}
+                          >
+                            <Spinner
+                              as="span"
+                              variant="light"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                              animation="border"
+                            />
+                          </Button>
+                        ) : (
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            className={"me-1"}
+                            disabled={loginUser.isLoading}
+                          >
+                            Login
+                          </Button>
+                        )}
                       </div>
                     </Form>
                     <div className="mt-3">
