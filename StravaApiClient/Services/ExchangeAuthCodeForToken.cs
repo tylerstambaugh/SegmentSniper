@@ -16,8 +16,9 @@ namespace StravaApiClient.Services
 
         public async Task<ExchangeAuthCodeForTokenContract.Result> ExecuteAsync(ExchangeAuthCodeForTokenContract contract)
         {
-            var url = $"{_config.OauthBaseUrl}?client_id={_config.ClientId}&client_secret={_config.ClientSecret}&code={contract.AuthCode}&grant_type=authorization_code";
-            var apiResponse = await _stravaRequestClient.GetAsync<ExchangeAuthCodeForTokenContract.Result>(url);
+            var url = $"{_config.OauthBaseUrl}/token?client_id={_config.ClientId}&client_secret={_config.ClientSecret}&code={contract.AuthCode}&grant_type=authorization_code";            
+            
+            var apiResponse = await _stravaRequestClient.PostExchangeAuthCodeForToken<ExchangeAuthCodeForTokenContract.Result>(url);
 
             return new ExchangeAuthCodeForTokenContract.Result(new StravaApiTokenModel());
         }

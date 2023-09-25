@@ -11,21 +11,23 @@ namespace SegmentSniper.Api.Controllers
     public class ConnectWithStravaController : ControllerBase
     {
         private readonly IExchangeAuthCodeForTokenHandler _exchangeAuthCodeForTokenHandler;
+        private readonly IConfiguration _config;
 
-        public ConnectWithStravaController(IExchangeAuthCodeForTokenHandler exchangeAuthCodeForTokenHandler)
+        public ConnectWithStravaController(IExchangeAuthCodeForTokenHandler exchangeAuthCodeForTokenHandler, IConfiguration config)
         {
             _exchangeAuthCodeForTokenHandler = exchangeAuthCodeForTokenHandler;
+            _config = config;
         }
 
 
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         //[ActionName("ExchangeToken/")]
-        public IActionResult ExchangeToken(string id, [FromQuery] string code, [FromQuery] string scope)
+        public IActionResult ExchangeToken(string userId, [FromQuery] string code, [FromQuery] string scope)
         {
             ExchangeAuthCodeForTokenRequest contract = new ExchangeAuthCodeForTokenRequest
             {
-                UserId = id,
+                UserId = userId,
                 AuthCode = code,
                 Scopes = scope,
             };
@@ -33,15 +35,9 @@ namespace SegmentSniper.Api.Controllers
             var handleSuccess = _exchangeAuthCodeForTokenHandler.Execute(contract).Result;
 
             if (handleSuccess.TokenWasAdded)
-            {
-                string url = "https://localhost:44411/connect-with-strava-success";
-                return Redirect(url);
-            }
-            else
-            {
-                string url = "https://localhost:44411/connect-with-strava-error";
-                return Redirect(url);
-            }
+                return Redirect(_config.GetSection("ConnectWithStravaReturnPages:Success").Value);
+            return Redirect(_config.GetSection("ConnectWithStravaReturnPages:Error").Value);
+
         }
     }
 
