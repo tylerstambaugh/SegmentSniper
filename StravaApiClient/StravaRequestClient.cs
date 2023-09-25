@@ -2,6 +2,7 @@
 using StravaApiClient.Configuration;
 using System.Net.Http.Headers;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StravaApiClient
 {
@@ -107,6 +108,23 @@ namespace StravaApiClient
                 }
 
                 var response = await httpClient.PutAsync(url, content);
+                await VerifyResponse(response);
+
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
+        public async Task<TResponse> PostExchangeAuthCodeForToken<TResponse>(string url) where TResponse : class
+        {
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                //ConfigureHttpClient(httpClient);
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await httpClient.PostAsync(url, null);
+
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
