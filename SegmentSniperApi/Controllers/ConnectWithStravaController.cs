@@ -21,7 +21,7 @@ namespace SegmentSniper.Api.Controllers
         [AllowAnonymous]
         [HttpGet("{id}")]
         //[ActionName("ExchangeToken/")]
-        public IActionResult ExchangeToken(string id, [System.Web.Http.FromUri] string code, [System.Web.Http.FromUri] string scope)
+        public IActionResult ExchangeToken(string id, [FromQuery] string code, [FromQuery] string scope)
         {
             ExchangeAuthCodeForTokenRequest contract = new ExchangeAuthCodeForTokenRequest
             {
