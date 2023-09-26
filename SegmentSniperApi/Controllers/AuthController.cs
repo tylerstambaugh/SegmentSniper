@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
+using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
+using System.Security.Claims;
 
 namespace SegmentSniper.Api.Controllers
 {
@@ -16,12 +18,14 @@ namespace SegmentSniper.Api.Controllers
         private readonly ILoginUserActionHandler _loginUserActionHandler;
         private readonly IRegisterUserActionHandler _registerUserActionHandler;
         private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
+        private readonly ICheckForStravaTokenActionHandler _checkForStravaTokenActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
             _refreshTokenActionHandler = refreshTokenActionHandler;
+            _checkForStravaTokenActionHandler = checkForStravaTokenActionHandler;
         }
 
         [AllowAnonymous]
@@ -63,6 +67,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken(TokenModel tokenModel)
@@ -82,6 +87,23 @@ namespace SegmentSniper.Api.Controllers
                 {
                     return BadRequest($"Invalid access or refresh token: {nameof(tokenModel)}");
                 }
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("check-for-strava-token")]
+        public async Task<IActionResult> CheckForStravaToken()
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                return Ok(_checkForStravaTokenActionHandler.Handle(new CheckForStravaTokenRequest(userId)));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}");
             }
         }
 

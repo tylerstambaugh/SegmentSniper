@@ -17,7 +17,7 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
             _addStravaToken = addStravaToken;
         }
 
-        public async Task<IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest.Response> Execute(IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest request)
+        public async Task<ExchangeAuthCodeForTokenRequest.Response> Execute(ExchangeAuthCodeForTokenRequest request)
         {
             ValidateRequest(request);
             bool tokenWasAdded = false;
@@ -29,10 +29,10 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
                 tokenWasAdded = _addStravaToken.Execute(new AddStravaTokenContract(request.UserId, tokenData.StravaToken)).Success;
             }
 
-            return new IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };
+            return new ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };
         }
 
-        public void ValidateRequest(IExchangeAuthCodeForTokenHandler.ExchangeAuthCodeForTokenRequest request)
+        public void ValidateRequest(ExchangeAuthCodeForTokenRequest request)
         {
             if (request == null)
             {

@@ -12,6 +12,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
             CreateMap<StravaApiTokenModel, StravaApiToken>();
+            CreateMap<StravaApiToken, StravaApiTokenModel>();
         }
     }
 }
