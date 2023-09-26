@@ -1,6 +1,3 @@
-import { TokenData } from "../../store/useTokenStore";
-import { User } from "../../store/useUserStore";
-
 import { ApiContract } from "./ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "./BaseApiService";
