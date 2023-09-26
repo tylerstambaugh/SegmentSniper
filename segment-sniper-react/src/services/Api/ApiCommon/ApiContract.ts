@@ -4,7 +4,7 @@ export interface ApiContract<TRequest = any>
 }
 
 export interface BaseApiRequestContract<TRequest> extends BaseApiContract {
-  request: TRequest;
+  request?: TRequest;
 }
 
 export interface BaseApiContract {

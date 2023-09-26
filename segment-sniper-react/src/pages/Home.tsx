@@ -9,7 +9,7 @@ function Home() {
         style={{ width: "75%", height: "500px" }}
       >
         <Row>
-          <Col>
+          <Col className="text-center">
             <h4>
               Weclome to the Segment Sniper. Please login or create an account
               to get started

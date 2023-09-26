@@ -12,9 +12,9 @@ const devtoolOptions = {
 };
 
 export type User = {
-  id: string | null;
-  firstName: string | null;
-  emailAddress: string | null;
+  id?: string | null;
+  firstName?: string | null;
+  emailAddress?: string | null;
   hasStravaTokenData?: boolean;
 };
 

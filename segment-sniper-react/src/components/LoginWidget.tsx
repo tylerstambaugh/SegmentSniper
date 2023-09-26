@@ -82,7 +82,7 @@ export default function LoginWidget() {
                 <div className="mb-3 text-center">
                   <h2 className="fw-bold mb-2 ">Segment Sniper Pro</h2>
                   <p className=" mb-3">
-                    Please enter your email and password to login
+                    Enter your email and password to login
                   </p>
                   <div className="mb-3">
                     <Form

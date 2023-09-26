@@ -13,6 +13,8 @@ import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
+import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
+import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
 
 interface Props {
   defaultPage?: string;
@@ -37,6 +39,9 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
+          <Route path={AppRoutes.Logout} element={<Logout />} />
+          <Route path={AppRoutes.ConnectWithStravaSuccess} element={<ConnectWithStravaSuccess />} />
+          <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
           <Route path={AppRoutes.Logout} element={<Logout />} />
           <Route
             path={AppRoutes.Dashboard}
