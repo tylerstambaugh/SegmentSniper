@@ -58,22 +58,30 @@ namespace SegmentSniper.Api.Configuration
                 }
             )
                .AddRoles<IdentityRole>()
+               .AddDefaultTokenProviders()
                .AddEntityFrameworkStores<SegmentSniperDbContext>();
 
             IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
 
             serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
 
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("RequireAdministratorRole",
-            //         policy => policy.RequireRole("Administrator"));
-            //});
+            builder.Services.AddAuthorization();
 
 
-            builder.Services.AddAuthentication("Bearer")
-                .AddIdentityServerJwt().AddJwtBearer(options =>
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                
+                .AddJwtBearer(options =>
                 {
+                    options.IncludeErrorDetails = true;
+                    options.RequireHttpsMetadata = false;
+                    
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -82,11 +90,28 @@ namespace SegmentSniper.Api.Configuration
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key")))
                     };
                     options.Events = new JwtBearerEvents
                     {
                         OnChallenge = context =>
+                        {
+                            // Customize the response for unauthorized requests
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            context.Response.ContentType = "application/json";
+
+                            var result = JsonSerializer.Serialize(new
+                            {
+                                error = "Unauthorized",
+                                description = "You are not authorized to access this resource."
+                            });
+
+                            return context.Response.WriteAsync(result);
+                        }
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnForbidden = context =>
                         {
                             // Customize the response for unauthorized requests
                             context.Response.StatusCode = (int)HttpStatusCode.Forbidden;

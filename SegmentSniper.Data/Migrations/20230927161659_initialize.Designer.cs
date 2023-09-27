@@ -12,8 +12,8 @@ using SegmentSniper.Data;
 namespace SegmentSniper.Data.Migrations
 {
     [DbContext(typeof(SegmentSniperDbContext))]
-    [Migration("20230922103220_minorUPdate")]
-    partial class minorUPdate
+    [Migration("20230927161659_initialize")]
+    partial class initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
