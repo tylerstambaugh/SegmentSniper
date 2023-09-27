@@ -1,11 +1,15 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
+using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -60,11 +64,11 @@ namespace SegmentSniper.Api.Configuration
 
             serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdministratorRole",
-                     policy => policy.RequireRole("Administrator"));
-            });
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("RequireAdministratorRole",
+            //         policy => policy.RequireRole("Administrator"));
+            //});
 
 
             builder.Services.AddAuthentication("Bearer")
@@ -79,6 +83,23 @@ namespace SegmentSniper.Api.Configuration
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = context =>
+                        {
+                            // Customize the response for unauthorized requests
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            context.Response.ContentType = "application/json";
+
+                            var result = JsonSerializer.Serialize(new
+                            {
+                                error = "Unauthorized",
+                                description = "You are not authorized to access this resource."
+                            });
+
+                            return context.Response.WriteAsync(result);
+                        }
                     };
                 });
 
@@ -98,7 +119,40 @@ namespace SegmentSniper.Api.Configuration
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PetForPet.Api", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+            });
 
             builder.Services.AddSpaStaticFiles(configuration =>
             {
