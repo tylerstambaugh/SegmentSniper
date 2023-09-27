@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SegmentSniper.Data.Entities.Auth;
 using System;
@@ -14,10 +15,12 @@ namespace SegmentSniper.Services.AuthServices
     public class GetUserRoles : IGetUserRoles
     {
         private readonly UserManager<ApplicationUser> _userMgr;
+        private readonly IConfiguration _configuration;
 
-        public GetUserRoles(UserManager<ApplicationUser> userMgr)
+        public GetUserRoles(UserManager<ApplicationUser> userMgr, IConfiguration configuration)
         {
             _userMgr = userMgr;
+            _configuration = configuration;
         }
         public async Task<GetUserRolesContract.Result> Execute(GetUserRolesContract contract)
         {
@@ -27,6 +30,9 @@ namespace SegmentSniper.Services.AuthServices
                 {
                     new Claim(ClaimTypes.Name, contract.User.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, contract.User.Id),
+                    new Claim(JwtRegisteredClaimNames.Iss, _configuration["Jwt:Issuer"]),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer),
                 };
 
             foreach (var userRole in userRoles)

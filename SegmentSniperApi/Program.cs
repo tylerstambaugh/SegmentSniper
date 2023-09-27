@@ -16,7 +16,6 @@ var configuration = new ConfigurationBuilder()
 var builder = WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
-// Add services to the container.
 
 
 // Configure the HTTP request pipeline.
@@ -26,13 +25,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors("AllowReactApp");
 
 app.UseIdentityServer();
 

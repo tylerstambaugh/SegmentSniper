@@ -1,5 +1,4 @@
 ﻿using SegmentSniper.Services.StravaToken;
-using static SegmentSniper.Api.ActionHandlers.StravaApiToken.ICheckForStravaTokenActionHandler;
 
 namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
 {
@@ -14,12 +13,24 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
 
         public CheckForStravaTokenRequest.Response Handle(CheckForStravaTokenRequest request)
         {
-            var refreshToken = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId)).StravaToken.RefreshToken;
+            var result = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
 
-            return new CheckForStravaTokenRequest.Response
+            if (result != null)
             {
-                hasStravaToken = refreshToken != null,
-            };
+                return new CheckForStravaTokenRequest.Response
+                {
+                    hasStravaToken = result.StravaToken.RefreshToken != null,
+                };
+
+            }
+            else
+            {
+                return new CheckForStravaTokenRequest.Response
+                {
+                    hasStravaToken = false,
+                };
+            }
+
         }
     }
 }

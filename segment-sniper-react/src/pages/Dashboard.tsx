@@ -4,9 +4,10 @@ import MainMenu from "../components/MainMenu";
 import ConnectWithStrava from "../components/ConnectWithStrava";
 import { useGetUserHasStravaToken } from "../hooks/Api/Token/useGetHasStravaToken";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
-  const user = useUserStore((state) => state.user);  
+  const user = useUserStore((state) => state.user);
   const checkUserHasTokenData = useGetUserHasStravaToken();
 
   async function checkUserHasTokenDataFunc() {
@@ -15,8 +16,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     checkUserHasTokenDataFunc();
-  }, [])
-  
+  }, []);
+
+  useEffect(() => {
+    toast.error(`API Error: ${checkUserHasTokenData.error}`);
+  }, [checkUserHasTokenData.error]);
 
   return (
     <>

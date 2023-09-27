@@ -3,7 +3,7 @@ import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseE
 import { apiGet } from "./BaseApiService";
 
 type response = {
-  userHasStravaToken: boolean;
+  hasStravaToken: boolean;
 };
 
 export default async function getUserHasStravaToken(contract: ApiContract) {
