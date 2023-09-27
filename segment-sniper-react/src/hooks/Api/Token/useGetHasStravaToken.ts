@@ -8,10 +8,6 @@ export const useGetUserHasStravaToken = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
 
-  // const query = useQuery({
-  //   queryKey: ["Login"],
-  //   queryFn: trigger,
-  // });
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger() {
@@ -24,6 +20,5 @@ export const useGetUserHasStravaToken = () => {
     setUser({ ...user, hasStravaTokenData: response.userHasStravaToken });
   }
 
-  //return { query };
   return { mutateAsync, isLoading, isError, error, data };
 };

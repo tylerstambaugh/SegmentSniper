@@ -17,7 +17,6 @@ export default function LoginWidget() {
   const [isAuthenticated] = useTokenDataStore((state) => [
     state.isAuthenticated,
   ]);
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
   const loginUser = usePostLogin();
   const navigate = useNavigate();
   interface LoginForm {
@@ -53,8 +52,7 @@ export default function LoginWidget() {
     };
 
     try {
-      const response = await loginUser.mutateAsync(loginRequest);
-      console.log(`token data = ${tokenData!}`);
+      await loginUser.mutateAsync(loginRequest);
 
       if (isAuthenticated) {
         navigate("/dashboard");

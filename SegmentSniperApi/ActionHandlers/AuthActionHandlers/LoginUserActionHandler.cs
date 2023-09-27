@@ -6,7 +6,6 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using static SegmentSniper.Services.AuthServices.Token.ICreateToken;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
@@ -35,46 +34,53 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
         {
             ValidateRequest(request);
-
-            var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
-            var authenticatedUser = user.LoggedInUser;
-            if (authenticatedUser != null)
+            try
             {
-                var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
 
-                var token = _createToken.Execute(new CreateTokenContract(authClaims));
-
-                var refreshToken = _generateRefreshToken.Execute();
-
-                _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
-
-                // set the refresh token on the user in the db:
-                authenticatedUser.RefreshToken = refreshToken;
-                authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
-
-                await _userManager.UpdateAsync(authenticatedUser);
-
-                var tokenModel = new TokenModel
+                var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
+                var authenticatedUser = user.LoggedInUser;
+                if (authenticatedUser != null)
                 {
-                    AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                    RefreshToken = refreshToken,
-                    Expiration = token.ValidTo
-                };
+                    var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
 
-                var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken != null);
+                    var token = _createToken.Execute(new CreateTokenContract(authClaims));
 
-                var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email, hasStravaTokenData);
+                    var refreshToken = _generateRefreshToken.Execute();
+
+                    _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+
+                    // set the refresh token on the user in the db:
+                    authenticatedUser.RefreshToken = refreshToken;
+                    authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
+
+                    await _userManager.UpdateAsync(authenticatedUser);
+
+                    var tokenModel = new TokenModel
+                    {
+                        AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                        RefreshToken = refreshToken,
+                        Expiration = token.ValidTo
+                    };
+
+                    var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken != null);
+
+                    var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email, hasStravaTokenData);
 
 
-                return new LoginUserRequest.Response
+                    return new LoginUserRequest.Response
+                    {
+                        UserData = userDto,
+                        TokenData = tokenModel
+                    };
+                }
+                else
                 {
-                    UserData = userDto,
-                    TokenData = tokenModel
-                };
+                    throw new ApplicationException("Unable to login user");
+                }
             }
-            else
+            catch(Exception ex)
             {
-                throw new ApplicationException("Unable to login user");
+                throw new ApplicationException("Unable to login user", ex);
             }
         }
 
@@ -84,11 +90,11 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if(request.UserLogin == null)
+            if (request.UserLogin == null)
             {
                 throw new ArgumentNullException(nameof(request.UserLogin));
             }
-            if(string.IsNullOrWhiteSpace(request.UserLogin.UserName))
+            if (string.IsNullOrWhiteSpace(request.UserLogin.UserName))
             {
                 throw new ArgumentException(nameof(request.UserLogin.UserName));
             }

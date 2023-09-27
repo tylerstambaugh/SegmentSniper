@@ -2,9 +2,21 @@ import { Col, Container, Row } from "react-bootstrap";
 import useUserStore from "../store/useUserStore";
 import MainMenu from "../components/MainMenu";
 import ConnectWithStrava from "../components/ConnectWithStrava";
+import { useGetUserHasStravaToken } from "../hooks/Api/Token/useGetHasStravaToken";
+import { useEffect } from "react";
 
 export default function Dashboard() {
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);  
+  const checkUserHasTokenData = useGetUserHasStravaToken();
+
+  async function checkUserHasTokenDataFunc() {
+    await checkUserHasTokenData.mutateAsync();
+  }
+
+  useEffect(() => {
+    checkUserHasTokenDataFunc();
+  }, [])
+  
 
   return (
     <>

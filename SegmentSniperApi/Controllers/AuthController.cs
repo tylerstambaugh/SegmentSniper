@@ -92,7 +92,7 @@ namespace SegmentSniper.Api.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("check-for-strava-token")]
+       [Route("check-for-strava-token")]
         public async Task<IActionResult> CheckForStravaToken()
         {
             try
