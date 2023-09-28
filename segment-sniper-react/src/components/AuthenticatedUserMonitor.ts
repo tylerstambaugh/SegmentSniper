@@ -3,7 +3,9 @@ import useTokenDataStore from "../store/useTokenStore";
 
 export default function AuthenticatedUserMonitor() {
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  const setIsAuthticated = useTokenDataStore((state) => state.setIsAuthticated);
+  const setIsAuthenticated = useTokenDataStore(
+    (state) => state.setIsAuthenticated
+  );
 
   useEffect(() => {
     if (tokenData) {
@@ -11,12 +13,12 @@ export default function AuthenticatedUserMonitor() {
       const expirationTime = new Date(tokenData.expiration || "").getTime();
 
       if (tokenData.accessToken && expirationTime > currentTime) {
-        setIsAuthticated(true);
+        setIsAuthenticated(true);
       } else {
-        setIsAuthticated(false);
+        setIsAuthenticated(false);
       }
     } else {
-      setIsAuthticated(false);
+      setIsAuthenticated(false);
     }
   }, [tokenData]);
   return null;

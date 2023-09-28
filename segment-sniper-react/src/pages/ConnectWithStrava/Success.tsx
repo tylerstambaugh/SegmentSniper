@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 function ConnectWithStravaSuccess() {
   return (
-    <Container className="d-flex flex-column align-items-center justify-content-center">
-      <Row sm={2} className="text-center ">
+    <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
+      <Row className="text-center ">
         <Col className="mx-auto">
-          <p>Connection was successful.</p>
+          <p>Authorization was successful.</p>
         </Col>
       </Row>
       <Row>

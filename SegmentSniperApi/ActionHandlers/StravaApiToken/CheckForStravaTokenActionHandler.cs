@@ -15,11 +15,11 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
         {
             var result = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
 
-            if (result != null)
+            if (result.StravaToken != null && result.StravaToken.RefreshToken != null)
             {
                 return new CheckForStravaTokenRequest.Response
                 {
-                    hasStravaToken = result.StravaToken.RefreshToken != null,
+                    hasStravaToken = true,
                 };
 
             }

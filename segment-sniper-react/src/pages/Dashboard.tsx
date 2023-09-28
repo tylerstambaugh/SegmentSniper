@@ -19,8 +19,10 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    toast.error(`API Error: ${checkUserHasTokenData.error}`);
-  }, [checkUserHasTokenData.error]);
+    if (checkUserHasTokenData.error !== null) {
+      toast.error(`API Error: ${checkUserHasTokenData.error}`);
+    }
+  }, [checkUserHasTokenData.error!]);
 
   return (
     <>
