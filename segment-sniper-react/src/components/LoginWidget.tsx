@@ -64,6 +64,12 @@ export default function LoginWidget() {
   }
 
   useEffect(() => {
+    if (loginUser.error !== null) {
+      toast.error(`login error: ${loginUser.error}`);
+    }
+  }, [loginUser.error]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       navigate(AppRoutes.Dashboard);
     }

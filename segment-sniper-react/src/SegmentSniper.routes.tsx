@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
 import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
+import SegmentSniper from "./pages/SegmentSniper";
 
 interface Props {
   defaultPage?: string;
@@ -40,14 +41,28 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
           <Route path={AppRoutes.Logout} element={<Logout />} />
-          <Route path={AppRoutes.ConnectWithStravaSuccess} element={<ConnectWithStravaSuccess />} />
-          <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
+          <Route
+            path={AppRoutes.ConnectWithStravaSuccess}
+            element={<ConnectWithStravaSuccess />}
+          />
+          <Route
+            path={AppRoutes.ConnectWithStravaError}
+            element={<ConnectWithStravaError />}
+          />
           <Route path={AppRoutes.Logout} element={<Logout />} />
           <Route
             path={AppRoutes.Dashboard}
             element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.Snipe}
+            element={
+              <PrivateRoute>
+                <SegmentSniper />
               </PrivateRoute>
             }
           />
