@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { AppRoutes } from "../enums/AppRoutes";
 
 export default function MainMenu() {
   return (
@@ -9,7 +10,7 @@ export default function MainMenu() {
     >
       <Row>
         <Col md={12} className="d-flex p-2 mb-2 justify-content-center">
-          <Link to="./activities" className="rounded-button">
+          <Link to={AppRoutes.Snipe} className="rounded-button">
             Segment Sniper
           </Link>
         </Col>

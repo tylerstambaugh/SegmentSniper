@@ -12,6 +12,7 @@ export default function LogoutWidget() {
   ]);
   const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
 
+  //need to call the api and revoke the token
   useEffect(() => {
     setUser(null);
     setTokenData(null);

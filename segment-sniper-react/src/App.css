@@ -1,30 +1,28 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+.rounded-button {
+  display: inline-block;
+  padding: 20px 10px;
+  border-radius: 20px;
+  background-color: #6a6ffe;
+  text-decoration: underline, double;
+  color: #292b2c;
+  transition: background-color 0.4s ease;
+  width: 200px; /* Set the desired fixed width */
+  text-align: center; /* Optional: Center the text horizontally */
 }
 
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.rounded-button:hover {
+  background-color: #32c0fd8e;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.loader {
+  display: flex;
+  align-self: center;
+  justify-self: center;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
 }
-
-.card {
-  padding: 1em;
-}
-
-.read-the-docs {
-  color: #888;
-} */
