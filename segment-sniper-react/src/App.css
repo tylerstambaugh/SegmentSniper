@@ -1,18 +1,18 @@
 
-.rounded-button {
-  display: inline-block;
+.rounded-button {  
   padding: 20px 10px;
   border-radius: 20px;
-  background-color: #6a6ffe;
-  text-decoration: underline, double;
+  background-color: #00AEEF;
+  text-decoration: underline;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  width: 200px; /* Set the desired fixed width */
-  text-align: center; /* Optional: Center the text horizontally */
+  width: 200px; 
+  text-align: center; 
 }
 
 .rounded-button:hover {
   background-color: #32c0fd8e;
+  transform: scale(1.1);
 }
 
 .loader {

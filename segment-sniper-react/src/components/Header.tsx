@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
-import { Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../store/useUserStore";
 import useTokenDataStore from "../store/useTokenStore";

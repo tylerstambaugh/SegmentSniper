@@ -77,7 +77,7 @@ function ActivityListLookupForm() {
 
   return (
     <>
-      <Container className="md-auto p-2 mb-1 col-8 bg-light text-dark border rounded">
+      <Container className="d-flex flex-column col-6 md-auto pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
         <Row>
           <Col className="text-center">
             <h3>Activity List Lookup</h3>
@@ -89,32 +89,68 @@ function ActivityListLookupForm() {
                 formik.handleSubmit(event);
               }}
             >
-              <Row className="md-auto p-2 mb-1">
-                <div className="border rounded mb-1 p-2">
-                  <Col lg={4}>
-                    <Form.Group className="mb-3" controlId="activityId">
-                      <FloatingLabel
-                        label={`Activity Id`}
-                        controlId="activityIdLabel"
-                      >
-                        <Form.Control
-                          type="number"
-                          isInvalid={!!formik.errors.activityId}
-                          onChange={(e) => {
-                            formik.setFieldValue("activityId", e.target.value);
-                            setActivityId(e.target.value);
-                          }}
-                        />
-                      </FloatingLabel>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <p>Activity Id for test = 9102798217</p>
-                  </Col>
-                </div>
+              <Row className="d-flex justify-content-center">
+                <Col md={4} lg={3} className="p-1 ">
+                  <Form.Group className="p-2" controlId="activityId">
+                    <FloatingLabel
+                      label={`Activity Id`}
+                      controlId="activityIdLabel"
+                    >
+                      <Form.Control
+                        type="number"
+                        isInvalid={!!formik.errors.activityId}
+                        onChange={(e) => {
+                          formik.setFieldValue("activityId", e.target.value);
+                          setActivityId(e.target.value);
+                        }}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                </Col>
+                <Col lg={5} className="d-flex justify-content-center">
+                  <p className="pt-3">Test Id = 9102798217</p>
+                </Col>
               </Row>
-              <div className="d-flex justify-content-end">
+              <hr />
+              <Row className=" justify-content-center mb-3">
+                <Col md={4}>
+                  <Form.Group className="" controlId="startDate">
+                    <FloatingLabel
+                      label="Start Date"
+                      controlId="startDateLabel"
+                    >
+                      <Form.Control
+                        type="date"
+                        isInvalid={!!formik.errors.startDate}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group className="" controlId="endDate">
+                    <FloatingLabel label="End Date" controlId="endDateLabel">
+                      <Form.Control
+                        type="date"
+                        isInvalid={!!formik.errors.endDate}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <div className="d-flex justify-content-end mb-2">
                 <Row>
+                  <Col>
+                    <Button
+                      variant="secondary"
+                      className={"me-1"}
+                      onClick={(e) => {
+                        handleFormReset();
+                        console.log("form reset called");
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
                   <Col>
                     {activityLoading ? (
                       <Button
@@ -141,18 +177,6 @@ function ActivityListLookupForm() {
                         Search
                       </Button>
                     )}
-                  </Col>
-                  <Col>
-                    <Button
-                      variant="secondary"
-                      className={"me-1"}
-                      onClick={(e) => {
-                        handleFormReset();
-                        console.log("form reset called");
-                      }}
-                    >
-                      Reset
-                    </Button>
                   </Col>
                 </Row>
               </div>
