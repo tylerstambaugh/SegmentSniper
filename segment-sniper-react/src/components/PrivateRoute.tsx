@@ -1,13 +1,9 @@
-import { Link, Navigate, Route, redirect, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import useTokenDataStore from "../store/useTokenStore";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
-    state.tokenData,
-    state.isAuthenticated,
-  ]);
+  const [isAuthenticated] = useTokenDataStore((state) => [state.tokenData]);
 
   if (!isAuthenticated) {
     return (

@@ -28,8 +28,8 @@ export default function Dashboard() {
     <>
       <h3>the "dashboard"</h3>
       <Container
-        className="d-flex flex-column justify-content-center mb-2 bg-light text-dark border rounded mx-auto "
-        style={{ width: "50%" }}
+        className="d-flex flex-column justify-content-center  "
+        style={{ width: "auto" }}
       >
         {user?.hasStravaTokenData ? (
           <Row>
