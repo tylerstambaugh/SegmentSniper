@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import ActivityTypeEnum from "../../enums/ActivityTypes";
+import ActivityTypes from "../../enums/ActivityTypes";
 import {
   Container,
   Row,
@@ -18,14 +18,11 @@ export interface ActivitySearchProps {
   activityId?: string;
   startDate?: Date | null;
   endDate?: Date | null;
-  activityType?: ActivityTypeEnum | null;
+  activityType?: ActivityTypes | null;
 }
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
-  const [activityId, setActivityId] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
   const activityLoading: boolean = false;
   interface ActivityListLookupForm {
     activityId?: string | null;
@@ -34,7 +31,22 @@ function ActivityListLookupForm() {
     activityType?: string | null;
   }
 
-  const validationSchema = yup.object({});
+  const validationSchema = yup.object({
+    activityId: yup
+      .number()
+      .nullable()
+      .when([], {
+        is: () => "startDate" === null,
+        then: (schema) =>
+          schema.required("Activity Id or start and end date are required"),
+      }),
+    startDate: yup.date(),
+    endDate: yup.date().when([], {
+      is: () => "startDate" !== null,
+      then: (schema) =>
+        schema.required("End date required when Start Date specified"),
+    }),
+  });
 
   const initialValues = {
     activityId: null,
@@ -52,7 +64,7 @@ function ActivityListLookupForm() {
         activityId: values.activityId ?? "",
         startDate: values.startDate,
         endDate: values.endDate,
-        activityType: values.activityType as unknown as ActivityTypeEnum,
+        activityType: values.activityType as unknown as ActivityTypes,
       };
       //handleSearch(searchProps);
     },
@@ -75,12 +87,18 @@ function ActivityListLookupForm() {
     setValidated(false);
   };
 
+  useEffect(() => {
+    console.log("formik values:", formik.values);
+    console.log("formik errors:", formik.errors);
+  }, [formik.values, formik.errors]);
+
   return (
     <>
       <Container className="d-flex flex-column col-6 md-auto pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
         <Row>
           <Col className="text-center">
             <h3>Activity List Lookup</h3>
+            <p className="mb-0">Look up an activity by ID:</p>
             <Form
               name="activityLookupForm"
               onSubmit={(event) => {
@@ -98,20 +116,24 @@ function ActivityListLookupForm() {
                     >
                       <Form.Control
                         type="number"
+                        value={(formik.values.activityId as string) ?? ""}
                         isInvalid={!!formik.errors.activityId}
                         onChange={(e) => {
                           formik.setFieldValue("activityId", e.target.value);
-                          setActivityId(e.target.value);
                         }}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.activityId}
+                      </Form.Control.Feedback>
                     </FloatingLabel>
                   </Form.Group>
                 </Col>
-                <Col lg={5} className="d-flex justify-content-center">
-                  <p className="pt-3">Test Id = 9102798217</p>
+                <Col lg={5}>
+                  <p className="pt-4">Test Id = 9102798217</p>
                 </Col>
               </Row>
-              <hr />
+              <hr className="hr-75" />
+              <p>or by a date range:</p>
               <Row className=" justify-content-center mb-3">
                 <Col md={4}>
                   <Form.Group className="" controlId="startDate">
@@ -121,8 +143,20 @@ function ActivityListLookupForm() {
                     >
                       <Form.Control
                         type="date"
+                        value={
+                          formik.values.startDate
+                            ?.toISOString()
+                            .split("T")[0] ?? ""
+                        }
+                        onChange={(e) => {
+                          const selectedDate = new Date(e.target.value);
+                          formik.setFieldValue("startDate", selectedDate);
+                        }}
                         isInvalid={!!formik.errors.startDate}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.startDate}
+                      </Form.Control.Feedback>
                     </FloatingLabel>
                   </Form.Group>
                 </Col>
@@ -131,9 +165,45 @@ function ActivityListLookupForm() {
                     <FloatingLabel label="End Date" controlId="endDateLabel">
                       <Form.Control
                         type="date"
+                        value={
+                          formik.values.startDate
+                            ?.toISOString()
+                            .split("T")[0] ?? ""
+                        }
+                        onChange={(e) => {
+                          const selectedDate = new Date(e.target.value);
+                          formik.setFieldValue("endDate ", selectedDate);
+                        }}
                         isInvalid={!!formik.errors.endDate}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.endDate}
+                      </Form.Control.Feedback>
                     </FloatingLabel>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <hr className="hr-75" />
+              <Row>
+                <Col>
+                  <Form.Group controlId="activityTypeRadios">
+                    <Form.Label id="activityTypeRadioButtons" className="p-2">
+                      Activity Type:
+                    </Form.Label>
+                    {Object.values(ActivityTypes).map((type) => (
+                      <Form.Check
+                        type="radio"
+                        inline
+                        value={type}
+                        name="activity-type-radio"
+                        label={type}
+                        id={`${type}-radio`}
+                        checked={formik.values.activityType === type}
+                        onChange={(e) => {
+                          formik.setFieldValue("activityType", e.target.value);
+                        }}
+                      />
+                    ))}
                   </Form.Group>
                 </Col>
               </Row>
