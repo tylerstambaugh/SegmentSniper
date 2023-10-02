@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import ActivityTypes from "../../enums/ActivityTypes";
 import {
   Container,
   Row,
@@ -12,7 +11,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import "../../App.css";
+//import "../../App.css";
+import { ActivityTypes } from "../../enums/ActivityTypes";
 
 export interface ActivitySearchProps {
   activityId?: string;
@@ -40,12 +40,20 @@ function ActivityListLookupForm() {
         then: (schema) =>
           schema.required("Activity Id or start and end date are required"),
       }),
-    startDate: yup.date(),
-    endDate: yup.date().when([], {
-      is: () => "startDate" !== null,
-      then: (schema) =>
-        schema.required("End date required when Start Date specified"),
+    startDate: yup.date().when([], {
+      is: () => "acitiviyId" !== null,
+      then: (schema) => schema.nullable(),
     }),
+    endDate: yup
+      .date()
+      .nullable()
+      .when("startDate", (startDate, schema) => {
+        return startDate !== null
+          ? schema
+              .min(startDate, "End date must be after start date")
+              .required("End date is required")
+          : schema;
+      }),
   });
 
   const initialValues = {
@@ -82,8 +90,7 @@ function ActivityListLookupForm() {
         endDate: null,
       },
     });
-    formik.setFieldValue("startDate", null);
-    formik.setFieldValue("endDate", null);
+    formik.setErrors({});
     setValidated(false);
   };
 

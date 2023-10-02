@@ -1,9 +1,6 @@
-enum ActivityTypes {
-  Ride,
-  Walk,
-  Hike,
-  Run,
-  All,
+export enum ActivityTypes {
+  Ride = "Ride",
+  Hike = "Hike",
+  Run = "Run",
+  All = "All",
 }
-
-export default ActivityTypes;
