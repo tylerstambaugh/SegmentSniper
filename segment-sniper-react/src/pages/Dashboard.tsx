@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import useUserStore from "../store/useUserStore";
 import MainMenu from "../components/MainMenu";
 import ConnectWithStrava from "../components/ConnectWithStrava";
-import { useGetUserHasStravaToken } from "../hooks/Api/Token/useGetHasStravaToken";
+import { useGetUserHasStravaToken } from "../hooks/Api/Auth/useGetHasStravaToken";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
