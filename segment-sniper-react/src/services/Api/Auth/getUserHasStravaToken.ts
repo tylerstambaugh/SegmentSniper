@@ -1,6 +1,6 @@
-import { ApiContract } from "./ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "./BaseApiService";
+import { ApiContract } from "../ApiCommon/ApiContract";
+import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
+import { apiGet } from "../BaseApiService";
 
 type response = {
   hasStravaToken: boolean;

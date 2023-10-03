@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import getUserHasStravaToken from "../../../services/Api/getUserHasStravaToken";
+import getUserHasStravaToken from "../../../services/Api/Auth/getUserHasStravaToken";
 import useApiConfigStore from "../../../store/useApiConfigStore";
 import useUserStore from "../../../store/useUserStore";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";

@@ -1,12 +1,12 @@
+import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
+
+import { useMutation } from "@tanstack/react-query";
+import useApiConfigStore from "../../../store/useApiConfigStore";
+import useUserStore, { User } from "../../../store/useUserStore";
 import postRegisterUser, {
   RegisterUserRequest,
   RegisterUserResponse,
-} from "../../services/Api/postRegisterUser";
-import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
-
-import { useMutation } from "@tanstack/react-query";
-import useApiConfigStore from "../../store/useApiConfigStore";
-import useUserStore, { User } from "../../store/useUserStore";
+} from "../../../services/Api/Auth/postRegisterUser";
 
 export const usePostRegisterUser = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);

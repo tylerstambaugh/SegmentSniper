@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { RegisterUserRequest } from "../services/Api/postRegisterUser";
-import { usePostRegisterUser } from "../hooks/Api/usePostRegisterUser";
+import { usePostRegisterUser } from "../hooks/Api/Auth/usePostRegisterUser";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/usePostLogin";
 import { LoginRequest } from "../services/Api/postLogin";
