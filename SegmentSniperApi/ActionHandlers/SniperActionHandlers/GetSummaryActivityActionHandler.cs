@@ -28,6 +28,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 ActivityType parsedActivity;
                 Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
                 {
+                        if(request.StartDate != null && request.EndDate != null)
+                        {
                     var endDate = request.EndDate.AddDays(1);
 
                     var unixStartDate = ConvertToEpochTime(request.StartDate);
@@ -36,6 +38,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
 
                     return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = response.SummaryActivities };
+                        }
                 }
                 }
                 catch (Exception ex)

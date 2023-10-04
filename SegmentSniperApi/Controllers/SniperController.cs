@@ -22,12 +22,13 @@ namespace SegmentSniper.Api.Controllers
 
 
         [HttpPost]
-        public IActionResult GetSummaryActivityForTimeRange([FromBody] DateRangeParametersContract contract)
+        [Authorize]
+        [Route("getSummaryActivityForTimeRange")]
+        public IActionResult GetSummaryActivityForTimeRange([FromBody] GetSummaryActivityContract contract)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-
-            GetSummaryActivityForTimeRangeRequest request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
+            var  request = new GetSummaryActivityForTimeRangeRequest(userId, contract.ActivityId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
             var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request);
 
@@ -36,7 +37,9 @@ namespace SegmentSniper.Api.Controllers
             else
                 return StatusCode(421, "Unable to fetch activities.");
         }
-        //get detailed activity by ID
+
+
+        //get detailed activity by Id
 
         //get detailed segment by ID
 
