@@ -22,7 +22,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
             services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
-            services.AddScoped<IGetSummaryActivityForTimeRangeActionHandler, GetSummaryActivityForTimeRangeActionHandler>();
+            services.AddScoped<IGetSummaryActivityActionHandler, GetSummaryActivityActionHandler>();
             services.AddScoped<IExchangeAuthCodeForTokenHandler, ExchangeAuthCodeForTokenHandler>();
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
 

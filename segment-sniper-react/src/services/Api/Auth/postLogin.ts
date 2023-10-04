@@ -1,9 +1,9 @@
-import { TokenData } from "../../store/useTokenStore";
-import { User } from "../../store/useUserStore";
+import { TokenData } from "../../../store/useTokenStore";
+import { User } from "../../../store/useUserStore";
 
-import { ApiContract } from "./ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
-import { apiPost } from "./BaseApiService";
+import { ApiContract } from "../ApiCommon/ApiContract";
+import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
+import { apiPost } from "../BaseApiService";
 
 export type LoginRequest = {
   userName: string;
