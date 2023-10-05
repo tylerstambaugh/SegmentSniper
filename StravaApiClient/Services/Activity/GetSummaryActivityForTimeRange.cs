@@ -1,10 +1,4 @@
 ﻿using SegmentSniper.Models.Models.Strava.Activity;
-using StravaApiClient.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StravaApiClient.Services.Activity
 {
@@ -23,12 +17,12 @@ namespace StravaApiClient.Services.Activity
 
             var apiResponse = _stravaRequestClient.PostAsync<List<SummaryActivityModel>>($"athlete/activities/after={contract.StartDate}&before={contract.EndDate}");
 
-           return new GetSummaryActivityForTimeRangeContract.Result(apiResponse.Result);
+            return new GetSummaryActivityForTimeRangeContract.Result(apiResponse.Result);
         }
 
         public void ValidateContract(GetSummaryActivityForTimeRangeContract contract)
         {
-            if(contract == null) throw new ArgumentNullException(nameof(contract));
+            if (contract == null) throw new ArgumentNullException(nameof(contract));
             //add more validations
         }
     }
