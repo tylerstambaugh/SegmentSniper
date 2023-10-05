@@ -30,5 +30,10 @@ namespace StravaApiClient
             var service = new GetSummaryActivityForTimeRange(_client);
             return service.ExecuteAsync(contract);
         }
+
+        public Task<GetDetailedActivityByIdContract.Result> GetDetailedActivityById(GetDetailedActivityByIdContract contract)
+        {
+
+        }
     }
 }
