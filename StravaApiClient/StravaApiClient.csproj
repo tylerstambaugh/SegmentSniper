@@ -15,4 +15,8 @@
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Token\" />
+  </ItemGroup>
+
 </Project>

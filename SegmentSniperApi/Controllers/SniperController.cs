@@ -13,9 +13,9 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class SniperController : ControllerBase
     {
-        private readonly IGetSummaryActivityActionHandler _getSummaryActivityForTimeRangeActionHandler;
+        private readonly IGetSummaryActivityForTimeRangeActionHandler _getSummaryActivityForTimeRangeActionHandler;
 
-        public SniperController(IGetSummaryActivityActionHandler getSummaryActivityForTimeRangeActionHandler)
+        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler)
         {
             _getSummaryActivityForTimeRangeActionHandler = getSummaryActivityForTimeRangeActionHandler;
         }
@@ -28,7 +28,7 @@ namespace SegmentSniper.Api.Controllers
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-            var  request = new GetSummaryActivityForTimeRangeRequest(userId, contract.ActivityId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
+            var  request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
             var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request);
 
@@ -39,14 +39,16 @@ namespace SegmentSniper.Api.Controllers
         }
 
 
-        //get detailed activity by Id
+        //get summary activity by Id
         [HttpPost]
         [Authorize]
         [Route("getActivityListById/$activityId")]
-        public IActionResult GetActivityListById(string activityId)
+        public IActionResult GetSummaryActivityById(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
         }
+
+        //get detailed activity by Id
 
         //get detailed segment by ID
 
