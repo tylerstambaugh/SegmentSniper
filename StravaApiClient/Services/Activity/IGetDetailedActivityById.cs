@@ -7,9 +7,9 @@
     }
     public class GetDetailedActivityByIdContract
     {
-        public GetDetailedActivityByIdContract()
+        public GetDetailedActivityByIdContract(string activityId)
         {
-
+            ActivityId = activityId;
         }
 
         public string ActivityId { get; }

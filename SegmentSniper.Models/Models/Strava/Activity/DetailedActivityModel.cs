@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Models.Models.Strava.Misc;
+using SegmentSniper.Models.Models.Strava.Segment;
 
 namespace SegmentSniper.Models.Models.Strava.Activity
 {
@@ -6,8 +7,6 @@ namespace SegmentSniper.Models.Models.Strava.Activity
     {
         public string ActivityId { get; set; }
         public int ResourceState { get; set; }
-        //public MetaAthleteModel Athlete { get; set; }
-
         public int DetailedAthleteId { get; set; }
         public string Name { get; set; }
         public double Distance { get; set; }
@@ -63,12 +62,6 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         public object PerceivedExertion { get; set; }
         public object PreferPerceivedExertion { get; set; }
         public List<DetailedSegmentEffortModel> SegmentEfforts { get; set; }
-        //public List<SplitsMetricModel> SplitsMetric { get; set; }
-        //public List<SplitsStandardModel> SplitsStandard { get; set; }
-        //public List<LapModel> Laps { get; set; }
-        //public GearModel Gear { get; set; }
-        //public PhotosModel Photos { get; set; }
-        //public List<StatsVisibilityModel> StatsVisibility { get; set; }
         public bool HideFromHome { get; set; }
         public string DeviceName { get; set; }
         public string EmbedToken { get; set; }
