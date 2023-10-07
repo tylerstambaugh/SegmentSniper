@@ -42,8 +42,8 @@ namespace SegmentSniper.Api.Controllers
         //get summary activity by Id
         [HttpPost]
         [Authorize]
-        [Route("getActivityListById/$activityId")]
-        public IActionResult GetSummaryActivityById(string activityId)
+        [Route("getActivityDetailById/$activityId")]
+        public IActionResult GetSummaryActivityDetailById(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
         }
