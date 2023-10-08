@@ -33,7 +33,8 @@ namespace StravaApiClient
 
         public Task<GetDetailedActivityByIdContract.Result> GetDetailedActivityById(GetDetailedActivityByIdContract contract)
         {
-
+            var service = new GetDetailedActivityById(_client);
+            return service.ExecuteAsync(contract);
         }
     }
 }
