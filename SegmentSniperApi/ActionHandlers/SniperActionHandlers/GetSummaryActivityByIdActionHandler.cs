@@ -1,5 +1,9 @@
-﻿using SegmentSniper.Data;
+﻿using AutoMapper;
+using SegmentSniper.Data;
+using SegmentSniper.Models.Models.Strava.Activity;
 using StravaApiClient;
+using StravaApiClient.Models.Activity;
+using StravaApiClient.Services.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -8,11 +12,13 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
+        private readonly IMapper _mapper;
 
-        public GetSummaryActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService)
+        public GetSummaryActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
+            _mapper = mapper;
         }
 
         public async Task<GetSummaryActivityByIdRequest.Response> Handle(GetSummaryActivityByIdRequest request)
@@ -26,7 +32,13 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     _stravaRequestService.RefreshToken = token.RefreshToken;
                     ActivityType parsedActivity;
 
-                    return new GetSummaryActivityByIdRequest.Response();
+                    var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
+
+                    SummaryActivityModel activity = _mapper.Map<DetailedActivityApiModel, SummaryActivityModel>(response.DetailedActivity);
+
+                   List<SummaryActivityModel> returnList = new List<SummaryActivityModel> { activity };
+
+                    return new GetSummaryActivityByIdRequest.Response { SummaryActivities = returnList };
 
                 }
                 catch (Exception ex)

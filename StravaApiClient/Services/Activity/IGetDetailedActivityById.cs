@@ -1,4 +1,6 @@
-﻿namespace StravaApiClient.Services.Activity
+﻿using StravaApiClient.Models.Activity;
+
+namespace StravaApiClient.Services.Activity
 {
     public interface IGetDetailedActivityById
     {
@@ -16,7 +18,7 @@
 
         public class Result
         {
-
+            public DetailedActivityApiModel DetailedActivity { get; set; }
         }
 
     }
