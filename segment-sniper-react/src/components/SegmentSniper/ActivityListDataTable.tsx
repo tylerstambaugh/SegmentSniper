@@ -20,8 +20,8 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ActivityListItem } from "../../models/Activity/ActivityListItem";
+import useActivityListStore from "../../store/useActivityListStore";
 export interface displayActivityListProps {
-  activityList: ActivityListItem[];
   //handleShowSegments(activityId: string);
   clearSearchResults: () => void;
 }
@@ -31,10 +31,11 @@ type ArrayElementType = ActivityListItem & {
   detailsButton: any;
 };
 
-const DisplayActivityList = (props: displayActivityListProps) => {
+const ActivityListDataTable = (props: displayActivityListProps) => {
+  const activityList = useActivityListStore((state) => state.activityList);
   const [checked, setChecked] = useState(false);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
-  const tableBody: ArrayElementType[] = props.activityList.map((item) => ({
+  const tableBody: ArrayElementType[] = activityList.map((item) => ({
     ...item,
     segmentsButton: null,
     snipeButton: null,
@@ -89,7 +90,7 @@ const DisplayActivityList = (props: displayActivityListProps) => {
 
   return (
     <>
-      {props.activityList.length > 0 ? (
+      {activityList.length > 0 ? (
         <Container className="p-2 mb-2 col-12 bg-light text-dark border rounded">
           <DatatableWrapper
             body={tableBody}
@@ -182,4 +183,4 @@ const DisplayActivityList = (props: displayActivityListProps) => {
     </>
   );
 };
-export default DisplayActivityList;
+export default ActivityListDataTable;
