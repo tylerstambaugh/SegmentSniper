@@ -1,3 +1,4 @@
+import { SegmentEffort } from "../Segment/SegmentEffort";
 import { StravaMap } from "./ActivityListItem";
 
 export interface DetailedActivity {
@@ -11,5 +12,5 @@ export interface DetailedActivity {
   endLatLng: [number, number];
   maxSpeed: number;
   stravaMap: StravaMap;
-  //segmentEfforts: SegmentEffort[];
+  segmentEfforts: SegmentEffort[];
 }

@@ -11,5 +11,5 @@ export interface SnipedSegmentListItem {
   athleteStats?: AthleteSegmentStats;
   koms?: Xoms;
   starred: boolean;
-  //useQom?: boolean;
+  useQom?: boolean;
 }

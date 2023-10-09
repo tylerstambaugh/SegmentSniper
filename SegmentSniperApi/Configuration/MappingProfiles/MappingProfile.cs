@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Token;
 using StravaApiClient.Models.Activity;
 
@@ -15,7 +16,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             CreateMap<StravaApiTokenModel, StravaApiToken>();
             CreateMap<StravaApiToken, StravaApiTokenModel>();
 
-            CreateMap<DetailedActivityApiModel, SummaryActivityModel>()
+            CreateMap<DetailedActivityApiModel, SummaryActivityModel>();
                 //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 //.ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
