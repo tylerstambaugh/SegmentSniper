@@ -18,21 +18,25 @@ import {
   ToggleButton,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import { ActivityListItem } from "../../models/Activity/ActivityListItem";
 import useActivityListStore from "../../store/useActivityListStore";
-export interface displayActivityListProps {
-  //handleShowSegments(activityId: string);
-  clearSearchResults: () => void;
-}
+
+// export interface displayActivityListProps {
+//   //handleShowSegments(activityId: string);
+//   clearSearchResults: () => void;
+// }
+
 type ArrayElementType = ActivityListItem & {
   segmentsButton: any;
   snipeButton: any;
   detailsButton: any;
 };
 
-const ActivityListDataTable = (props: displayActivityListProps) => {
-  const activityList = useActivityListStore((state) => state.activityList);
+const ActivityListDataTable = () => {
+  const [activityList, resetActivityList] = useActivityListStore((state) => [
+    state.activityList,
+    state.resetActivityList,
+  ]);
   const [checked, setChecked] = useState(false);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const tableBody: ArrayElementType[] = activityList.map((item) => ({
@@ -88,6 +92,10 @@ const ActivityListDataTable = (props: displayActivityListProps) => {
     setSelectedRow(activityId);
   };
 
+  const clearSearchResults = () => {
+    resetActivityList();
+  };
+
   return (
     <>
       {activityList.length > 0 ? (
@@ -118,7 +126,7 @@ const ActivityListDataTable = (props: displayActivityListProps) => {
                   <Button
                     className="px-5"
                     onClick={(e) => {
-                      props.clearSearchResults();
+                      clearSearchResults();
                       setSelectedRow("");
                     }}
                   >

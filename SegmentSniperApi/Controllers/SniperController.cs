@@ -47,7 +47,7 @@ namespace SegmentSniper.Api.Controllers
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-
+            throw new NotImplementedException();
         }
 
         //get detailed activity by Id
