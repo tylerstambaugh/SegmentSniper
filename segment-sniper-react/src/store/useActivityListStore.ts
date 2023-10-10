@@ -12,9 +12,7 @@ const devtoolOptions = {
   name: "Activity List Store",
 };
 
-const initialState = {
-  activityList: [],
-};
+const initialState = [{}];
 
 const useApiConfigStore = create<ActivityListStore>()(
   immer(
@@ -25,6 +23,10 @@ const useApiConfigStore = create<ActivityListStore>()(
           setActivityList: (activityList: ActivityListItem[]) =>
             set((state) => {
               state.activityList = activityList;
+            }),
+          resetActivityList: () =>
+            set((state) => {
+              state.activityList = initialState;
             }),
         }),
         persistOptions
@@ -39,4 +41,5 @@ export default useApiConfigStore;
 interface ActivityListStore {
   activityList: ActivityListItem[];
   setActivityList: (activityList: ActivityListItem[]) => void;
+  resetActivityList: () => void;
 }

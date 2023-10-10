@@ -10,13 +10,13 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { RegisterUserRequest } from "../services/Api/postRegisterUser";
 import { usePostRegisterUser } from "../hooks/Api/Auth/usePostRegisterUser";
 import toast from "react-hot-toast";
-import { usePostLogin } from "../hooks/Api/usePostLogin";
-import { LoginRequest } from "../services/Api/postLogin";
 import { useNavigate } from "react-router-dom";
 import useTokenDataStore from "../store/useTokenStore";
+import { RegisterUserRequest } from "../services/Api/Auth/postRegisterUser";
+import { LoginRequest } from "../services/Api/Auth/postLogin";
+import { usePostLogin } from "../hooks/Api/Auth/usePostLogin";
 
 export default function RegisterWidget() {
   const navigate = useNavigate();

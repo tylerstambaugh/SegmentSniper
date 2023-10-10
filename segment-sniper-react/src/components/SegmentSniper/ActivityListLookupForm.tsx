@@ -173,9 +173,8 @@ function ActivityListLookupForm() {
                       <Form.Control
                         type="date"
                         value={
-                          formik.values.startDate
-                            ?.toISOString()
-                            .split("T")[0] ?? ""
+                          formik.values.endDate?.toISOString().split("T")[0] ??
+                          ""
                         }
                         onChange={(e) => {
                           const selectedDate = new Date(e.target.value);
