@@ -13,13 +13,7 @@ import {
 
 //import "../../App.css";
 import { ActivityTypes } from "../../enums/ActivityTypes";
-
-export interface ActivitySearchProps {
-  activityId?: string;
-  startDate?: Date | null;
-  endDate?: Date | null;
-  activityType?: ActivityTypes | null;
-}
+import { ActivitySearchRequest } from "../../hooks/Api/Activity/useHandleActivitySearch";
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
@@ -68,7 +62,7 @@ function ActivityListLookupForm() {
     enableReinitialize: true,
     onSubmit: (values: ActivityListLookupForm) => {
       setValidated(true);
-      const searchProps: ActivitySearchProps = {
+      const searchProps: ActivitySearchRequest = {
         activityId: values.activityId ?? "",
         startDate: values.startDate,
         endDate: values.endDate,
@@ -178,7 +172,7 @@ function ActivityListLookupForm() {
                         }
                         onChange={(e) => {
                           const selectedDate = new Date(e.target.value);
-                          formik.setFieldValue("endDate ", selectedDate);
+                          formik.setFieldValue("endDate", selectedDate);
                         }}
                         isInvalid={!!formik.errors.endDate}
                       />
@@ -198,6 +192,7 @@ function ActivityListLookupForm() {
                     </Form.Label>
                     {Object.values(ActivityTypes).map((type) => (
                       <Form.Check
+                        key={type}
                         type="radio"
                         inline
                         value={type}

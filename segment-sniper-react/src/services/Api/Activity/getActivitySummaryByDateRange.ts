@@ -11,7 +11,7 @@ export type ActivitySummaryByDateRangeLookupResponse = {
   detailedActivity: DetailedActivity;
 };
 
-export default async function getActivityDetailById(
+export default async function getActivitySummaryByDateRange(
   contract: ApiContract<ActivitySummaryByDateRangeLookupRequest>
 ) {
   try {
@@ -19,7 +19,7 @@ export default async function getActivityDetailById(
       ActivitySummaryByDateRangeLookupRequest,
       ActivitySummaryByDateRangeLookupResponse
     >(
-      `${contract.baseUrl}/sniper/getActivityDetailById/${contract.request?.activityId}`,
+      `${contract.baseUrl}/sniper/getActivitySummaryByDateRange/${contract.request?.activityId}`,
       contract
     );
     return response;
