@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -11,13 +11,16 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-//import "../../App.css";
 import { ActivityTypes } from "../../enums/ActivityTypes";
-import { ActivitySearchRequest } from "../../hooks/Api/Activity/useHandleActivitySearch";
+import {
+  ActivitySearchRequest,
+  useHandleActivitySearch,
+} from "../../hooks/Api/Activity/useHandleActivitySearch";
+import toast from "react-hot-toast";
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
-  const activityLoading: boolean = false;
+  const handleActivitySearch = useHandleActivitySearch();
   interface ActivityListLookupForm {
     activityId?: string | null;
     startDate?: Date | null;
@@ -57,6 +60,15 @@ function ActivityListLookupForm() {
     endDate: null,
   };
 
+  async function handleSearch(request: ActivitySearchRequest) {
+    handleActivitySearch.mutateAsync(request);
+  }
+
+  useEffect(() => {
+    if (handleActivitySearch.error !== null)
+      toast.error(`Activity search error: ${handleActivitySearch.error}`);
+  }, [handleActivitySearch.error]);
+
   const formik = useFormik<ActivityListLookupForm>({
     initialValues,
     enableReinitialize: true,
@@ -68,7 +80,7 @@ function ActivityListLookupForm() {
         endDate: values.endDate,
         activityType: values.activityType as unknown as ActivityTypes,
       };
-      //handleSearch(searchProps);
+      handleSearch(searchProps);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -214,16 +226,15 @@ function ActivityListLookupForm() {
                     <Button
                       variant="secondary"
                       className={"me-1"}
-                      onClick={(e) => {
+                      onClick={() => {
                         handleFormReset();
-                        console.log("form reset called");
                       }}
                     >
                       Reset
                     </Button>
                   </Col>
                   <Col>
-                    {activityLoading ? (
+                    {handleActivitySearch.isLoading ? (
                       <Button
                         type="submit"
                         variant="primary"
@@ -243,7 +254,7 @@ function ActivityListLookupForm() {
                         type="submit"
                         variant="primary"
                         className={"me-1"}
-                        disabled={activityLoading}
+                        disabled={handleActivitySearch.isLoading}
                       >
                         Search
                       </Button>

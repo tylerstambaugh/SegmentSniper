@@ -177,7 +177,7 @@ namespace StravaApiClient
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                var query = $"client_id=${_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_config.RefreshToken}&grant_type=refresh_token";
+                var query = $"client_id={_config.ClientId}&client_secret={_config.ClientSecret}&refresh_token={_config.RefreshToken}&grant_type=refresh_token";
 
                 var response = await httpClient.PostAsync($"token?{query}", null);
 

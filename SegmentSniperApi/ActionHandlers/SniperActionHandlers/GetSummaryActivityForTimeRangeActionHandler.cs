@@ -22,7 +22,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
 
-            if (token == null)
+            if (token != null)
             {
                 try
                 {
