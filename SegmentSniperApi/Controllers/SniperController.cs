@@ -23,7 +23,7 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("getSummaryActivityForTimeRange")]
+        [Route("getSummaryActivityByDateRange")]
         public IActionResult GetSummaryActivityForTimeRange([FromBody] GetSummaryActivityListForTimeRangeContract contract)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
@@ -40,9 +40,9 @@ namespace SegmentSniper.Api.Controllers
 
 
         //get summary activity by Id
-        [HttpPost]
+        [HttpGet]
         [Authorize]
-        [Route("getActivityDetailById/$activityId")]
+        [Route("getActivitySummaryById/$activityId")]
         public IActionResult GetSummaryActivityById(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
