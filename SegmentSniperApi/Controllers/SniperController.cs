@@ -30,7 +30,7 @@ namespace SegmentSniper.Api.Controllers
 
             var  request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
-            var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request);
+            var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request).Result;
 
             if (returnList != null)
                 return Ok(returnList);

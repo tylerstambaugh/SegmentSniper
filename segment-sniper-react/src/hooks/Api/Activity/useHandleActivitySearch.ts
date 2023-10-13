@@ -31,7 +31,7 @@ export const useHandleActivitySearch = () => {
       request: request,
     };
 
-    let response: SummaryActivityLookupResponse = { activityListItems: [] };
+    let response: SummaryActivityLookupResponse = { summaryActivities: [] };
 
     if (request.activityId) {
       response = await getSummaryActivityById(contract);
@@ -39,8 +39,8 @@ export const useHandleActivitySearch = () => {
       response = await getSummaryActivityByDateRange(contract);
     }
 
-    if (response.activityListItems.length > 0) {
-      setActivityList(response!.activityListItems);
+    if (response.summaryActivities.length > 0) {
+      setActivityList(response!.summaryActivities);
     }
   }
   return { mutateAsync, isLoading, isError, error, data };

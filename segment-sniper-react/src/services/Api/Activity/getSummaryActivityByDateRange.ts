@@ -9,7 +9,7 @@ export type SummaryActivityByDateRangeLookupRequest = {
 };
 
 export type SummaryActivityLookupResponse = {
-  activityListItems: ActivityListItem[];
+  summaryActivities: ActivityListItem[];
 };
 
 export default async function getSummaryActivityByDateRange(
