@@ -14,7 +14,7 @@ const devtoolOptions = {
 
 const initialState = [{}];
 
-const useApiConfigStore = create<ActivityListStore>()(
+const useActivityListStore = create<ActivityListStore>()(
   immer(
     devtools(
       persist(
@@ -36,7 +36,7 @@ const useApiConfigStore = create<ActivityListStore>()(
   )
 );
 
-export default useApiConfigStore;
+export default useActivityListStore;
 
 interface ActivityListStore {
   activityList: ActivityListItem[];
