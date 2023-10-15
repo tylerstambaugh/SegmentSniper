@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useAppConfigStore from "../store/useAppConfigStore";
+import useAppConfigStore from "../stores/useAppConfigStore";
 
 interface Props {
   clientId: string;

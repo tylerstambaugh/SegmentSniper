@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import { Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import useUserStore from "../store/useUserStore";
-import useTokenDataStore from "../store/useTokenStore";
+import useUserStore from "../stores/useUserStore";
+import useTokenDataStore from "../stores/useTokenStore";
 
 function Header() {
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);

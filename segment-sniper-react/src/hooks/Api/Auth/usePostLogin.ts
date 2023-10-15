@@ -4,9 +4,9 @@ import postLogin, {
   LoginResponse,
 } from "../../../services/Api/Auth/postLogin";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useTokenDataStore from "../../../store/useTokenStore";
-import useUserStore from "../../../store/useUserStore";
-import useApiConfigStore from "../../../store/useApiConfigStore";
+import useTokenDataStore from "../../../stores/useTokenStore";
+import useUserStore from "../../../stores/useUserStore";
+import useApiConfigStore from "../../../stores/useApiConfigStore";
 
 export const usePostLogin = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);

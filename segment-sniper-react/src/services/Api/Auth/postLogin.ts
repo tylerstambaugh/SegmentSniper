@@ -1,5 +1,5 @@
-import { TokenData } from "../../../store/useTokenStore";
-import { User } from "../../../store/useUserStore";
+import { TokenData } from "../../../stores/useTokenStore";
+import { User } from "../../../stores/useUserStore";
 
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
