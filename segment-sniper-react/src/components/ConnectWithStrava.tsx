@@ -1,8 +1,8 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 import connectWithStravaImage from "../assets/stravaImages/btn_strava_connectwith_orange/btn_strava_connectwith_orange@2x.png";
-import useUserStore from "../store/useUserStore";
-import useAppConfigStore from "../store/useAppConfigStore";
+import useUserStore from "../stores/useUserStore";
+import useAppConfigStore from "../stores/useAppConfigStore";
 const baseUrl = window.origin;
 
 export default function ConnectWithStrava() {

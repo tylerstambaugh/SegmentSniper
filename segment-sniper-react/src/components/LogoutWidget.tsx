@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
-import useTokenDataStore from "../store/useTokenStore";
-import useUserStore from "../store/useUserStore";
+import useTokenDataStore from "../stores/useTokenStore";
+import useUserStore from "../stores/useUserStore";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import { useEffect } from "react";

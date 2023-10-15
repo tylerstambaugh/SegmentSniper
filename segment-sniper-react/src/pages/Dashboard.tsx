@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import useUserStore from "../store/useUserStore";
+import useUserStore from "../stores/useUserStore";
 import MainMenu from "../components/MainMenu";
 import ConnectWithStrava from "../components/ConnectWithStrava";
 import { useGetUserHasStravaToken } from "../hooks/Api/Auth/useGetHasStravaToken";

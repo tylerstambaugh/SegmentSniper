@@ -8,7 +8,7 @@ import { LoginRequest } from "../services/Api/Auth/postLogin";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/Auth/usePostLogin";
 
-import useTokenDataStore from "../store/useTokenStore";
+import useTokenDataStore from "../stores/useTokenStore";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);

@@ -19,7 +19,7 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ActivityListItem } from "../../models/Activity/ActivityListItem";
-import useActivityListStore from "../../store/useActivityListStore";
+import useActivityListStore from "../../stores/useActivityListStore";
 
 // export interface displayActivityListProps {
 //   //handleShowSegments(activityId: string);

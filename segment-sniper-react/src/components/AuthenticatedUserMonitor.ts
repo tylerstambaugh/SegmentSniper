@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useTokenDataStore from "../store/useTokenStore";
+import useTokenDataStore from "../stores/useTokenStore";
 
 export default function AuthenticatedUserMonitor() {
   const tokenData = useTokenDataStore((state) => state.tokenData);

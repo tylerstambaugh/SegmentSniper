@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { ActivityTypes } from "../../../enums/ActivityTypes";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../store/useApiConfigStore";
-import useTokenDataStore from "../../../store/useTokenStore";
-import useActivityListStore from "../../../store/useActivityListStore";
+import useApiConfigStore from "../../../stores/useApiConfigStore";
+import useTokenDataStore from "../../../stores/useTokenStore";
+import useActivityListStore from "../../../stores/useActivityListStore";
 import getSummaryActivityById from "../../../services/Api/Activity/getSummaryActivityById";
 import getSummaryActivityByDateRange, {
   SummaryActivityLookupResponse,

@@ -1,8 +1,8 @@
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 
 import { useMutation } from "@tanstack/react-query";
-import useApiConfigStore from "../../../store/useApiConfigStore";
-import useUserStore, { User } from "../../../store/useUserStore";
+import useApiConfigStore from "../../../stores/useApiConfigStore";
+import useUserStore, { User } from "../../../stores/useUserStore";
 import postRegisterUser, {
   RegisterUserRequest,
   RegisterUserResponse,

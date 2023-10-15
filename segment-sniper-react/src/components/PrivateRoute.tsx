@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import useTokenDataStore from "../store/useTokenStore";
+import useTokenDataStore from "../stores/useTokenStore";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const [isAuthenticated] = useTokenDataStore((state) => [state.tokenData]);
