@@ -71,7 +71,7 @@ namespace SegmentSniper.Api.Controllers
         [Authorize]
         [HttpPost]
         [Route("refresh-token")]
-        public async Task<IActionResult> RefreshToken(TokenModel tokenModel)
+        public async Task<IActionResult> RefreshToken(SegmentSniperTokenData tokenModel)
         {
             if (tokenModel is null)
             {

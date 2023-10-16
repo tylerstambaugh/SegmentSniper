@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.Models.Models.Strava.Segment
 {
-    public class DetailedSegmentEffortModel
+    public class DetailedSegmentEffort
     {
         public long SegmentEffortId { get; set; }
         public int ResourceState { get; set; }
@@ -16,9 +16,9 @@
         public double AverageWatts { get; set; }
         public double AverageHeartrate { get; set; }
         public double MaxHeartrate { get; set; }
-        public SummarySegmentModel Segment { get; set; }
+        public SummarySegment Segment { get; set; }
         public int? PrRank { get; set; }
-        public List<AchievementModel> Achievements { get; set; }
+        public List<Achievement> Achievements { get; set; }
         public bool Hidden { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.Models.Models.Auth
 {
-    public class TokenModel
+    public class SegmentSniperTokenData
     {
         public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }

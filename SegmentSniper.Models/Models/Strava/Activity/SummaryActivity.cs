@@ -3,7 +3,7 @@ using SegmentSniper.Models.Models.Strava.Misc;
 
 namespace SegmentSniper.Models.Models.Strava.Activity
 {
-    public class SummaryActivityModel
+    public class SummaryActivity
     {
         [JsonProperty("id")]
         public string Id { get; set; }

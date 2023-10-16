@@ -18,7 +18,7 @@ namespace StravaApiClient.Services
         {
             var url = $"{_config.OauthBaseUrl}/token?client_id={_config.ClientId}&client_secret={_config.ClientSecret}&code={contract.AuthCode}&grant_type=authorization_code";            
             
-            var apiResponse = await _stravaRequestClient.PostExchangeAuthCodeForToken<StravaApiTokenModel>(url);
+            var apiResponse = await _stravaRequestClient.PostExchangeAuthCodeForToken<StravaApiToken>(url);
 
             return new ExchangeAuthCodeForTokenContract.Result(apiResponse);
         }

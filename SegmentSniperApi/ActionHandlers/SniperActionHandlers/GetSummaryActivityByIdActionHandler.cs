@@ -34,9 +34,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 
-                    SummaryActivityModel activity = _mapper.Map<DetailedActivityApiModel, SummaryActivityModel>(response.DetailedActivity);
+                    SummaryActivity activity = _mapper.Map<DetailedActivityApiModel, SummaryActivity>(response.DetailedActivity);
 
-                   List<SummaryActivityModel> returnList = new List<SummaryActivityModel> { activity };
+                   List<SummaryActivity> returnList = new List<SummaryActivity> { activity };
 
                     return new GetSummaryActivityByIdRequest.Response { SummaryActivities = returnList };
 

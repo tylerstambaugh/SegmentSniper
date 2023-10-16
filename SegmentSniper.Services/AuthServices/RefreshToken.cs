@@ -52,7 +52,7 @@ namespace SegmentSniper.Services.AuthServices
 
             return new RefreshTokenContract.Result
             {
-                RefreshedToken = new TokenModel
+                RefreshedToken = new SegmentSniperTokenData
                 {
                     RefreshToken = newRefreshToken,
                     AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),

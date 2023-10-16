@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.Models.Models.Strava.Segment
 {
-    public class SummarySegmentModel
+    public class SummarySegment
     {
         public int Id { get; set; }
         public int ResourceState { get; set; }

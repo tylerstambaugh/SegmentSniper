@@ -18,7 +18,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         public string? ActivityId { get; }
         public class Response
         {
-            public List<SummaryActivityModel> SummaryActivities { get; set; }
+            public List<SummaryActivity> SummaryActivities { get; set; }
         }
     }
 }
