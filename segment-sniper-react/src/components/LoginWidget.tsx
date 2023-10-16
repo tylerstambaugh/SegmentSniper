@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { LoginRequest } from "../services/Api/Auth/postLogin";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/Auth/usePostLogin";
+import logo from "../assets/images/segment_sniper_logo.svg";
 
 import useTokenDataStore from "../stores/useTokenStore";
 
@@ -84,7 +85,7 @@ export default function LoginWidget() {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">
-                  <h2 className="fw-bold mb-2 ">Segment Sniper Pro</h2>
+                  <img src={logo} alt="logo" className="logo" />
                   <p className=" mb-3">
                     Enter your email and password to login
                   </p>

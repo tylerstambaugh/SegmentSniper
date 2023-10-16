@@ -15,6 +15,14 @@
   transform: scale(1.05);
 }
 
+.header-image {
+ width: 250px
+}
+
+.logo {
+  width: 100%;
+}
+
 .hr-75 {
   width: 75%;
   margin: 0 auto; 
