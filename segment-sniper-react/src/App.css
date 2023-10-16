@@ -2,7 +2,7 @@
 .rounded-button {  
   padding: 20px 10px;
   border-radius: 20px;
-  background-color: #00AEEF;
+  background-color: #29dcb2;
   text-decoration: underline;
   color: #292b2c;
   transition: background-color 0.4s ease;
@@ -11,8 +11,8 @@
 }
 
 .rounded-button:hover {
-  background-color: #32c0fd8e;
-  transform: scale(1.1);
+  background-color: #22b18f;
+  transform: scale(1.05);
 }
 
 .hr-75 {

@@ -9,15 +9,15 @@ namespace SegmentSniper.Services.AuthServices
 
         public class RefreshTokenContract
         {
-            public RefreshTokenContract(TokenModel tokenToRefresh)
+            public RefreshTokenContract(SegmentSniperTokenData tokenToRefresh)
             {
                 TokenToRefresh = tokenToRefresh;
             }
-            public TokenModel TokenToRefresh { get; set; }
+            public SegmentSniperTokenData TokenToRefresh { get; set; }
 
             public class Result
             {
-                public TokenModel RefreshedToken { get; set;}
+                public SegmentSniperTokenData RefreshedToken { get; set;}
             }
         }
     }

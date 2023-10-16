@@ -55,7 +55,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 
                     await _userManager.UpdateAsync(authenticatedUser);
 
-                    var tokenModel = new TokenModel
+                    var tokenModel = new SegmentSniperTokenData
                     {
                         AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                         RefreshToken = refreshToken,

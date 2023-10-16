@@ -21,11 +21,11 @@ namespace StravaApiClient.Services.Activity
 
         public class Result
         {
-            public Result(List<SummaryActivityModel> summaryActivities)
+            public Result(List<SummaryActivity> summaryActivities)
             {
                 SummaryActivities = summaryActivities;
             }
-            public List<SummaryActivityModel> SummaryActivities { get; set; }
+            public List<SummaryActivity> SummaryActivities { get; set; }
         }
     }
 }

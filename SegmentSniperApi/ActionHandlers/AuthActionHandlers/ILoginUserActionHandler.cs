@@ -19,7 +19,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         public class Response
         {
             public UserDto? UserData { get; set; }
-            public TokenModel TokenData { get; set; }
+            public SegmentSniperTokenData TokenData { get; set; }
         }
     }
 }

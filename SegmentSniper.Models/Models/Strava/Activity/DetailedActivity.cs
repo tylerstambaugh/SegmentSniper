@@ -3,7 +3,7 @@ using SegmentSniper.Models.Models.Strava.Segment;
 
 namespace SegmentSniper.Models.Models.Strava.Activity
 {
-    public class DetailedActivityModel
+    public class DetailedActivity
     {
         public string ActivityId { get; set; }
         public int ResourceState { get; set; }
@@ -61,7 +61,7 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         public double Calories { get; set; }
         public object PerceivedExertion { get; set; }
         public object PreferPerceivedExertion { get; set; }
-        public List<DetailedSegmentEffortModel> SegmentEfforts { get; set; }
+        public List<DetailedSegmentEffort> SegmentEfforts { get; set; }
         public bool HideFromHome { get; set; }
         public string DeviceName { get; set; }
         public string EmbedToken { get; set; }
