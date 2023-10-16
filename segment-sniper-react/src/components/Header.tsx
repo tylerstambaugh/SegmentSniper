@@ -5,6 +5,7 @@ import { Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../stores/useUserStore";
 import useTokenDataStore from "../stores/useTokenStore";
+import logo from "../assets/images/segment_sniper_logo.svg";
 
 function Header() {
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
@@ -14,7 +15,14 @@ function Header() {
     <Navbar bg="light" expand="lg">
       <Container fluid>
         <Link to={AppRoutes.Home}>
-          <Navbar.Brand>Segment Sniper</Navbar.Brand>
+          <Navbar.Brand>
+            {" "}
+            <img
+              src={logo}
+              alt="segmentSniperProLogo"
+              className="header-image"
+            />
+          </Navbar.Brand>
         </Link>
         <Navbar.Toggle />
 
