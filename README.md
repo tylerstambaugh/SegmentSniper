@@ -3,7 +3,7 @@ Segment Sniper
 
 Description
 ------
-The [Strava](https://www.strava.com) Segment Sniper app is a companion application for [Strava](https://www.strava.com) users built using .Net 7 and React. Its primary function is to use the Strava API and aggregate segment data for an athlete allowing them to target specific segments from their past activities in which they are near the KOM or near the top 10 leaderboard. It is being developed with bikecycle riding as the primary activity. It requires the authenticated Strava user to be a a 'Premium' Strava subscriber as the Strava API endpoints for the segment details requires the subscription. 
+The Segment Sniper app is a companion application for [Strava](https://www.strava.com) users built using .Net 7 and React. Its primary function is to use the Strava API and aggregate segment data for an athlete allowing them to target specific segments from their past activities in which they are near the KOM or near the top 10 leaderboard. It is being developed with bicycle riding as the primary activity. It requires the authenticated Strava user to be a a 'Premium' Strava subscriber as the Strava API endpoints for the segment details requires the subscription. 
 
 #### Use Cases Being Coded:
 1. Show me all segments for an activity ID in which a Strava User is a specific time from the KOM or Leaderboard
