@@ -4,4 +4,6 @@
     {
         Task<GetDetailedSegmentByIdContract.Result> ExecuteAsync(GetDetailedSegmentByIdContract contract);
     }
+
+
 }

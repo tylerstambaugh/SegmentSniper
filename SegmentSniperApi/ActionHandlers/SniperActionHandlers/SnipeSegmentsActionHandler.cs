@@ -3,7 +3,10 @@ using Duende.IdentityServer.Validation;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.UIModels.Segment;
+using SegmentSniper.Services.Common;
 using StravaApiClient;
+using StravaApiClient.Services.Activity;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
@@ -14,7 +17,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
-        public SnipeSegmentsActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+        public SnipeSegmentsActionHandler( ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
@@ -25,74 +28,77 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             ValidatedRequest(request);
 
-            //try
-            //{
-            //    //get detailed activity by Id
-            //    DetailedActivityModel detailedActivityModel = _stravaApiActivity.GetDetailedActivityById(contract.ActivityId, userId).Result;
+            try
+            {
+                //get detailed activity by Id
+                var detailedActivityModel = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract
+                {
+                    ActivityId = request.ActivityId
+                };
 
-            //    List<DetailedSegmentEffortModel> segmentEfforts = detailedActivityModel.SegmentEfforts;
+                List<DetailedSegmentEffort> segmentEfforts = detailedActivityModel.SegmentEfforts;
 
-            //    //limiting the list to 5 for testing to not blow up API call count
-            //    segmentEfforts = segmentEfforts.GetRange(0, 10);
+                //limiting the list to 5 for testing to not blow up API call count
+                segmentEfforts = segmentEfforts.GetRange(0, 10);
 
-            //    List<DetailedSegmentModel> segmentModels = new List<DetailedSegmentModel>();
-            //    List<SnipedSegmentUIModel> snipedSegments = new List<SnipedSegmentUIModel>();
+                List<DetailedSegment> segmentModels = new List<DetailedSegment>();
+                List<SnipedSegment> snipedSegments = new List<SnipedSegment>();
 
-            //    foreach (DetailedSegmentEffortModel segmentEffortModel in segmentEfforts)
-            //    {
-            //        //get detailed segments for each segment Id
-            //        DetailedSegmentModel model = _stravaSegment.GetDetailedSegmentById(segmentEffortModel.Segment.Id, userId).Result;
-            //        segmentModels.Add(model);
+                foreach (DetailedSegmentEffort segmentEffortModel in segmentEfforts)
+                {
+                    //get detailed segments for each segment Id
+                    DetailedSegment model = _stravaRequestService.GetDetailedSegmentById(segmentEffortModel.Segment.Id, userId).Result;
+                    segmentModels.Add(model);
 
-            //        //do sniping on list of segments
-            //        XomsTimes xomsTime = GetXomTimeFromStrings(model.Xoms);
-            //        int segementLeaderTime;
+                    //do sniping on list of segments
+                    XomsTimes xomsTime = GetXomTimeFromStrings(model.Xoms);
+                    int segementLeaderTime;
 
-            //        if (contract.UseQom)
-            //        {
-            //            segementLeaderTime = xomsTime.QomTime;
-            //        }
-            //        else
-            //        {
-            //            segementLeaderTime = xomsTime.KomTime;
-            //        }
+                    if (request.UseQom)
+                    {
+                        segementLeaderTime = xomsTime.QomTime;
+                    }
+                    else
+                    {
+                        segementLeaderTime = xomsTime.KomTime;
+                    }
 
-            //        double percentageOff = Math.Round((double)((segmentEffortModel.MovingTime - segementLeaderTime) / (double)segementLeaderTime), 3) * 100;
+                    double percentageOff = Math.Round((double)((segmentEffortModel.MovingTime - segementLeaderTime) / (double)segementLeaderTime), 3) * 100;
 
-            //        int secondsOff = segmentEffortModel.MovingTime - segementLeaderTime;
+                    int secondsOff = segmentEffortModel.MovingTime - segementLeaderTime;
 
 
-            //        SnipedSegmentUIModel UiModel = new SnipedSegmentUIModel
-            //        {
-            //            SegmentId = model.SegmentId,
-            //            Name = model.Name,
-            //            PercentageFromLeader = Math.Round(percentageOff, 0),
-            //            SecondsFromLeader = secondsOff,
-            //            ActivityType = model.ActivityType,
-            //            Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(model.Distance), 2),
-            //            KomTime = model.Xoms.Kom,
-            //            CreatedAt = model.CreatedAt,
-            //            Map = model.Map,
-            //            EffortCount = model.EffortCount,
-            //            AthleteCount = model.AthleteCount,
-            //            Starred = model.Starred,
-            //            StarCount = model.StarCount,
-            //            AthleteSegmentStats = model.AthleteSegmentStats,
-            //            Xoms = model.Xoms,
-            //        };
+                    SnipedSegment UiModel = new SnipedSegment
+                    {
+                        SegmentId = model.SegmentId,
+                        Name = model.Name,
+                        PercentageFromLeader = Math.Round(percentageOff, 0),
+                        SecondsFromLeader = secondsOff,
+                        ActivityType = model.ActivityType,
+                        Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(model.Distance), 2),
+                        KomTime = model.Xoms.Kom,
+                        CreatedAt = model.CreatedAt,
+                        Map = model.Map,
+                        EffortCount = model.EffortCount,
+                        AthleteCount = model.AthleteCount,
+                        Starred = model.Starred,
+                        StarCount = model.StarCount,
+                        AthleteSegmentStats = model.AthleteSegmentStats,
+                        Xoms = model.Xoms,
+                    };
 
-            //        if (percentageOff < contract.PercentageFromKom || secondsOff < contract.SecondsFromKom)
-            //        {
-            //            snipedSegments.Add(UiModel);
-            //        }
-            //    }
+                    if (percentageOff < request.PercentageFromKom || secondsOff < request.SecondsFromKom)
+                    {
+                        snipedSegments.Add(UiModel);
+                    }
+                }
 
-            //    return snipedSegments;
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
+                return snipedSegments;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
 
 

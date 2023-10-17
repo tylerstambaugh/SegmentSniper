@@ -6,7 +6,6 @@
   text-decoration: underline;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  width: 200px; 
   text-align: center; 
 }
 
@@ -33,7 +32,7 @@
   align-self: center;
   justify-self: center;
   border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border-top: 16px solid #ffca14; /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StravaApiClient.Services.Segment
+﻿namespace StravaApiClient.Services.Segment
 {
     public class GetDetailedSegmentById : IGetDetailedSegmentById
     {

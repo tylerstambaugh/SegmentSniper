@@ -211,10 +211,3 @@ namespace StravaApiClient
 
 //https://localhost:44411/api/ConnectWithStrava/ExchangeToken/id=09729500-2fcd-4e09-b5e1-5f6f210dad90?state=""&code=ac351fe304418bd91e5df797a3390483094ebfb9&scope=read,activity:write,activity:read_all,profile:write,profile:read_all
 
-
-//"token_type": "Bearer",
-//    "access_token": "ed67b557a2e8da29d7f60d53f55d175d2ef81f82",
-//    "expires_at": 1694621237,
-//    "expires_in": 21600,
-//    "refresh_token": "1c4ab6706761145335610303083937f4852a786c"
-//}
