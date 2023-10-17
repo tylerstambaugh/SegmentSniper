@@ -3,7 +3,7 @@
     public class DetailedSegmentEffort
     {
         public long SegmentEffortId { get; set; }
-        public int ResourceState { get; set; }
+        public string ActivityId { get; set; }
         public string Name { get; set; }
         public int ElapsedTime { get; set; }
         public int MovingTime { get; set; }

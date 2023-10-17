@@ -156,7 +156,7 @@ export default function LoginWidget() {
                           <Button
                             type="submit"
                             variant="primary"
-                            className={"me-1"}
+                            className={"rounded-button"}
                             disabled={loginUser.isLoading}
                           >
                             Login

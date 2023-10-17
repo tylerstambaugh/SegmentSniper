@@ -40,8 +40,6 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(421, "Unable to fetch activities.");
         }
 
-
-        //get summary activity by Id
         [HttpGet]
         [Authorize]
         [Route("getActivitySummaryById/$activityId")]
@@ -54,7 +52,8 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult SnipeSegments(SegmentSniperContract contract)
+        [Route("snipeSegments")]
+        public IActionResult SnipeSegments([FromBody] SegmentSniperContract contract)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             var request = new SnipeSegmentsRequest
