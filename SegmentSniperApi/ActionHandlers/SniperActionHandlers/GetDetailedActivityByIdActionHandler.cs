@@ -4,24 +4,23 @@ using SegmentSniper.Models.Models.Strava.Activity;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
-using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
-    public class GetSummaryActivityByIdActionHandler : IGetSummaryActivityByIdActionHandler
+    public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
 
-        public GetSummaryActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+        public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _mapper = mapper;
         }
 
-        public async Task<GetSummaryActivityByIdRequest.Response> Handle(GetSummaryActivityByIdRequest request)
+        public async Task<GetDetailedActivityByIdRequest.Response> Handle(GetDetailedActivityByIdRequest request)
         {
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
@@ -30,16 +29,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 try
                 {
                     _stravaRequestService.RefreshToken = token.RefreshToken;
-                    ActivityType parsedActivity;
 
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 
-                    SummaryActivity activity = _mapper.Map<DetailedActivityApiModel, SummaryActivity>(response.DetailedActivity);
+                    DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
 
-                   List<SummaryActivity> returnList = new List<SummaryActivity> { activity };
+                    List<DetailedActivity> returnList = new List<DetailedActivity> { activity };
 
-                    return new GetSummaryActivityByIdRequest.Response { SummaryActivities = returnList };
-
+                    return new GetDetailedActivityByIdRequest.Response();
                 }
                 catch (Exception ex)
                 {
@@ -49,11 +46,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
             else
             {
-                throw new ApplicationException("Something went wrong 'handling' the request");
+                throw new ApplicationException("Something went wrong 'handling the request");
             }
         }
 
-        private void ValidateRequest(GetSummaryActivityByIdRequest request)
+        private void ValidateRequest(GetDetailedActivityByIdRequest request)
         {
             if (request == null)
             {

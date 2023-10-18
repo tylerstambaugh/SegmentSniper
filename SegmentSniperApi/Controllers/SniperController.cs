@@ -14,11 +14,13 @@ namespace SegmentSniper.Api.Controllers
     public class SniperController : ControllerBase
     {
         private readonly IGetSummaryActivityForTimeRangeActionHandler _getSummaryActivityForTimeRangeActionHandler;
+        private readonly IGetSummaryActivityByIdActionHandler _getSummaryActivityByIdActionHandler;
         private readonly ISnipeSegmentsActionHandler _snipeSegmentsActionHandler;
 
-        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
+        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler, IGetSummaryActivityByIdActionHandler getSummaryActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
         {
             _getSummaryActivityForTimeRangeActionHandler = getSummaryActivityForTimeRangeActionHandler;
+            _getSummaryActivityByIdActionHandler = getSummaryActivityByIdActionHandler;
             _snipeSegmentsActionHandler = snipeSegmentsActionHandler;
         }
 
@@ -30,7 +32,7 @@ namespace SegmentSniper.Api.Controllers
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-            var  request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
+            var request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
             var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request).Result;
 
@@ -46,6 +48,21 @@ namespace SegmentSniper.Api.Controllers
         public IActionResult GetSummaryActivityById(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var request = new GetSummaryActivityByIdRequest(userId, activityId);
+            var returnList = _getSummaryActivityByIdActionHandler.Handle(request).Result;
+
+            if (returnList != null)
+                return Ok(returnList);
+            else
+                return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        [Route("getDetailedActivityById/$activityId")]
+        public IActionResult GetDetailedActivityById(string activityId)
+        {
 
             throw new NotImplementedException();
         }
@@ -73,7 +90,6 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(421, "Unable to snipe segments.");
         }
 
-        //get detailed activity by Id
 
         //get detailed segment by ID
 
