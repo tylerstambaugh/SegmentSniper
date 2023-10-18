@@ -9,6 +9,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
     public class GetDetailedActivityByIdRequest
     {
+        public GetDetailedActivityByIdRequest(string userId, string activityId)
+        {
+            UserId = userId;
+            ActivityId = activityId;
+        }
+
         public string UserId { get; set; }
         public string ActivityId { get; set; }  
         public class Response
