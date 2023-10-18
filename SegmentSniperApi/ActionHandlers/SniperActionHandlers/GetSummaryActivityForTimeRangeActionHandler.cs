@@ -1,5 +1,4 @@
-﻿using Duende.IdentityServer.Validation;
-using SegmentSniper.Data;
+﻿using SegmentSniper.Data;
 using StravaApiClient;
 using StravaApiClient.Services.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
@@ -65,7 +64,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if(request.StartDate == null)
+            if (request.StartDate == null)
             {
                 throw new ArgumentNullException(nameof(request.StartDate), "Start date cannot be null");
             }
