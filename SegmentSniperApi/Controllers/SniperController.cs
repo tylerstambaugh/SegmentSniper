@@ -15,12 +15,14 @@ namespace SegmentSniper.Api.Controllers
     {
         private readonly IGetSummaryActivityForTimeRangeActionHandler _getSummaryActivityForTimeRangeActionHandler;
         private readonly IGetSummaryActivityByIdActionHandler _getSummaryActivityByIdActionHandler;
+        private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
         private readonly ISnipeSegmentsActionHandler _snipeSegmentsActionHandler;
 
-        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler, IGetSummaryActivityByIdActionHandler getSummaryActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
+        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler, IGetSummaryActivityByIdActionHandler getSummaryActivityByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
         {
             _getSummaryActivityForTimeRangeActionHandler = getSummaryActivityForTimeRangeActionHandler;
             _getSummaryActivityByIdActionHandler = getSummaryActivityByIdActionHandler;
+            _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
             _snipeSegmentsActionHandler = snipeSegmentsActionHandler;
         }
 
@@ -64,7 +66,14 @@ namespace SegmentSniper.Api.Controllers
         public IActionResult GetDetailedActivityById(string activityId)
         {
 
-            throw new NotImplementedException();
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var request = new GetDetailedActivityByIdRequest(userId, activityId);
+            var returnList = _getDetailedActivityByIdActionHandler.Handle(request).Result;
+
+            if (returnList != null)
+                return Ok(returnList);
+            else
+                return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
         }
 
         [HttpPost]
