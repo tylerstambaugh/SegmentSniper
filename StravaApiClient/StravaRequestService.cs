@@ -1,5 +1,6 @@
 ﻿using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Segment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,12 @@ namespace StravaApiClient
         public Task<GetDetailedActivityByIdContract.Result> GetDetailedActivityById(GetDetailedActivityByIdContract contract)
         {
             var service = new GetDetailedActivityById(_client);
+            return service.ExecuteAsync(contract);
+        }
+
+        public Task<GetDetailedSegmentByIdContract.Result> GetDetailedSegmentById(GetDetailedSegmentByIdContract contract)
+        {
+            var service = new GetDetailedSegmentById(_client);
             return service.ExecuteAsync(contract);
         }
     }

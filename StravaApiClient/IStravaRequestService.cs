@@ -1,4 +1,5 @@
 ﻿using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Segment;
 
 namespace StravaApiClient
 {
@@ -7,6 +8,8 @@ namespace StravaApiClient
         Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract);
 
         Task<GetDetailedActivityByIdContract.Result> GetDetailedActivityById(GetDetailedActivityByIdContract contract);
+
+        Task<GetDetailedSegmentByIdContract.Result> GetDetailedSegmentById(GetDetailedSegmentByIdContract contract);
 
         string RefreshToken { get; set;  }
     }

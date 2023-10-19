@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SegmentSniper.Models.Models.Strava.Token
 {
-    public class StravaApiToken
+    public class StravaApiTokenModel
     {
 
         [JsonProperty("expires_at")]
@@ -13,7 +13,7 @@ namespace SegmentSniper.Models.Models.Strava.Token
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
 
-        public StravaApiToken()
+        public StravaApiTokenModel()
         {
 
         }

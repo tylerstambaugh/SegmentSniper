@@ -11,10 +11,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         public SnipeSegmentsRequest()
         {
-            
+
         }
         public string UserId { get; set; }
-        
         public string ActivityId { get; set; }
         public int? SecondsFromKom { get; set; }
         public int? PercentageFromKom { get; set; }
@@ -22,6 +21,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public class Response
         {
+            public Response(List<SnipedSegment> snipedSegments)
+            {
+                SnipedSegments = snipedSegments;
+            }
+
             public List<SnipedSegment> SnipedSegments { get; set; }
         }
+    }
 }
