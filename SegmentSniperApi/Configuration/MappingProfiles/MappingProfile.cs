@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.Models.Strava.Token;
 using StravaApiClient.Models.Activity;
+using StravaApiClient.Models.Segment;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
@@ -13,8 +15,13 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
-            CreateMap<StravaApiToken, StravaApiToken>();
-            CreateMap<StravaApiToken, StravaApiToken>();
+            
+            CreateMap<StravaApiToken, StravaApiTokenModel>();
+            CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>();
+            CreateMap<DetailedActivityApiModel, DetailedActivity>();
+
+
+
 
             CreateMap<DetailedActivityApiModel, SummaryActivity>();
                 //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

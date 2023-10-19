@@ -2,8 +2,7 @@
 {
     public class SummarySegment
     {
-        public int Id { get; set; }
-        public int ResourceState { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string ActivityType { get; set; }
         public double Distance { get; set; }

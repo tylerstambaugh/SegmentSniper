@@ -13,11 +13,11 @@ namespace StravaApiClient.Services
 
         public class Result
         {
-            public Result(StravaApiToken stravaToken)
+            public Result(StravaApiTokenModel stravaToken)
             {
                 StravaToken = stravaToken;
             }
-            public StravaApiToken StravaToken { get; set; }
+            public StravaApiTokenModel StravaToken { get; set; }
         }
     }
 }

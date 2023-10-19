@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.StravaToken
 
         public class Result
         {
-            public Models.Models.Strava.Token.StravaApiToken StravaToken { get; set; }
+            public Models.Models.Strava.Token.StravaApiTokenModel StravaToken { get; set; }
         }
     }
 }

@@ -10,8 +10,8 @@ namespace SegmentSniper.Models.UIModels.Segment
 {
     public  class SegmentEffortListModel
     {
-        public long SegmentEffortId { get; set; }
-        public long SegmentId { get; set; }
+        public string SegmentEffortId { get; set; }
+        public string SegmentId { get; set; }
         public string ActivityId { get; set; }
         public string Name { get; set; }
         public string Time { get; set; }

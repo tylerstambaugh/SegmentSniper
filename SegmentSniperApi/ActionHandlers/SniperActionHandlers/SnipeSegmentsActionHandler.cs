@@ -6,7 +6,9 @@ using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using StravaApiClient;
+using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Segment;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
@@ -31,12 +33,15 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             try
             {
                 //get detailed activity by Id
-                var detailedActivityModel = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract
-                {
-                    ActivityId = request.ActivityId
-                };
+                var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 
-                List<DetailedSegmentEffort> segmentEfforts = detailedActivityModel.SegmentEfforts;
+                //build list of each detailed segment efforts from detailed activity
+                List<DetailedSegmentEffort> segmentEfforts = new List<DetailedSegmentEffort>();
+                foreach (DetailedSegmentEffortApiModel dse in response.DetailedActivity.SegmentEfforts)
+                {
+                    DetailedSegmentEffort segmentEffort = _mapper.Map<DetailedSegmentEffortApiModel, DetailedSegmentEffort>(dse);
+                    segmentEfforts.Add(segmentEffort);
+                }
 
                 //limiting the list to 5 for testing to not blow up API call count
                 segmentEfforts = segmentEfforts.GetRange(0, 10);
@@ -47,7 +52,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 foreach (DetailedSegmentEffort segmentEffortModel in segmentEfforts)
                 {
                     //get detailed segments for each segment Id
-                    DetailedSegment model = _stravaRequestService.GetDetailedSegmentById(segmentEffortModel.Segment.Id, userId).Result;
+                    var detailedSegmentResponse =  await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(segmentEffortModel.Segment.Id));
+                    DetailedSegment model = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(detailedSegmentResponse.DetailedSegmentApiModel);
                     segmentModels.Add(model);
 
                     //do sniping on list of segments
@@ -93,7 +99,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     }
                 }
 
-                return snipedSegments;
+                return new SnipeSegmentsRequest.Response(snipedSegments);
             }
             catch (Exception e)
             {
