@@ -10,7 +10,7 @@ namespace StravaApiClient.Models.Activity
         public string Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("tpye")]
+        [JsonProperty("type")]
         public string Type { get; set; }
         [JsonProperty("start_date")]
         public DateTime StartDate { get; set; }

@@ -5,7 +5,6 @@ namespace SegmentSniper.Models.Models.Strava.Token
 {
     public class StravaApiTokenModel
     {
-
         [JsonProperty("expires_at")]
         public long ExpiresAt { get; set; }
         [JsonProperty("expires_in")]
@@ -17,6 +16,5 @@ namespace SegmentSniper.Models.Models.Strava.Token
         {
 
         }
-
     }
 }
