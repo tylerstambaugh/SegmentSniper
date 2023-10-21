@@ -181,7 +181,6 @@ namespace StravaApiClient
 
                 var response = await httpClient.PostAsync($"token?{query}", null);
 
-
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();

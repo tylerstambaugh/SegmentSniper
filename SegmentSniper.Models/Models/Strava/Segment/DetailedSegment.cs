@@ -1,16 +1,10 @@
 ﻿using SegmentSniper.Models.Models.Strava.Misc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SegmentSniper.Models.Models.Strava.Segment
 {
     public class DetailedSegment
     {
         public string SegmentId { get; set; }
-        public int ResourceState { get; set; }
         public string Name { get; set; }
         public string ActivityType { get; set; }
         public double Distance { get; set; }

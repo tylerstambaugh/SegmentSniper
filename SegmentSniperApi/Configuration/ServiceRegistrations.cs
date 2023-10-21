@@ -4,12 +4,14 @@ using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
+using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services;
 using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Segment;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -24,6 +26,8 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
             services.AddScoped<IGetSummaryActivityByIdActionHandler, GetSummaryActivityByIdActionHandler>();
             services.AddScoped<IGetSummaryActivityForTimeRangeActionHandler, GetSummaryActivityForTimeRangeActionHandler>();
+            services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
+            services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
             services.AddScoped<IExchangeAuthCodeForTokenHandler, ExchangeAuthCodeForTokenHandler>();
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
 
@@ -46,6 +50,12 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
             services.AddScoped<IAddStravaToken, AddStravaToken>();
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
+            services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
+            services.AddScoped<IGetDetailedSegmentById, GetDetailedSegmentById>();
+
+            //adapters:
+            services.AddScoped<IActivityAdapter, ActivityAdapter>();
+            services.AddScoped<ISegmentAdapter, SegmentAdapter>();
         }
     }
 }

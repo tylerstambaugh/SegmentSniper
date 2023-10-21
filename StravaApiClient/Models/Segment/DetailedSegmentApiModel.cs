@@ -4,8 +4,7 @@ namespace StravaApiClient.Models.Segment
 {
     public class DetailedSegmentApiModel
     {
-        public int id { get; set; }
-        public int resource_state { get; set; }
+        public string id { get; set; }
         public string name { get; set; }
         public string activity_type { get; set; }
         public double distance { get; set; }
