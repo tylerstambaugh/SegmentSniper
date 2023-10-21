@@ -8,7 +8,7 @@ export interface SegmentListItem {
   time?: number;
   distance?: number;
   athleteStats?: AthleteSegmentStats;
-  koms?: Xoms;
+  xoms?: Xoms;
   rank?: number;
   starred?: boolean;
 }

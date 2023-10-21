@@ -2,7 +2,7 @@
 {
     public class DetailedSegmentEffortApiModel
     {
-        public long id { get; set; }
+        public string id { get; set; }
         public int resource_state { get; set; }
         public string name { get; set; }
         public int elapsed_time { get; set; }
