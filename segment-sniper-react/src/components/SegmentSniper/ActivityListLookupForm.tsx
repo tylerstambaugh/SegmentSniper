@@ -38,7 +38,7 @@ function ActivityListLookupForm() {
           schema.required("Activity Id or start and end date are required"),
       }),
     startDate: yup.date().when([], {
-      is: () => "acitiviyId" !== null,
+      is: () => "activityId" !== null,
       then: (schema) => schema.nullable(),
     }),
     endDate: yup

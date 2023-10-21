@@ -9,7 +9,7 @@ export interface SnipedSegmentListItem {
   secondsFromLeader?: number;
   percentageFromLeader?: number;
   athleteStats?: AthleteSegmentStats;
-  koms?: Xoms;
+  xoms?: Xoms;
   starred?: boolean;
   useQom?: boolean;
 }
