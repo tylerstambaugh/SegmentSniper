@@ -134,7 +134,7 @@ namespace SegmentSniper.Api.Configuration
                     corsBuilder =>
                     {
                         //builder.Configuration["AllowedOrigins"]
-                        corsBuilder.WithOrigins("https://localhost:6768")
+                        corsBuilder.WithOrigins("https://localhost:6767")
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });
