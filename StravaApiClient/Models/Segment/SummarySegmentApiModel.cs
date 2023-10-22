@@ -3,7 +3,6 @@
     public class SummarySegmentApiModel
     {
         public long id { get; set; }
-        public int resource_state { get; set; }
         public string name { get; set; }
         public string activity_type { get; set; }
         public double distance { get; set; }

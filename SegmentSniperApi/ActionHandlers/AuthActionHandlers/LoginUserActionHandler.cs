@@ -38,6 +38,15 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             {
 
                 var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
+                
+                //need to check if user.LoggedInUser is null and handle
+                if(user == null)
+                {
+                    return new LoginUserRequest.Response
+                    {
+                        ErrorMessage = "User not found"
+                    };
+                }
                 var authenticatedUser = user.LoggedInUser;
                 if (authenticatedUser != null)
                 {

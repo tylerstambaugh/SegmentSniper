@@ -56,7 +56,7 @@ namespace SegmentSniper.Api.Controllers
             {
                 var authenticatedUser = await _loginUserActionHandler.Handle(new LoginUserRequest(userLogin));
 
-                if (authenticatedUser.TokenData != null)
+                if (authenticatedUser != null && authenticatedUser.TokenData != null)
                 {
                     return Ok(authenticatedUser);
                 }
