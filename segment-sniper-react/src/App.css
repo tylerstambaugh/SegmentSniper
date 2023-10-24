@@ -1,7 +1,7 @@
 
-.rounded-button {  
-  padding: 20px 10px;
-  border-radius: 20px;
+.primary-rounded-button {  
+  padding: 8px 10px;
+  border-radius: 12px;
   background-color: #29dcb2;
   text-decoration: underline;
   color: #292b2c;
@@ -9,7 +9,7 @@
   text-align: center; 
 }
 
-.rounded-button:hover {
+.primary-rounded-button:hover {
   background-color: #22b18f;
   transform: scale(1.05);
 }

@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="segment_sniper_logo.svg"
+   sodipodi:docname="segment_sniper_pro_logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -310,14 +310,14 @@
      inkscape:label="Text">
     <text
        xml:space="preserve"
-       transform="matrix(0.30822766,0,0,0.26360493,-19.931053,0.21137554)"
+       transform="matrix(0.26458339,0,0,0.26458339,-10.422399,0.15422466)"
        id="text245"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.3333px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code';white-space:pre;shape-inside:url(#rect245);display:inline;fill:#fd2c60;fill-opacity:1;stroke:#000000;stroke-opacity:1"><tspan
          x="216.25391"
          y="68.578143"
-         id="tspan6"><tspan
+         id="tspan9"><tspan
            style="fill:#000000"
-           id="tspan5">SNIPER</tspan></tspan></text>
+           id="tspan8">SNIPER</tspan></tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458339,0,0,0.26458339,-10.460228,-8.3596742)"
@@ -325,8 +325,22 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.3333px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code';white-space:pre;shape-inside:url(#rect246);display:inline;fill:#fd2c60;fill-opacity:1;stroke:#000000;stroke-opacity:1"><tspan
          x="216.25391"
          y="68.578143"
-         id="tspan8"><tspan
+         id="tspan11"><tspan
            style="fill:#000000"
-           id="tspan7">SEGMENT</tspan></tspan></text>
+           id="tspan10">SEGMENT</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458339,0,0,0.26458339,-8.5123363,-8.7406573)"
+       id="text247"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.66667px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code';white-space:pre;shape-inside:url(#rect247);display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1"><tspan
+         x="320.32617"
+         y="86.063668"
+         id="tspan12">P&#10;</tspan><tspan
+         x="320.32617"
+         y="94.397004"
+         id="tspan13">R&#10;</tspan><tspan
+         x="320.32617"
+         y="102.73034"
+         id="tspan14">O</tspan></text>
   </g>
 </svg>
