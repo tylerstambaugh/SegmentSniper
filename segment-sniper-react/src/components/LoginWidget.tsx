@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { LoginRequest } from "../services/Api/Auth/postLogin";
 import toast from "react-hot-toast";
 import { usePostLogin } from "../hooks/Api/Auth/usePostLogin";
-import logo from "../assets/images/segment_sniper_logo.svg";
+import logo from "../assets/images/segment_sniper_pro_logo.svg";
 
 import useTokenDataStore from "../stores/useTokenStore";
 
@@ -156,7 +156,7 @@ export default function LoginWidget() {
                           <Button
                             type="submit"
                             variant="primary"
-                            className={"me-1 rounded-button"}
+                            className={"me-1 primary-rounded-button "}
                             disabled={loginUser.isLoading}
                           >
                             Login

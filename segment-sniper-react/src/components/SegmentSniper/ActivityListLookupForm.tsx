@@ -238,7 +238,8 @@ function ActivityListLookupForm() {
                       <Button
                         type="submit"
                         variant="primary"
-                        className={"rounded-button"}
+                        className={"primary-rounded-button"}
+                        style={{ width: "75px" }}
                       >
                         <Spinner
                           as="span"
@@ -253,7 +254,7 @@ function ActivityListLookupForm() {
                       <Button
                         type="submit"
                         variant="primary"
-                        className={"me-1"}
+                        className={"me-1 primary-rounded-button"}
                         disabled={handleActivitySearch.isLoading}
                       >
                         Search

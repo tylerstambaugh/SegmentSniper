@@ -36,6 +36,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                         var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
 
+
+                        //adapt summary activity response to activityListUIModel
                         return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = response.SummaryActivities };
                     }
 

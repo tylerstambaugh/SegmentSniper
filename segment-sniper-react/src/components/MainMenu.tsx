@@ -18,7 +18,12 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    <Link to={AppRoutes.Snipe} className="rounded-button">
+                    <Link
+                      to={AppRoutes.Snipe}
+                      className="primary-rounded-button
+                      "
+                      style={{ width: "155px" }}
+                    >
                       Segment Sniper
                     </Link>
                   </Col>
@@ -28,7 +33,12 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    <Link to="./athlete" className="rounded-button">
+                    <Link
+                      to="./athlete"
+                      className="primary-rounded-button
+                      "
+                      style={{ width: "155px" }}
+                    >
                       Athlete Details
                     </Link>
                   </Col>
@@ -39,7 +49,12 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    <Link to="./token-maintenance" className="rounded-button">
+                    <Link
+                      to="./token-maintenance"
+                      className="primary-rounded-button
+                      "
+                      style={{ width: "155px" }}
+                    >
                       Admin
                     </Link>
                   </Col>
