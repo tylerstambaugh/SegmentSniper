@@ -85,10 +85,7 @@ export default function LoginWidget() {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">
-                  <img src={logo} alt="logo" className="logo" />
-                  <p className=" mb-3">
-                    Enter your email and password to login
-                  </p>
+                  <img src={logo} alt="logo" className="logo pb-2" />
                   <div className="mb-3">
                     <Form
                       name="loginForm"
@@ -100,7 +97,7 @@ export default function LoginWidget() {
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Control
                           type="text"
-                          placeholder="Enter email"
+                          placeholder="Email Address"
                           name="emailAddress"
                           isInvalid={!!formik.errors.emailAddress}
                           onChange={(e) => {

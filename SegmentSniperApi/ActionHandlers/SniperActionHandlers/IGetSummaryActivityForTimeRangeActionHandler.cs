@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.UIModels.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -25,7 +26,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public class Response
         {
-            public List<SummaryActivity> SummaryActivities { get; set; }
+            public List<ActivityListModel> SummaryActivities { get; set; }
         }
     }
 }

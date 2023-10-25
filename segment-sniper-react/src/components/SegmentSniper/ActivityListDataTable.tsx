@@ -105,7 +105,7 @@ const ActivityListDataTable = () => {
             headers={header}
             paginationOptionsProps={{
               initialState: {
-                rowsPerPage: 10,
+                rowsPerPage: 5,
                 options: [5, 10, 15, 20],
               },
             }}
@@ -124,7 +124,7 @@ const ActivityListDataTable = () => {
                 </Col>
                 <Col className="d-flex justify-content-end mx-5">
                   <Button
-                    className="px-5"
+                    className=""
                     onClick={(e) => {
                       clearSearchResults();
                       setSelectedRow("");
