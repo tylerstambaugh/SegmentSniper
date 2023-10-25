@@ -11,11 +11,11 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import { ActivityTypes } from "../../enums/ActivityTypes";
+import { ActivityTypes } from "../../../enums/ActivityTypes";
 import {
   ActivitySearchRequest,
   useHandleActivitySearch,
-} from "../../hooks/Api/Activity/useHandleActivitySearch";
+} from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
 
 function ActivityListLookupForm() {

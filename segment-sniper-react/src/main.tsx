@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InitializeApp from "./components/InitializeApp";
-import AuthenticatedUserMonitor from "./components/AuthenticatedUserMonitor";
+import AuthenticatedUserMonitor from "./components/Authentication/AuthenticatedUserMonitor";
 import "./App.css";
 
 const client = new QueryClient();

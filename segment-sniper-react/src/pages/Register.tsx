@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import RegisterWidget from "../components/RegisterWidget";
+import RegisterWidget from "../components/Authentication/RegisterWidget";
 
 function Register() {
   return (

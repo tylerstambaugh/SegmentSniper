@@ -1,4 +1,4 @@
-import LogoutWidget from "../components/LogoutWidget";
+import LogoutWidget from "../components/Authentication/LogoutWidget";
 
 function Logout() {
   return (

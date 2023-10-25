@@ -18,13 +18,8 @@ import {
   ToggleButton,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ActivityListItem } from "../../models/Activity/ActivityListItem";
-import useActivityListStore from "../../stores/useActivityListStore";
-
-// export interface displayActivityListProps {
-//   //handleShowSegments(activityId: string);
-//   clearSearchResults: () => void;
-// }
+import { ActivityListItem } from "../../../models/Activity/ActivityListItem";
+import useActivityListStore from "../../../stores/useActivityListStore";
 
 type ArrayElementType = ActivityListItem & {
   segmentsButton: any;
@@ -124,7 +119,7 @@ const ActivityListDataTable = () => {
                 </Col>
                 <Col className="d-flex justify-content-end mx-5">
                   <Button
-                    className=""
+                    className="px-5"
                     onClick={(e) => {
                       clearSearchResults();
                       setSelectedRow("");
