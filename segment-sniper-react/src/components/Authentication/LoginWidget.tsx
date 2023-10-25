@@ -1,15 +1,15 @@
 import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../enums/AppRoutes";
+import { AppRoutes } from "../../enums/AppRoutes";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { LoginRequest } from "../services/Api/Auth/postLogin";
+import { LoginRequest } from "../../services/Api/Auth/postLogin";
 import toast from "react-hot-toast";
-import { usePostLogin } from "../hooks/Api/Auth/usePostLogin";
-import logo from "../assets/images/segment_sniper_pro_logo.svg";
+import { usePostLogin } from "../../hooks/Api/Auth/usePostLogin";
+import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 
-import useTokenDataStore from "../stores/useTokenStore";
+import useTokenDataStore from "../../stores/useTokenStore";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);

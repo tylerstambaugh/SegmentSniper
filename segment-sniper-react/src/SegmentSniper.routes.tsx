@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { AppRoutes } from "./enums/AppRoutes";
 import Login from "./pages/Login";
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/Authentication/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";

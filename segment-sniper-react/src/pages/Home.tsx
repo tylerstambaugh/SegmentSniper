@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import LoginWidget from "../components/LoginWidget";
+import LoginWidget from "../components/Authentication/LoginWidget";
 
 function Home() {
   return (
