@@ -71,5 +71,24 @@ namespace SegmentSniper.Services.Common.Adapters
 
             return returnModel;
         }
+
+        public ActivityListModel AdaptSummaryActivitytoActivityList(SummaryActivity activity)
+        {
+            
+            ActivityListModel returnActivity = new ActivityListModel
+            {
+                ActivityId = activity.Id,
+                Name = activity.Name,
+                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(activity.Distance), 2),
+                Type = activity.Type,
+                StartDate = activity.StartDate.ToShortDateString(),
+                ElapsedTimeSeconds = activity.ElapsedTime,
+                ElapsedTime = TimeSpan.FromSeconds(activity.ElapsedTime).ToString(@"hh\:mm\:ss"),
+                AchievementCount = activity.AchievementCount,
+                MaxSpeed = Math.Round(CommonConversionHelpers.ConvertMetersPerSecondToMilesPerHour(activity.MaxSpeed), 2),
+                StravaMap = activity.Map
+            };
+            return returnActivity;
+        }
     }
 }

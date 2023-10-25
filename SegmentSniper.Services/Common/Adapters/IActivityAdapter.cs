@@ -8,5 +8,7 @@ namespace SegmentSniper.Services.Common.Adapters
         ActivityListModel AdaptDetailedActivitytoActivityList(DetailedActivity activity);
         // List<ActivityListModel> AdaptSummaryActivityListtoActivityList(List<SummaryActivityModel> activities);
         DetailedActivityUIModel AdaptDetailedActivityModelToDetailedActivityUIModel(DetailedActivity detailedActivityModel);
+
+        ActivityListModel AdaptSummaryActivitytoActivityList(SummaryActivity activity);
     }
 }

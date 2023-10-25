@@ -1,4 +1,7 @@
 ﻿using SegmentSniper.Data;
+using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.UIModels.Activity;
+using SegmentSniper.Services.Common.Adapters;
 using StravaApiClient;
 using StravaApiClient.Services.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
@@ -9,11 +12,13 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
+        private readonly IActivityAdapter _activityAdapter;
 
-        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService)
+        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IActivityAdapter activityAdapter)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
+            _activityAdapter = activityAdapter;
         }
 
         public async Task<GetSummaryActivityForTimeRangeRequest.Response> Handle(GetSummaryActivityForTimeRangeRequest request)
@@ -35,12 +40,15 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         var unixEndDate = ConvertToEpochTime(endDate);
 
                         var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
+                                                
+                        List<ActivityListModel> activitiesList = new List<ActivityListModel>();
+                        foreach(SummaryActivity activity in response.SummaryActivities)
+                        {
+                            activitiesList.Add(_activityAdapter.AdaptSummaryActivitytoActivityList(activity));
+                        }
 
-
-                        //adapt summary activity response to activityListUIModel
-                        return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = response.SummaryActivities };
+                        return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = activitiesList };
                     }
-
                 }
                 catch (Exception ex)
                 {
