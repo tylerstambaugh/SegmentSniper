@@ -15,7 +15,7 @@ import { faStar as regularStar } from "@fortawesome/free-solid-svg-icons";
 import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { Button, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
-const SegmentListDataTable = () => {
+export const SegmentListDataTable = () => {
   const [segmentList, resetSegmetnList] = useSegmentListStore((state) => [
     state.segmentList,
     state.resetSegmentList,
