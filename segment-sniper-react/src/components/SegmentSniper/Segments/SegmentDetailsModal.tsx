@@ -6,7 +6,7 @@ import { SegmentDetails } from "../../../models/Segment/SegmentDetails";
 export interface SegmentDetailsModalProps {
   show: boolean;
   handleClose: () => void;
-  segmentId: string;
+  segmentId?: string;
 }
 
 function SegmentDetailsModal(props: SegmentDetailsModalProps) {

@@ -3,9 +3,9 @@ import useApiConfigStore from "../../../stores/useApiConfigStore";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import useSegmentListStore from "../../../stores/useSegmentListStore";
-import getSegmentListByActivityId from "../../../services/Api/Segment/getSegmentListByActivityId";
+import getSegmentEffortsByActivityId from "../../../services/Api/Segment/getSegmentEffortsByActivityId";
 
-export const useGetSegmentListByActivityId = () => {
+export const useGetSegmentEffortsByActivityId = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const setSegmentList = useSegmentListStore((state) => state.setSegmentList);
@@ -18,7 +18,7 @@ export const useGetSegmentListByActivityId = () => {
       token: tokenData?.accessToken!,
     };
 
-    const response = await getSegmentListByActivityId(contract);
+    const response = await getSegmentEffortsByActivityId(contract);
 
     setSegmentList(response.segments);
   }
