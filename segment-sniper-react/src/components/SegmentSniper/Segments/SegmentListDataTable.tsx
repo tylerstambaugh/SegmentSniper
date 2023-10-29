@@ -15,11 +15,12 @@ import { faStar as regularStar } from "@fortawesome/free-solid-svg-icons";
 import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { Button, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
-export const SegmentListDataTable = () => {
-  const [segmentList, resetSegmetnList] = useSegmentListStore((state) => [
-    state.segmentList,
-    state.resetSegmentList,
-  ]);
+export interface SegmentListDataTableProps {
+  segments: SegmentListItem[] | [];
+}
+
+export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
+  const [segmentList, setSegmentList] = useState(props.segments);
 
   type TableDataRow = SegmentListItem & {
     detailsButton: any;

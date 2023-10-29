@@ -21,13 +21,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ActivityListItem } from "../../../models/Activity/ActivityListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
 
+export interface ActivityDataTableProps {
+  setSelectedActivity: (activityId: string) => void;
+}
+
 type ArrayElementType = ActivityListItem & {
   segmentsButton: any;
   snipeButton: any;
   detailsButton: any;
 };
 
-const ActivityListDataTable = () => {
+const ActivityListDataTable = (props: ActivityDataTableProps) => {
   const [activityList, resetActivityList] = useActivityListStore((state) => [
     state.activityList,
     state.resetActivityList,
