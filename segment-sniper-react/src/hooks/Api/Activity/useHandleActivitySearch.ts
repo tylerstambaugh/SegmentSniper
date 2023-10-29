@@ -8,6 +8,7 @@ import getSummaryActivityById from "../../../services/Api/Activity/getSummaryAct
 import getSummaryActivityByDateRange, {
   SummaryActivityLookupResponse,
 } from "../../../services/Api/Activity/getSummaryActivityByDateRange";
+import useSegmentListStore from "../../../stores/useSegmentListStore";
 
 export interface ActivitySearchRequest {
   activityId?: string;
@@ -22,6 +23,8 @@ export const useHandleActivitySearch = () => {
   const setActivityList = useActivityListStore(
     (state) => state.setActivityList
   );
+  const setSegmentList = useSegmentListStore((state) => state.setSegmentList);
+
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: ActivitySearchRequest) {

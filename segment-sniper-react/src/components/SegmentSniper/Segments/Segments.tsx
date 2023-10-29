@@ -4,9 +4,11 @@ import SnipeSegmentsModal from "./SnipeSegmentsModal";
 import SegmentDetailsModal from "./SegmentDetailsModal";
 import { SegmentListDataTable } from "./SegmentListDataTable";
 import { SnipedSegmentListDataTable } from "./SnipedSegmentListDataTable";
+import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
+import { SnipedSegmentListItem } from "../../../models/Segment/SnipedSegmentListItem";
 
 export interface SegmentsProps {
-  activityId: string | undefined;
+  segments: SegmentListItem[];
 }
 
 const Segments = (props: SegmentsProps) => {
@@ -48,11 +50,20 @@ const Segments = (props: SegmentsProps) => {
           segmentId={segmentDetailsModalData}
         />
         {!isSnipeList ? (
-          <SegmentListDataTable />
+          <SegmentListDataTable segments={props.segments} />
         ) : (
-          <SnipedSegmentListDataTable />
+          <SnipedSegmentListDataTable
+            clearSnipedSegments={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+            handleStarSnipedSegment={function (props: any): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
         )}
       </Container>
     </>
   );
 };
+
+export default Segments;
