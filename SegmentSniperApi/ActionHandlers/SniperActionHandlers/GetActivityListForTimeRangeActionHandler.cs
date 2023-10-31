@@ -11,14 +11,14 @@ using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
-    public class GetSummaryActivityForTimeRangeActionHandler : IGetSummaryActivityForTimeRangeActionHandler
+    public class GetActivityListForTimeRangeActionHandler : IGetActivityListForTimeRangeActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IActivityAdapter _activityAdapter;
         private readonly IMapper _mapper;
 
-        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IActivityAdapter activityAdapter, IMapper mapper)
+        public GetActivityListForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IActivityAdapter activityAdapter, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
@@ -26,7 +26,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             _mapper = mapper;
         }
 
-        public async Task<GetSummaryActivityForTimeRangeRequest.Response> Handle(GetSummaryActivityForTimeRangeRequest request)
+        public async Task<GetActivityListForTimeRangeRequest.Response> Handle(GetActivityListForTimeRangeRequest request)
         {
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
@@ -71,7 +71,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
 
-                    return new GetSummaryActivityForTimeRangeRequest.Response { ActivityList = activityList };
+                    return new GetActivityListForTimeRangeRequest.Response { ActivityList = activityList };
                 }
                 catch (Exception ex)
                 {
@@ -91,7 +91,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             return (int)(date - unixEpoch).TotalSeconds;
         }
 
-        private void ValidateRequest(GetSummaryActivityForTimeRangeRequest request)
+        private void ValidateRequest(GetActivityListForTimeRangeRequest request)
         {
             if (request == null)
             {

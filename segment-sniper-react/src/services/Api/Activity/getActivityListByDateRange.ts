@@ -4,7 +4,7 @@ import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "../BaseApiService";
 
-export type ActivityListByDateRangeLookupRequest = {
+export type ActivityListForDateRangeLookupRequest = {
   activityId: string;
 };
 
@@ -12,14 +12,14 @@ export type ActivityListLookupResponse = {
   activityList: ActivityListItem[];
 };
 
-export default async function getSummaryActivityByDateRange(
-  contract: ApiContract<ActivityListByDateRangeLookupRequest>
+export default async function getActivityListByDateRange(
+  contract: ApiContract<ActivityListForDateRangeLookupRequest>
 ) {
   try {
     const response = apiPost<
-      ActivityListByDateRangeLookupRequest,
+      ActivityListForDateRangeLookupRequest,
       ActivityListLookupResponse
-    >(`${contract.baseUrl}/sniper/getSummaryActivityByDateRange/`, contract);
+    >(`${contract.baseUrl}/sniper/getActivityListForDateRange/`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

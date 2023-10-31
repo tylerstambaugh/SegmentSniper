@@ -87,7 +87,7 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
   ];
 
   const handleSegmentButtonClick = (activityId: string) => {
-    // props.handleShowSegments(activityId);
+    props.setSelectedActivity(activityId);
     setSelectedRow(activityId);
   };
 

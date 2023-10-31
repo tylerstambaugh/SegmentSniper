@@ -12,7 +12,7 @@ const devtoolOptions = {
   name: "Activity List Store",
 };
 
-const initialState = [{}];
+//const initialState = [];
 
 const useActivityListStore = create<ActivityListStore>()(
   immer(
@@ -26,7 +26,7 @@ const useActivityListStore = create<ActivityListStore>()(
             }),
           resetActivityList: () =>
             set((state) => {
-              state.activityList = initialState;
+              state.activityList = [];
             }),
         }),
         persistOptions
