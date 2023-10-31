@@ -4,14 +4,14 @@ using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
-    public interface IGetSummaryActivityForTimeRangeActionHandler
+    public interface IGetActivityListForTimeRangeActionHandler
     {
-        Task<GetSummaryActivityForTimeRangeRequest.Response> Handle(GetSummaryActivityForTimeRangeRequest request);
+        Task<GetActivityListForTimeRangeRequest.Response> Handle(GetActivityListForTimeRangeRequest request);
     }
 
-    public class GetSummaryActivityForTimeRangeRequest
+    public class GetActivityListForTimeRangeRequest
     {
-        public GetSummaryActivityForTimeRangeRequest(string userId,DateTime startDate, DateTime endDate, string activityType)
+        public GetActivityListForTimeRangeRequest(string userId,DateTime startDate, DateTime endDate, string activityType)
         {
             UserId = userId;
             StartDate = startDate;

@@ -1,18 +1,18 @@
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "../BaseApiService";
-import { ActivityListLookupResponse } from "./getSummaryActivityByDateRange";
+import { ActivityListLookupResponse } from "./getActivityListByDateRange";
 
-export type SummaryActivityByIdLookupRequest = {
+export type ActivityListByIdLookupRequest = {
   activityId: string;
 };
 
-export default async function getSummaryActivityById(
-  contract: ApiContract<SummaryActivityByIdLookupRequest>
+export default async function getActivityListById(
+  contract: ApiContract<ActivityListByIdLookupRequest>
 ) {
   try {
     const response = apiGet<ActivityListLookupResponse>(
-      `${contract.baseUrl}/sniper/getSummaryActivityById/${contract.request?.activityId}`,
+      `${contract.baseUrl}/sniper/getActivityListById/${contract.request?.activityId}`,
       contract
     );
     return response;

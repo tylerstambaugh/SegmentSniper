@@ -16,7 +16,7 @@ import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { Button, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
 export interface SegmentListDataTableProps {
-  segments: SegmentListItem[] | [];
+  segments: SegmentListItem[];
 }
 
 export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
@@ -28,7 +28,7 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
     rowLoading: boolean;
   };
 
-  const tableBody: TableDataRow[] = segmentList.map((item) => ({
+  const tableBody: TableDataRow[] = props.segments.map((item) => ({
     ...item,
     detailsButton: null,
     starButton: null,
@@ -156,7 +156,7 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
           >
             <Row>
               <Col>
-                <h3>Segments List Results</h3>
+                <h3>Segments</h3>
               </Col>
             </Row>
             <Row>

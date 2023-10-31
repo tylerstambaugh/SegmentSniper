@@ -4,10 +4,10 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import getSummaryActivityById from "../../../services/Api/Activity/getSummaryActivityById";
-import getSummaryActivityByDateRange, {
+import getActivityListById from "../../../services/Api/Activity/getActivityListById";
+import getActivityListByDateRange, {
   ActivityListLookupResponse,
-} from "../../../services/Api/Activity/getSummaryActivityByDateRange";
+} from "../../../services/Api/Activity/getActivityListByDateRange";
 import useSegmentListStore from "../../../stores/useSegmentListStore";
 
 export interface ActivitySearchRequest {
@@ -23,6 +23,7 @@ export const useHandleActivitySearch = () => {
   const setActivityList = useActivityListStore(
     (state) => state.setActivityList
   );
+
   const setSegmentList = useSegmentListStore((state) => state.setSegmentList);
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
@@ -37,9 +38,9 @@ export const useHandleActivitySearch = () => {
     let response: ActivityListLookupResponse = { activityList: [] };
 
     if (request.activityId) {
-      response = await getSummaryActivityById(contract);
+      response = await getActivityListById(contract);
     } else if (request.startDate && request.endDate) {
-      response = await getSummaryActivityByDateRange(contract);
+      response = await getActivityListByDateRange(contract);
     }
 
     if (response.activityList.length > 0) {

@@ -13,15 +13,15 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class SniperController : ControllerBase
     {
-        private readonly IGetSummaryActivityForTimeRangeActionHandler _getSummaryActivityForTimeRangeActionHandler;
-        private readonly IGetSummaryActivityByIdActionHandler _getSummaryActivityByIdActionHandler;
+        private readonly IGetActivityListForTimeRangeActionHandler _getActivityListForTimeRangeActionHandler;
+        private readonly IGetActivityListByIdActionHandler _getActivityListByIdActionHandler;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
         private readonly ISnipeSegmentsActionHandler _snipeSegmentsActionHandler;
 
-        public SniperController(IGetSummaryActivityForTimeRangeActionHandler getSummaryActivityForTimeRangeActionHandler, IGetSummaryActivityByIdActionHandler getSummaryActivityByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
+        public SniperController(IGetActivityListForTimeRangeActionHandler getActivityListForTimeRangeActionHandler, IGetActivityListByIdActionHandler getActivityListByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler)
         {
-            _getSummaryActivityForTimeRangeActionHandler = getSummaryActivityForTimeRangeActionHandler;
-            _getSummaryActivityByIdActionHandler = getSummaryActivityByIdActionHandler;
+            _getActivityListForTimeRangeActionHandler = getActivityListForTimeRangeActionHandler;
+            _getActivityListByIdActionHandler = getActivityListByIdActionHandler;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
             _snipeSegmentsActionHandler = snipeSegmentsActionHandler;
         }
@@ -29,14 +29,14 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("getSummaryActivityByDateRange")]
-        public IActionResult GetSummaryActivityForTimeRange([FromBody] GetSummaryActivityListForTimeRangeContract contract)
+        [Route("getActivityListForDateRange")]
+        public IActionResult GetActivityListForTimeRange([FromBody] GetActivityListForTimeRangeContract contract)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-            var request = new GetSummaryActivityForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
+            var request = new GetActivityListForTimeRangeRequest(userId, (DateTime)contract.StartDate, (DateTime)contract.EndDate, contract.ActivityType);
 
-            var returnList = _getSummaryActivityForTimeRangeActionHandler.Handle(request).Result;
+            var returnList = _getActivityListForTimeRangeActionHandler.Handle(request).Result;
 
             if (returnList != null)
                 return Ok(returnList);
@@ -46,12 +46,12 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("getActivitySummaryById/$activityId")]
-        public IActionResult GetSummaryActivityById(string activityId)
+        [Route("getActivityListById/$activityId")]
+        public IActionResult GetActivityListById(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var request = new GetSummaryActivityByIdRequest(userId, activityId);
-            var returnList = _getSummaryActivityByIdActionHandler.Handle(request).Result;
+            var request = new GetActivityListByIdRequest(userId, activityId);
+            var returnList = _getActivityListByIdActionHandler.Handle(request).Result;
 
             if (returnList != null)
                 return Ok(returnList);
