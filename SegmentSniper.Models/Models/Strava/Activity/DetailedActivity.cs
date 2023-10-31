@@ -6,8 +6,6 @@ namespace SegmentSniper.Models.Models.Strava.Activity
     public class DetailedActivity
     {
         public string ActivityId { get; set; }
-        public int ResourceState { get; set; }
-        public int DetailedAthleteId { get; set; }
         public string Name { get; set; }
         public double Distance { get; set; }
         public int MovingTime { get; set; }
@@ -62,9 +60,6 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         public object PerceivedExertion { get; set; }
         public object PreferPerceivedExertion { get; set; }
         public List<DetailedSegmentEffort> SegmentEfforts { get; set; }
-        public bool HideFromHome { get; set; }
-        public string DeviceName { get; set; }
-        public string EmbedToken { get; set; }
         public string PrivateNote { get; set; }
         public List<object> AvailableZones { get; set; }
     }

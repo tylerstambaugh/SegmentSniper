@@ -53,7 +53,6 @@ namespace SegmentSniper.Services.Common.Adapters
             {
 
                 ActivityId = model.ActivityId,
-                DetailedAthleteId = model.DetailedAthleteId,
                 Name = model.Name,
                 Distance = CommonConversionHelpers.ConvertMetersToMiles(model.Distance),
                 MovingTime = model.MovingTime,

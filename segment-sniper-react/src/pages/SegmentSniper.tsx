@@ -8,6 +8,8 @@ function SegmentSniper() {
   const [selectedActivity, setSelectedActivity] = useState<string>();
   const activityList = useActivityListStore((state) => state.activityList);
 
+  
+
   return (
     <>
       <ActivityListLookupForm />

@@ -6,7 +6,7 @@ import useTokenDataStore from "../../../stores/useTokenStore";
 import useActivityListStore from "../../../stores/useActivityListStore";
 import getSummaryActivityById from "../../../services/Api/Activity/getSummaryActivityById";
 import getSummaryActivityByDateRange, {
-  SummaryActivityLookupResponse,
+  ActivityListLookupResponse,
 } from "../../../services/Api/Activity/getSummaryActivityByDateRange";
 import useSegmentListStore from "../../../stores/useSegmentListStore";
 
@@ -34,7 +34,7 @@ export const useHandleActivitySearch = () => {
       request: request,
     };
 
-    let response: SummaryActivityLookupResponse = { summaryActivities: [] };
+    let response: ActivityListLookupResponse = { activityList: [] };
 
     if (request.activityId) {
       response = await getSummaryActivityById(contract);
@@ -42,8 +42,8 @@ export const useHandleActivitySearch = () => {
       response = await getSummaryActivityByDateRange(contract);
     }
 
-    if (response.summaryActivities.length > 0) {
-      setActivityList(response!.summaryActivities);
+    if (response.activityList.length > 0) {
+      setActivityList(response!.activityList);
     }
   }
   return { mutateAsync, isLoading, isError, error, data };
