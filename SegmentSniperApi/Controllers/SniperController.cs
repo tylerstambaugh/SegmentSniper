@@ -82,6 +82,8 @@ namespace SegmentSniper.Api.Controllers
         public IActionResult SummarySegment(string activityId)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+            throw new NotImplementedException();
         }
 
         [HttpPost]

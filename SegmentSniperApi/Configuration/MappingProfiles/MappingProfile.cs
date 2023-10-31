@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.Models.Strava.Token;
 using StravaApiClient.Models.Activity;
+using StravaApiClient.Models.Misc;
 using StravaApiClient.Models.Segment;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
@@ -41,6 +43,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.PrRank, opt => opt.MapFrom(src => src.pr_rank))
                 .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.achievements));
 
+
             CreateMap<DetailedActivityApiModel, DetailedActivity>()
                 .ForMember(dest => dest.ActivityId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -64,6 +67,9 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.AthleteCount, opt => opt.MapFrom(src => src.AthleteCount))
                 .ForMember(dest => dest.PhotoCount, opt => opt.MapFrom(src => src.PhotoCount))
                 .ForMember(dest => dest.Map, opt => opt.MapFrom(src => src.Map))
+                .ForMember(dest => dest.Trainer, opt => opt.Ignore())
+                .ForMember(dest => dest.Commute, opt => opt.Ignore())
+                .ForMember(dest => dest.Manual, opt => opt.Ignore())
                 .ForMember(dest => dest.Private, opt => opt.MapFrom(src => src.IsPrivate))
                 .ForMember(dest => dest.Visibility, opt => opt.MapFrom(src => src.Visibility))
                 .ForMember(dest => dest.StartLatlng, opt => opt.MapFrom(src => src.StartLatLng))
@@ -83,9 +89,12 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.HasKudoed, opt => opt.MapFrom(src => src.HasKudoed))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Calories, opt => opt.MapFrom(src => src.Calories))
+                .ForMember(dest => dest.PerceivedExertion, opt => opt.MapFrom(src => src.PerceivedExertion))
+                .ForMember(dest => dest.PreferPerceivedExertion, opt => opt.MapFrom(src => src.PreferPerceivedExertion))
                 .ForMember(dest => dest.SegmentEfforts, opt => opt.MapFrom(src => src.SegmentEfforts))
                 .ForMember(dest => dest.PrivateNote, opt => opt.MapFrom(src => src.PrivateNote))
                 .ForMember(dest => dest.AvailableZones, opt => opt.MapFrom(src => src.AvailableZones));
+
 
             CreateMap<DetailedActivityApiModel, SummaryActivity>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -153,9 +162,13 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
 
             CreateMap<SummaryActivityApiModel, SummaryActivity>();
 
+            CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>();
+
             CreateMap<SummarySegmentApiModel, SummarySegment>();
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
+
+            CreateMap<MapApiModel, MapModel>();
 
             CreateMap<AchievementApiModel, Achievement>()
             .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.type_id))

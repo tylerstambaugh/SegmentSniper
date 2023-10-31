@@ -1,8 +1,11 @@
-﻿using SegmentSniper.Data;
+﻿using AutoMapper;
+using SegmentSniper.Data;
+using SegmentSniper.Data.Enums;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.UIModels.Activity;
 using SegmentSniper.Services.Common.Adapters;
 using StravaApiClient;
+using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
@@ -13,12 +16,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IActivityAdapter _activityAdapter;
+        private readonly IMapper _mapper;
 
-        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IActivityAdapter activityAdapter)
+        public GetSummaryActivityForTimeRangeActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IActivityAdapter activityAdapter, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _activityAdapter = activityAdapter;
+            _mapper = mapper;
         }
 
         public async Task<GetSummaryActivityForTimeRangeRequest.Response> Handle(GetSummaryActivityForTimeRangeRequest request)
@@ -31,24 +36,42 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 try
                 {
                     _stravaRequestService.RefreshToken = token.RefreshToken;
+
                     ActivityType parsedActivity;
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
+
+                    var endDate = request.EndDate.AddDays(1);
+
+                    var unixStartDate = ConvertToEpochTime(request.StartDate);
+                    var unixEndDate = ConvertToEpochTime(endDate);
+
+                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
+
+                    List<SummaryActivity> listOfSummaryActivities = response.SummaryActivities;
+
+                    if (parsedActivity != ActivityTypeEnum.ActivityType.All)
                     {
-                        var endDate = request.EndDate.AddDays(1);
-
-                        var unixStartDate = ConvertToEpochTime(request.StartDate);
-                        var unixEndDate = ConvertToEpochTime(endDate);
-
-                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
-                                                
-                        List<ActivityListModel> activitiesList = new List<ActivityListModel>();
-                        foreach(SummaryActivity activity in response.SummaryActivities)
-                        {
-                            activitiesList.Add(_activityAdapter.AdaptSummaryActivitytoActivityList(activity));
-                        }
-
-                        return new GetSummaryActivityForTimeRangeRequest.Response { SummaryActivities = activitiesList };
+                        listOfSummaryActivities = listOfSummaryActivities
+                        .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
                     }
+
+                    List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
+
+                    foreach (SummaryActivity activity in listOfSummaryActivities)
+                    {
+                        var detailedActivityResult = _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(activity.Id)).Result;
+                        var detailedActivity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(detailedActivityResult.DetailedActivity);
+                        listOfDetailedActivities.Add(detailedActivity);
+                    }
+
+                    List<ActivityListModel> activityList = new List<ActivityListModel>();
+
+                    foreach (var activity in listOfDetailedActivities)
+                    {
+                        activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
+                    }
+
+                    return new GetSummaryActivityForTimeRangeRequest.Response { ActivityList = activityList };
                 }
                 catch (Exception ex)
                 {

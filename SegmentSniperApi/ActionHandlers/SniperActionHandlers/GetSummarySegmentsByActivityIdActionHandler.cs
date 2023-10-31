@@ -24,9 +24,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 try
                 {
-
+                    throw new NotImplementedException();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
                     throw new ApplicationException("Something went wrong handling the request.", ex);
@@ -46,3 +46,4 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
         }
     }
+}

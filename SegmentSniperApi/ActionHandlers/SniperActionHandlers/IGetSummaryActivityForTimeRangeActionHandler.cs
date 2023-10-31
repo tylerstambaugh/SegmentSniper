@@ -22,11 +22,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string? ActivityType { get; set;  }
+        public string? ActivityType { get; }
 
         public class Response
         {
-            public List<ActivityListModel> SummaryActivities { get; set; }
+            public List<ActivityListModel> ActivityList { get; set; }
         }
     }
 }
