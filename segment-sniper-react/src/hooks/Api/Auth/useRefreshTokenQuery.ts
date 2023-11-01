@@ -22,7 +22,10 @@ const useRefreshTokenQuery = () => {
   async function refreshTokenQuery() {
     const tokenDataResponse = await postRefreshToken({
       baseUrl: apiConfig!.baseUrl,
-      request: { refreshToken: tokenData?.refreshToken },
+      request: {
+        refreshToken: tokenData?.refreshToken!,
+        accessToken: tokenData?.accessToken!,
+      },
       abortController,
     });
 

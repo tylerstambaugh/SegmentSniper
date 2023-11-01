@@ -8,7 +8,7 @@ import {
   TableColumnType,
   TableHeader,
 } from "react-bs-datatable";
-import useSegmentListStore from "../../../stores/useSegmentListStore";
+import useSegmentsListStore from "../../../stores/useSegmentsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-solid-svg-icons";
@@ -22,7 +22,7 @@ export interface SegmentListDataTableProps {
 }
 
 export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
-  const segmentList = useSegmentListStore((state) => state.segmentList);
+  const segmentList = useSegmentsListStore((state) => state.segmentsList);
 
   type TableDataRow = SegmentListItem & {
     detailsButton: any;

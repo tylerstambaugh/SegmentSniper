@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
 export interface SnipeSegmentFunctionProps {
   activityId?: string;
   secondsOff?: number;
@@ -12,7 +13,7 @@ export interface SnipeSegmentFunctionProps {
 export interface ShowSnipeSegmentsModalProps {
   show: boolean;
   handleClose: () => void;
-  handleSnipeSegments: (snipeProps: SnipeSegmentFunctionProps) => void;
+  handleSnipeSegments: (request: SnipeSegmentsRequest) => void;
 }
 
 function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
@@ -43,9 +44,8 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
     },
     onSubmit: (values: SnipeSegmentsParametersForm) => {
       console.log(`segment snipe form props: ${values}`);
-
-      // setValidated(true);
-      const snipeProps: SnipeSegmentFunctionProps = {
+      //setValidated(true);
+      const snipeProps: SnipeSegmentsRequest = {
         secondsOff: values.secondsFromLeader,
         percentageOff: values.percentageFromLeader,
         useQom: (values.useQom as unknown) === "QOM" ? true : false,
@@ -68,10 +68,9 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
           onSubmit={(event) => {
             console.log("handling submission");
             event.preventDefault();
-            //setValidated(true);
+            setValidated(true);
             console.log(`formik isValid = ${formik.isValid}`);
             console.log(`formik status = ${formik.status}`);
-            //console.log(`formik errors endDate = ${formik.errors.endDate}`);
             formik.handleSubmit(event);
             props.handleClose();
           }}

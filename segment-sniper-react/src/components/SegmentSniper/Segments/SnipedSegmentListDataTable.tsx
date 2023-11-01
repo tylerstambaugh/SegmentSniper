@@ -7,7 +7,7 @@ import {
   TableHeader,
 } from "react-bs-datatable";
 import { SnipedSegmentListItem } from "../../../models/Segment/SnipedSegmentListItem";
-import useSnipedSegmentListStore from "../../../stores/useSnipedSegmentListStore";
+import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 import {
   Button,
   Col,
@@ -28,9 +28,11 @@ export interface SnipedSegmentListDataTableProps {
 export const SnipedSegmentListDataTable = (
   props: SnipedSegmentListDataTableProps
 ) => {
-  const [snipedSegmentList, resetSnipedSegmetnList] = useSnipedSegmentListStore(
-    (state) => [state.snipedSegmentList, state.resetSnipedSegmentList]
-  );
+  const [snipedSegmentList, resetSnipedSegmetnList] =
+    useSnipedSegmentsListStore((state) => [
+      state.snipedSegmentsList,
+      state.resetSnipedSegmentsList,
+    ]);
 
   type TableDataRow = SnipedSegmentListItem & {
     starButton: any;
