@@ -16,11 +16,13 @@ import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { Button, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
 export interface SegmentListDataTableProps {
-  segments: SegmentListItem[];
+  selectedActivityId: string;
+  snipeLoading: boolean;
+  handleShowSnipeSegmentsModal: () => void;
 }
 
 export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
-  const [segmentList, setSegmentList] = useState(props.segments);
+  const segmentList = useSegmentListStore((state) => state.segmentList);
 
   type TableDataRow = SegmentListItem & {
     detailsButton: any;
@@ -28,7 +30,7 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
     rowLoading: boolean;
   };
 
-  const tableBody: TableDataRow[] = props.segments.map((item) => ({
+  const tableBody: TableDataRow[] = segmentList.map((item) => ({
     ...item,
     detailsButton: null,
     starButton: null,
@@ -111,11 +113,11 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
                   className="px-5"
                   variant="primary"
                   value="Snipe!"
-                  // onClick={props.handleShowSnipeSegmentsModal}
-                  // disabled={props.snipeLoading}
+                  onClick={props.handleShowSnipeSegmentsModal}
+                  disabled={props.snipeLoading}
                 >
                   Snipe!
-                  {/* {props.snipeLoading && (
+                  {props.snipeLoading && (
                     <Spinner
                       as="span"
                       variant="light"
@@ -124,7 +126,7 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
                       aria-hidden="true"
                       animation="border"
                     />
-                  )} */}
+                  )}
                 </Button>
               </Col>
             </Row>

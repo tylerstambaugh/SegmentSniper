@@ -71,9 +71,9 @@ namespace SegmentSniper.Api.Controllers
         [Authorize]
         [HttpPost]
         [Route("refresh-token")]
-        public async Task<IActionResult> RefreshToken(SegmentSniperTokenData tokenModel)
+        public async Task<IActionResult> RefreshToken(RefreshTokenData refreshToken)
         {
-            if (tokenModel is null)
+            if (refreshToken is null)
             {
                 return BadRequest("Invalid client request");
             }
@@ -81,12 +81,12 @@ namespace SegmentSniper.Api.Controllers
             {
                 try
                 {
-                    var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(tokenModel));
+                    var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(refreshToken));
                     return Ok(refreshedToken);
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest($"Invalid access or refresh token: {nameof(tokenModel)}");
+                    return BadRequest($"Invalid access or refresh token: {nameof(refreshToken)}");
                 }
             }
         }

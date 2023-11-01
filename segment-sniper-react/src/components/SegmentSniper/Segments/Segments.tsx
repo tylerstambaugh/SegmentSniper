@@ -7,25 +7,28 @@ import { SnipedSegmentListDataTable } from "./SnipedSegmentListDataTable";
 import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { SnipedSegmentListItem } from "../../../models/Segment/SnipedSegmentListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
+import useSegmentListStore from "../../../stores/useSegmentListStore";
 
 export interface SegmentsProps {
-  selectedActivity?: string;
+  selectedActivity: string;
 }
 
 const Segments = (props: SegmentsProps) => {
-  const [showSnipeSegmentModal, setShowSnipeSegmentModal] = useState(false);
+  const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
   const [isSnipeList, setIsSnipeList] = useState(false);
   const [snipeLoading, setSnipeLoading] = useState(false);
   const activityList = useActivityListStore((state) => state.activityList);
-  const [selectedActivitySegmentEfforts, setSelectedActivitySegmentEfforts] =
-    useState<SegmentListItem[]>([]);
+  const [segmentList, setSegmentList] = useSegmentListStore((state) => [
+    state.segmentList,
+    state.setSegmentList,
+  ]);
 
   const [segmentDetailsModalData, setSegmentDetailsModalData] =
     useState<string>();
 
-  const handleCloseSnipeSegmentModal = () => setShowSnipeSegmentModal(false);
-  const handleShowSnipeSegmentModal = () => setShowSnipeSegmentModal(true);
+  const handleCloseSnipeSegmentsModal = () => setShowSnipeSegmentsModal(false);
+  const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
 
   const handleCloseSegmentDetailModal = () => setShowSegmentDetailModal(false);
   const handleShowSegmentDetailModal = () => setShowSegmentDetailModal(true);
@@ -41,20 +44,21 @@ const Segments = (props: SegmentsProps) => {
   function handleShowSegmentDetails(segmentId: string) {}
 
   useEffect(() => {
-    setSelectedActivitySegmentEfforts(
+    let segmentEfforts: SegmentListItem[] =
       activityList.find((x) => x.activityId === props.selectedActivity)
-        ?.segments || []
-    );
+        ?.segments || [];
+    setSegmentList(segmentEfforts);
+
     console.log("selected activity:", props.selectedActivity);
-    console.log("selected activity segments:", selectedActivitySegmentEfforts);
+    console.log("selected activity segments:", segmentList);
   }, [props.selectedActivity]);
 
   return (
     <>
       <Container className="mb-4">
         <SnipeSegmentsModal
-          show={showSnipeSegmentModal}
-          handleClose={handleCloseSnipeSegmentModal}
+          show={showSnipeSegmentsModal}
+          handleClose={handleCloseSnipeSegmentsModal}
           handleSnipeSegments={handleSnipeSegments}
         />
         <SegmentDetailsModal
@@ -63,7 +67,11 @@ const Segments = (props: SegmentsProps) => {
           segmentId={segmentDetailsModalData}
         />
         {!isSnipeList ? (
-          <SegmentListDataTable segments={selectedActivitySegmentEfforts} />
+          <SegmentListDataTable
+            selectedActivityId={props.selectedActivity}
+            snipeLoading={snipeLoading}
+            handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
+          />
         ) : (
           <SnipedSegmentListDataTable
             clearSnipedSegments={function (): void {

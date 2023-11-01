@@ -20,6 +20,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ActivityListItem } from "../../../models/Activity/ActivityListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
+import useSegmentListStore from "../../../stores/useSegmentListStore";
 
 export interface ActivityDataTableProps {
   setSelectedActivity: (activityId: string) => void;
@@ -36,6 +37,9 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
     state.activityList,
     state.resetActivityList,
   ]);
+  const resetSegmentList = useSegmentListStore(
+    (state) => state.resetSegmentList
+  );
   const [checked, setChecked] = useState(false);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const tableBody: ArrayElementType[] = activityList.map((item) => ({
@@ -93,6 +97,7 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
 
   const clearSearchResults = () => {
     resetActivityList();
+    resetSegmentList();
   };
 
   return (

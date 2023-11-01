@@ -76,15 +76,6 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
         }
 
-        [HttpGet]
-        [Authorize]
-        [Route("summarySegment/$activityId")]
-        public IActionResult SummarySegment(string activityId)
-        {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-
-            throw new NotImplementedException();
-        }
 
         [HttpPost]
         [Authorize]
