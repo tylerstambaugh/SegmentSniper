@@ -17,7 +17,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
         public async Task<RefreshTokenRequest.Response> Handle(RefreshTokenRequest request)
         {
-            var refreshedToken = await _refreshToken.Execute(new RefreshTokenContract(request.Token));
+            var refreshedToken = await _refreshToken.Execute(new RefreshTokenContract(request.RefreshTokenData));
             if(refreshedToken == null)
             {
                 return new RefreshTokenRequest.Response(refreshedToken.RefreshedToken);

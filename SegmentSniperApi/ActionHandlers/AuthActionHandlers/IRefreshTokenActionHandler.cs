@@ -11,11 +11,11 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
     public class RefreshTokenRequest
     {
-        public RefreshTokenRequest(SegmentSniperTokenData token)
+        public RefreshTokenRequest(RefreshTokenData refreshTokenData)
         {
-            Token = token;
+            RefreshTokenData = refreshTokenData;
         }
-        public SegmentSniperTokenData Token { get; set; }
+        public RefreshTokenData RefreshTokenData { get; set; }
 
         public class Response
         {

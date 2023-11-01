@@ -12,8 +12,6 @@ const devtoolOptions = {
   name: "Segment List Store",
 };
 
-const initialState = [{}];
-
 const useSegmentListStore = create<SegmentListStore>()(
   immer(
     devtools(
@@ -26,7 +24,7 @@ const useSegmentListStore = create<SegmentListStore>()(
             }),
           resetSegmentList: () =>
             set((state) => {
-              state.segmentList = initialState;
+              state.segmentList = [];
             }),
         }),
         persistOptions

@@ -6,7 +6,7 @@ import useActivityListStore from "../stores/useActivityListStore";
 import { SegmentListItem } from "../models/Segment/SegmentListItem";
 
 function SegmentSniper() {
-  const [selectedActivity, setSelectedActivity] = useState<string>();
+  const [selectedActivity, setSelectedActivity] = useState<string>("");
 
   const activityList = useActivityListStore((state) => state.activityList);
 
