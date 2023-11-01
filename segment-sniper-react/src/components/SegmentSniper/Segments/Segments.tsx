@@ -7,7 +7,11 @@ import { SnipedSegmentListDataTable } from "./SnipedSegmentListDataTable";
 import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
 import { SnipedSegmentListItem } from "../../../models/Segment/SnipedSegmentListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import useSegmentListStore from "../../../stores/useSegmentListStore";
+import useSegmentsListStore from "../../../stores/useSegmentsListStore";
+import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
+import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
+import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
+import toast from "react-hot-toast";
 
 export interface SegmentsProps {
   selectedActivity: string;
@@ -19,10 +23,18 @@ const Segments = (props: SegmentsProps) => {
   const [isSnipeList, setIsSnipeList] = useState(false);
   const [snipeLoading, setSnipeLoading] = useState(false);
   const activityList = useActivityListStore((state) => state.activityList);
-  const [segmentList, setSegmentList] = useSegmentListStore((state) => [
-    state.segmentList,
+  const [segmentList, setSegmentList] = useSegmentsListStore((state) => [
+    state.segmentsList,
     state.setSegmentList,
   ]);
+
+  const [snipedSegmentsList, setSnipedSegmentsList] =
+    useSnipedSegmentsListStore((state) => [
+      state.snipedSegmentsList,
+      state.setSnipedSegmentsList,
+    ]);
+
+    const snipeSegments = useSnipeSegments();
 
   const [segmentDetailsModalData, setSegmentDetailsModalData] =
     useState<string>();
@@ -37,9 +49,14 @@ const Segments = (props: SegmentsProps) => {
     //add hook call here. Update to take contract w/ segmentId and star=true/false
   }
 
-  async function handleSnipeSegments() {
-    //add hook call here. Update to take correct contract
+  async function handleSnipeSegments(request: SnipeSegmentsRequest) {
+    snipeSegments.mutateAsync(request);
   }
+
+  useEffect(() => {
+    if (snipeSegments.error !== null)
+      toast.error(`Snipe segments error: ${snipeSegments.error}`);
+  }, [snipeSegments.error]);
 
   function handleShowSegmentDetails(segmentId: string) {}
 
@@ -69,7 +86,7 @@ const Segments = (props: SegmentsProps) => {
         {!isSnipeList ? (
           <SegmentListDataTable
             selectedActivityId={props.selectedActivity}
-            snipeLoading={snipeLoading}
+            snipeLoading={snipeSegments.isLoading}
             handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
           />
         ) : (

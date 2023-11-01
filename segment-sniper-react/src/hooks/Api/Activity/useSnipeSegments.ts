@@ -5,13 +5,13 @@ import postSnipeSegmentsList, {
   SnipeSegmentsRequest,
   SnipeSegmentsResponse,
 } from "../../../services/Api/Segment/postSnipeSegmentsList";
-import useSnipedSegmentListStore from "../../../stores/useSnipedSegmentListStore";
+import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const setSnipedSegmentsList = useSnipedSegmentListStore(
-    (state) => state.setSnipedSegmentList
+  const setSnipedSegmentsList = useSnipedSegmentsListStore(
+    (state) => state.setSnipedSegmentsList
   );
   const tokenData = useTokenDataStore((state) => state.tokenData);
 

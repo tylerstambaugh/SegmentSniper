@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { SegmentListItem } from "../models/Segment/SegmentListItem";
+import { SegmentListItem as SegmentsListItem } from "../models/Segment/SegmentListItem";
 
 const persistOptions = {
   name: "segment-list-store",
@@ -12,19 +12,19 @@ const devtoolOptions = {
   name: "Segment List Store",
 };
 
-const useSegmentListStore = create<SegmentListStore>()(
+const useSegmentsListStore = create<SegmentsListStore>()(
   immer(
     devtools(
       persist(
         (set) => ({
-          segmentList: [],
-          setSegmentList: (segmentList: SegmentListItem[]) =>
+          segmentsList: [],
+          setSegmentList: (segmentsList: SegmentsListItem[]) =>
             set((state) => {
-              state.segmentList = segmentList;
+              state.segmentsList = segmentsList;
             }),
-          resetSegmentList: () =>
+          resetSegmentsList: () =>
             set((state) => {
-              state.segmentList = [];
+              state.segmentsList = [];
             }),
         }),
         persistOptions
@@ -34,10 +34,10 @@ const useSegmentListStore = create<SegmentListStore>()(
   )
 );
 
-export default useSegmentListStore;
+export default useSegmentsListStore;
 
-interface SegmentListStore {
-  segmentList: SegmentListItem[];
-  setSegmentList: (segmentList: SegmentListItem[]) => void;
-  resetSegmentList: () => void;
+interface SegmentsListStore {
+  segmentsList: SegmentsListItem[];
+  setSegmentList: (segmentsList: SegmentsListItem[]) => void;
+  resetSegmentsList: () => void;
 }
