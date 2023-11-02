@@ -21,7 +21,7 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
   interface SnipeSegmentsParametersForm {
     secondsFromLeader?: number;
     percentageFromLeader?: number;
-    useQom?: string;
+    useQom: boolean;
   }
 
   const validationSchema = yup.object().shape({
@@ -33,14 +33,14 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
       .number()
       .min(2, "Number must be greater than 2")
       .nullable(),
-    useQom: yup.string().required("Select QOM or KOM"),
+    useQom: yup.boolean().required("Select QOM or KOM"),
   });
 
   const formik = useFormik<SnipeSegmentsParametersForm>({
     initialValues: {
       secondsFromLeader: undefined,
       percentageFromLeader: undefined,
-      useQom: "KOM",
+      useQom: false,
     },
     onSubmit: (values: SnipeSegmentsParametersForm) => {
       console.log(`segment snipe form props: ${values}`);
@@ -48,7 +48,7 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
       const snipeProps: SnipeSegmentsRequest = {
         secondsOff: values.secondsFromLeader,
         percentageOff: values.percentageFromLeader,
-        useQom: (values.useQom as unknown) === "QOM" ? true : false,
+        useQom: values.useQom,
       };
       props.handleSnipeSegments(snipeProps);
     },
@@ -80,19 +80,25 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
               <Row>
                 <Col>
                   <Form.Group controlId="secondsFromLeader">
-                    <Form.Label>Seconds From Leader</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="secondsFromLeader"
-                      value={formik.values.secondsFromLeader || ""}
-                      onChange={(e) => {
-                        formik.setFieldValue(
-                          "secondsFromLeader",
-                          e.target.value
-                        );
-                      }}
-                      isInvalid={Boolean(formik.errors.secondsFromLeader)}
-                    />
+                    <Row>
+                      <Col md={6} className={"pt-2"}>
+                        <Form.Label>Seconds From Leader:</Form.Label>
+                      </Col>
+                      <Col md={3}>
+                        <Form.Control
+                          type="number"
+                          name="secondsFromLeader"
+                          value={formik.values.secondsFromLeader || ""}
+                          onChange={(e) => {
+                            formik.setFieldValue(
+                              "secondsFromLeader",
+                              e.target.value
+                            );
+                          }}
+                          isInvalid={Boolean(formik.errors.secondsFromLeader)}
+                        />
+                      </Col>
+                    </Row>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.secondsFromLeader}
                     </Form.Control.Feedback>
@@ -100,7 +106,10 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col
+                  md={5}
+                  className="pt-2 d-flex align-items-center justify-content-center"
+                >
                   <p>OR</p>
                 </Col>
               </Row>
@@ -110,19 +119,27 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
                     controlId="percentageFromLeader"
                     className=" pb-4"
                   >
-                    <Form.Label>Percentage From Leader</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="percentageFromLeader"
-                      value={formik.values.percentageFromLeader || ""}
-                      onChange={(e) => {
-                        formik.setFieldValue(
-                          "percentageFromLeader",
-                          e.target.value
-                        );
-                      }}
-                      isInvalid={Boolean(formik.errors.percentageFromLeader)}
-                    />
+                    <Row>
+                      <Col md={6} className={"pt-2"}>
+                        <Form.Label>Percentage From Leader:</Form.Label>
+                      </Col>
+                      <Col md={3}>
+                        <Form.Control
+                          type="number"
+                          name="percentageFromLeader"
+                          value={formik.values.percentageFromLeader || ""}
+                          onChange={(e) => {
+                            formik.setFieldValue(
+                              "percentageFromLeader",
+                              e.target.value
+                            );
+                          }}
+                          isInvalid={Boolean(
+                            formik.errors.percentageFromLeader
+                          )}
+                        />
+                      </Col>
+                    </Row>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.percentageFromLeader}
                     </Form.Control.Feedback>
@@ -131,36 +148,19 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
               </Row>
               <Row>
                 <Col>
-                  <Form.Group controlId="useQomRadio">
-                    <Form.Label>Leader Time Type</Form.Label>
-                    <Row>
-                      <Col>
-                        {/* <RadioGroup
-                          aria-labelledby="demo-radio-buttons-group-label"
-                          defaultValue={formik.values.useQom}
-                          value={formik.values.useQom}
-                          name="row-radio-buttons-group"
-                          row
-                          onChange={(e) => {
-                            formik.setFieldValue("useQom", e.target.value);
-                            console.log(formik.values);
-                            console.log(formik.errors);
-                          }}
-                        >
-                          <FormControlLabel
-                            value="KOM"
-                            control={<Radio />}
-                            label="KOM"
-                          />
-                          <FormControlLabel
-                            value="QOM"
-                            control={<Radio />}
-                            label="QOM"
-                          />
-                        </RadioGroup> */}
-                      </Col>
-                    </Row>
-                  </Form.Group>
+                  <Row>
+                    <Col>
+                      <Form.Check
+                        type="switch"
+                        id="QomSwitch"
+                        label="Compare against QOM"
+                        onChange={(e) => {
+                          formik.setFieldValue("UseQom", !e.target.checked);
+                          console.log(formik.values);
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Container>

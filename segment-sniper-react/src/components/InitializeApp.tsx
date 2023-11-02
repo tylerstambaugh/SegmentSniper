@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function InitializeApp({ clientId }: Props) {
-  useRefreshTokenQuery();
+  //useRefreshTokenQuery();
   const setAppConfig = useAppConfigStore((state) => state.setAppConfig);
 
   useEffect(() => {
