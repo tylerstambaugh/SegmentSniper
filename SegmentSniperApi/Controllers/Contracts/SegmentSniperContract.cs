@@ -7,9 +7,9 @@ namespace SegmentSniper.Api.Controllers.Contracts
         [JsonProperty("activityId")]
         public string ActivityId { get; set; }
         [JsonProperty("secondsOff")]
-        public int? SecondsFromKom { get; set; }
+        public int? SecondsOff { get; set; }
         [JsonProperty("percentageOff")]
-        public int? PercentageFromKom { get; set; }
+        public int? PercentageOff { get; set; }
         [JsonProperty("useQom")]
         public bool UseQom { get; set; }
     }

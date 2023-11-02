@@ -10,9 +10,7 @@ export default async function postRefreshToken(
   contract: ApiContract<RefreshTokenRequest>
 ) {
   let headers = new Headers();
-  // headers.append("Content-Type", "application/x-www-form-urlencoded");
-  // headers.append("secure-api-access-type", "CachedExternalAuth");
-
+  headers.append("Content-Type", "application/json");
   // let urlencoded = new URLSearchParams();
   // urlencoded.append("grant_type", "refresh_token");
   // urlencoded.append("refresh_token", contract.request!.refreshToken ?? "");

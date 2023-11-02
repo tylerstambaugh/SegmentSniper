@@ -87,8 +87,8 @@ namespace SegmentSniper.Api.Controllers
             {
                 UserId = userId,
                 ActivityId = contract.ActivityId,
-                SecondsFromKom = contract.SecondsFromKom,
-                PercentageFromKom = contract.PercentageFromKom,
+                SecondsFromKom = contract.SecondsOff,
+                PercentageFromKom = contract.PercentageOff,
                 UseQom = contract.UseQom,
             };
 
@@ -101,9 +101,16 @@ namespace SegmentSniper.Api.Controllers
         }
 
 
-        //get detailed segment by ID
+        [HttpPost]
+        [Authorize]
+        [Route("starSegment/$segmentId")]
+        public IActionResult StarSegment(string segmentId)
+        {
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-        //star segment
+            throw new NotImplementedException();
+        }
+        //get detailed segment by ID
 
     }
 }

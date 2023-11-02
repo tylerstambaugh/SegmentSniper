@@ -34,7 +34,7 @@ const Segments = (props: SegmentsProps) => {
       state.setSnipedSegmentsList,
     ]);
 
-    const snipeSegments = useSnipeSegments();
+  const snipeSegments = useSnipeSegments();
 
   const [segmentDetailsModalData, setSegmentDetailsModalData] =
     useState<string>();
@@ -50,6 +50,7 @@ const Segments = (props: SegmentsProps) => {
   }
 
   async function handleSnipeSegments(request: SnipeSegmentsRequest) {
+    request.activityId = props.selectedActivity;
     snipeSegments.mutateAsync(request);
   }
 

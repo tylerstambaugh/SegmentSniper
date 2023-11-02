@@ -17,10 +17,19 @@ import {
   useHandleActivitySearch,
 } from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
+import useSegmentsListStore from "../../../stores/useSegmentsListStore";
+import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
+import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
   const handleActivitySearch = useHandleActivitySearch();
+  const resetSegmentsList = useSegmentsListStore(
+    (state) => state.resetSegmentsList
+  );
+  const resetSnipedSegments = useSnipedSegmentsListStore(
+    (state) => state.resetSnipedSegmentsList
+  );
   interface ActivityListLookupForm {
     activityId?: string | null;
     startDate?: Date | null;
@@ -61,6 +70,8 @@ function ActivityListLookupForm() {
   };
 
   async function handleSearch(request: ActivitySearchRequest) {
+    resetSegmentsList();
+    resetSnipedSegments();
     handleActivitySearch.mutateAsync(request);
   }
 
@@ -98,6 +109,14 @@ function ActivityListLookupForm() {
     });
     formik.setErrors({});
     setValidated(false);
+  };
+
+  const disableSearch = (): boolean => {
+    return false;
+    // return (
+    //   formik.values.activityId === null &&
+    //   (formik.values.endDate === null || formik.values.startDate === null)
+    // );
   };
 
   useEffect(() => {
@@ -255,7 +274,9 @@ function ActivityListLookupForm() {
                         type="submit"
                         variant="primary"
                         className={"me-1 primary-rounded-button"}
-                        disabled={handleActivitySearch.isLoading}
+                        disabled={
+                          handleActivitySearch.isLoading || disableSearch()
+                        }
                       >
                         Search
                       </Button>
