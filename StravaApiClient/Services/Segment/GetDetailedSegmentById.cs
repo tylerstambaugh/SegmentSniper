@@ -14,8 +14,8 @@ namespace StravaApiClient.Services.Segment
         {
             ValidateContract(contract);
 
-            var apiResponse = _stravaRequestClient.GetAsync<DetailedSegmentApiModel>($"segment/{contract.SegmentId}");
-            return new GetDetailedSegmentByIdContract.Result(apiResponse.Result);
+            var apiResponse = await _stravaRequestClient.GetAsync<DetailedSegmentApiModel>($"segment/{contract.SegmentId}");
+            return new GetDetailedSegmentByIdContract.Result(apiResponse);
         }
 
         private void ValidateContract(GetDetailedSegmentByIdContract contract)

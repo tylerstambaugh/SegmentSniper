@@ -1,21 +1,20 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
-import useTokenDataStore from "../../stores/useTokenStore";
 import useUserStore from "../../stores/useUserStore";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { useEffect } from "react";
+import { useResetAllStores } from "../../hooks/resetAllStores";
+import useTokenDataStore from "../../stores/useTokenStore";
 
 export default function LogoutWidget() {
-  const [tokenData, setTokenData] = useTokenDataStore((state) => [
-    state.tokenData,
-    state.setTokenData,
-  ]);
-  const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
+  const resetAllStores = useResetAllStores();
+
+  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const user = useUserStore((state) => state.user);
 
   //need to call the api and revoke the token
   useEffect(() => {
-    setUser(null);
-    setTokenData(null);
+    resetAllStores();
   }, []);
 
   return (

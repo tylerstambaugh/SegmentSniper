@@ -10,9 +10,8 @@ namespace StravaApiClient
     {
         private readonly IStravaRequestClientConfiguration _config;
        
-
-        private string _accessToken { get; set; }
-        private DateTime _tokenExpiration { get; set; }
+        private  string _accessToken { get; set; }
+        private  DateTime _tokenExpiration { get; set; }
         private int _tokenExpirationBufferMinutes = 10;
 
         private HttpMessageHandler _handler { get; set; }
