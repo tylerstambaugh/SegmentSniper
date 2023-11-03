@@ -38,6 +38,12 @@ const useTokenDataStore = create<TokenDataStore>()(
             set((state) => {
               state.isAuthenticated = isAuthenticated;
             }),
+          resetTokenDataStore: () => {
+            set((state) => {
+              state.tokenData = null;
+              state.isAuthenticated = false;
+            });
+          },
         }),
         persistOptions
       ),
@@ -53,4 +59,5 @@ interface TokenDataStore {
   isAuthenticated: boolean;
   setTokenData: (tokenData: TokenData | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
+  resetTokenDataStore: () => void;
 }
