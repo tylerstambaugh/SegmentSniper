@@ -67,6 +67,7 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddAuthentication(options =>
             {

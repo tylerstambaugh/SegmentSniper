@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Duende.IdentityServer.Validation;
-using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
@@ -9,7 +7,6 @@ using StravaApiClient;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
-using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -19,7 +16,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
-        public SnipeSegmentsActionHandler( ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+        public SnipeSegmentsActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
@@ -29,12 +26,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         public async Task<SnipeSegmentsRequest.Response> Handle(SnipeSegmentsRequest request)
         {
             ValidatedRequest(request);
-
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try
                 {
+                    _stravaRequestService.UserId = request.UserId;
                     _stravaRequestService.RefreshToken = token.RefreshToken;
                     //get detailed activity by Id
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
@@ -112,7 +109,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
             else
             {
-                throw new ApplicationException("Something went wrong 'handling' the request");
+                throw new ApplicationException("Something went wrong 'handling the request");
             }
 
 

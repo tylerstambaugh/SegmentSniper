@@ -1,11 +1,7 @@
-﻿using StravaApiClient.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StravaApiClient
 {
@@ -14,16 +10,22 @@ namespace StravaApiClient
         private readonly IStravaRequestClientConfiguration _config;
         private readonly IStravaRequestClient _client;
 
-        public StravaRequestService(IStravaRequestClientConfiguration config)
+        public StravaRequestService(IStravaRequestClientConfiguration config, IMemoryCache cache)
         {
             _config = config;
-            _client = new StravaRequestClient(config);
+            _client = new StravaRequestClient(config, cache);
         }
 
         public string RefreshToken
         {
             get => _config.RefreshToken;
             set => _config.RefreshToken = value;
+        }
+
+        public string UserId
+        {
+            get => _config.UserId;
+            set => _config.UserId = value;
         }
 
         public Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract)
