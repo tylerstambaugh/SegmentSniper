@@ -81,7 +81,7 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
                 <Col>
                   <Form.Group controlId="secondsFromLeader">
                     <Row>
-                      <Col md={6} className={"pt-2"}>
+                      <Col md={6} className={"pt-2 pb-0 "}>
                         <Form.Label>Seconds From Leader:</Form.Label>
                       </Col>
                       <Col md={3}>
@@ -115,12 +115,9 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
               </Row>
               <Row>
                 <Col>
-                  <Form.Group
-                    controlId="percentageFromLeader"
-                    className=" pb-4"
-                  >
+                  <Form.Group controlId="percentageFromLeader" className="pb-0">
                     <Row>
-                      <Col md={6} className={"pt-2"}>
+                      <Col md={6} className={"pt-2 pb-5"}>
                         <Form.Label>Percentage From Leader:</Form.Label>
                       </Col>
                       <Col md={3}>
@@ -150,10 +147,12 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
                 <Col>
                   <Row>
                     <Col>
+                      <p>Compare against QOM:</p>
+                    </Col>
+                    <Col>
                       <Form.Check
                         type="switch"
                         id="QomSwitch"
-                        label="Compare against QOM"
                         onChange={(e) => {
                           formik.setFieldValue("UseQom", !e.target.checked);
                           console.log(formik.values);

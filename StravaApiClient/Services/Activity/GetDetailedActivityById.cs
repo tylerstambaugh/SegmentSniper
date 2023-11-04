@@ -16,11 +16,11 @@ namespace StravaApiClient.Services.Activity
         {
             ValidateContract(contract);
 
-            var apiResponse = _stravaRequestClient.GetAsync<DetailedActivityApiModel>($"activities/{contract.ActivityId}");
+            var apiResponse =  await _stravaRequestClient.GetAsync<DetailedActivityApiModel>($"activities/{contract.ActivityId}");
 
             return new GetDetailedActivityByIdContract.Result()
             {
-                DetailedActivity = apiResponse.Result
+                DetailedActivity = apiResponse
             };
         }
 

@@ -51,7 +51,6 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IAddStravaToken, AddStravaToken>();
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
-            services.AddScoped<IGetDetailedSegmentById, GetDetailedSegmentById>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();

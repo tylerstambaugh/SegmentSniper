@@ -35,6 +35,11 @@ const useUserStore = create<UserStore>()(
             set((state) => {
               state.user = user;
             }),
+          resetUserStore: () => {
+            set((state) => {
+              state.user = null;
+            });
+          },
         }),
         persistOptions
       ),
@@ -48,4 +53,5 @@ export default useUserStore;
 interface UserStore {
   user: User | null;
   setUser: (user: User | null) => void;
+  resetUserStore: () => void;
 }
