@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using StravaApiClient.Configuration;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,11 +10,11 @@ namespace StravaApiClient
     public class StravaRequestClient : IStravaRequestClient
     {
         private readonly IStravaRequestClientConfiguration _config;
-       
+        private readonly IMemoryCache _cache;
 
         private string _accessToken { get; set; }
         private DateTime _tokenExpiration { get; set; }
-        private int _tokenExpirationBufferMinutes = 10;
+        private int _tokenExpirationBufferSeconds = 120;
 
         private HttpMessageHandler _handler { get; set; }
         private HttpMessageHandler Handler
@@ -22,22 +23,20 @@ namespace StravaApiClient
             set => _handler = value;
         }
 
-        public StravaRequestClient(IStravaRequestClientConfiguration config) : this(null, config)
+        public StravaRequestClient(IStravaRequestClientConfiguration config, IMemoryCache cache) : this(null, config, cache)
         {
         }
 
-        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config)
+        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config, IMemoryCache cache)
         {
             _handler = handler;
             _config = config;
+            _cache = cache;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string url) where TResponse : class
         {
-            if (!TokenIsValid())
-            {
-                await PostRefreshToken();
-            }
+            _accessToken = await GetAccessToken();
 
             TResponse result = null;
             using (var httpClient = new HttpClient(Handler))
@@ -68,10 +67,7 @@ namespace StravaApiClient
 
         private async Task<TResponse> Post<TResponse>(string url, StringContent data) where TResponse : class
         {
-            if (!TokenIsValid())
-            {
-                await PostRefreshToken();
-            }
+            _accessToken = await GetAccessToken();
 
             TResponse result = null;
             using (var httpClient = new HttpClient(Handler))
@@ -90,10 +86,7 @@ namespace StravaApiClient
 
         public async Task<TResponse> PutAsync<TRequest, TResponse>(string url, TRequest data) where TResponse : class
         {
-            if (!TokenIsValid())
-            {
-                await PostRefreshToken();
-            }
+            _accessToken = await GetAccessToken();
 
             TResponse result = null;
             using (var httpClient = new HttpClient(Handler))
@@ -163,11 +156,11 @@ namespace StravaApiClient
             }
         }
 
-        private bool TokenIsValid()
-        {
-            return _accessToken != null
-                && DateTime.Now.Subtract(TimeSpan.FromMinutes(_tokenExpirationBufferMinutes)) < _tokenExpiration;
-        }
+        //private bool TokenIsValid()
+        //{
+        //    return _accessToken != null
+        //        && DateTime.Now.Subtract(TimeSpan.FromMinutes(_tokenExpirationBufferSeconds)) < _tokenExpiration;
+        //}
 
         public async Task PostRefreshToken()
         {
@@ -186,8 +179,21 @@ namespace StravaApiClient
                 var stringResult = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<RefreshTokenResponse>(stringResult);
 
-                _accessToken = result.AccessToken;
-                _tokenExpiration = DateTime.Now.AddSeconds(result.ExpiresIn);
+                _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
+                //_tokenExpiration = DateTime.Now.AddSeconds(result.ExpiresIn);
+            }
+        }
+
+        private async Task<string> GetAccessToken()
+        {
+            if (_cache.TryGetValue(_config.UserId, out string accessToken))
+            {
+                return accessToken;
+            }
+            else
+            {
+                await PostRefreshToken();
+                return _cache.Get<string>(_config.UserId);
             }
         }
 
@@ -208,5 +214,4 @@ namespace StravaApiClient
 }
 
 
-//https://localhost:44411/api/ConnectWithStrava/ExchangeToken/id=09729500-2fcd-4e09-b5e1-5f6f210dad90?state=""&code=ac351fe304418bd91e5df797a3390483094ebfb9&scope=read,activity:write,activity:read_all,profile:write,profile:read_all
 

@@ -12,5 +12,6 @@ namespace StravaApiClient
         Task<GetDetailedSegmentByIdContract.Result> GetDetailedSegmentById(GetDetailedSegmentByIdContract contract);
 
         string RefreshToken { get; set;  }
+        string UserId { get; set; }
     }
 }

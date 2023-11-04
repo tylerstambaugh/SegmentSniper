@@ -35,6 +35,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 try
                 {
+                    _stravaRequestService.UserId = request.UserId;   
                     _stravaRequestService.RefreshToken = token.RefreshToken;
 
                     ActivityType parsedActivity;
