@@ -25,7 +25,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             _activityAdapter = activityAdapter;
         }
 
-        public async Task<GetActivityListByIdRequest.Response> Handle(GetActivityListByIdRequest request)
+        public async Task<GetActivityListByIdRequest.Response> HandleAsync(GetActivityListByIdRequest request)
         {
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();

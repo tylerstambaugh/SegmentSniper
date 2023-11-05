@@ -112,8 +112,6 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 throw new ApplicationException("Something went wrong 'handling the request");
             }
 
-
-
         }
 
         private XomsTimes GetXomTimeFromStrings(Xoms xoms)

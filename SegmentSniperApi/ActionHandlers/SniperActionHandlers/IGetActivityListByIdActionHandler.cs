@@ -5,7 +5,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
     public interface IGetActivityListByIdActionHandler
     {
-        Task<GetActivityListByIdRequest.Response> Handle(GetActivityListByIdRequest request);
+        Task<GetActivityListByIdRequest.Response> HandleAsync(GetActivityListByIdRequest request);
     }
 
     public class GetActivityListByIdRequest

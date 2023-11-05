@@ -27,7 +27,8 @@ namespace StravaApiClient.Services.Activity
         public void ValidateContract(GetDetailedActivityByIdContract contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
-            //add more validations
+            
+            if (contract.ActivityId == null) throw new ArgumentNullException($"{nameof(contract.ActivityId)}");
         }
     }
 
