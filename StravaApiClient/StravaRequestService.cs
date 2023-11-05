@@ -45,5 +45,11 @@ namespace StravaApiClient
             var service = new GetDetailedSegmentById(_client);
             return service.ExecuteAsync(contract);
         }
+
+        public Task<StarSegmentContract.Result> StarSegment(StarSegmentContract contract)
+        {
+            var service = new StarSegment(_client);
+            return service.ExecuteAsync(contract);
+        }
     }
 }
