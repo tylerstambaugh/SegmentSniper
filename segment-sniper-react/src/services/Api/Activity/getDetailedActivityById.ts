@@ -8,7 +8,7 @@ export type DetailedActivityByIdRequest = {
 };
 
 export type DetailedActivityResponse = {
-  detailedActivity: DetailedActivity[];
+  detailedActivity: DetailedActivity;
 };
 
 export default async function getDetailedActivityById(
