@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useFormik } from "formik";
@@ -53,8 +53,8 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
       props.handleSnipeSegments(snipeProps);
     },
     validationSchema,
-    validateOnBlur: true,
-    validateOnChange: true,
+    validateOnBlur: validated,
+    validateOnChange: validated,
   });
 
   return (

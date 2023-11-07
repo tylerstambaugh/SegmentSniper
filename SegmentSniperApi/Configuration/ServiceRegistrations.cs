@@ -30,6 +30,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
             services.AddScoped<IExchangeAuthCodeForTokenHandler, ExchangeAuthCodeForTokenHandler>();
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
+            services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
 
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();

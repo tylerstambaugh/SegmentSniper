@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   DatatableWrapper,
   Filter,
@@ -19,6 +18,7 @@ export interface SegmentListDataTableProps {
   selectedActivityId: string;
   snipeLoading: boolean;
   handleShowSnipeSegmentsModal: () => void;
+  handleShowSegmentDetails: (segmentId: string) => void;
 }
 
 export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
@@ -49,7 +49,7 @@ export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
           variant="outline-primary"
           size="sm"
           onClick={() => {
-            alert(`We'll show details`);
+            props.handleShowSegmentDetails(row.segmentId!);
           }}
         >
           Details

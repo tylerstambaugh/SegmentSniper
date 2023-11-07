@@ -6,7 +6,7 @@ import { SegmentDetails } from "../../../models/Segment/SegmentDetails";
 export interface SegmentDetailsModalProps {
   show: boolean;
   handleClose: () => void;
-  segmentId?: string;
+  segment?: SegmentDetails;
 }
 
 function SegmentDetailsModal(props: SegmentDetailsModalProps) {
@@ -14,7 +14,7 @@ function SegmentDetailsModal(props: SegmentDetailsModalProps) {
     <>
       <Modal show={props.show} onHide={() => props.handleClose()}>
         <Modal.Header closeButton>
-          <Modal.Title>Segment Sniping Parameters</Modal.Title>
+          <Modal.Title>Segment Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>

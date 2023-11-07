@@ -18,7 +18,6 @@ import {
 } from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
 import useSegmentsListStore from "../../../stores/useSegmentsListStore";
-import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
 import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 
 function ActivityListLookupForm() {

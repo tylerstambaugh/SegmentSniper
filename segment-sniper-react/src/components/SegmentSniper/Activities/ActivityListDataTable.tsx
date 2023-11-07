@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   DatatableWrapper,
   Filter,
@@ -8,15 +8,7 @@ import {
   TableColumnType,
   TableHeader,
 } from "react-bs-datatable";
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Container,
-  Row,
-  Table,
-  ToggleButton,
-} from "react-bootstrap";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ActivityListItem } from "../../../models/Activity/ActivityListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
@@ -40,7 +32,6 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
   const resetSegmentList = useSegmentsListStore(
     (state) => state.resetSegmentsList
   );
-  const [checked, setChecked] = useState(false);
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const tableBody: ArrayElementType[] = activityList.map((item) => ({
     ...item,
@@ -129,7 +120,7 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
                 <Col className="d-flex justify-content-end mx-5">
                   <Button
                     className="px-5"
-                    onClick={(e) => {
+                    onClick={() => {
                       clearSearchResults();
                       setSelectedRow("");
                     }}
