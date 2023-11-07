@@ -22,6 +22,7 @@ import { faStar as regularStar } from "@fortawesome/free-solid-svg-icons";
 
 export interface SnipedSegmentListDataTableProps {
   clearSnipedSegments: () => void;
+  handleShowSegmentDetails: (segmentId: string) => void;
   handleStarSnipedSegment: (props: any) => void;
 }
 
@@ -211,7 +212,7 @@ export const SnipedSegmentListDataTable = (
               <Col className="d-flex justify-content-center pb-3">
                 <Button
                   variant="primary"
-                  onClick={(e) => props.clearSnipedSegments()}
+                  onClick={() => props.clearSnipedSegments()}
                 >
                   Reset
                 </Button>

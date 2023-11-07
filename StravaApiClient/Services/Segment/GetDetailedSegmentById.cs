@@ -14,13 +14,14 @@ namespace StravaApiClient.Services.Segment
         {
             ValidateContract(contract);
 
-            var apiResponse = await _stravaRequestClient.GetAsync<DetailedSegmentApiModel>($"segment/{contract.SegmentId}");
+            var apiResponse = await _stravaRequestClient.GetAsync<DetailedSegmentApiModel>($"segments/{contract.SegmentId}");
             return new GetDetailedSegmentByIdContract.Result(apiResponse);
         }
 
         private void ValidateContract(GetDetailedSegmentByIdContract contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
+            if(contract.SegmentId == null) throw new ArgumentException("Segment Id must be provided", nameof(contract.SegmentId));
         }
     }
 }
