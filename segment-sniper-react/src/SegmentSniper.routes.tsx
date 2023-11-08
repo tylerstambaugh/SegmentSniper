@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { AppRoutes } from "./enums/AppRoutes";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import PrivateRoute from "./components/Authentication/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
@@ -38,6 +39,7 @@ export default function Routes({ defaultPage }: Props) {
       <RRRoutes>
         <Route path="/app" element={<Outlet />}>
           <Route path={AppRoutes.Home} element={<Home />} />
+          <Route path={AppRoutes.ForgotPassword} element={<ForgotPassword />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
           <Route path={AppRoutes.Logout} element={<Logout />} />
