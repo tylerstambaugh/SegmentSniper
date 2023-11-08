@@ -133,45 +133,59 @@ export default function LoginWidget() {
                           {formik.errors.password}
                         </Form.Control.Feedback>
                       </Form.Group>
-                      <div className="d-grid">
-                        {loginUser.isLoading ? (
-                          <Button
-                            type="submit"
-                            variant="secondary"
-                            className={"me-1"}
-                          >
-                            <Spinner
-                              as="span"
-                              variant="light"
-                              size="sm"
-                              role="status"
-                              aria-hidden="true"
-                              animation="border"
-                            />
-                          </Button>
-                        ) : (
-                          <Button
-                            type="submit"
-                            variant="primary"
-                            className={"me-1 primary-rounded-button "}
-                            disabled={loginUser.isLoading}
-                          >
-                            Login
-                          </Button>
-                        )}
-                      </div>
+                      <Row className="d-flex justify-content-center">
+                        <Col xs={12} md={12} lg={8} xl={8}>
+                          <div className="d-grid">
+                            {loginUser.isLoading ? (
+                              <Button
+                                type="submit"
+                                variant="secondary"
+                                className={"me-1"}
+                              >
+                                <Spinner
+                                  as="span"
+                                  variant="light"
+                                  size="sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                  animation="border"
+                                />
+                              </Button>
+                            ) : (
+                              <Button
+                                type="submit"
+                                variant="primary"
+                                className={"me-1 primary-rounded-button "}
+                                disabled={loginUser.isLoading}
+                              >
+                                Login
+                              </Button>
+                            )}
+                          </div>
+                        </Col>
+                      </Row>
                     </Form>
-                    <div className="mt-3">
-                      <p className="mb-0  text-center">
-                        Don't have an account?{" "}
+                    <Row className="d-flex justify-content-around mt-2">
+                      <Col xs={12} md={8} lg={10} xl={6}>
                         <Link
-                          to={AppRoutes.Register}
+                          to={AppRoutes.ForgotPassword}
                           className="text-primary fw-bold"
                         >
-                          Sign Up
+                          Forgot Password
                         </Link>
-                      </p>
-                    </div>
+                      </Col>
+                      <Col xs={12} md={8} lg={10} xl={6}>
+                        <p className="mb-0  text-center">
+                          Don't have an account?{" "}
+                          <Link
+                            to={AppRoutes.Register}
+                            className="text-primary fw-bold"
+                          >
+                            Sign Up
+                          </Link>
+                        </p>
+                      </Col>
+                    </Row>
                   </div>
                 </div>
               </Card.Body>
