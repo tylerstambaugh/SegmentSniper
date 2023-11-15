@@ -41,9 +41,18 @@ namespace SegmentSniper.Services.AuthServices
 
                 if (createUser.Succeeded)
                 {
+
+                    await _userManager.AddToRoleAsync(userToAdd, "User");
+
                     var dbUser = _context.Users.Where(x => x.Email == contract.RegisterUser.Email).FirstOrDefault();
 
-                    user.RegisteredUser = new UserDto(dbUser.Id, dbUser.FirstName, dbUser.Email, false);
+                    user.RegisteredUser = new UserDto 
+                    { 
+                        Id = dbUser.Id, 
+                        FirstName = dbUser.FirstName, 
+                        Email = dbUser.Email, 
+                        HasStravaTokenData = false
+                    };
                 }
             }
             catch (Exception ex)
