@@ -1,11 +1,7 @@
-
-
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Net.Http.Headers;
 using SegmentSniper.Api.Configuration;
-using System.Configuration;
 using System.Net;
 
 var configuration = new ConfigurationBuilder()
@@ -13,7 +9,7 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
-var builder = WebApplicationBuilderConfig.ConfigureBuilder(configuration);
+var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
 
@@ -35,7 +31,6 @@ app.UseCors("AllowReactApp");
 
 app.UseIdentityServer();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -47,6 +42,8 @@ app.MapControllers();
 //app.MapControllerRoute(
 //    name: "default",
 //    pattern: "api/");
+
+await SeedData.Initialize(app.Services);
 
 var spaPath = "/app";
 if (app.Environment.IsDevelopment())
@@ -64,7 +61,8 @@ else
     app.Map(new PathString(spaPath), client =>
     {
         client.UseSpaStaticFiles();
-        client.UseSpa(spa => {
+        client.UseSpa(spa =>
+        {
             spa.Options.SourcePath = "SegmentSniper.React";
 
             // adds no-store header to index page to prevent deployment issues (prevent linking to old .js files)
@@ -87,7 +85,8 @@ else
 }
 
 app.UseExceptionHandler(
- options => {
+ options =>
+ {
      options.Run(
      async context =>
      {

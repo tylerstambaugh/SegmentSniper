@@ -15,8 +15,7 @@ namespace SegmentSniper.Api.Configuration
 {
     public static class WebApplicationBuilderConfig
     {
-
-        public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
+        public async static Task<WebApplicationBuilder> ConfigureBuilder(IConfiguration configuration)
         {
             //var thumbPrint = configuration["CertificateThumbprint"];
 
@@ -190,7 +189,7 @@ namespace SegmentSniper.Api.Configuration
             //register services:
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
-            ServiceRegistrations.RegisterServices(builder.Services);
+            ServiceRegistrations.RegisterServices(builder.Services);            
 
             return builder;
         }

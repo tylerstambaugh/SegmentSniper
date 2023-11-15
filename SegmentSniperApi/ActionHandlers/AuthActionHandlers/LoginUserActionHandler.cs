@@ -6,7 +6,6 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
-using static SegmentSniper.Services.AuthServices.Token.ICreateToken;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -38,9 +37,9 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             {
 
                 var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
-                
+
                 //need to check if user.LoggedInUser is null and handle
-                if(user == null)
+                if (user == null)
                 {
                     return new LoginUserRequest.Response
                     {
@@ -73,8 +72,14 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 
                     var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken != null);
 
-                    var userDto = new UserDto(authenticatedUser.Id, authenticatedUser.FirstName, authenticatedUser.Email, hasStravaTokenData);
-
+                    var userDto = new UserDto
+                    {
+                        Id = authenticatedUser.Id,
+                        FirstName = authenticatedUser.FirstName,
+                        Email = authenticatedUser.Email,
+                        HasStravaTokenData = hasStravaTokenData,
+                        Roles = new List<string>()
+                    };
 
                     return new LoginUserRequest.Response
                     {
@@ -87,7 +92,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                     throw new ApplicationException("Unable to login user");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Unable to login user", ex);
             }
