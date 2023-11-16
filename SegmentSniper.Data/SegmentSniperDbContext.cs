@@ -29,6 +29,7 @@ namespace SegmentSniper.Data
             base.OnModelCreating(modelBuilder);
 
             // Override default AspNet Identity table names
+            //modelBuilder.Entity<IdentityRole>().HasKey(r => r.Id);
             modelBuilder.Entity<ApplicationUser>(entity => { entity.ToTable(name: "Users"); });
             modelBuilder.Entity<IdentityRole>(entity => { entity.ToTable(name: "Roles"); });
             modelBuilder.Entity<IdentityUserRole<string>>(entity => { entity.ToTable("UserRoles"); });
@@ -36,7 +37,13 @@ namespace SegmentSniper.Data
             modelBuilder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable("UserLogins"); });
             modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
             modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
-        }
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.UserRoles)
+                .WithOne()
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+                    }
 
     }
 }

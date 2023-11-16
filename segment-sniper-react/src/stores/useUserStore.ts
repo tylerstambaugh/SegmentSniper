@@ -16,6 +16,7 @@ export type User = {
   firstName?: string | null;
   emailAddress?: string | null;
   hasStravaTokenData?: boolean;
+  roles?: string[];
 };
 
 const initialUserState: User = {
@@ -23,6 +24,7 @@ const initialUserState: User = {
   firstName: null,
   emailAddress: null,
   hasStravaTokenData: false,
+  roles: [],
 };
 
 const useUserStore = create<UserStore>()(

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth.User;

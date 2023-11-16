@@ -72,8 +72,6 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
                serviceProvider, // This is the service provider
                null); // TODO: Provide ILogger<UserManager<ApplicationUser>>
 
-            _getUserRoles = new GetUserRoles(_userMgr);
-            _getStravaTokenForUser = new GetStravaTokenForUser(_context, _mapper);
 
             var inMemorySettings = new Dictionary<string, string> {
                 {"TopLevelKey", "TopLevelValue"},
@@ -92,6 +90,9 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
             _createToken = new CreateToken(_configuration);
             _generateRefreshToken = new GenerateRefreshToken();
 
+
+            _getUserRoles = new GetUserRoles(_userMgr, _configuration);
+            _getStravaTokenForUser = new GetStravaTokenForUser(_context, _mapper);
             Handler = new LoginUserActionHandler(_authenticateUserService, _createToken, _userMgr, _configuration, _generateRefreshToken, _getUserRoles, _getStravaTokenForUser);
 
             InternalArrangeAsync();
