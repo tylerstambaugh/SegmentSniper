@@ -16,7 +16,8 @@ namespace SegmentSniper.Services.AuthServices
         public UserLogin UserLogin { get; }
         public class Result
         {
-            public ApplicationUser LoggedInUser { get; set; }
+            public ApplicationUser? LoggedInUser { get; set; }
+            public List<string>? Roles { get; set; }
         }
     }
 

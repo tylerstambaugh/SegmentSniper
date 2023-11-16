@@ -22,10 +22,11 @@ namespace SegmentSniper.Services.AuthServices
             var user = await _userMgr.FindByNameAsync(contract.UserLogin.UserName);
             if (user != null && await _userMgr.CheckPasswordAsync(user, contract.UserLogin.Password))
             {
-                //user.Roles = (List<string>) await _userMgr.GetRolesAsync(user);                
+                var roles = (List<string>) await _userMgr.GetRolesAsync(user);                
                 return new AuthenticateUserContract.Result
                 {
                     LoggedInUser = user,
+                    Roles = roles,
                 };
             }
             return null;
