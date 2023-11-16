@@ -9,7 +9,7 @@ namespace SegmentSniper.Services.AuthServices
     }
     public class AuthenticateUserContract
     {
-        public AuthenticateUserContract(UserLogin userLogin)
+        public AuthenticateUserContract(UserLogin userLogin )
         {
             UserLogin = userLogin;
         }

@@ -14,7 +14,7 @@ namespace SegmentSniper.Api.Configuration
             {
                 var context = scope.ServiceProvider.GetService<SegmentSniperDbContext>();
 
-                string[] roles = new string[] { "Admin", "User", "PremiumUser" };
+                List<string> roles = new List<string>{ "Admin", "User", "PremiumUser" };
 
                 foreach (string role in roles)
                 {
@@ -27,7 +27,7 @@ namespace SegmentSniper.Api.Configuration
                             Name = role,
                             NormalizedName = role.ToUpper(),
                             ConcurrencyStamp = Guid.NewGuid().ToString()
-                    });
+                        });
                     }
                 }
 
@@ -62,7 +62,7 @@ namespace SegmentSniper.Api.Configuration
             }
         }
 
-        public static async Task<IdentityResult> AssignRoles(IServiceProvider serviceProvider, string email, string[] roles)
+        public static async Task<IdentityResult> AssignRoles(IServiceProvider serviceProvider, string email, List<string> roles)
         {
             using (var scope = serviceProvider.CreateScope())
             {
