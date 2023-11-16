@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -21,7 +22,12 @@ namespace SegmentSniper.Api.Configuration
 
                     if (!context.Roles.Any(r => r.Name == role))
                     {
-                        await roleStore.CreateAsync(new IdentityRole(role));
+                        await roleStore.CreateAsync(new IdentityRole
+                        {
+                            Name = role,
+                            NormalizedName = role.ToUpper(),
+                            ConcurrencyStamp = Guid.NewGuid().ToString()
+                    });
                     }
                 }
 
@@ -50,19 +56,23 @@ namespace SegmentSniper.Api.Configuration
 
                 }
 
-                AssignRoles(serviceProvider, user.Email, roles);
+                 await AssignRoles(serviceProvider, user.Email, roles);
 
                 await context.SaveChangesAsync();
             }
         }
 
-        public static async Task<IdentityResult> AssignRoles(IServiceProvider services, string email, string[] roles)
+        public static async Task<IdentityResult> AssignRoles(IServiceProvider serviceProvider, string email, string[] roles)
         {
-            UserManager<ApplicationUser> _userManager = services.GetService<UserManager<ApplicationUser>>();
-            ApplicationUser user = await _userManager.FindByEmailAsync(email);
-            var result = await _userManager.AddToRolesAsync(user, roles);
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetService<SegmentSniperDbContext>();
+                UserManager<ApplicationUser> _userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+                ApplicationUser user = await _userManager.FindByEmailAsync(email);
+                var result = await _userManager.AddToRolesAsync(user, roles);
 
-            return result;
+                return result;
+            }
         }
     }
 }
