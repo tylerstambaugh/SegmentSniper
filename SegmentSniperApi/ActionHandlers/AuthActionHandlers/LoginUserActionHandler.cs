@@ -35,7 +35,6 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             ValidateRequest(request);
             try
             {
-
                 var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
 
                 //need to check if user.LoggedInUser is null and handle

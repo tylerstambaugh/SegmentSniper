@@ -31,21 +31,6 @@ export default function MainMenu() {
                     </Link>
                   </Col>
                 </Row>
-                <Row>
-                  <Col
-                    md={12}
-                    className="d-flex p-2 mb-2 justify-content-center"
-                  >
-                    <Link
-                      to="./athlete"
-                      className="primary-rounded-button
-                      "
-                      style={{ width: "155px" }}
-                    >
-                      Athlete Details
-                    </Link>
-                  </Col>
-                </Row>
                 {user?.roles?.some((r) => r.toString() === "Admin") ? (
                   <Row>
                     <Col
@@ -53,7 +38,7 @@ export default function MainMenu() {
                       className="d-flex p-2 mb-2 justify-content-center"
                     >
                       <Link
-                        to="./admin"
+                        to={AppRoutes.Admin}
                         className="primary-rounded-button
                       "
                         style={{ width: "155px" }}

@@ -5,7 +5,7 @@ import postLogin, {
 } from "../../../services/Api/Auth/postLogin";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useTokenDataStore from "../../../stores/useTokenStore";
-import useUserStore, { User } from "../../../stores/useUserStore";
+import useUserStore from "../../../stores/useUserStore";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 
 export const usePostLogin = () => {

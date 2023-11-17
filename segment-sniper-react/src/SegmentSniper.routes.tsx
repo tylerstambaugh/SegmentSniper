@@ -57,7 +57,7 @@ export default function Routes({ defaultPage }: Props) {
           <Route
             path={AppRoutes.Dashboard}
             element={
-              <PrivateRoute>
+              <PrivateRoute userRoles={[]}>
                 <Dashboard />
               </PrivateRoute>
             }
