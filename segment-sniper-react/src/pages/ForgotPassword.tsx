@@ -1,6 +1,6 @@
 import ForgotPasswordWidget from "../components/Authentication/ForgotPasswordWidget";
 
-function Login() {
+function ForgotPassword() {
   return (
     <>
       <ForgotPasswordWidget />
@@ -8,4 +8,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ForgotPassword;

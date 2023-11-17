@@ -1,8 +1,11 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
+import useUserStore from "../stores/useUserStore";
 
 export default function MainMenu() {
+  const user = useUserStore((state) => state.user);
+
   return (
     <>
       <Row className="d-flex justify-content-center ">
@@ -43,22 +46,25 @@ export default function MainMenu() {
                     </Link>
                   </Col>
                 </Row>
-
-                <Row>
-                  <Col
-                    md={12}
-                    className="d-flex p-2 mb-2 justify-content-center"
-                  >
-                    <Link
-                      to="./token-maintenance"
-                      className="primary-rounded-button
-                      "
-                      style={{ width: "155px" }}
+                {user?.roles?.some((r) => r.toString() === "Admin") ? (
+                  <Row>
+                    <Col
+                      md={12}
+                      className="d-flex p-2 mb-2 justify-content-center"
                     >
-                      Admin
-                    </Link>
-                  </Col>
-                </Row>
+                      <Link
+                        to="./admin"
+                        className="primary-rounded-button
+                      "
+                        style={{ width: "155px" }}
+                      >
+                        Admin
+                      </Link>
+                    </Col>
+                  </Row>
+                ) : (
+                  <></>
+                )}
               </div>
             </Card.Body>
           </Card>
