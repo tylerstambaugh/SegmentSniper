@@ -73,7 +73,7 @@ export default function Routes({ defaultPage }: Props) {
           <Route
             path={AppRoutes.Snipe}
             element={
-              <PrivateRoute>
+              <PrivateRoute userRoles={[UserRole.User]}>
                 <SegmentSniper />
               </PrivateRoute>
             }
