@@ -10,8 +10,8 @@ function SegmentSniper() {
   return (
     <>
       <ActivityListLookupForm />
-      <ActivityListDataTable setSelectedActivity={setSelectedActivity} />
-      <Segments selectedActivity={selectedActivity} />
+      {/* <ActivityListDataTable setSelectedActivity={setSelectedActivity} />
+      <Segments selectedActivity={selectedActivity} /> */}
     </>
   );
 }

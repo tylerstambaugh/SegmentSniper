@@ -4,7 +4,7 @@ export interface ActivityListItem {
   name?: string;
   activityId?: string;
   type?: string;
-  startDate?: Date;
+  startDate?: string;
   distance?: number;
   elapsedTime?: string;
   achievementCount?: number;

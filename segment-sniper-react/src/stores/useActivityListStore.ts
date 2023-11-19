@@ -12,14 +12,14 @@ const devtoolOptions = {
   name: "Activity List Store",
 };
 
-//const initialState = [];
+const initialState: ActivityListItem[] = [];
 
 const useActivityListStore = create<ActivityListStore>()(
   immer(
     devtools(
       persist(
         (set) => ({
-          activityList: [],
+          activityList: initialState,
           setActivityList: (activityList: ActivityListItem[]) =>
             set((state) => {
               state.activityList = activityList;
