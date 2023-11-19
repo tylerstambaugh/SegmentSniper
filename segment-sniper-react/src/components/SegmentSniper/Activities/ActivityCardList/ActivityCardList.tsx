@@ -23,12 +23,9 @@ const ActivityCardList = () => {
   };
 
   return activityList.length > 0 ? (
-    activityList.map((item) => {
-      <ActivityCard
-        setSelectedActivity={setSelectedActivity}
-        activity={activityList.find((x) => x.activityId === selectedActivity)!}
-      />;
-    })
+    activityList.map((item) => (
+      <ActivityCard setSelectedActivity={setSelectedActivity} activity={item} />
+    ))
   ) : (
     <Container>
       <Row>
@@ -39,3 +36,5 @@ const ActivityCardList = () => {
     </Container>
   );
 };
+
+export default ActivityCardList;

@@ -9,4 +9,6 @@ export enum AppRoutes {
   ConnectWithStravaError = "/app/connect-with-strava-error",
   Snipe = `/app/snipe`,
   Admin = `/app/admin`,
+  ActivitySearchResults = `/app/snipe/activity-search-results`,
+  ActivitySegments = `/app/snipe/activity-segments`,
 }

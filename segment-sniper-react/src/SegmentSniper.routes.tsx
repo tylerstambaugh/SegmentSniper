@@ -19,6 +19,7 @@ import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
 import SegmentSniper from "./pages/SegmentSniper";
 import Admin from "./pages/Admin";
 import { UserRole } from "./enums/Roles";
+import ActivitySearchResults from "./pages/ActivitySearchResults";
 
 interface Props {
   defaultPage?: string;
@@ -75,6 +76,15 @@ export default function Routes({ defaultPage }: Props) {
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
                 <SegmentSniper />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path={AppRoutes.ActivitySearchResults}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <ActivitySearchResults />
               </PrivateRoute>
             }
           />

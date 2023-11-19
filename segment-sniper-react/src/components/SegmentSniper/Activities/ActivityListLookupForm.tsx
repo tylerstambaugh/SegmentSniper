@@ -19,10 +19,13 @@ import {
 import toast from "react-hot-toast";
 import useSegmentsListStore from "../../../stores/useSegmentsListStore";
 import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../../enums/AppRoutes";
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
   const handleActivitySearch = useHandleActivitySearch();
+  const navigate = useNavigate();
   const resetSegmentsList = useSegmentsListStore(
     (state) => state.resetSegmentsList
   );
@@ -91,6 +94,7 @@ function ActivityListLookupForm() {
         activityType: values.activityType as unknown as ActivityTypes,
       };
       handleSearch(searchProps);
+      navigate(AppRoutes.ActivitySearchResults);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -117,11 +121,6 @@ function ActivityListLookupForm() {
     //   (formik.values.endDate === null || formik.values.startDate === null)
     // );
   };
-
-  useEffect(() => {
-    console.log("formik values:", formik.values);
-    console.log("formik errors:", formik.errors);
-  }, [formik.values, formik.errors]);
 
   return (
     <>
