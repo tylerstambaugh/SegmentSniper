@@ -23,9 +23,20 @@ const ActivityCardList = () => {
   };
 
   return activityList.length > 0 ? (
-    activityList.map((item) => (
-      <ActivityCard setSelectedActivity={setSelectedActivity} activity={item} />
-    ))
+    <>
+      <Row>
+        <Col className="justify-content-center">
+          <h3>Activity Search Results</h3>
+        </Col>
+      </Row>
+
+      {activityList.map((item) => (
+        <ActivityCard
+          setSelectedActivity={setSelectedActivity}
+          activity={item}
+        />
+      ))}
+    </>
   ) : (
     <Container>
       <Row>

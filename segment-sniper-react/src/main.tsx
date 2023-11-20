@@ -13,15 +13,14 @@ import AuthenticatedUserMonitor from "./components/Authentication/AuthenticatedU
 import "./App.css";
 
 const client = new QueryClient();
-const clientId = "93654";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={client}>
     <AuthenticatedUserMonitor />
+    <InitializeApp />
     <Router basename="/">
-      <InitializeApp clientId={clientId} />
       <Header />
       <Routes />
     </Router>

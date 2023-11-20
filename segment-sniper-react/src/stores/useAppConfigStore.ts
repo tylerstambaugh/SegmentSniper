@@ -12,11 +12,13 @@ const devtoolOptions = {
 };
 
 export type AppConfig = {
-  clientId: string;
+  clientId?: string;
+  googleMapsApiKey?: string;
 };
 
 const initialAppConfigState: AppConfig = {
   clientId: "",
+  googleMapsApiKey: "",
 };
 
 const useAppConfigStore = create<AppConfigStore>()(

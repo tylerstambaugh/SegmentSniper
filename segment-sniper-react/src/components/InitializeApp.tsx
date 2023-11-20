@@ -1,18 +1,26 @@
 import React, { useEffect } from "react";
 import useAppConfigStore from "../stores/useAppConfigStore";
-import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
+import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
 
-interface Props {
-  clientId: string;
-}
-
-export default function InitializeApp({ clientId }: Props) {
+export default function InitializeApp() {
   //useRefreshTokenQuery();
-  const setAppConfig = useAppConfigStore((state) => state.setAppConfig);
+  const [appConfig, setAppConfig] = useAppConfigStore((state) => [
+    state.appConfig,
+    state.setAppConfig,
+  ]);
+
+  const getClientConfig = useGetClientConfiguration();
+
+  console.log("get client config data:", getClientConfig.data);
 
   useEffect(() => {
-    setAppConfig({ clientId });
-  }, [clientId, setAppConfig]);
+    if (getClientConfig.data) {
+      setAppConfig({
+        clientId: getClientConfig.data.stravaApiClientId,
+        googleMapsApiKey: getClientConfig.data.googleMapsApiKey,
+      });
+    }
+  }, [getClientConfig.data, setAppConfig]);
 
   return null;
 }

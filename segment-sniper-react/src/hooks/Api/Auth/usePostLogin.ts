@@ -13,10 +13,6 @@ export const usePostLogin = () => {
   const [setTokenData] = useTokenDataStore((state) => [state.setTokenData]);
   const [setUser] = useUserStore((state) => [state.setUser]);
 
-  // const query = useQuery({
-  //   queryKey: ["Login"],
-  //   queryFn: trigger,
-  // });
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: LoginRequest) {
@@ -31,6 +27,5 @@ export const usePostLogin = () => {
     setTokenData(response.tokenData);
   }
 
-  //return { query };
   return { mutateAsync, isLoading, isError, error, data };
 };
