@@ -9,9 +9,8 @@ type ActivityListCardProps = {
 //name, date, distance, time, achievements, details, segments
 
 const ActivityCard = (props: ActivityListCardProps) => {
-  console.log("activity card props:", props.activity);
   return (
-    <Container>
+    <Container className="py-2">
       <Row>
         <Col>
           <Card>
@@ -31,8 +30,14 @@ const ActivityCard = (props: ActivityListCardProps) => {
               </ul>
             </Card.Body>
             <Card.Footer>
-              <Button>Details</Button>
-              <Button>Segments</Button>
+              <Row className="justify-content-between">
+                <Col>
+                  <Button>Details</Button>
+                </Col>
+                <Col>
+                  <Button>Segments</Button>
+                </Col>
+              </Row>
             </Card.Footer>
           </Card>
         </Col>
