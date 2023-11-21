@@ -14,7 +14,6 @@ namespace SegmentSniper.Models.UIModels.Activity
         public string ElapsedTime { get; set; }
         public double? MaxSpeed { get; set; }
         public int AchievementCount { get; set; }
-        public string? GearId { get; set; }
         public MapModel? StravaMap { get; set; }
         public List<double>? StartLatlng { get; set; }
         public List<double>? EndLatlng { get; set; }

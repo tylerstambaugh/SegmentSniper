@@ -10,6 +10,7 @@ type ActivityCardProps = {
 
 const ActivityCard = (props: ActivityCardProps) => {
   const handleSegmentsButtonClick = () => {
+    props.setSelectedActivity(props.activity.activityId!);
     console.log(`show segments for activityId ${props.activity.activityId}`);
   };
 

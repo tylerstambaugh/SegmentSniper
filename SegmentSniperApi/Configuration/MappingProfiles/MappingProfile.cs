@@ -24,25 +24,25 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.ExpiresIn))
                 .ReverseMap();
 
-            CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>()
-                .ForMember(dest => dest.SegmentEffortId, opt => opt.MapFrom(src => src.id))
-                .ForMember(dest => dest.ActivityId, opt => opt.MapFrom(src => src.activity_id))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name))
-                .ForMember(dest => dest.ElapsedTime, opt => opt.MapFrom(src => src.elapsed_time))
-                .ForMember(dest => dest.MovingTime, opt => opt.MapFrom(src => src.moving_time))
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.start_date))
-                .ForMember(dest => dest.StartDateLocal, opt => opt.MapFrom(src => src.start_date_local))
-                .ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.distance))
-                .ForMember(dest => dest.StartIndex, opt => opt.MapFrom(src => src.start_index))
-                .ForMember(dest => dest.EndIndex, opt => opt.MapFrom(src => src.end_index))
-                .ForMember(dest => dest.DeviceWatts, opt => opt.MapFrom(src => src.device_watts))
-                .ForMember(dest => dest.AverageWatts, opt => opt.MapFrom(src => src.average_watts))
-                .ForMember(dest => dest.AverageHeartrate, opt => opt.MapFrom(src => src.average_heartrate))
-                .ForMember(dest => dest.MaxHeartrate, opt => opt.MapFrom(src => src.max_heartrate))
-                .ForMember(dest => dest.SummarySegment, opt => opt.MapFrom(src => src.segment))
-                .ForMember(dest => dest.PrRank, opt => opt.MapFrom(src => src.pr_rank))
-                .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.achievements))
-                .ForMember(dest => dest.Hidden, opt => opt.MapFrom(src => src.hidden));
+            //CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>();
+                //.ForMember(dest => dest.SegmentEffortId, opt => opt.MapFrom(src => src.id))
+                //.ForMember(dest => dest.ActivityId, opt => opt.MapFrom(src => src.activity_id))
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name))
+                //.ForMember(dest => dest.ElapsedTime, opt => opt.MapFrom(src => src.elapsed_time))
+                //.ForMember(dest => dest.MovingTime, opt => opt.MapFrom(src => src.moving_time))
+                //.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.start_date))
+                //.ForMember(dest => dest.StartDateLocal, opt => opt.MapFrom(src => src.start_date_local))
+                //.ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.distance))
+                //.ForMember(dest => dest.StartIndex, opt => opt.MapFrom(src => src.start_index))
+                //.ForMember(dest => dest.EndIndex, opt => opt.MapFrom(src => src.end_index))
+                //.ForMember(dest => dest.DeviceWatts, opt => opt.MapFrom(src => src.device_watts))
+                //.ForMember(dest => dest.AverageWatts, opt => opt.MapFrom(src => src.average_watts))
+                //.ForMember(dest => dest.AverageHeartrate, opt => opt.MapFrom(src => src.average_heartrate))
+                //.ForMember(dest => dest.MaxHeartrate, opt => opt.MapFrom(src => src.max_heartrate))
+                //.ForMember(dest => dest.SummarySegment, opt => opt.MapFrom(src => src.segment))
+                //.ForMember(dest => dest.PrRank, opt => opt.MapFrom(src => src.pr_rank))
+                //.ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.achievements))              
+                //.ForMember(dest => dest.Hidden, opt => opt.MapFrom(src => src.hidden));
 
 
             CreateMap<DetailedActivityApiModel, DetailedActivity>()
@@ -145,13 +145,34 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
 
             CreateMap<SummaryActivityApiModel, SummaryActivity>();
 
-            CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>();
+            CreateMap<DetailedSegmentEffortApiModel, DetailedSegmentEffort>()
+               .ForMember(dest => dest.SegmentEffortId, opt => opt.MapFrom(src => src.id))
+               .ForMember(dest => dest.ActivityId, opt => opt.MapFrom(src => src.activity_id))
+               .ForMember(dest => dest.ElapsedTime, opt => opt.MapFrom(src => src.elapsed_time))
+               .ForMember(dest => dest.MovingTime, opt => opt.MapFrom(src => src.moving_time))
+               .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.start_date))
+               .ForMember(dest => dest.StartDateLocal, opt => opt.MapFrom(src => src.start_date_local))
+               .ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.distance))
+               .ForMember(dest => dest.StartIndex, opt => opt.MapFrom(src => src.start_index))
+               .ForMember(dest => dest.EndIndex, opt => opt.MapFrom(src => src.end_index))
+               .ForMember(dest => dest.DeviceWatts, opt => opt.MapFrom(src => src.device_watts))
+               .ForMember(dest => dest.AverageWatts, opt => opt.MapFrom(src => src.average_watts))
+               .ForMember(dest => dest.AverageHeartrate, opt => opt.MapFrom(src => src.average_heartrate))
+               .ForMember(dest => dest.MaxHeartrate, opt => opt.MapFrom(src => src.max_heartrate))
+               .ForMember(dest => dest.SummarySegment, opt => opt.MapFrom(src => src.segment))
+               .ForMember(dest => dest.PrRank, opt => opt.MapFrom(src => src.pr_rank))
+               .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.achievements))
+               .ForMember(dest => dest.Hidden, opt => opt.MapFrom(src => src.hidden));
+
 
             CreateMap<SummarySegmentApiModel, SummarySegment>();
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
 
-            CreateMap<MapApiModel, MapModel>();
+            CreateMap<MapApiModel, MapModel>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+               .ForMember(dest => dest.PolyLine, opt => opt.MapFrom(src => src.polyline))
+               .ForMember(dest => dest.SummaryPolyLine, opt => opt.MapFrom(src => src.summary_polyline));
 
             CreateMap<XomsApiModel, Xoms>();
 

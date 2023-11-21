@@ -6,12 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 
 const ActivityCardList = () => {
-  const [activityList, resetActivityList] = useActivityListStore((state) => [
+  const [activityList, setSelectedActivity, resetActivityList] = useActivityListStore((state) => [
     state.activityList,
+    state.setSelectedActivityId,
     state.resetActivityList,
   ]);
 
-  const [selectedActivity, setSelectedActivity] = useState<string>("");
 
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const resetSegmentEffortsList = useSegmentEffortsListStore(
@@ -20,6 +20,7 @@ const ActivityCardList = () => {
 
   const clearSearchResults = () => {
     resetActivityList();
+    setSelectedActivity("");
     resetSegmentEffortsList();
   };
 

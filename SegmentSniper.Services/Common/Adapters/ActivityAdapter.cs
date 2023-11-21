@@ -36,7 +36,7 @@ namespace SegmentSniper.Services.Common.Adapters
                 StartLatlng = activity.StartLatlng,
                 EndLatlng = activity.EndLatlng,
                 Segments = segments,
-                // StravaMap = activity.Map
+                StravaMap = activity.Map
             };
             return returnActivity;
         }

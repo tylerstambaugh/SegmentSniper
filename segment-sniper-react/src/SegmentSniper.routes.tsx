@@ -20,6 +20,7 @@ import SegmentSniper from "./pages/SegmentSniper";
 import Admin from "./pages/Admin";
 import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/ActivitySearchResults";
+import SegmentEfforts from "./pages/SegmentEfforts";
 
 interface Props {
   defaultPage?: string;
@@ -79,12 +80,19 @@ export default function Routes({ defaultPage }: Props) {
               </PrivateRoute>
             }
           />
-
           <Route
             path={AppRoutes.ActivitySearchResults}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
                 <ActivitySearchResults />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.SegmentEfforts}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <SegmentEfforts />
               </PrivateRoute>
             }
           />
