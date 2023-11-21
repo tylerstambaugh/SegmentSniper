@@ -12,7 +12,7 @@ import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ActivityListItem } from "../../../models/Activity/ActivityListItem";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import useSegmentsListStore from "../../../stores/useSegmentsListStore";
+import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 
 export interface ActivityDataTableProps {
   setSelectedActivity: (activityId: string) => void;
@@ -29,8 +29,8 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
     state.activityList,
     state.resetActivityList,
   ]);
-  const resetSegmentList = useSegmentsListStore(
-    (state) => state.resetSegmentsList
+  const resetSegmentList = useSegmentEffortsListStore(
+    (state) => state.resetSegmentEffortsList
   );
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
   const tableBody: ArrayElementType[] = activityList.map((item) => ({

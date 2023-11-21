@@ -7,11 +7,11 @@ import {
   TableColumnType,
   TableHeader,
 } from "react-bs-datatable";
-import useSegmentsListStore from "../../../stores/useSegmentsListStore";
+import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-solid-svg-icons";
-import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
+import { SegmentEffortListItem } from "../../../models/Segment/SegmentEffortListItem";
 import { Button, Col, Container, Row, Spinner, Table } from "react-bootstrap";
 
 export interface SegmentListDataTableProps {
@@ -22,9 +22,11 @@ export interface SegmentListDataTableProps {
 }
 
 export const SegmentListDataTable = (props: SegmentListDataTableProps) => {
-  const segmentList = useSegmentsListStore((state) => state.segmentsList);
+  const segmentList = useSegmentEffortsListStore(
+    (state) => state.segmentEffortsList
+  );
 
-  type TableDataRow = SegmentListItem & {
+  type TableDataRow = SegmentEffortListItem & {
     detailsButton: any;
     starButton: any;
     rowLoading: boolean;

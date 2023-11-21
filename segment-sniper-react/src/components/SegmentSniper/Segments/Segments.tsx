@@ -4,10 +4,10 @@ import SnipeSegmentsModal from "./SnipeSegmentsModal";
 import SegmentDetailsModal from "./SegmentDetailsModal";
 import { SegmentListDataTable } from "./SegmentListDataTable";
 import { SnipedSegmentListDataTable } from "./SnipedSegmentListDataTable";
-import { SegmentListItem } from "../../../models/Segment/SegmentListItem";
+import { SegmentEffortListItem } from "../../../models/Segment/SegmentEffortListItem";
 
 import useActivityListStore from "../../../stores/useActivityListStore";
-import useSegmentsListStore from "../../../stores/useSegmentsListStore";
+import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
 import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
@@ -23,7 +23,9 @@ const Segments = (props: SegmentsProps) => {
   const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
   const [isSnipeList, setIsSnipeList] = useState(false);
   const activityList = useActivityListStore((state) => state.activityList);
-  const setSegmentList = useSegmentsListStore((state) => state.setSegmentList);
+  const setSegmentList = useSegmentEffortsListStore(
+    (state) => state.setSegmentEffortsList
+  );
 
   const resetSnipedSegments = useSnipedSegmentsListStore(
     (state) => state.resetSnipedSegmentsList
@@ -59,7 +61,7 @@ const Segments = (props: SegmentsProps) => {
   }
 
   useEffect(() => {
-    let segmentEfforts: SegmentListItem[] =
+    let segmentEfforts: SegmentEffortListItem[] =
       activityList.find((x) => x.activityId === props.selectedActivity)
         ?.segments || [];
     setSegmentList(segmentEfforts);

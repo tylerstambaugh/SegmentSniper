@@ -11,7 +11,7 @@ export default async function getActivityListById(
   contract: ApiContract<ActivityListByIdLookupRequest>
 ) {
   try {
-    const response = apiGet<ActivityListLookupResponse>(
+    const response = await apiGet<ActivityListLookupResponse>(
       `${contract.baseUrl}/sniper/getActivityListById/${contract.request?.activityId}`,
       contract
     );

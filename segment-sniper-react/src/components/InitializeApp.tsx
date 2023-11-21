@@ -11,8 +11,6 @@ export default function InitializeApp() {
 
   const getClientConfig = useGetClientConfiguration();
 
-  console.log("get client config data:", getClientConfig.data);
-
   useEffect(() => {
     if (getClientConfig.data) {
       setAppConfig({

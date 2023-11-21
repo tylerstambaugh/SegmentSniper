@@ -4,7 +4,6 @@ import useTokenDataStore from "../../../stores/useTokenStore";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import postStarSegment, {
   StarSegmentRequest,
-  StarSegmentResponse,
 } from "../../../services/Api/Segment/postStarSegment";
 
 export const usePostStarSegment = () => {

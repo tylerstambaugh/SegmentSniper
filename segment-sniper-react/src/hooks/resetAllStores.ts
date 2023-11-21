@@ -1,5 +1,5 @@
 import useActivityListStore from "../stores/useActivityListStore";
-import useSegmentsListStore from "../stores/useSegmentsListStore";
+import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
 import useTokenDataStore from "../stores/useTokenStore";
 import useUserStore from "../stores/useUserStore";
@@ -11,8 +11,8 @@ export const useResetAllStores = () => {
   const resetActivityListStore = useActivityListStore(
     (state) => state.resetActivityList
   );
-  const resetSegmentsListStore = useSegmentsListStore(
-    (state) => state.resetSegmentsList
+  const resetSegmentsListStore = useSegmentEffortsListStore(
+    (state) => state.resetSegmentEffortsList
   );
   const resetTokenDataStore = useTokenDataStore(
     (state) => state.resetTokenDataStore

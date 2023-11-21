@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.Common.Adapters
 
             foreach (DetailedSegmentEffort segmentEffort in activity.SegmentEfforts)
             {
-                segments.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentUIModel(segmentEffort));
+                segments.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentEffortListModel(segmentEffort));
             }
 
             ActivityListModel returnActivity = new ActivityListModel
@@ -48,7 +48,7 @@ namespace SegmentSniper.Services.Common.Adapters
 
             foreach (DetailedSegmentEffort segmentEffort in model.SegmentEfforts)
             {
-                segments.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentUIModel(segmentEffort));
+                segments.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentEffortListModel(segmentEffort));
             }
 
             DetailedActivityUIModel returnModel = new DetailedActivityUIModel

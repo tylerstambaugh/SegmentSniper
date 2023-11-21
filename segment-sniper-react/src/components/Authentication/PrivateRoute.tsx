@@ -19,9 +19,6 @@ const PrivateRoute = (props: Props) => {
       ? true
       : false;
 
-  console.log("route roles", props.userRoles);
-  console.log("user roles", user?.roles);
-
   if (!isAuthenticated) {
     return (
       <Container className="d-flex flex-column align-items-center justify-content-center pt-5">

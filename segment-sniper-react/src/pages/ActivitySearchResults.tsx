@@ -1,40 +1,50 @@
-import { useState } from "react";
-import ActivityListDataTable from "../components/SegmentSniper/Activities/ActivityListDataTable";
+import { useEffect } from "react";
 import useActivityListStore from "../stores/useActivityListStore";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import ActivityCardList from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCardList";
 import { useHandleActivitySearch } from "../hooks/Api/Activity/useHandleActivitySearch";
 
 function ActivitySearchResults() {
-  const [selectedActivity, setSelectedActivity] = useState<string>("");
+  // const [selectedActivity, setSelectedActivity] = useState<string>("");
   const resetActivityList = useActivityListStore(
     (state) => state.resetActivityList
   );
   const navigate = useNavigate();
   const handleActivitySearch = useHandleActivitySearch();
 
+  useEffect(() => {
+    console.log("activity search loading:", handleActivitySearch.isLoading);
+  }, [handleActivitySearch.isLoading]);
+
   return handleActivitySearch.isLoading ? (
     <>
       <Container>
         <Row>
           <Col>
-            <h2>Loading</h2>
+            <Spinner
+              as="span"
+              variant="light"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              animation="border"
+            />
           </Col>
         </Row>
       </Container>
     </>
   ) : (
     <>
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
             <ActivityCardList />
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row className="justify-content-center">
+          <Col className="text-center pt-3 pb-3">
             <Button
               name="backToSearch"
               onClick={() => {

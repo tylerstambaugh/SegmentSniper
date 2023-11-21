@@ -1,13 +1,18 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { ActivityListItem } from "../../../../models/Activity/ActivityListItem";
-type ActivityListCardProps = {
+
+type ActivityCardProps = {
   setSelectedActivity: (activityId: string) => void;
   activity: ActivityListItem;
 };
 
 //name, date, distance, time, achievements, details, segments
 
-const ActivityCard = (props: ActivityListCardProps) => {
+const ActivityCard = (props: ActivityCardProps) => {
+  const handleSegmentsButtonClick = () => {
+    console.log(`show segments for activityId ${props.activity.activityId}`);
+  };
+
   return (
     <Container className="py-2">
       <Row>
@@ -38,15 +43,11 @@ const ActivityCard = (props: ActivityListCardProps) => {
                 </Col>
               </Row>
             </Card.Body>
-            <Card.Footer>
-              <Row className="justify-content-between">
-                <Col>
-                  <Button>Details</Button>
-                </Col>
-                <Col>
-                  <Button>Segments</Button>
-                </Col>
-              </Row>
+            <Card.Footer className="d-flex justify-content-around">
+              <Button>Details</Button>
+              <Button onClick={() => handleSegmentsButtonClick()}>
+                Segments
+              </Button>
             </Card.Footer>
           </Card>
         </Col>
