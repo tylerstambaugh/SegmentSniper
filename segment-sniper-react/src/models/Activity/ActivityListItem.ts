@@ -9,6 +9,8 @@ export interface ActivityListItem {
   elapsedTime?: string;
   achievementCount?: number;
   maxSpeed?: number;
+  startLatLang?: number[];
+  endLatLang?: number[];
   stravaMap?: StravaMap;
   segments?: SegmentListItem[];
 }

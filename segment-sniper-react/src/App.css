@@ -18,6 +18,10 @@
  width: 250px
 }
 
+.navbar.collapse.hide {
+  justify-content: end;
+}
+
 .logo {
   width: 100%;
 }
@@ -25,6 +29,14 @@
 .hr-75 {
   width: 75%;
   margin: 0 auto; 
+}
+
+.activity-card-heading {
+  background-color: azure;
+}
+
+.activity-card-label {
+  font-weight: 600;
 }
 
 .loader {

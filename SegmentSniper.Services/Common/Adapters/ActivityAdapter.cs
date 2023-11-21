@@ -33,6 +33,8 @@ namespace SegmentSniper.Services.Common.Adapters
                 ElapsedTime = TimeSpan.FromSeconds(activity.ElapsedTime).ToString(@"hh\:mm\:ss"),
                 AchievementCount = activity.AchievementCount,
                 MaxSpeed = Math.Round(CommonConversionHelpers.ConvertMetersPerSecondToMilesPerHour(activity.MaxSpeed), 2),
+                StartLatlng = activity.StartLatlng,
+                EndLatlng = activity.EndLatlng,
                 Segments = segments,
                 // StravaMap = activity.Map
             };
