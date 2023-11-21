@@ -16,7 +16,7 @@ export default async function getActivityListByDateRange(
   contract: ApiContract<ActivityListForDateRangeLookupRequest>
 ) {
   try {
-    const response = apiPost<
+    const response = await apiPost<
       ActivityListForDateRangeLookupRequest,
       ActivityListLookupResponse
     >(`${contract.baseUrl}/sniper/getActivityListForDateRange/`, contract);

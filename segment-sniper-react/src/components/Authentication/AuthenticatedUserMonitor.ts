@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useTokenDataStore from "../../stores/useTokenStore";
 
 export default function AuthenticatedUserMonitor() {

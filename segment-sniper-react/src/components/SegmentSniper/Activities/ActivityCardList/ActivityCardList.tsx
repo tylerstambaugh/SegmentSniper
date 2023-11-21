@@ -1,8 +1,9 @@
 import { useState } from "react";
 import useActivityListStore from "../../../../stores/useActivityListStore";
-import useSegmentsListStore from "../../../../stores/useSegmentsListStore";
 import ActivityCard from "./ActivityCard";
 import { Col, Container, Row } from "react-bootstrap";
+import { v4 as uuidv4 } from "uuid";
+import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 
 const ActivityCardList = () => {
   const [activityList, resetActivityList] = useActivityListStore((state) => [
@@ -13,13 +14,13 @@ const ActivityCardList = () => {
   const [selectedActivity, setSelectedActivity] = useState<string>("");
 
   const [selectedRow, setSelectedRow] = useState<string | null>(null);
-  const resetSegmentList = useSegmentsListStore(
-    (state) => state.resetSegmentsList
+  const resetSegmentEffortsList = useSegmentEffortsListStore(
+    (state) => state.resetSegmentEffortsList
   );
 
   const clearSearchResults = () => {
     resetActivityList();
-    resetSegmentList();
+    resetSegmentEffortsList();
   };
 
   return activityList.length > 0 ? (
@@ -34,6 +35,7 @@ const ActivityCardList = () => {
         <ActivityCard
           setSelectedActivity={setSelectedActivity}
           activity={item}
+          key={uuidv4()}
         />
       ))}
     </>

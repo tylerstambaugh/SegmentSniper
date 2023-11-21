@@ -39,7 +39,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.AverageWatts, opt => opt.MapFrom(src => src.average_watts))
                 .ForMember(dest => dest.AverageHeartrate, opt => opt.MapFrom(src => src.average_heartrate))
                 .ForMember(dest => dest.MaxHeartrate, opt => opt.MapFrom(src => src.max_heartrate))
-                .ForMember(dest => dest.Segment, opt => opt.MapFrom(src => src.segment))
+                .ForMember(dest => dest.SummarySegment, opt => opt.MapFrom(src => src.segment))
                 .ForMember(dest => dest.PrRank, opt => opt.MapFrom(src => src.pr_rank))
                 .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.achievements))
                 .ForMember(dest => dest.Hidden, opt => opt.MapFrom(src => src.hidden));

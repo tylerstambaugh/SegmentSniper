@@ -150,7 +150,7 @@ export const SnipedSegmentListDataTable = (
               <Col className="d-flex justify-content-end pb-3">
                 <Button
                   variant="primary"
-                  onClick={(e) => props.clearSnipedSegments()}
+                  onClick={() => props.clearSnipedSegments()}
                 >
                   Reset
                 </Button>

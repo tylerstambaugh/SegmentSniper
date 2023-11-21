@@ -1,7 +1,8 @@
 import { AthleteSegmentStats } from "./AthleteSegmentStats";
+import { SummarySegment } from "./SummarySegment";
 import { Xoms } from "./Xoms";
 
-export interface SegmentListItem {
+export interface SegmentEffortListItem {
   segmentId?: string;
   segmentEffortId?: number;
   name?: string;
@@ -11,4 +12,5 @@ export interface SegmentListItem {
   xoms?: Xoms;
   rank?: number;
   starred?: boolean;
+  summarySegment: SummarySegment;
 }

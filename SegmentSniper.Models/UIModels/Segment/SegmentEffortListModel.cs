@@ -1,14 +1,9 @@
 ﻿using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SegmentSniper.Models.UIModels.Segment
 {
-    public  class SegmentEffortListModel
+    public class SegmentEffortListModel
     {
         public string SegmentEffortId { get; set; }
         public string SegmentId { get; set; }
@@ -23,6 +18,7 @@ namespace SegmentSniper.Models.UIModels.Segment
         public int AthleteCount { get; set; }
         public int StarCount { get; set; }
         public bool Starred { get; set; }
+        public SummarySegment SummarySegment { get; set; }
         public AthleteSegmentStats AthleteSegmentStats { get; set; }
         public Xoms Xoms { get; set; }
         public int Rank { get; set; }

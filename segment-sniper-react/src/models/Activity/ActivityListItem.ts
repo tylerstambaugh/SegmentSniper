@@ -1,4 +1,4 @@
-import { SegmentListItem } from "../Segment/SegmentListItem";
+import { SegmentEffortListItem } from "../Segment/SegmentEffortListItem";
 
 export interface ActivityListItem {
   name?: string;
@@ -12,7 +12,7 @@ export interface ActivityListItem {
   startLatLang?: number[];
   endLatLang?: number[];
   stravaMap?: StravaMap;
-  segments?: SegmentListItem[];
+  segments?: SegmentEffortListItem[];
 }
 
 export interface StravaMap {

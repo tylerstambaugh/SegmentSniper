@@ -4,7 +4,6 @@ import { AppRoutes } from "../../enums/AppRoutes";
 import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import { usePostForgotPassword } from "../../hooks/Api/Auth/usePostForgotPassword";
 

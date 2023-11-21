@@ -16,7 +16,7 @@
         public double AverageWatts { get; set; }
         public double AverageHeartrate { get; set; }
         public double MaxHeartrate { get; set; }
-        public SummarySegment Segment { get; set; }
+        public SummarySegment SummarySegment { get; set; }
         public int? PrRank { get; set; }
         public List<Achievement> Achievements { get; set; }
         public bool Hidden { get; set; }
