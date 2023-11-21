@@ -65,7 +65,7 @@ const ActivityListDataTable = (props: ActivityDataTableProps) => {
       ),
     },
     {
-      prop: "segments",
+      prop: "segmentsButton",
       cell: (row) => (
         <Button
           variant={

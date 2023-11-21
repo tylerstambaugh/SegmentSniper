@@ -38,3 +38,5 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
     </Container>
   );
 };
+
+export default SegmentEffortCardList;

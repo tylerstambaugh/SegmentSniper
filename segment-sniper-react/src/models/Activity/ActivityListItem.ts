@@ -12,7 +12,7 @@ export interface ActivityListItem {
   startLatLang?: number[];
   endLatLang?: number[];
   stravaMap?: StravaMap;
-  segments?: SegmentEffortListItem[];
+  segmentsEffortsListItem?: SegmentEffortListItem[];
 }
 
 export interface StravaMap {

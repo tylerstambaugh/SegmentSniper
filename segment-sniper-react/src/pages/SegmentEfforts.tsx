@@ -1,29 +1,26 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import SnipeSegmentsModal from "./SnipeSegmentsModal";
-import SegmentDetailsModal from "./SegmentDetailsModal";
-import { SegmentListDataTable } from "./SegmentListDataTable";
-import { SnipedSegmentListDataTable } from "./SnipedSegmentListDataTable";
-import { SegmentEffortListItem } from "../../../models/Segment/SegmentEffortListItem";
-
-import useActivityListStore from "../../../stores/useActivityListStore";
-import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
-import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
-import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
-import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
+import { useSnipeSegments } from "../hooks/Api/Activity/useSnipeSegments";
+import useActivityListStore from "../stores/useActivityListStore";
+import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
+import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
+import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";
 import toast from "react-hot-toast";
-import { SegmentDetails } from "../../../models/Segment/SegmentDetails";
+import { SegmentEffortListItem } from "../models/Segment/SegmentEffortListItem";
+import { Container } from "react-bootstrap";
+import SegmentDetailsModal from "../components/SegmentSniper/Segments/SegmentDetailsModal";
+import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
+import SegmentEffortCardList from "../components/SegmentSniper/Segments/SegmentEffortCardList/SegmentEffortCardList";
+import { SegmentDetails } from "../models/Segment/SegmentDetails";
 
-export interface SegmentsProps {
-  selectedActivity: string;
-}
-
-const Segments = (props: SegmentsProps) => {
+const SegmentEfforts = () => {
   const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
   const [isSnipeList, setIsSnipeList] = useState(false);
-  const activityList = useActivityListStore((state) => state.activityList);
-  const setSegmentList = useSegmentEffortsListStore(
+  const [activityList, selectedActivityId] = useActivityListStore((state) => [
+    state.activityList,
+    state.selectActivityId,
+  ]);
+  const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
   );
 
@@ -46,7 +43,7 @@ const Segments = (props: SegmentsProps) => {
   }
 
   async function handleSnipeSegments(request: SnipeSegmentsRequest) {
-    request.activityId = props.selectedActivity;
+    request.activityId = selectedActivityId!;
     await snipeSegments.mutateAsync(request);
     setIsSnipeList(true);
   }
@@ -62,10 +59,10 @@ const Segments = (props: SegmentsProps) => {
 
   useEffect(() => {
     let segmentEfforts: SegmentEffortListItem[] =
-      activityList.find((x) => x.activityId === props.selectedActivity)
+      activityList.find((x) => x.activityId === selectedActivityId)
         ?.segmentsEffortsListItem || [];
-    setSegmentList(segmentEfforts);
-  }, [props.selectedActivity]);
+    setSegmentEffortsList(segmentEfforts);
+  }, [selectedActivityId]);
 
   return (
     <>
@@ -80,25 +77,14 @@ const Segments = (props: SegmentsProps) => {
           handleClose={handleCloseSegmentDetailModal}
           segment={segmentDetailsModalData}
         />
-        {!isSnipeList ? (
-          <SegmentListDataTable
-            selectedActivityId={props.selectedActivity}
-            snipeLoading={snipeSegments.isLoading}
-            handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
-            handleShowSegmentDetails={handleShowSegmentDetails}
-          />
+        {isSnipeList ? (
+          <SegmentEffortCardList activityId={selectedActivityId!} />
         ) : (
-          <SnipedSegmentListDataTable
-            clearSnipedSegments={clearSnipedSegments}
-            handleShowSegmentDetails={handleShowSegmentDetails}
-            handleStarSnipedSegment={function (props: any): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
+          <></>
         )}
       </Container>
     </>
   );
 };
 
-export default Segments;
+export default SegmentEfforts;
