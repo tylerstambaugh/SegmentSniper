@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
-import { Navbar } from "react-bootstrap";
+import { Col, Navbar, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../stores/useUserStore";
 import useTokenDataStore from "../stores/useTokenStore";
@@ -12,8 +12,8 @@ function Header() {
   const [user] = useUserStore((state) => [state.user]);
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Container fluid>
+    <Navbar bg="light" expand="md">
+      <Container>
         <Link to={AppRoutes.Home}>
           <Navbar.Brand>
             {" "}
@@ -28,14 +28,16 @@ function Header() {
 
         <Navbar.Collapse className="justify-content-end">
           {tokenData !== null && tokenData!.accessToken && user!.id ? (
-            <div className="d-flex">
-              <Navbar.Text className="pr-2">
-                {`Signed in as: ${user!.firstName}`}
-              </Navbar.Text>
-              <Navbar.Text>
-                <Link to={AppRoutes.Logout}>Logout</Link>
-              </Navbar.Text>
-            </div>
+            <Row className="d-flex">
+              <Col md={9} className="d-flex justify-content-end">
+                <Navbar.Text>{`Signed in as: ${user!.firstName}`}</Navbar.Text>
+              </Col>
+              <Col md={3} className="d-flex justify-content-end">
+                <Navbar.Text className="ps-5">
+                  <Link to={AppRoutes.Logout}>Logout</Link>
+                </Navbar.Text>
+              </Col>
+            </Row>
           ) : (
             <Navbar.Text className="d-flex">
               <Link to={AppRoutes.Login}>Login</Link>

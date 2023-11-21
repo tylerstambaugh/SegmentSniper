@@ -1,6 +1,5 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { ActivityListItem } from "../../../../models/Activity/ActivityListItem";
-
 type ActivityListCardProps = {
   setSelectedActivity: (activityId: string) => void;
   activity: ActivityListItem;
@@ -14,20 +13,30 @@ const ActivityCard = (props: ActivityListCardProps) => {
       <Row>
         <Col>
           <Card>
-            <Card.Title>{props.activity.name}</Card.Title>
+            <Card.Title className="p-2 activity-card-heading">
+              {props.activity.name}
+            </Card.Title>
             <Card.Body>
-              <ul>
-                <li>Date: {props.activity.startDate}</li>
-              </ul>
-              <ul>
-                <li>Distance: {props.activity.distance} miles</li>
-              </ul>
-              <ul>
-                <li>Elapsed Time: {props.activity.elapsedTime}</li>
-              </ul>
-              <ul>
-                <li>Achievement Count: {props.activity.achievementCount}</li>
-              </ul>
+              <Row className="justify-content-between">
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Date:</span>{" "}
+                  {props.activity.startDate}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Distance:</span>{" "}
+                  {props.activity.distance} miles
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Elapsed Time:</span>{" "}
+                  {props.activity.elapsedTime}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">
+                    Achievement Count:
+                  </span>{" "}
+                  {props.activity.achievementCount}
+                </Col>
+              </Row>
             </Card.Body>
             <Card.Footer>
               <Row className="justify-content-between">
