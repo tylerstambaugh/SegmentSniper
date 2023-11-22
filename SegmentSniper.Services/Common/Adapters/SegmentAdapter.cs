@@ -1,5 +1,6 @@
 ﻿using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
+using System;
 
 namespace SegmentSniper.Services.Common.Adapters
 {
@@ -14,12 +15,15 @@ namespace SegmentSniper.Services.Common.Adapters
                 ActivityId = model.ActivityId,
                 Name = model.Name,
                 Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(model.Distance), 2),
-                Time = TimeSpan.FromSeconds(model.ElapsedTime).ToString(@"hh\:mm\:ss"),
-                Starred = model.SummarySegment.Starred,
-                SummarySegment = model.SummarySegment,
-                
-
-                //Rank = model.Achievements.OrderBy(r => r.Rank).First().Rank,
+                ElapsedTime = TimeSpan.FromSeconds(model.ElapsedTime).ToString(@"hh\:mm\:ss"),
+                MovingTime = TimeSpan.FromSeconds(model.MovingTime).ToString(@"hh\:mm\:ss"),
+                StartDate = model.StartDate,
+                MaxHeartrate = model.MaxHeartrate,
+                AverageWatts = model.AverageWatts,
+                Achievements = model.Achievements,
+                PrRank = model.PrRank,
+                Hidden = model.Hidden,
+                SummarySegment = model.SummarySegment,             
             };
             return returnModel;
         }

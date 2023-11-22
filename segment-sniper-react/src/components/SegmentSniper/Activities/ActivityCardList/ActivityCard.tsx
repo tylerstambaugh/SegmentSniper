@@ -1,17 +1,31 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { ActivityListItem } from "../../../../models/Activity/ActivityListItem";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../../../enums/AppRoutes";
+import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
+import useActivityListStore from "../../../../stores/useActivityListStore";
 
 type ActivityCardProps = {
-  setSelectedActivity: (activityId: string) => void;
   activity: ActivityListItem;
 };
 
-//name, date, distance, time, achievements, details, segments
-
 const ActivityCard = (props: ActivityCardProps) => {
+  const navigate = useNavigate();
+  const [setSegmentEffortsList] = useSegmentEffortsListStore((state) => [
+    state.setSegmentEffortsList,
+  ]);
+  const [activityList, selectedActivityId, setSelectedActivityId] =
+    useActivityListStore((state) => [
+      state.activityList,
+      state.selectActivityId,
+      state.setSelectedActivityId,
+    ]);
+
   const handleSegmentsButtonClick = () => {
-    props.setSelectedActivity(props.activity.activityId!);
-    console.log(`show segments for activityId ${props.activity.activityId}`);
+    console.log("segments", props.activity.segmentEffortListItems);
+
+    setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
+    navigate(AppRoutes.SegmentEfforts);
   };
 
   return (

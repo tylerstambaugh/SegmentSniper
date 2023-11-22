@@ -1,16 +1,24 @@
-import { AthleteSegmentStats } from "./AthleteSegmentStats";
+import { Achievement } from "./Achievement";
 import { SummarySegment } from "./SummarySegment";
-import { Xoms } from "./Xoms";
 
 export interface SegmentEffortListItem {
-  segmentId?: string;
+  activityId?: string;
   segmentEffortId?: number;
+  segmentId?: string;
   name?: string;
-  time?: number;
   distance?: number;
-  athleteStats?: AthleteSegmentStats;
-  xoms?: Xoms;
-  rank?: number;
-  starred?: boolean;
+  startIndex?: number;
+  endIndex?: number;
+  elapsedTime?: string;
+  movingTime?: string;
+  startDate?: Date;
+  startDateLocale?: Date;
+  averageHeartRate?: number;
+  maxHeartRate?: number;
+  averageWatts?: number;
+  deviceWatts?: boolean;
+  achievements?: Achievement[];
+  prRank?: number;
+  hidden?: boolean;
   summarySegment: SummarySegment;
 }

@@ -15,11 +15,11 @@ namespace SegmentSniper.Services.Common.Adapters
         }
         public ActivityListModel AdaptDetailedActivitytoActivityList(DetailedActivity activity)
         {
-            List<SegmentEffortListModel> segments = new List<SegmentEffortListModel>();
+            List<SegmentEffortListModel> segmentsEffortListItems = new List<SegmentEffortListModel>();
 
             foreach (DetailedSegmentEffort segmentEffort in activity.SegmentEfforts)
             {
-                segments.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentEffortListModel(segmentEffort));
+                segmentsEffortListItems.Add(_segmentAdapter.AdaptDetailedSegmentEffortToSegmentEffortListModel(segmentEffort));
             }
 
             ActivityListModel returnActivity = new ActivityListModel
@@ -35,7 +35,7 @@ namespace SegmentSniper.Services.Common.Adapters
                 MaxSpeed = Math.Round(CommonConversionHelpers.ConvertMetersPerSecondToMilesPerHour(activity.MaxSpeed), 2),
                 StartLatlng = activity.StartLatlng,
                 EndLatlng = activity.EndLatlng,
-                Segments = segments,
+                SegmentEffortListItems = segmentsEffortListItems,
                 StravaMap = activity.Map
             };
             return returnActivity;

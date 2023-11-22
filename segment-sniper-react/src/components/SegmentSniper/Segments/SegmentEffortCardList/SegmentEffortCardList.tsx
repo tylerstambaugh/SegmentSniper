@@ -16,11 +16,6 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
 
   return segmentEffortList.length > 0 ? (
     <>
-      <Row>
-        <Col className="justify-content-center">
-          <h3>Segment Efforts</h3>
-        </Col>
-      </Row>
       {segmentEffortList.map((item) => (
         <SegmentEffortCard
           segmentEffortListItem={item}
