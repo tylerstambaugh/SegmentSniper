@@ -1,43 +1,24 @@
 import { useState } from "react";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import ActivityCard from "./ActivityCard";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
+import { AppRoutes } from "../../../../enums/AppRoutes";
+import { useNavigate } from "react-router-dom";
 
 const ActivityCardList = () => {
-  const [activityList, setSelectedActivity, resetActivityList] = useActivityListStore((state) => [
-    state.activityList,
-    state.setSelectedActivityId,
-    state.resetActivityList,
-  ]);
-
-
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
-  const resetSegmentEffortsList = useSegmentEffortsListStore(
-    (state) => state.resetSegmentEffortsList
-  );
-
-  const clearSearchResults = () => {
-    resetActivityList();
-    setSelectedActivity("");
-    resetSegmentEffortsList();
-  };
+  const [activityList, setSelectedActivity, resetActivityList] =
+    useActivityListStore((state) => [
+      state.activityList,
+      state.setSelectedActivityId,
+      state.resetActivityList,
+    ]);
 
   return activityList.length > 0 ? (
     <>
-      <Row>
-        <Col className="justify-content-center">
-          <h3>Activity Search Results</h3>
-        </Col>
-      </Row>
-
       {activityList.map((item) => (
-        <ActivityCard
-          setSelectedActivity={setSelectedActivity}
-          activity={item}
-          key={uuidv4()}
-        />
+        <ActivityCard activity={item} key={uuidv4()} />
       ))}
     </>
   ) : (

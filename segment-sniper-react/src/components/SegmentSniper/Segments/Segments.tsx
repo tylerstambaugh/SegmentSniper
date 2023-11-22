@@ -63,7 +63,7 @@ const Segments = (props: SegmentsProps) => {
   useEffect(() => {
     let segmentEfforts: SegmentEffortListItem[] =
       activityList.find((x) => x.activityId === props.selectedActivity)
-        ?.segmentsEffortsListItem || [];
+        ?.segmentEffortsListItems || [];
     setSegmentList(segmentEfforts);
   }, [props.selectedActivity]);
 

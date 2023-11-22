@@ -5,14 +5,25 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import ActivityCardList from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCardList";
 import { useHandleActivitySearch } from "../hooks/Api/Activity/useHandleActivitySearch";
+import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 
 function ActivitySearchResults() {
-  // const [selectedActivity, setSelectedActivity] = useState<string>("");
-  const resetActivityList = useActivityListStore(
-    (state) => state.resetActivityList
-  );
   const navigate = useNavigate();
+  const [setSelectedActivity, resetActivityList] = useActivityListStore(
+    (state) => [state.setSelectedActivityId, state.resetActivityList]
+  );
+
+  const resetSegmentEffortsList = useSegmentEffortsListStore(
+    (state) => state.resetSegmentEffortsList
+  );
+
   const handleActivitySearch = useHandleActivitySearch();
+
+  const clearSearchResults = () => {
+    resetActivityList();
+    setSelectedActivity("");
+    resetSegmentEffortsList();
+  };
 
   useEffect(() => {
     console.log("activity search loading:", handleActivitySearch.isLoading);
@@ -38,6 +49,20 @@ function ActivitySearchResults() {
   ) : (
     <>
       <Container fluid>
+        <Row className="pt-3">
+          <Col className="d-flex justify-content-around">
+            <h3>Activity Search Results</h3>
+            <Button
+              name="backToSearch"
+              onClick={() => {
+                clearSearchResults();
+                navigate(AppRoutes.Snipe);
+              }}
+            >
+              Back to Search
+            </Button>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <ActivityCardList />

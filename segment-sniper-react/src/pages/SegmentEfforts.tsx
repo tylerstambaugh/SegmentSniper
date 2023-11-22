@@ -6,13 +6,16 @@ import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
 import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";
 import toast from "react-hot-toast";
 import { SegmentEffortListItem } from "../models/Segment/SegmentEffortListItem";
-import { Container } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import SegmentDetailsModal from "../components/SegmentSniper/Segments/SegmentDetailsModal";
 import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
 import SegmentEffortCardList from "../components/SegmentSniper/Segments/SegmentEffortCardList/SegmentEffortCardList";
 import { SegmentDetails } from "../models/Segment/SegmentDetails";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../enums/AppRoutes";
 
 const SegmentEfforts = () => {
+  const navigate = useNavigate();
   const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
   const [isSnipeList, setIsSnipeList] = useState(false);
@@ -57,16 +60,22 @@ const SegmentEfforts = () => {
     setShowSegmentDetailModal(true);
   }
 
-  useEffect(() => {
-    let segmentEfforts: SegmentEffortListItem[] =
-      activityList.find((x) => x.activityId === selectedActivityId)
-        ?.segmentsEffortsListItem || [];
-    setSegmentEffortsList(segmentEfforts);
-  }, [selectedActivityId]);
-
   return (
     <>
       <Container className="mb-4">
+        <Row className="pt-3">
+          <Col className="d-flex justify-content-around">
+            <h3>Segment Efforts</h3>
+            <Button
+              name="backToSearch"
+              onClick={() => {
+                navigate(AppRoutes.ActivitySearchResults);
+              }}
+            >
+              Back to Activities
+            </Button>
+          </Col>
+        </Row>
         <SnipeSegmentsModal
           show={showSnipeSegmentsModal}
           handleClose={handleCloseSnipeSegmentsModal}
@@ -77,11 +86,25 @@ const SegmentEfforts = () => {
           handleClose={handleCloseSegmentDetailModal}
           segment={segmentDetailsModalData}
         />
-        {isSnipeList ? (
+        {!isSnipeList ? (
           <SegmentEffortCardList activityId={selectedActivityId!} />
         ) : (
-          <></>
+          <>
+            <h2>sniped list coming soon</h2>
+          </>
         )}
+        <Row className="justify-content-center">
+          <Col className="text-center pt-3 pb-3">
+            <Button
+              name="backToSearch"
+              onClick={() => {
+                navigate(AppRoutes.ActivitySearchResults);
+              }}
+            >
+              Back to Activities
+            </Button>
+          </Col>
+        </Row>
       </Container>
     </>
   );
