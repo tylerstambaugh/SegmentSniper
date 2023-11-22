@@ -17,6 +17,7 @@ namespace SegmentSniper.Services.Common.Adapters
                 Time = TimeSpan.FromSeconds(model.ElapsedTime).ToString(@"hh\:mm\:ss"),
                 Starred = model.SummarySegment.Starred,
                 SummarySegment = model.SummarySegment,
+                
 
                 //Rank = model.Achievements.OrderBy(r => r.Rank).First().Rank,
             };

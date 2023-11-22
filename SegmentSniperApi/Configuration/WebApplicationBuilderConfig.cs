@@ -21,6 +21,11 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
+            var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
+
+            builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
+
+
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniper");
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
