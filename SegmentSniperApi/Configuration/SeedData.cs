@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using SegmentSniper.Data.Entities.Auth;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using SegmentSniper.Data;
-using Microsoft.Extensions.DependencyInjection;
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -14,7 +13,7 @@ namespace SegmentSniper.Api.Configuration
             {
                 var context = scope.ServiceProvider.GetService<SegmentSniperDbContext>();
 
-                List<string> roles = new List<string>{ "Admin", "User", "PremiumUser" };
+                List<string> roles = new List<string> { "Admin", "User", "PremiumUser" };
 
                 foreach (string role in roles)
                 {
@@ -56,7 +55,7 @@ namespace SegmentSniper.Api.Configuration
 
                 }
 
-                 await AssignRoles(serviceProvider, user.Email, roles);
+                await AssignRoles(serviceProvider, user.Email, roles);
 
                 await context.SaveChangesAsync();
             }

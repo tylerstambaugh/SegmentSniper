@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useApiConfigStore from "../../stores/useApiConfigStore";
 import { ApiContract } from "../../services/Api/ApiCommon/ApiContract";
 import getClientConfiguration, {
@@ -8,10 +8,7 @@ import getClientConfiguration, {
 export const useGetClientConfiguration = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["Config"],
-    queryFn: trigger,
-  });
+  const { mutate, data, isLoading, isError, error } = useMutation(trigger);
 
   async function trigger() {
     const contract: ApiContract = {
@@ -25,5 +22,5 @@ export const useGetClientConfiguration = () => {
     return response;
   }
 
-  return { data, isLoading, isError, error };
+  return { mutate, data, isLoading, isError, error };
 };
