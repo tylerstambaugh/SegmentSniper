@@ -8,7 +8,7 @@ import getClientConfiguration, {
 export const useGetClientConfiguration = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
 
-  const { mutate, data, isLoading, isError, error } = useMutation(trigger);
+  const { mutateAsync, data, isLoading, isError, error } = useMutation(trigger);
 
   async function trigger() {
     const contract: ApiContract = {
@@ -22,5 +22,5 @@ export const useGetClientConfiguration = () => {
     return response;
   }
 
-  return { mutate, data, isLoading, isError, error };
+  return { mutateAsync, data, isLoading, isError, error };
 };
