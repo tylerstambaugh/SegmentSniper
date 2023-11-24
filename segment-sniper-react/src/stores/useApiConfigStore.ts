@@ -15,23 +15,33 @@ export type ApiConfig = {
   baseUrl: string;
 };
 
-const initialApiConfigState: ApiConfig = {
-  baseUrl: "https://localhost:44351/api",
-};
+const baseApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+console.log("config store base url:", baseApiUrl);
+
+// const initialApiConfigState: ApiConfig = {
+//   baseUrl:
+//   baseApiUrl ||
+//     "https://localhost:44351/api",
+// };
 
 const useApiConfigStore = create<ApiConfigStore>()(
   immer(
     devtools(
-      persist(
-        (set) => ({
+      persist((set) => {
+        // Access import.meta.env.VITE_SEGMENT_SNIPER_API_URL inside the function
+        const baseApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+        const initialApiConfigState: ApiConfig = {
+          baseUrl: baseApiUrl || "https://localhost:44351/api",
+        };
+
+        return {
           apiConfig: initialApiConfigState,
           setTokenData: (apiConfig: ApiConfig) =>
             set((state) => {
               state.apiConfig = apiConfig;
             }),
-        }),
-        persistOptions
-      ),
+        };
+      }, persistOptions),
       devtoolOptions
     )
   )

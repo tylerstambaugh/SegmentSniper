@@ -18,7 +18,8 @@ namespace SegmentSniper.Api.Configuration
             }
             else
             {
-                builder.AddSigningCredential(LoadSigningCertificate(thumbPrint));
+                builder.AddDeveloperSigningCredential(false);
+                //builder.AddSigningCredential(LoadSigningCertificate(thumbPrint));
             }
 
             builder.AddAspNetIdentity<ApplicationUser>()
