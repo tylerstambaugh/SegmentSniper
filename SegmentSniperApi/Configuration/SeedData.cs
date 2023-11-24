@@ -7,7 +7,7 @@ namespace SegmentSniper.Api.Configuration
 {
     public class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(IServiceProvider serviceProvider, IConfiguration config)
         {
             using (var scope = serviceProvider.CreateScope())
             {
@@ -47,7 +47,7 @@ namespace SegmentSniper.Api.Configuration
                 if (!context.Users.Any(u => u.UserName == user.UserName))
                 {
                     var password = new PasswordHasher<ApplicationUser>();
-                    var hashed = password.HashPassword(user, "Password1!");
+                    var hashed = password.HashPassword(user, config["AdminPassword"]);
                     user.PasswordHash = hashed;
 
                     var userStore = new UserStore<ApplicationUser>(context);

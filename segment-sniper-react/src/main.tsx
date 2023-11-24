@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthenticatedUserMonitor from "./components/Authentication/AuthenticatedUserMonitor";
 import "./App.css";
-import { InitializeApp } from "./components/InitializeApp";
+import InitializeApp from "./components/InitializeApp";
 
 const client = new QueryClient();
 
@@ -19,11 +19,12 @@ const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={client}>
     <AuthenticatedUserMonitor />
-    <InitializeApp />
-    <Router basename="/">
-      <Header />
-      <Routes />
-    </Router>
+    <InitializeApp>
+      <Router basename="/">
+        <Header />
+        <Routes />
+      </Router>
+    </InitializeApp>
     <Toaster />
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
