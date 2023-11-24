@@ -49,22 +49,22 @@
     <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
   </ItemGroup>
 
-	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+	<!--<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		--><!-- As part of publishing, ensure the JS resources are freshly built in production mode --><!--
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
 		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
 
-		<!-- Include the newly-built files in the publish output -->
+		--><!-- Include the newly-built files in the publish output --><!--
 		<ItemGroup>
 			<DistFiles Include="$(SpaRoot)dist\**" />
-			<!-- Changed to dist! -->
+			--><!-- Changed to dist! --><!--
 			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
 				<RelativePath>%(DistFiles.Identity)</RelativePath>
-				<!-- Changed! -->
+				--><!-- Changed! --><!--
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			</ResolvedFileToPublish>
 		</ItemGroup>
-	</Target>
+	</Target>-->
 
 </Project>
