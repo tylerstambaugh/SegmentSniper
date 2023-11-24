@@ -1,5 +1,5 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.Authentication;
+﻿using Azure.Identity;
+using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace SegmentSniper.Api.Configuration
     {
         public async static Task<WebApplicationBuilder> ConfigureBuilder(IConfiguration configuration)
         {
-            //var thumbPrint = configuration["CertificateThumbprint"];
+            var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
@@ -25,6 +25,10 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
 
+            var keyVaultEndpoint = configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/";
+            builder.Configuration.AddAzureKeyVault(
+             new Uri(keyVaultEndpoint),
+             new DefaultAzureCredential());
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniper");
 
@@ -79,12 +83,12 @@ namespace SegmentSniper.Api.Configuration
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                
+
                 .AddJwtBearer(options =>
                 {
                     options.IncludeErrorDetails = true;
                     options.RequireHttpsMetadata = false;
-                    
+
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -149,7 +153,7 @@ namespace SegmentSniper.Api.Configuration
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            
+
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Segment Sniper Pro", Version = "v1" });
@@ -194,7 +198,7 @@ namespace SegmentSniper.Api.Configuration
             //register services:
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
-            ServiceRegistrations.RegisterServices(builder.Services);            
+            ServiceRegistrations.RegisterServices(builder.Services);
 
             return builder;
         }
