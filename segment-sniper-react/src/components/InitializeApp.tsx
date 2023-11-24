@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
 
-export default function InitializeApp() {
+interface InitializeComponentProps {
+  children: ReactNode;
+}
+
+const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   //useRefreshTokenQuery();
   const [appConfig, setAppConfig] = useAppConfigStore((state) => [
     state.appConfig,
@@ -12,13 +16,22 @@ export default function InitializeApp() {
   const getClientConfig = useGetClientConfiguration();
 
   useEffect(() => {
-    if (getClientConfig.data) {
-      setAppConfig({
-        clientId: getClientConfig.data.stravaApiClientId,
-        googleMapsApiKey: getClientConfig.data.googleMapsApiKey,
-      });
-    }
-  }, [getClientConfig.data, setAppConfig]);
+    const initializeApp = async () => {
+      try {
+        const appConfigData = await getClientConfig.mutateAsync();
 
-  return null;
-}
+        setAppConfig({
+          clientId: appConfigData?.stravaApiClientId ?? "",
+          googleMapsApiKey: appConfigData?.googleMapsApiKey ?? "",
+        });
+      } catch (error) {
+        // Handle error
+      }
+    };
+    initializeApp();
+  }, [setAppConfig]);
+
+  return <>{children}</>;
+};
+
+export default InitializeApp;
