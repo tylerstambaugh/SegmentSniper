@@ -7,6 +7,7 @@ using System.Net;
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
     .Build();
 
 var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
