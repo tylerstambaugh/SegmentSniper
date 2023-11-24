@@ -16,8 +16,8 @@ namespace SegmentSniper.Api.Configuration
         }
 
 
-        string IStravaRequestClientConfiguration.ClientId => _stravaApiSettings.ClientId;
-        string IStravaRequestClientConfiguration.ClientSecret => _stravaApiSettings.ClientSecret;
+        string IStravaRequestClientConfiguration.ClientId => _appConfig["StravaApiSettings-ClientId"];
+        string IStravaRequestClientConfiguration.ClientSecret => _appConfig["StravaApiSettings-ClientSecret"];
         string IStravaRequestClientConfiguration.BaseUrl => _stravaApiSettings.BaseUrl;
         string IStravaRequestClientConfiguration.OauthBaseUrl => _stravaApiSettings.OAuthBaseUrl;
         string IStravaRequestClientConfiguration.RefreshToken { get; set; }

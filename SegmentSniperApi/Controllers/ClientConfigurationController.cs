@@ -22,7 +22,7 @@ namespace SegmentSniper.Api.Controllers
         public async Task<ActionResult<ClientConfigurationRequest.Response>> GetClientConfiguration()
         {
             var stravaApiClientId = _configuration["StravaApiSettings-ClientId"];
-            var googleMapsApiKey = _configuration.GetValue<string>("GoogleMapsApi-Key");
+            var googleMapsApiKey = _configuration["GoogleMapsApi-Key"];
             var clientConfig = new ClientConfigurationRequest.Response(stravaApiClientId, googleMapsApiKey);
 
             return Ok(clientConfig);

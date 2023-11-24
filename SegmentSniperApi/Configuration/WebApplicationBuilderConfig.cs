@@ -18,20 +18,20 @@ namespace SegmentSniper.Api.Configuration
     {
         public async static Task<WebApplicationBuilder> ConfigureBuilder(IConfiguration configuration)
         {
-            var thumbPrint = configuration["CertificateThumbprint"];
+           // var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
-            var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
+            //var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
 
-            builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
+            //builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
 
             var keyVaultEndpoint = configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/";
             builder.Configuration.AddAzureKeyVault(
              new Uri(keyVaultEndpoint),
              new DefaultAzureCredential());
 
-            var connectionString = builder.Configuration.GetConnectionString("SegmentSniper");
+            var connectionString = builder.Configuration["SegmentSniperConnectionString"];                       
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
@@ -100,7 +100,7 @@ namespace SegmentSniper.Api.Configuration
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key")))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt-Key"]))
                     };
                     options.Events = new JwtBearerEvents
                     {
