@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Net.Http.Headers;
 using SegmentSniper.Api.Configuration;
 using System.Net;
+using Azure.Identity;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -44,7 +45,7 @@ app.MapControllers();
 //    name: "default",
 //    pattern: "api/");
 
-await SeedData.Initialize(app.Services);
+await SeedData.Initialize(app.Services, configuration);
 
 var spaPath = "/app";
 if (app.Environment.IsDevelopment())
