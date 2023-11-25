@@ -4,6 +4,7 @@ using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SegmentSniper.Data;
@@ -26,10 +27,15 @@ namespace SegmentSniper.Api.Configuration
 
             //builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
 
-            var keyVaultEndpoint = configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/";
-            builder.Configuration.AddAzureKeyVault(
-             new Uri(keyVaultEndpoint),
-             new DefaultAzureCredential());
+            //var keyVaultEndpoint = configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/";
+            //builder.Configuration.AddAzureKeyVault(
+            // new Uri(keyVaultEndpoint),
+            // new DefaultAzureCredential());
+
+            var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
+            builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+            builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
 
             var connectionString = builder.Configuration["SegmentSniperConnectionString"];                       
 
