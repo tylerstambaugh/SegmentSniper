@@ -113,7 +113,6 @@ namespace StravaApiClient
             TResponse result = null;
             using (var httpClient = new HttpClient(Handler))
             {
-                //ConfigureHttpClient(httpClient);
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await httpClient.PostAsync(url, null);
 
@@ -154,12 +153,6 @@ namespace StravaApiClient
                 }
             }
         }
-
-        //private bool TokenIsValid()
-        //{
-        //    return _accessToken != null
-        //        && DateTime.Now.Subtract(TimeSpan.FromMinutes(_tokenExpirationBufferSeconds)) < _tokenExpiration;
-        //}
 
         public async Task PostRefreshToken()
         {
@@ -211,6 +204,3 @@ namespace StravaApiClient
         }
     }
 }
-
-
-

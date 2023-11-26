@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 type SegmentEffortCardListProps = {
   activityId: string;
+  handleShowSnipeSegmentsModal: () => void;
 };
 
 const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
@@ -20,6 +21,7 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
         <SegmentEffortCard
           segmentEffortListItem={item}
           activityId={props.activityId}
+          handleShowSnipeSegmentsModal={props.handleShowSnipeSegmentsModal}
         />
       ))}
     </>

@@ -3,7 +3,7 @@ using SegmentSniper.Models.Models.Strava.Segment;
 
 namespace SegmentSniper.Models.UIModels.Segment
 {
-    public class SegmentEffortListModel
+    public class SegmentEffortListItemModel
     {
         public string ActivityId { get; set; }
         public string SegmentEffortId { get; set; }

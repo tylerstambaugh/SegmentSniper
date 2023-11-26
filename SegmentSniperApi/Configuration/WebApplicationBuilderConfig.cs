@@ -34,10 +34,18 @@ namespace SegmentSniper.Api.Configuration
 
             var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
             builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
             builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
-
-            var connectionString = builder.Configuration["SegmentSniperConnectionString"];                       
+            var connectionString = "";
+            if (builder.Environment.IsDevelopment())
+            {
+                connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
+            }
+            else
+            {
+                connectionString = builder.Configuration["SegmentSniperConnectionString"];
+            }
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
@@ -202,7 +210,6 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.AddAutoMapper(typeof(Program));
 
-            //register services:
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
             ServiceRegistrations.RegisterServices(builder.Services);

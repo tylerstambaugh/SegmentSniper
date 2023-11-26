@@ -35,6 +35,10 @@
   background-color: azure;
 }
 
+.segment-card-heading {
+  background-color: azure;
+}
+
 .activity-card-label {
   font-weight: 600;
 }
