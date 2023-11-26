@@ -87,7 +87,10 @@ const SegmentEfforts = () => {
           segment={segmentDetailsModalData}
         />
         {!isSnipeList ? (
-          <SegmentEffortCardList activityId={selectedActivityId!} />
+          <SegmentEffortCardList
+            activityId={selectedActivityId!}
+            handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
+          />
         ) : (
           <>
             <h2>sniped list coming soon</h2>

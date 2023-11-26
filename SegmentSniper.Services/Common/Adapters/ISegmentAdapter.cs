@@ -5,6 +5,6 @@ namespace SegmentSniper.Services.Common.Adapters
 {
     public interface ISegmentAdapter
     {
-        SegmentEffortListModel AdaptDetailedSegmentEffortToSegmentEffortListModel(DetailedSegmentEffort model);
+        SegmentEffortListItemModel AdaptDetailedSegmentEffortToSegmentEffortListModel(DetailedSegmentEffort model);
     }
 }

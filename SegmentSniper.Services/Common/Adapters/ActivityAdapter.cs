@@ -15,7 +15,7 @@ namespace SegmentSniper.Services.Common.Adapters
         }
         public ActivityListModel AdaptDetailedActivitytoActivityList(DetailedActivity activity)
         {
-            List<SegmentEffortListModel> segmentsEffortListItems = new List<SegmentEffortListModel>();
+            List<SegmentEffortListItemModel> segmentsEffortListItems = new List<SegmentEffortListItemModel>();
 
             foreach (DetailedSegmentEffort segmentEffort in activity.SegmentEfforts)
             {
@@ -44,7 +44,7 @@ namespace SegmentSniper.Services.Common.Adapters
         public DetailedActivityUIModel AdaptDetailedActivityModelToDetailedActivityUIModel(DetailedActivity model)
         {
 
-            List<SegmentEffortListModel> segments = new List<SegmentEffortListModel>();
+            List<SegmentEffortListItemModel> segments = new List<SegmentEffortListItemModel>();
 
             foreach (DetailedSegmentEffort segmentEffort in model.SegmentEfforts)
             {

@@ -6,9 +6,9 @@ namespace SegmentSniper.Services.Common.Adapters
 {
     public class SegmentAdapter : ISegmentAdapter
     {
-        public SegmentEffortListModel AdaptDetailedSegmentEffortToSegmentEffortListModel(DetailedSegmentEffort model)
+        public SegmentEffortListItemModel AdaptDetailedSegmentEffortToSegmentEffortListModel(DetailedSegmentEffort model)
         {
-            SegmentEffortListModel returnModel = new SegmentEffortListModel
+            SegmentEffortListItemModel returnModel = new SegmentEffortListItemModel
             {
                 SegmentId = model.SummarySegment.Id,
                 SegmentEffortId = model.SegmentEffortId,

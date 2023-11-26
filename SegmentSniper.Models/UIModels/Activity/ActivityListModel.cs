@@ -17,6 +17,6 @@ namespace SegmentSniper.Models.UIModels.Activity
         public MapModel? StravaMap { get; set; }
         public List<double>? StartLatlng { get; set; }
         public List<double>? EndLatlng { get; set; }
-        public List<SegmentEffortListModel> SegmentEffortListItems { get; set; }
+        public List<SegmentEffortListItemModel> SegmentEffortListItems { get; set; }
     }
 }

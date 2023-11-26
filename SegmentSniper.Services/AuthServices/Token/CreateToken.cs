@@ -15,7 +15,7 @@ namespace SegmentSniper.Services.AuthServices.Token
         }
         public JwtSecurityToken Execute(CreateTokenContract contract)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration.GetValue<string>("JWT:Key")));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT-Key"]));
             _ = int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMinutes);
 
             var token = new JwtSecurityToken(

@@ -5,19 +5,49 @@ import { SegmentEffortListItem } from "../../../../models/Segment/SegmentEffortL
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
   activityId: string;
+  handleShowSnipeSegmentsModal: () => void;
 };
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   return (
-    <Container>
+    <Container className="py-2">
       <Row>
         <Col>
           <Card>
-            <Card.Title>
+            <Card.Title className="p-2 segment-card-heading">
               {props.segmentEffortListItem.summarySegment!.name}
             </Card.Title>
-            <Card.Body></Card.Body>
-            <Card.Footer></Card.Footer>
+            <Card.Body>
+              {" "}
+              <Row className="justify-content-between">
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Distance:</span>{" "}
+                  {props.segmentEffortListItem.distance}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Elapsed Time:</span>{" "}
+                  {props.segmentEffortListItem.elapsedTime} miles
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Average Watts:</span>{" "}
+                  {props.segmentEffortListItem.averageWatts}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Max Heart Rate:</span>{" "}
+                  {props.segmentEffortListItem.maxHeartRate}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Hidden:</span>{" "}
+                  {props.segmentEffortListItem.hidden}
+                </Col>
+              </Row>
+            </Card.Body>
+            <Card.Footer className="d-flex justify-content-around">
+              <Button>Details</Button>
+              <Button onClick={() => props.handleShowSnipeSegmentsModal()}>
+                Snipe
+              </Button>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
