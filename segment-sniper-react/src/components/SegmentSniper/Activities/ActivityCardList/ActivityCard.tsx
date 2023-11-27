@@ -7,6 +7,7 @@ import useActivityListStore from "../../../../stores/useActivityListStore";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
+  handleShowSnipeSegmentsModal: () => void;
 };
 
 const ActivityCard = (props: ActivityCardProps) => {
@@ -17,7 +18,7 @@ const ActivityCard = (props: ActivityCardProps) => {
   const [activityList, selectedActivityId, setSelectedActivityId] =
     useActivityListStore((state) => [
       state.activityList,
-      state.selectActivityId,
+      state.selectedActivityId,
       state.setSelectedActivityId,
     ]);
 
@@ -60,8 +61,12 @@ const ActivityCard = (props: ActivityCardProps) => {
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
               <Button>Details</Button>
+
               <Button onClick={() => handleSegmentsButtonClick()}>
                 Segments
+              </Button>
+              <Button onClick={() => props.handleShowSnipeSegmentsModal()}>
+                Snipe Segments!
               </Button>
             </Card.Footer>
           </Card>

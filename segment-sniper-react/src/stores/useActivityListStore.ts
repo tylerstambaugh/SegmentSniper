@@ -20,14 +20,14 @@ const useActivityListStore = create<ActivityListStore>()(
       persist(
         (set) => ({
           activityList: initialState,
-          selectActivityId: null,
+          selectedActivityId: null,
           setActivityList: (activityList: ActivityListItem[]) =>
             set((state) => {
               state.activityList = activityList;
             }),
           setSelectedActivityId: (selectedActivityId: string) =>
             set((state) => {
-              state.selectActivityId = selectedActivityId;
+              state.selectedActivityId = selectedActivityId;
             }),
           resetActivityList: () =>
             set((state) => {
@@ -45,7 +45,7 @@ export default useActivityListStore;
 
 interface ActivityListStore {
   activityList: ActivityListItem[];
-  selectActivityId: string | null;
+  selectedActivityId: string | null;
   setActivityList: (activityList: ActivityListItem[]) => void;
   setSelectedActivityId: (selectedActivityId: string) => void;
   resetActivityList: () => void;
