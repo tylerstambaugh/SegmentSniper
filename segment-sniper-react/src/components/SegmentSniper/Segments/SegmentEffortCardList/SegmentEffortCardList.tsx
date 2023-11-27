@@ -21,7 +21,6 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
         <SegmentEffortCard
           segmentEffortListItem={item}
           activityId={props.activityId}
-          handleShowSnipeSegmentsModal={props.handleShowSnipeSegmentsModal}
         />
       ))}
     </>

@@ -5,7 +5,6 @@ import { SegmentEffortListItem } from "../../../../models/Segment/SegmentEffortL
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
   activityId: string;
-  handleShowSnipeSegmentsModal: () => void;
 };
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
@@ -44,9 +43,6 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
               <Button>Details</Button>
-              <Button onClick={() => props.handleShowSnipeSegmentsModal()}>
-                Snipe
-              </Button>
             </Card.Footer>
           </Card>
         </Col>

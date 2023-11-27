@@ -7,7 +7,11 @@ import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsList
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
 
-const ActivityCardList = () => {
+interface ActivityCardListProps {
+  handleShowSnipeSegmentsModal: () => void;
+}
+
+const ActivityCardList = (props: ActivityCardListProps) => {
   const [activityList, setSelectedActivity, resetActivityList] =
     useActivityListStore((state) => [
       state.activityList,
@@ -18,7 +22,11 @@ const ActivityCardList = () => {
   return activityList.length > 0 ? (
     <>
       {activityList.map((item) => (
-        <ActivityCard activity={item} key={uuidv4()} />
+        <ActivityCard
+          handleShowSnipeSegmentsModal={props.handleShowSnipeSegmentsModal}
+          activity={item}
+          key={uuidv4()}
+        />
       ))}
     </>
   ) : (

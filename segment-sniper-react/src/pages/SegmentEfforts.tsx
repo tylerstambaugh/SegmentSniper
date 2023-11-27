@@ -21,7 +21,7 @@ const SegmentEfforts = () => {
   const [isSnipeList, setIsSnipeList] = useState(false);
   const [activityList, selectedActivityId] = useActivityListStore((state) => [
     state.activityList,
-    state.selectActivityId,
+    state.selectedActivityId,
   ]);
   const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
