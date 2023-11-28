@@ -1,9 +1,41 @@
 
-.primary-rounded-button {  
-  padding: 8px 10px;
-  border-radius: 12px;
+.btn-primary {  
+  padding: 8px ;
+  border-radius: 9px;
   background-color: #29dcb2;
-  text-decoration: underline;
+  color: #292b2c;
+  transition: background-color 0.4s ease;
+  text-align: center; 
+}
+
+.btn-primary:disabled {
+  background-color: #748883;
+  transform: scale(1.05);
+}
+
+.btn-primary:hover {
+  background-color: #22b18f;
+  transform: scale(1.05);
+}
+
+.btn-secondary {  
+  padding: 8px ;
+  border-radius: 9px;
+  background-color: #ffca14;
+  color: #292b2c;
+  transition: background-color 0.4s ease;
+  text-align: center; 
+}
+.btn-secondary:hover {
+  background-color: #ffca14;
+  transform: scale(1.05);
+}
+
+
+.primary-rounded-button {  
+  padding: 8px ;
+  border-radius: 9px;
+  background-color: #29dcb2;
   color: #292b2c;
   transition: background-color 0.4s ease;
   text-align: center; 
@@ -13,6 +45,7 @@
   background-color: #22b18f;
   transform: scale(1.05);
 }
+
 
 .header-image {
  width: 250px
