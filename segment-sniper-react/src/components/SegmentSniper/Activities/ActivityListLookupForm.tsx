@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
+import { DateTime } from "luxon";
 import * as yup from "yup";
 import {
   Container,
@@ -34,8 +35,8 @@ function ActivityListLookupForm() {
   );
   interface ActivityListLookupForm {
     activityId?: string | null;
-    startDate?: Date | null;
-    endDate?: Date | null;
+    startDate?: DateTime | null;
+    endDate?: DateTime | null;
     activityType?: string | null;
   }
 
@@ -74,7 +75,7 @@ function ActivityListLookupForm() {
   async function handleSearch(request: ActivitySearchRequest) {
     resetSegmentsList();
     resetSnipedSegments();
-    handleActivitySearch.mutateAsync(request);
+    await handleActivitySearch.mutateAsync(request);
   }
 
   useEffect(() => {
@@ -111,20 +112,21 @@ function ActivityListLookupForm() {
       },
     });
     formik.setErrors({});
+    formik.setFieldValue("startDate", null);
+    formik.setFieldValue("endDate", null);
     setValidated(false);
   };
 
   const disableSearch = (): boolean => {
-    return false;
-    // return (
-    //   formik.values.activityId === null &&
-    //   (formik.values.endDate === null || formik.values.startDate === null)
-    // );
+    return (
+      formik.values.activityId === null &&
+      (formik.values.endDate === null || formik.values.startDate === null)
+    );
   };
 
   return (
     <>
-      <Container className="d-flex flex-column col-6 md-auto pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
+      <Container className="d-flex flex-column col-12 md-auto pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
         <Row>
           <Col className="text-center">
             <h3>Activity List Lookup</h3>
@@ -165,7 +167,7 @@ function ActivityListLookupForm() {
               <hr className="hr-75" />
               <p>or by a date range:</p>
               <Row className=" justify-content-center mb-3">
-                <Col md={4}>
+                <Col md={4} className="mb-2">
                   <Form.Group className="" controlId="startDate">
                     <FloatingLabel
                       label="Start Date"
@@ -173,14 +175,9 @@ function ActivityListLookupForm() {
                     >
                       <Form.Control
                         type="date"
-                        value={
-                          formik.values.startDate
-                            ?.toISOString()
-                            .split("T")[0] ?? ""
-                        }
+                        value={formik.values.startDate?.toString() ?? ""}
                         onChange={(e) => {
-                          const selectedDate = new Date(e.target.value);
-                          formik.setFieldValue("startDate", selectedDate);
+                          formik.setFieldValue("startDate", e.target.value);
                         }}
                         isInvalid={!!formik.errors.startDate}
                       />
@@ -195,13 +192,9 @@ function ActivityListLookupForm() {
                     <FloatingLabel label="End Date" controlId="endDateLabel">
                       <Form.Control
                         type="date"
-                        value={
-                          formik.values.endDate?.toISOString().split("T")[0] ??
-                          ""
-                        }
+                        value={formik.values.endDate?.toString() ?? ""}
                         onChange={(e) => {
-                          const selectedDate = new Date(e.target.value);
-                          formik.setFieldValue("endDate", selectedDate);
+                          formik.setFieldValue("endDate", e.target.value);
                         }}
                         isInvalid={!!formik.errors.endDate}
                       />
@@ -242,7 +235,6 @@ function ActivityListLookupForm() {
                   <Col>
                     <Button
                       variant="secondary"
-                      className={"me-1"}
                       onClick={() => {
                         handleFormReset();
                       }}
@@ -255,7 +247,6 @@ function ActivityListLookupForm() {
                       <Button
                         type="submit"
                         variant="primary"
-                        className={"primary-rounded-button"}
                         style={{ width: "75px" }}
                       >
                         <Spinner
@@ -271,7 +262,6 @@ function ActivityListLookupForm() {
                       <Button
                         type="submit"
                         variant="primary"
-                        className={"me-1 primary-rounded-button"}
                         disabled={
                           handleActivitySearch.isLoading || disableSearch()
                         }

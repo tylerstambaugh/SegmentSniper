@@ -21,6 +21,7 @@
     "bootstrap-icons": "^1.10.5",
     "formik": "^2.4.3",
     "immer": "^10.0.2",
+    "luxon": "^3.4.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-bs-datatable": "^3.12.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.34.1",
+    "@types/luxon": "^3.3.5",
     "@types/node": "^20.9.4",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

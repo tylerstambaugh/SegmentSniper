@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { DateTime } from "luxon";
 import { ActivityTypes } from "../../../enums/ActivityTypes";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
@@ -11,8 +12,8 @@ import getActivityListByDateRange, {
 
 export interface ActivitySearchRequest {
   activityId?: string;
-  startDate?: Date | null;
-  endDate?: Date | null;
+  startDate?: DateTime | null;
+  endDate?: DateTime | null;
   activityType?: ActivityTypes | null;
 }
 
