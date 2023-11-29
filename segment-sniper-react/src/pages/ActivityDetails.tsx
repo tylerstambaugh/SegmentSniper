@@ -13,42 +13,34 @@ import SegmentEffortCardList from "../components/SegmentSniper/Segments/SegmentE
 import { SegmentDetails } from "../models/Segment/SegmentDetails";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
+import ActivityCard from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCard";
 
-const SegmentEfforts = () => {
+const ActivityDetails = () => {
   const navigate = useNavigate();
   const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
-  const [isSnipeList, setIsSnipeList] = useState(false);
-  const [activityList, selectedActivityId] = useActivityListStore((state) => [
-    state.activityList,
-    state.selectedActivityId,
-  ]);
-  const setSegmentEffortsList = useSegmentEffortsListStore(
-    (state) => state.setSegmentEffortsList
-  );
+  const [activityList, setSelectedActivityId, selectedActivityId] =
+    useActivityListStore((state) => [
+      state.activityList,
+      state.setSelectedActivityId,
+      state.selectedActivityId,
+    ]);
 
-  const resetSnipedSegments = useSnipedSegmentsListStore(
-    (state) => state.resetSnipedSegmentsList
-  );
   const snipeSegments = useSnipeSegments();
 
   const [segmentDetailsModalData, setSegmentDetailsModalData] =
     useState<SegmentDetails>();
 
-  const handleCloseSnipeSegmentsModal = () => setShowSnipeSegmentsModal(false);
+  const handleCloseSnipeSegmentsModal = () => {
+    setShowSnipeSegmentsModal(false), setSelectedActivityId("");
+  };
   const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
   const handleCloseSegmentDetailModal = () => setShowSegmentDetailModal(false);
-
-  const clearSnipedSegments = () => resetSnipedSegments();
-
-  async function handleStarSegment() {
-    //add hook call here. Update to take contract w/ segmentId and star=true/false
-  }
 
   async function handleSnipeSegments(request: SnipeSegmentsRequest) {
     request.activityId = selectedActivityId!;
     await snipeSegments.mutateAsync(request);
-    setIsSnipeList(true);
+    navigate(AppRoutes.SnipedSegments);
   }
 
   useEffect(() => {
@@ -60,6 +52,11 @@ const SegmentEfforts = () => {
     setShowSegmentDetailModal(true);
   }
 
+  function backToActivitiesButtonClick() {
+    setSelectedActivityId("");
+    navigate(AppRoutes.ActivitySearchResults);
+  }
+
   return (
     <>
       <Container className="mb-4">
@@ -69,7 +66,7 @@ const SegmentEfforts = () => {
             <Button
               name="backToSearch"
               onClick={() => {
-                navigate(AppRoutes.ActivitySearchResults);
+                backToActivitiesButtonClick();
               }}
             >
               Back to Activities
@@ -86,21 +83,22 @@ const SegmentEfforts = () => {
           handleClose={handleCloseSegmentDetailModal}
           segment={segmentDetailsModalData}
         />
-        {!isSnipeList ? (
-          <SegmentEffortCardList
-            activityId={selectedActivityId!}
-            handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
-          />
-        ) : (
-          <>
-            <h2>sniped list coming soon</h2>
-          </>
-        )}
+        <ActivityCard
+          activity={
+            activityList.find((a) => a.activityId === selectedActivityId)!
+          }
+          handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
+        />
+        <SegmentEffortCardList
+          activityId={selectedActivityId!}
+          handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
+        />
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
             <Button
               name="backToSearch"
               onClick={() => {
+                setSelectedActivityId("");
                 navigate(AppRoutes.ActivitySearchResults);
               }}
             >
@@ -113,4 +111,4 @@ const SegmentEfforts = () => {
   );
 };
 
-export default SegmentEfforts;
+export default ActivityDetails;
