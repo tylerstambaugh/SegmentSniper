@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import useActivityListStore from "../../../../stores/useActivityListStore";
+import { useState } from "react";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
@@ -15,16 +16,16 @@ const ActivityCard = (props: ActivityCardProps) => {
   const [setSegmentEffortsList] = useSegmentEffortsListStore((state) => [
     state.setSegmentEffortsList,
   ]);
-  const [activityList, selectedActivityId, setSelectedActivityId] =
-    useActivityListStore((state) => [
-      state.activityList,
-      state.selectedActivityId,
-      state.setSelectedActivityId,
-    ]);
+  const [selectedActivityId, setSelectedActivityId] = useActivityListStore(
+    (state) => [state.selectedActivityId, state.setSelectedActivityId]
+  );
 
-  const handleSegmentsButtonClick = () => {
+  const [showDetails, setShowDetails] = useState(false);
+
+  const handleDetailsButtonClick = () => {
+    setSelectedActivityId(props.activity.activityId!);
     setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
-    navigate(AppRoutes.SegmentEfforts);
+    navigate(AppRoutes.ActivityDetails);
   };
 
   return (
@@ -33,23 +34,35 @@ const ActivityCard = (props: ActivityCardProps) => {
         <Col>
           <Card>
             <Card.Title className="p-2 activity-card-heading">
-              {props.activity.name}
+              <Row className="justify-content-around">
+                <Col>{props.activity.name}</Col>
+                <Col>
+                  <Button
+                    onClick={() => {
+                      setSelectedActivityId(props.activity.activityId!);
+                      props.handleShowSnipeSegmentsModal();
+                    }}
+                  >
+                    Snipe Segments!
+                  </Button>
+                </Col>
+              </Row>
             </Card.Title>
             <Card.Body>
-              <Row className="justify-content-between">
-                <Col sm={12} md={6} lg={4} xl={3}>
+              <Row className="justify-content-start">
+                <Col sm={6} md={3}>
                   <span className="activity-card-label">Date:</span>{" "}
                   {props.activity.startDate}
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
+                <Col sm={6} md={3}>
                   <span className="activity-card-label">Distance:</span>{" "}
                   {props.activity.distance} miles
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
+                <Col sm={6} md={3}>
                   <span className="activity-card-label">Elapsed Time:</span>{" "}
                   {props.activity.elapsedTime}
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
+                <Col sm={12} md={3}>
                   <span className="activity-card-label">
                     Achievement Count:
                   </span>{" "}
@@ -58,19 +71,13 @@ const ActivityCard = (props: ActivityCardProps) => {
               </Row>
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
-              <Button>Details</Button>
-
-              <Button onClick={() => handleSegmentsButtonClick()}>
-                Segments
-              </Button>
-              <Button
-                onClick={() => {
-                  setSelectedActivityId(props.activity.activityId!);
-                  props.handleShowSnipeSegmentsModal();
-                }}
-              >
-                Snipe Segments!
-              </Button>
+              {selectedActivityId === "" ? (
+                <Button onClick={() => handleDetailsButtonClick()}>
+                  Details
+                </Button>
+              ) : (
+                <></>
+              )}
             </Card.Footer>
           </Card>
         </Col>

@@ -3,10 +3,18 @@ import SnipedSegmentsCardList from "../components/SegmentSniper/Segments/SnipedS
 import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
 import { AppRoutes } from "../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
+import useActivityListStore from "../stores/useActivityListStore";
 
 const SnipedSegments = () => {
   const navigate = useNavigate();
+  const setSelectedActivityId = useActivityListStore(
+    (state) => state.setSelectedActivityId
+  );
 
+  function backToActivitiesButtonClick() {
+    setSelectedActivityId("");
+    navigate(AppRoutes.ActivitySearchResults);
+  }
   return (
     <Container>
       <Row className="pt-3">
@@ -15,7 +23,7 @@ const SnipedSegments = () => {
           <Button
             name="backToSearch"
             onClick={() => {
-              navigate(AppRoutes.ActivitySearchResults);
+              backToActivitiesButtonClick();
             }}
           >
             Back to Activities

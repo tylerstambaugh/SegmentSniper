@@ -14,12 +14,17 @@ import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsL
 
 function ActivitySearchResults() {
   const navigate = useNavigate();
-  const [setSelectedActivity, selectedActivityId, resetActivityList] =
-    useActivityListStore((state) => [
-      state.setSelectedActivityId,
-      state.selectedActivityId,
-      state.resetActivityList,
-    ]);
+  const [
+    setSelectedActivity,
+    selectedActivityId,
+    setSelectedActivityId,
+    resetActivityList,
+  ] = useActivityListStore((state) => [
+    state.setSelectedActivityId,
+    state.selectedActivityId,
+    state.setSelectedActivityId,
+    state.resetActivityList,
+  ]);
   const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const resetSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.resetSegmentEffortsList
@@ -28,7 +33,9 @@ function ActivitySearchResults() {
   const [segmentDetailsModalData, setSegmentDetailsModalData] =
     useState<SegmentDetails>();
 
-  const handleCloseSnipeSegmentsModal = () => setShowSnipeSegmentsModal(false);
+  const handleCloseSnipeSegmentsModal = () => {
+    setShowSnipeSegmentsModal(false), setSelectedActivityId("");
+  };
   const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
 
   const handleActivitySearch = useHandleActivitySearch();
