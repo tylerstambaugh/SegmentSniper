@@ -26,7 +26,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <h3>the "dashboard"</h3>
       <Container
         className="d-flex flex-column justify-content-center  "
         style={{ width: "auto" }}

@@ -5,6 +5,7 @@ import { AppRoutes } from "../../../../enums/AppRoutes";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import { useState } from "react";
+import ActivityMap from "../../ActivityMap";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
@@ -33,17 +34,17 @@ const ActivityCard = (props: ActivityCardProps) => {
       <Row>
         <Col>
           <Card>
-            <Card.Title className="p-2 activity-card-heading">
-              <Row className="justify-content-around">
-                <Col>{props.activity.name}</Col>
-                <Col>
+            <Card.Title className="px-2 pt-2 activity-card-heading">
+              <Row>
+                <Col xs={9}>{props.activity.name}</Col>
+                <Col xs={3}>
                   <Button
                     onClick={() => {
                       setSelectedActivityId(props.activity.activityId!);
                       props.handleShowSnipeSegmentsModal();
                     }}
                   >
-                    Snipe Segments!
+                    Snipe!
                   </Button>
                 </Col>
               </Row>
@@ -69,8 +70,18 @@ const ActivityCard = (props: ActivityCardProps) => {
                   {props.activity.achievementCount}
                 </Col>
               </Row>
+              <Row>
+                <Col>
+                  <ActivityMap
+                    zoom={11}
+                    stravaMap={props.activity.stravaMap!}
+                    startLatlng={props.activity.startLatLang!}
+                    endLatlng={props.activity.endLatLang!}
+                  />
+                </Col>
+              </Row>
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-around">
+            <Card.Footer className="d-flex justify-content-center">
               {selectedActivityId === "" ? (
                 <Button onClick={() => handleDetailsButtonClick()}>
                   Details

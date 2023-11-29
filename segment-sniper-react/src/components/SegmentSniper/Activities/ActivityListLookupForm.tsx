@@ -22,6 +22,7 @@ import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListSto
 import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
+import useActivityListStore from "../../../stores/useActivityListStore";
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
@@ -32,6 +33,9 @@ function ActivityListLookupForm() {
   );
   const resetSnipedSegments = useSnipedSegmentsListStore(
     (state) => state.resetSnipedSegmentsList
+  );
+  const setSelectedActivityId = useActivityListStore(
+    (state) => state.setSelectedActivityId
   );
   interface ActivityListLookupForm {
     activityId?: string | null;
@@ -75,7 +79,9 @@ function ActivityListLookupForm() {
   async function handleSearch(request: ActivitySearchRequest) {
     resetSegmentsList();
     resetSnipedSegments();
+    setSelectedActivityId("");
     await handleActivitySearch.mutateAsync(request);
+    navigate(AppRoutes.ActivitySearchResults);
   }
 
   useEffect(() => {
@@ -95,7 +101,6 @@ function ActivityListLookupForm() {
         activityType: values.activityType as unknown as ActivityTypes,
       };
       handleSearch(searchProps);
-      navigate(AppRoutes.ActivitySearchResults);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,

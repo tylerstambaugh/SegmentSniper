@@ -21,6 +21,7 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
         <SegmentEffortCard
           segmentEffortListItem={item}
           activityId={props.activityId}
+          key={uuidv4()}
         />
       ))}
     </>
