@@ -62,14 +62,14 @@ const ActivityDetails = () => {
       <Container className="mb-4">
         <Row className="pt-3">
           <Col className="d-flex justify-content-around">
-            <h3>Segment Efforts</h3>
+            <h3>Activity Details</h3>
             <Button
               name="backToSearch"
               onClick={() => {
                 backToActivitiesButtonClick();
               }}
             >
-              Back to Activities
+              Back
             </Button>
           </Col>
         </Row>
@@ -89,6 +89,11 @@ const ActivityDetails = () => {
           }
           handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
         />
+        <Row className="pt-3">
+          <Col className="d-flex justify-content-around">
+            <h4>Segment Efforts</h4>
+          </Col>
+        </Row>
         <SegmentEffortCardList
           activityId={selectedActivityId!}
           handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}

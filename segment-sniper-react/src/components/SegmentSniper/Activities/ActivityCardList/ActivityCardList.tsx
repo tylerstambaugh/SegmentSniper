@@ -12,12 +12,7 @@ interface ActivityCardListProps {
 }
 
 const ActivityCardList = (props: ActivityCardListProps) => {
-  const [activityList, setSelectedActivity, resetActivityList] =
-    useActivityListStore((state) => [
-      state.activityList,
-      state.setSelectedActivityId,
-      state.resetActivityList,
-    ]);
+  const [activityList] = useActivityListStore((state) => [state.activityList]);
 
   return activityList.length > 0 ? (
     <>
