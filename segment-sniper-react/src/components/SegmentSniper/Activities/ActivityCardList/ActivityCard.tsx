@@ -23,8 +23,6 @@ const ActivityCard = (props: ActivityCardProps) => {
     ]);
 
   const handleSegmentsButtonClick = () => {
-    console.log("segments", props.activity.segmentEffortListItems);
-
     setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
     navigate(AppRoutes.SegmentEfforts);
   };
@@ -65,7 +63,12 @@ const ActivityCard = (props: ActivityCardProps) => {
               <Button onClick={() => handleSegmentsButtonClick()}>
                 Segments
               </Button>
-              <Button onClick={() => props.handleShowSnipeSegmentsModal()}>
+              <Button
+                onClick={() => {
+                  setSelectedActivityId(props.activity.activityId!);
+                  props.handleShowSnipeSegmentsModal();
+                }}
+              >
                 Snipe Segments!
               </Button>
             </Card.Footer>

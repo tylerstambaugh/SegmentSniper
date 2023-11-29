@@ -12,4 +12,5 @@ export enum AppRoutes {
   ActivitySearchResults = `/app/snipe/activity-search-results`,
   ActivitySegments = `/app/snipe/activity-segments`,
   SegmentEfforts = `/app/snipe/segment-efforts`,
+  SnipedSegments = `/app/snipe/sniped-segments`,
 }

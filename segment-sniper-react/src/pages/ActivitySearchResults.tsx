@@ -39,6 +39,7 @@ function ActivitySearchResults() {
     request.activityId = selectedActivityId!;
     await snipeSegments.mutateAsync(request);
     setIsSnipeList(true);
+    navigate(AppRoutes.SnipedSegments);
   }
 
   useEffect(() => {
@@ -97,15 +98,9 @@ function ActivitySearchResults() {
         </Row>
         <Row>
           <Col>
-            {!isSnipeList ? (
-              <ActivityCardList
-                handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
-              />
-            ) : (
-              <>
-                <h2>sniped list coming soon</h2>
-              </>
-            )}
+            <ActivityCardList
+              handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
+            />
           </Col>
         </Row>
         <Row className="justify-content-center">
