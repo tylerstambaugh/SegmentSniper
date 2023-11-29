@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { SnipedSegmentListItem as SnipedSegmentsListItem } from "../models/Segment/SnipedSegmentListItem";
+import { SnipedSegmentListItem } from "../models/Segment/SnipedSegmentListItem";
 
 const persistOptions = {
   name: "sniped-segment-list-store",
@@ -21,7 +21,7 @@ const useSnipedSegmentsListStore = create<SnipedSegmentsListStore>()(
         (set) => ({
           snipedSegmentsList: [],
           setSnipedSegmentsList: (
-            snipedSegmentsList: SnipedSegmentsListItem[]
+            snipedSegmentsList: SnipedSegmentListItem[]
           ) =>
             set((state) => {
               state.snipedSegmentsList = snipedSegmentsList;
@@ -41,7 +41,7 @@ const useSnipedSegmentsListStore = create<SnipedSegmentsListStore>()(
 export default useSnipedSegmentsListStore;
 
 interface SnipedSegmentsListStore {
-  snipedSegmentsList: SnipedSegmentsListItem[];
-  setSnipedSegmentsList: (segmentList: SnipedSegmentsListItem[]) => void;
+  snipedSegmentsList: SnipedSegmentListItem[];
+  setSnipedSegmentsList: (segmentList: SnipedSegmentListItem[]) => void;
   resetSnipedSegmentsList: () => void;
 }
