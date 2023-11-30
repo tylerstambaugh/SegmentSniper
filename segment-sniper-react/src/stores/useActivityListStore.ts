@@ -12,6 +12,7 @@ const devtoolOptions = {
   name: "Activity List Store",
 };
 
+//comment
 const initialState: ActivityListItem[] = [];
 
 const useActivityListStore = create<ActivityListStore>()(
