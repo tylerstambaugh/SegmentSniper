@@ -23,27 +23,21 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            //var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
-
-            //builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
-
-            //var keyVaultEndpoint = configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/";
-            //builder.Configuration.AddAzureKeyVault(
-            // new Uri(keyVaultEndpoint),
-            // new DefaultAzureCredential());
-
-            var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
-            builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-
-            builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
             var connectionString = "";
             if (builder.Environment.IsDevelopment())
             {
+                var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
+                builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
+                
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
             }
-            else
+            if (!builder.Environment.IsDevelopment())
             {
+                var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
+                builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
+                builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+                
                 connectionString = builder.Configuration["SegmentSniperConnectionString"];
             }
 
