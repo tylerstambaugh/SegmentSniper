@@ -24,6 +24,7 @@ namespace SegmentSniper.Api.Configuration
             var builder = WebApplication.CreateBuilder();
 
             var connectionString = "";
+
             if (builder.Environment.IsDevelopment())
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
@@ -31,6 +32,7 @@ namespace SegmentSniper.Api.Configuration
                 
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
             }
+
             if (!builder.Environment.IsDevelopment())
             {
                 var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
