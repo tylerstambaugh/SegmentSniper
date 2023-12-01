@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Net.Http.Headers;
 using SegmentSniper.Api.Configuration;
 using System.Net;
-using Azure.Identity;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -86,22 +85,25 @@ else
     });
 }
 
-app.UseExceptionHandler(
- options =>
- {
-     options.Run(
-     async context =>
+if (app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler(
+     options =>
      {
-         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-         context.Response.ContentType = "text/html";
-         var ex = context.Features.Get<IExceptionHandlerFeature>();
-         if (ex != null)
+         options.Run(
+         async context =>
          {
-             var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
-             await context.Response.WriteAsync(err).ConfigureAwait(false);
-         }
-     });
- }
-);
+             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+             context.Response.ContentType = "text/html";
+             var ex = context.Features.Get<IExceptionHandlerFeature>();
+             if (ex != null)
+             {
+                 var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
+                 await context.Response.WriteAsync(err).ConfigureAwait(false);
+             }
+         });
+     }
+    );
+}
 
 app.Run();

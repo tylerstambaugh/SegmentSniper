@@ -17,6 +17,6 @@ export interface ActivityListItem {
 
 export interface StravaMap {
   id: string;
-  polyline?: string;
+  polyLine?: string;
   summaryPolyline?: string;
 }
