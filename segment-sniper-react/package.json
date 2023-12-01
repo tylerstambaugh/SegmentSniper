@@ -14,6 +14,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mapbox/polyline": "^1.2.1",
     "@tanstack/react-query": "^4.35.0",
     "@tanstack/react-query-devtools": "^4.35.0",
     "@types/google-map-react": "^2.1.10",
@@ -35,7 +36,9 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.34.1",
+    "@types/googlemaps": "^3.43.3",
     "@types/luxon": "^3.3.5",
+    "@types/mapbox__polyline": "^1.0.5",
     "@types/node": "^20.9.4",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

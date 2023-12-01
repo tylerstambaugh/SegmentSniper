@@ -71,7 +71,6 @@ const ActivityCard = (props: ActivityCardProps) => {
               <Row>
                 <Col>
                   <ActivityMap
-                    zoom={11}
                     stravaMap={props.activity.stravaMap!}
                     activityId={props.activity.activityId!}
                   />
