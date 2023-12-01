@@ -13,9 +13,9 @@ const SnipedSegmentsCardList = () => {
       ))}
     </>
   ) : (
-    <Container>
-      <Row>
-        <Col>
+    <Container fluid>
+      <Row className="align-items-center justify-content-center pt-5">
+        <Col className="text-center">
           <h4>No Segments to Snipe</h4>
         </Col>
       </Row>

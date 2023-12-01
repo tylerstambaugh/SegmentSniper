@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { StravaMap } from "../../models/Activity/ActivityListItem";
+import {
+  ActivityListItem,
+  StravaMap,
+} from "../../models/Activity/ActivityListItem";
 import useAppConfigStore from "../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
+import useActivityListStore from "../../stores/useActivityListStore";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;
-  startLatlng: number[];
-  endLatlng: number[];
   zoom: number;
+  activityId: string;
 };
 
 const ActivityMap: React.FC<ActivityMapProps> = (props) => {
   const googleMapsApiKey = useAppConfigStore(
     (state) => state.appConfig?.googleMapsApiKey
   );
+
+  const activity: ActivityListItem = useActivityListStore(
+    (state) =>
+      state.activityList.find((a) => a.activityId === props.activityId)!
+  );
+
   const [center, setCenter] = useState({
     lat: 39.791,
     lng: -86.148003,
   });
 
   useEffect(() => {
-    console.log("startLatLng:", props.startLatlng);
-    if (!!props.startLatlng)
-      setCenter({ lat: props.startLatlng[0], lng: props.startLatlng[1] });
-  }, [props]);
+    console.log("startLatLng:", activity.startLatlng);
+    if (!!activity.startLatlng)
+      setCenter({ lat: activity.startLatlng[0], lng: activity.startLatlng[1] });
+  }, [activity]);
 
   return (
     <div style={{ height: "400px", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
-        defaultCenter={center}
+        center={center}
         defaultZoom={props.zoom}
       >
         {/* Your map components go here */}

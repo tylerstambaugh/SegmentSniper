@@ -6,7 +6,7 @@ function Home() {
     <>
       <Container
         className="justify-content-center mt-3 mb-2 bg-light text-dark border rounded mx-auto "
-        style={{ width: "75%", height: "600px" }}
+        style={{ width: "100%", height: "600px" }}
       >
         <Row>
           <Col className="text-center pt-3">

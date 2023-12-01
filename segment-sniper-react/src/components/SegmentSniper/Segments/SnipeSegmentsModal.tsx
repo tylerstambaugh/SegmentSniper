@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../../enums/AppRoutes";
+import useActivityListStore from "../../../stores/useActivityListStore";
+import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
 export interface SnipeSegmentFunctionProps {
   activityId?: string;
   secondsOff?: number;
@@ -13,11 +17,25 @@ export interface SnipeSegmentFunctionProps {
 export interface ShowSnipeSegmentsModalProps {
   show: boolean;
   handleClose: () => void;
-  handleSnipeSegments: (request: SnipeSegmentsRequest) => void;
 }
 
 function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
+  const [selectedActivityId, setSelectedActivityId, resetActivityList] =
+    useActivityListStore((state) => [
+      state.selectedActivityId,
+      state.setSelectedActivityId,
+      state.resetActivityList,
+    ]);
+
+  const snipeSegments = useSnipeSegments();
+
+  async function handleSnipeSegments(request: SnipeSegmentsRequest) {
+    request.activityId = selectedActivityId!;
+    await snipeSegments.mutateAsync(request);
+    navigate(AppRoutes.SnipedSegments);
+  }
   interface SnipeSegmentsParametersForm {
     secondsFromLeader?: number;
     percentageFromLeader?: number;
@@ -42,15 +60,14 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
       percentageFromLeader: undefined,
       useQom: false,
     },
-    onSubmit: (values: SnipeSegmentsParametersForm) => {
-      console.log(`segment snipe form props: ${values}`);
-      //setValidated(true);
+    onSubmit: async (values: SnipeSegmentsParametersForm) => {
       const snipeProps: SnipeSegmentsRequest = {
         secondsOff: values.secondsFromLeader,
         percentageOff: values.percentageFromLeader,
         useQom: values.useQom,
       };
-      props.handleSnipeSegments(snipeProps);
+      await handleSnipeSegments(snipeProps);
+      props.handleClose();
     },
     validationSchema,
     validateOnBlur: validated,
@@ -66,13 +83,9 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
         <Form
           name="SnipeSegmentsParametersForm"
           onSubmit={(event) => {
-            console.log("handling submission");
             event.preventDefault();
             setValidated(true);
-            console.log(`formik isValid = ${formik.isValid}`);
-            console.log(`formik status = ${formik.status}`);
             formik.handleSubmit(event);
-            props.handleClose();
           }}
         >
           <Modal.Body>
@@ -155,7 +168,6 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
                         id="QomSwitch"
                         onChange={(e) => {
                           formik.setFieldValue("UseQom", !e.target.checked);
-                          console.log(formik.values);
                         }}
                       />
                     </Col>
@@ -168,9 +180,22 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
             <Button variant="secondary" onClick={() => props.handleClose()}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit">
-              Snipe!
-            </Button>
+            {snipeSegments.isLoading ? (
+              <Button type="submit" variant="primary" style={{ width: "75px" }}>
+                <Spinner
+                  as="span"
+                  variant="light"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  animation="border"
+                />
+              </Button>
+            ) : (
+              <Button variant="primary" type="submit">
+                Snipe!
+              </Button>
+            )}
           </Modal.Footer>
         </Form>
       </Modal>

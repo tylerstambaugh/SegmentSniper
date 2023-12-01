@@ -62,7 +62,6 @@ const ActivityDetails = () => {
       <Container className="mb-4">
         <Row className="pt-3">
           <Col className="d-flex justify-content-around">
-            <h3>Activity Details</h3>
             <Button
               name="backToSearch"
               onClick={() => {
@@ -71,12 +70,12 @@ const ActivityDetails = () => {
             >
               Back
             </Button>
+            <h3>Activity Details</h3>
           </Col>
         </Row>
         <SnipeSegmentsModal
           show={showSnipeSegmentsModal}
           handleClose={handleCloseSnipeSegmentsModal}
-          handleSnipeSegments={handleSnipeSegments}
         />
         <SegmentDetailsModal
           show={showSegmentDetailModal}

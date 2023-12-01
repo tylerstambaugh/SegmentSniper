@@ -25,7 +25,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public async Task<SnipeSegmentsRequest.Response> Handle(SnipeSegmentsRequest request)
         {
-            ValidatedRequest(request);
+            ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
@@ -150,15 +150,15 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             public int QomTime { get; set; }
         }
 
-        private void ValidatedRequest(SnipeSegmentsRequest request)
+        private void ValidateRequest(SnipeSegmentsRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (request.ActivityId == null)
+            if (string.IsNullOrWhiteSpace(request.ActivityId))
             {
-                throw new ArgumentNullException(nameof(request.ActivityId), "Activity Id cannot be null");
+                throw new ArgumentNullException(nameof(request.ActivityId), "Activity Id must be provided");
             }
         }
     }

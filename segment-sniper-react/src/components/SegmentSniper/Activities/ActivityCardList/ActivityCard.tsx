@@ -21,8 +21,6 @@ const ActivityCard = (props: ActivityCardProps) => {
     (state) => [state.selectedActivityId, state.setSelectedActivityId]
   );
 
-  const [showDetails, setShowDetails] = useState(false);
-
   const handleDetailsButtonClick = () => {
     setSelectedActivityId(props.activity.activityId!);
     setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
@@ -75,8 +73,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                   <ActivityMap
                     zoom={11}
                     stravaMap={props.activity.stravaMap!}
-                    startLatlng={props.activity.startLatLang!}
-                    endLatlng={props.activity.endLatLang!}
+                    activityId={props.activity.activityId!}
                   />
                 </Col>
               </Row>

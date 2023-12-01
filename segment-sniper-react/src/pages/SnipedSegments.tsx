@@ -19,15 +19,15 @@ const SnipedSegments = () => {
     <Container>
       <Row className="pt-3">
         <Col className="d-flex justify-content-around">
-          <h3>Sniped Segments</h3>
           <Button
             name="backToSearch"
             onClick={() => {
               backToActivitiesButtonClick();
             }}
           >
-            Back to Activities
+            Back
           </Button>
+          <h3>Sniped Segments</h3>
         </Col>
       </Row>
       <SnipedSegmentsCardList />
