@@ -1,26 +1,28 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.UIModels.Segment;
 using StravaApiClient;
-using StravaApiClient.Models.Activity;
-using StravaApiClient.Services.Activity;
+using StravaApiClient.Models.Segment;
+using StravaApiClient.Services.Segment;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
-    public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
+    public class GetDetailedSegmentBySegmentIdActionHandler : IGetDetailedSegmentBySegmentIdActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
 
-        public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+
+        public GetDetailedSegmentBySegmentIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _mapper = mapper;
         }
 
-        public async Task<GetDetailedActivityByIdRequest.Response> Handle(GetDetailedActivityByIdRequest request)
+        public async Task<GetDetailedSegmentBySegmentIdRequest.Response> HandleAsync(GetDetailedSegmentBySegmentIdRequest request)
         {
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
@@ -31,17 +33,21 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     _stravaRequestService.UserId = request.UserId;
                     _stravaRequestService.RefreshToken = token.RefreshToken;
 
-                    var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
+                    var response = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(request.SegmentId));
 
-                    DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
+                    DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
 
-                    List<DetailedActivity> returnList = new List<DetailedActivity> { activity };
 
-                    return new GetDetailedActivityByIdRequest.Response
+                    DetailedSegmentUIModel segmentUiModel = _mapper.Map<DetailedSegment, DetailedSegmentUIModel>(segment);
+
+                    List<DetailedSegmentUIModel> returnList = new List<DetailedSegmentUIModel> { segmentUiModel };
+
+                    return new GetDetailedSegmentBySegmentIdRequest.Response
                     {
-                        DetailedActivity = activity,
+                        DetailedSegmentUIModel = returnList
                     };
                 }
+
                 catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
@@ -54,22 +60,23 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
         }
 
-        private void ValidateRequest(GetDetailedActivityByIdRequest request)
+        private void ValidateRequest(GetDetailedSegmentBySegmentIdRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (string.IsNullOrWhiteSpace(request.ActivityId))
+            if (string.IsNullOrWhiteSpace(request.SegmentId))
             {
-                throw new ArgumentException(nameof(request.ActivityId), "ActivityId cannot be empty");
+                throw new ArgumentException(nameof(request.SegmentId), "Segment Id cannot be empty");
             }
 
             if (string.IsNullOrWhiteSpace(request.UserId))
             {
-                throw new ArgumentException(nameof(request.UserId), "USerId cannot be empty");
+                throw new ArgumentException(nameof(request.UserId), "Segment Id cannot be empty");
             }
         }
+
     }
 }
