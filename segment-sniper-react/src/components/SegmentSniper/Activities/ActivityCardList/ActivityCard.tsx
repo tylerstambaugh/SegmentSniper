@@ -72,7 +72,8 @@ const ActivityCard = (props: ActivityCardProps) => {
                 <Col>
                   <ActivityMap
                     stravaMap={props.activity.stravaMap!}
-                    activityId={props.activity.activityId!}
+                    startLatlng={props.activity.startLatlng!}
+                    endLatlng={props.activity.endLatlng}
                   />
                 </Col>
               </Row>

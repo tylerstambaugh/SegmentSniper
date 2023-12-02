@@ -17,14 +17,16 @@ namespace SegmentSniper.Api.Controllers
         private readonly IGetActivityListByIdActionHandler _getActivityListByIdActionHandler;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
         private readonly ISnipeSegmentsActionHandler _snipeSegmentsActionHandler;
+        private readonly IGetDetailedSegmentBySegmentIdActionHandler _getDetailedSegmentBySegmentIdActionHandler;
         private readonly IStarSegmentActionHandler _starSegmentActionHandler;
 
-        public SniperController(IGetActivityListForTimeRangeActionHandler getActivityListForTimeRangeActionHandler, IGetActivityListByIdActionHandler getActivityListByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler, IStarSegmentActionHandler starSegmentActionHandler)
+        public SniperController(IGetActivityListForTimeRangeActionHandler getActivityListForTimeRangeActionHandler, IGetActivityListByIdActionHandler getActivityListByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler, IGetDetailedSegmentBySegmentIdActionHandler getDetailedSegmentBySegmentIdActionHandler, IStarSegmentActionHandler starSegmentActionHandler)
         {
             _getActivityListForTimeRangeActionHandler = getActivityListForTimeRangeActionHandler;
             _getActivityListByIdActionHandler = getActivityListByIdActionHandler;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
             _snipeSegmentsActionHandler = snipeSegmentsActionHandler;
+            _getDetailedSegmentBySegmentIdActionHandler = getDetailedSegmentBySegmentIdActionHandler;
             _starSegmentActionHandler = starSegmentActionHandler;
         }
 
@@ -121,7 +123,24 @@ namespace SegmentSniper.Api.Controllers
             if (returnSegment != null) return Ok(returnSegment);
             else return StatusCode(421, "Unable to star segment");
         }
-        //get detailed segment by ID
 
+
+        [HttpGet]
+        [Authorize]
+        [Route("detailedSegment/{segmentId}")]
+        public async Task<IActionResult> DetailedSegment(string segmentId)
+        {
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+            var request = new GetDetailedSegmentBySegmentIdRequest
+            {
+                UserId = userId,
+                SegmentId = segmentId,
+            };
+
+            var returnSegment = await _getDetailedSegmentBySegmentIdActionHandler.HandleAsync(request);
+            if (returnSegment != null) return Ok(returnSegment);
+            else return StatusCode(421, "Unable to star segment");
+        }
     }
 }

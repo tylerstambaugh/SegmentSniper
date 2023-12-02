@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityListItem,
-  StravaMap,
-} from "../../models/Activity/ActivityListItem";
+import { StravaMap } from "../../models/Activity/ActivityListItem";
 import useAppConfigStore from "../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
-import useActivityListStore from "../../stores/useActivityListStore";
 import Polyline from "./Polyline";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;
-  activityId: string;
+  startLatlng?: number[];
+  endLatlng?: number[];
 };
 
 const ActivityMap: React.FC<ActivityMapProps> = (props) => {
@@ -24,19 +21,14 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     { lat: number; lng: number }[]
   >([]);
 
-  const activity: ActivityListItem = useActivityListStore(
-    (state) =>
-      state.activityList.find((a) => a.activityId === props.activityId)!
-  );
-
   const [center, setCenter] = useState({
     lat: 39.791,
     lng: -86.148003,
   });
 
   useEffect(() => {
-    if (!!activity.startLatlng) {
-      setCenter({ lat: activity.startLatlng[0], lng: activity.startLatlng[1] });
+    if (!!props.startLatlng) {
+      setCenter({ lat: props.startLatlng[0], lng: props.startLatlng[1] });
 
       if (props.stravaMap.polyLine) {
         const decodedPath = decode(props.stravaMap.polyLine).map((point) => ({
@@ -46,23 +38,27 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
         setPolylinePath(decodedPath);
       }
     }
-  }, [activity]);
+  }, [props]);
 
-  const bounds = new google.maps.LatLngBounds();
-  for (let i = 0; i < polylinePath.length; i++) {
-    bounds.extend(
-      new google.maps.LatLng(polylinePath[i].lat, polylinePath[i].lng)
-    );
+  function defineBounds() {
+    const bounds = new window.google.maps.LatLngBounds();
+    for (let i = 0; i < polylinePath.length; i++) {
+      bounds.extend(
+        new google.maps.LatLng(polylinePath[i].lat, polylinePath[i].lng)
+      );
+    }
+    googleMap?.fitBounds(bounds);
   }
-  googleMap?.fitBounds(bounds);
 
   return (
     <div style={{ height: "400px", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
         center={center}
-        zoom={11}
-        onGoogleApiLoaded={({ map }) => setGoogleMap(map)}
+        defaultZoom={11}
+        onGoogleApiLoaded={({ map }) => {
+          setGoogleMap(map), defineBounds();
+        }}
         yesIWantToUseGoogleMapApiInternals={true}
       >
         {polylinePath.length > 0 && (
