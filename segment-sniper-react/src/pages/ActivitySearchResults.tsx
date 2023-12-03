@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import ActivityCardList from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCardList";
 import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
-import { useSnipeSegments } from "../hooks/Api/Activity/useSnipeSegments";
+import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import toast from "react-hot-toast";
 import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
 import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";

@@ -7,7 +7,7 @@ import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSeg
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import { useSnipeSegments } from "../../../hooks/Api/Activity/useSnipeSegments";
+import { useSnipeSegments } from "../../../hooks/Api/Segments/useSnipeSegments";
 export interface SnipeSegmentFunctionProps {
   activityId?: string;
   secondsOff?: number;

@@ -25,19 +25,23 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Elapsed Time:</span>{" "}
-                  {props.segmentEffortListItem.elapsedTime} miles
+                  {props.segmentEffortListItem.elapsedTime}
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Average Watts:</span>{" "}
-                  {props.segmentEffortListItem.averageWatts}
-                </Col>
+                {props.segmentEffortListItem.deviceWatts ? (
+                  <Col sm={12} md={6} lg={4} xl={3}>
+                    <span className="activity-card-label">Average Watts:</span>{" "}
+                    {props.segmentEffortListItem.averageWatts}
+                  </Col>
+                ) : (
+                  <></>
+                )}
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Max Heart Rate:</span>{" "}
-                  {props.segmentEffortListItem.maxHeartRate}
+                  {props.segmentEffortListItem.maxHeartrate}
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Hidden:</span>{" "}
-                  {props.segmentEffortListItem.hidden}
+                  {props.segmentEffortListItem.hidden ? `Yes` : "No"}
                 </Col>
               </Row>
             </Card.Body>

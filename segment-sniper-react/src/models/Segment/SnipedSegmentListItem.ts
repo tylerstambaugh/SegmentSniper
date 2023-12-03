@@ -1,4 +1,4 @@
-import { AthleteSegmentStats } from "./AthleteSegmentStats";
+import { AthleteSegmentStatsUiModel } from "./AthleteSegmentStats";
 import { Xoms } from "./Xoms";
 
 export interface SnipedSegmentListItem {
@@ -8,7 +8,7 @@ export interface SnipedSegmentListItem {
   distance?: number;
   secondsFromLeader?: number;
   percentageFromLeader?: number;
-  athleteStats?: AthleteSegmentStats;
+  athleteStats?: AthleteSegmentStatsUiModel;
   xoms?: Xoms;
   starred?: boolean;
   useQom?: boolean;

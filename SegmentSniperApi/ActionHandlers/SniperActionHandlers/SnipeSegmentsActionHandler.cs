@@ -90,7 +90,13 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                             AthleteCount = model.AthleteCount,
                             Starred = model.Starred,
                             StarCount = model.StarCount,
-                            AthleteSegmentStats = model.AthleteSegmentStats,
+                            AthleteSegmentStats = new AthleteSegmentStatsUiModel
+                            {
+                                PrActivityId = model.AthleteSegmentStats.PrActivityId,
+                                PrDate = model.AthleteSegmentStats.PrDate,
+                                EffortCount = model.AthleteSegmentStats.EffortCount,
+                                PrElapsedTime = ConvertTimeInSeconds(model.AthleteSegmentStats.EffortCount),
+                            },
                             Xoms = model.Xoms,
                         };
 
@@ -148,6 +154,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             public int KomTime { get; set; }
             public int QomTime { get; set; }
+        }
+
+        private string ConvertTimeInSeconds(int seconds)
+        {            
+            int hours = seconds / 3600;
+            int minutes = seconds / 60 - (hours * 60);
+            int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
+            return $"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}";
         }
 
         private void ValidateRequest(SnipeSegmentsRequest request)
