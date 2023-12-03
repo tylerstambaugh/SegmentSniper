@@ -30,10 +30,14 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                   </span>{" "}
                   {props.snipedSegment.secondsFromLeader}
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">PR Time:</span>{" "}
-                  {props.snipedSegment.athleteStats?.prElapsedTime}
-                </Col>
+                {props.snipedSegment.athleteStats?.effortCount! > 1 ? (
+                  <Col sm={12} md={6} lg={4} xl={3}>
+                    <span className="activity-card-label">PR Time:</span>{" "}
+                    {props.snipedSegment.athleteStats?.prElapsedTime}
+                  </Col>
+                ) : (
+                  <></>
+                )}
               </Row>
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">

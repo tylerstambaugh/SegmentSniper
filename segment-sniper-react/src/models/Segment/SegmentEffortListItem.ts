@@ -14,7 +14,7 @@ export interface SegmentEffortListItem {
   startDate?: Date;
   startDateLocale?: Date;
   averageHeartRate?: number;
-  maxHeartRate?: number;
+  maxHeartrate?: number;
   averageWatts?: number;
   deviceWatts?: boolean;
   achievements?: Achievement[];

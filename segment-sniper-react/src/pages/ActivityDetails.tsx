@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSnipeSegments } from "../hooks/Api/Activity/useSnipeSegments";
+import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../stores/useActivityListStore";
 import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";

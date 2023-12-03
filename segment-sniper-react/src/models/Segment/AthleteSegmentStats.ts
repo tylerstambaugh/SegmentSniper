@@ -1,5 +1,5 @@
-export interface AthleteSegmentStats {
-  prElapsedTime: number;
+export interface AthleteSegmentStatsUiModel {
+  prElapsedTime: string;
   prDate: string;
   prActivityId: number;
   effortCount: number;

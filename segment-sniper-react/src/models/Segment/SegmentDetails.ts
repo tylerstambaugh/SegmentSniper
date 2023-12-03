@@ -1,5 +1,5 @@
 import { Map } from "../Map";
-import { AthleteSegmentStats } from "./AthleteSegmentStats";
+import { AthleteSegmentStatsUiModel } from "./AthleteSegmentStats";
 import { Xoms } from "./Xoms";
 
 export interface SegmentDetails {
@@ -28,6 +28,6 @@ export interface SegmentDetails {
   effortCount: number;
   athleteCount: number;
   starCount: number;
-  athleteSegmentStats: AthleteSegmentStats;
+  athleteSegmentStats: AthleteSegmentStatsUiModel;
   xoms: Xoms;
 }
