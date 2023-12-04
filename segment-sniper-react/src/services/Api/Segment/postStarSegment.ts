@@ -5,6 +5,7 @@ import { apiPost } from "../BaseApiService";
 
 export type StarSegmentRequest = {
   segmentId?: string;
+  star: boolean;
 };
 
 export type StarSegmentResponse = {

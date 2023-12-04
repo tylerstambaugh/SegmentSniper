@@ -13,8 +13,6 @@ const devtoolOptions = {
   name: "Segment Detials Store",
 };
 
-const initialState: Partial<SegmentDetails> = {};
-
 const useSegmentDetailsStore = create<SegmentDetailsStore>()(
   immer(
     devtools(

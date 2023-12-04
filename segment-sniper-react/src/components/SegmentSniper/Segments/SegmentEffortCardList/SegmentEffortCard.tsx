@@ -1,6 +1,13 @@
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { SegmentEffort } from "../../../../models/Segment/SegmentEffort";
 import { SegmentEffortListItem } from "../../../../models/Segment/SegmentEffortListItem";
+import { useState } from "react";
+import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegmentDetails";
+import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
+import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
@@ -8,6 +15,28 @@ type SegmentEffortCardProps = {
 };
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
+  const [showDetails, setShowDetails] = useState(false);
+  const getSegmentDetails = useGetSegmentDetails();
+  const starSegment = usePostStarSegment();
+  const segmentDetails = useSegmentDetailsStore(
+    (state) => state.segmentDetails
+  );
+
+  async function handleDetailsButtonClick() {
+    if (!showDetails && segmentDetails === null)
+      await getSegmentDetails.mutateAsync({
+        segmentId: props.segmentEffortListItem.segmentId!,
+      });
+    setShowDetails(!showDetails);
+  }
+
+  async function handleStarButtonClick() {
+    await starSegment.mutateAsync({
+      segmentId: props.segmentEffortListItem.segmentId!,
+      star: !segmentDetails?.isStarred!,
+    });
+  }
+
   return (
     <Container className="py-2">
       <Row>
@@ -44,9 +73,67 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                   {props.segmentEffortListItem.hidden ? `Yes` : "No"}
                 </Col>
               </Row>
+              {showDetails ? (
+                <Row>
+                  <Col>
+                    <Col sm={12} md={6} lg={4} xl={3}>
+                      <span className="activity-card-label">Kom Time:</span>{" "}
+                      {segmentDetails?.xoms.overall}
+                    </Col>
+                  </Col>
+                </Row>
+              ) : (
+                <></>
+              )}
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
-              <Button>Details</Button>
+              {getSegmentDetails.isLoading ? (
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  style={{ width: "75px" }}
+                >
+                  <Spinner
+                    as="span"
+                    variant="light"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    animation="border"
+                  />
+                </Button>
+              ) : (
+                <Button onClick={() => handleDetailsButtonClick()}>
+                  Details
+                </Button>
+              )}
+              {starSegment.isLoading ? (
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  style={{ width: "75px" }}
+                >
+                  <Spinner
+                    as="span"
+                    variant="light"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    animation="border"
+                  />
+                </Button>
+              ) : (
+                <Button
+                  className="px-4"
+                  onClick={() => handleStarButtonClick()}
+                >
+                  {segmentDetails && segmentDetails?.isStarred ? (
+                    <FontAwesomeIcon icon={circleCheck} />
+                  ) : (
+                    <FontAwesomeIcon icon={regularStar} />
+                  )}
+                </Button>
+              )}
             </Card.Footer>
           </Card>
         </Col>

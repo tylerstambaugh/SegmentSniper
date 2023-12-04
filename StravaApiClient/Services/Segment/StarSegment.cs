@@ -24,7 +24,7 @@ namespace StravaApiClient.Services.Segment
             StarSegmentData request = new StarSegmentData(contract.Star);
 
 
-            var apiResponse = await _client.PutAsync<StarSegmentData, DetailedSegmentApiModel>($"/segments/{contract.SegmentId}/starred", request);
+            var apiResponse = await _client.PutAsync<StarSegmentData, DetailedSegmentApiModel>($"segments/{contract.SegmentId}/starred", request);
 
             return new StarSegmentContract.Result
             {
