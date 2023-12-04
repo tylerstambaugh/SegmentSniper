@@ -22,11 +22,12 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
   >([]);
 
   const [center, setCenter] = useState({
-    lat: 39.791,
-    lng: -86.148003,
+    lat: props.startLatlng![0],
+    lng: props.startLatlng![1],
   });
 
-  async function configureMap() {
+  async function configureMap(map: google.maps.Map) {
+    setGoogleMap(map);
     if (!!props.startLatlng) {
       setCenter({ lat: props.startLatlng[0], lng: props.startLatlng[1] });
 
@@ -41,21 +42,6 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (!!props.startLatlng) {
-  //     setCenter({ lat: props.startLatlng[0], lng: props.startLatlng[1] });
-
-  //     if (props.stravaMap.polyLine) {
-  //       const decodedPath = decode(props.stravaMap.polyLine).map((point) => ({
-  //         lat: point[0],
-  //         lng: point[1],
-  //       }));
-  //       setPolylinePath(decodedPath);
-  //       defineBounds();
-  //     }
-  //   }
-  // }, [props]);
-
   async function defineBounds() {
     const bounds = new window.google.maps.LatLngBounds();
     for (let i = 0; i < polylinePath.length; i++) {
@@ -66,14 +52,20 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     googleMap?.fitBounds(bounds);
   }
 
+  useEffect(() => {
+    if (polylinePath.length > 0) {
+      defineBounds();
+    }
+  }, [polylinePath]);
+
   return (
     <div style={{ height: "400px", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
         center={center}
         defaultZoom={11}
-        onGoogleApiLoaded={({ map }) => {
-          setGoogleMap(map), configureMap();
+        onGoogleApiLoaded={async ({ map }) => {
+          await configureMap(map);
         }}
         yesIWantToUseGoogleMapApiInternals={true}
       >

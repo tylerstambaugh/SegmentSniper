@@ -108,7 +108,7 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost]
         [Authorize]
         [Route("starSegment/{segmentId}")]
-        public async Task<IActionResult> StarSegment(string segmentId, [FromBody] bool star)
+        public async Task<IActionResult> StarSegment(string segmentId, [FromBody] StarSegmentContract contract)
         {
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
@@ -116,7 +116,7 @@ namespace SegmentSniper.Api.Controllers
             {
                 UserId = userId,
                 SegmentId = segmentId,
-                Star = star,
+                Star = contract.Star,
             };
 
             var returnSegment = await _starSegmentActionHandler.HandleAsync(request);

@@ -56,7 +56,10 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private void ValidateRequest(StarSegmentRequest request)
         {
-            throw new NotImplementedException();
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
         }
     }
 }

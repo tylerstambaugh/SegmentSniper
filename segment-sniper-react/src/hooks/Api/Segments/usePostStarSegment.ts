@@ -5,10 +5,14 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import postStarSegment, {
   StarSegmentRequest,
 } from "../../../services/Api/Segment/postStarSegment";
+import useSegmentDetailsStore from "../../../stores/useSegmentDetailsStore";
 
 export const usePostStarSegment = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
+  const setSegmentDetails = useSegmentDetailsStore(
+    (state) => state.setSegmentDetails
+  );
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
@@ -19,7 +23,9 @@ export const usePostStarSegment = () => {
       request: request,
     };
 
-    await postStarSegment(contract);
+    const response = await postStarSegment(contract);
+
+    setSegmentDetails(response.starredSegment);
   }
 
   return { mutateAsync, isLoading, isError, error, data };

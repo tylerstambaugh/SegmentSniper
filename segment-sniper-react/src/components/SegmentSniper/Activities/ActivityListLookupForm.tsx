@@ -166,7 +166,7 @@ function ActivityListLookupForm() {
                   </Form.Group>
                 </Col>
                 <Col lg={5}>
-                  <p className="pt-4">Test Id = 9102798217</p>
+                  <p className="pt-0">Test Id = 9102798217</p>
                 </Col>
               </Row>
               <hr className="hr-75" />
@@ -251,7 +251,7 @@ function ActivityListLookupForm() {
                     {handleActivitySearch.isLoading ? (
                       <Button
                         type="submit"
-                        variant="primary"
+                        variant="secondary"
                         style={{ width: "75px" }}
                       >
                         <Spinner
