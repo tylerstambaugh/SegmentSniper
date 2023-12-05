@@ -44,7 +44,7 @@ namespace SegmentSniper.Api.Configuration
             }
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
-                    options.UseSqlServer(connectionString));
+                    options.UseSqlServer((connectionString), b => b.MigrationsAssembly("SegmentSniper.Api")));
 
             builder.Services.Configure<OperationalStoreOptions>(options =>
             {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Net.Http.Headers;
 using SegmentSniper.Api.Configuration;
 using System.Net;
+using Azure.Identity;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -11,6 +12,9 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
+
+//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 var app = builder.Build();
 

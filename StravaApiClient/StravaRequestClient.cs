@@ -172,7 +172,6 @@ namespace StravaApiClient
                 var result = JsonConvert.DeserializeObject<RefreshTokenResponse>(stringResult);
 
                 _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
-                //_tokenExpiration = DateTime.Now.AddSeconds(result.ExpiresIn);
             }
         }
 

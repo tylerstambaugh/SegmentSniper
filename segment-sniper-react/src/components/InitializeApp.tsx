@@ -1,13 +1,14 @@
 import React, { ReactNode, useEffect } from "react";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
+import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
 
 interface InitializeComponentProps {
   children: ReactNode;
 }
 
 const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
-  //useRefreshTokenQuery();
+  const refreshToken = useRefreshTokenQuery();
   const [appConfig, setAppConfig] = useAppConfigStore((state) => [
     state.appConfig,
     state.setAppConfig,

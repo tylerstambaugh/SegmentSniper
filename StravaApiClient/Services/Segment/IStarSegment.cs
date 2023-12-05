@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using StravaApiClient.Models.Segment;
 
 namespace StravaApiClient.Services.Segment
@@ -19,7 +20,7 @@ namespace StravaApiClient.Services.Segment
 
         public class Result
         {
-            public DetailedSegmentApiModel DetailedSegment { get; set; }
+            public DetailedSegmentApiModel StarredSegment { get; set; }
         }
     }
 
@@ -27,9 +28,10 @@ namespace StravaApiClient.Services.Segment
     {
         public StarSegmentData(bool star)
         {
-            Star = star;
+            Starred = star;
         }
-
-        public bool Star { get; set; }
+        
+        [JsonProperty("starred")]
+        public bool Starred { get; set; }
     }
 }

@@ -9,11 +9,11 @@ using SegmentSniper.Data;
 
 #nullable disable
 
-namespace SegmentSniper.Data.Migrations
+namespace SegmentSniper.Api.Migrations
 {
     [DbContext(typeof(SegmentSniperDbContext))]
-    [Migration("20231116113753_newMigration")]
-    partial class newMigration
+    [Migration("20231205010944_mssql.azure_migration_887")]
+    partial class mssqlazure_migration_887
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

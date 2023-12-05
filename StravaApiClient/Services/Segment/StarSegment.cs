@@ -28,7 +28,7 @@ namespace StravaApiClient.Services.Segment
 
             return new StarSegmentContract.Result
             {
-                DetailedSegment = apiResponse
+                StarredSegment = apiResponse
             };
         }
 

@@ -10,7 +10,7 @@ const persistOptions = {
 };
 
 const devtoolOptions = {
-  name: "Segment Detials Store",
+  name: "Segment Details Store",
 };
 
 const useSegmentDetailsStore = create<SegmentDetailsStore>()(
