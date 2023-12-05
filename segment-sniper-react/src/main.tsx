@@ -25,7 +25,20 @@ root.render(
         <Routes />
       </Router>
     </InitializeApp>
-    <Toaster />
+    <Toaster
+      toastOptions={{
+        success: {
+          style: {
+            background: "green",
+          },
+        },
+        error: {
+          style: {
+            background: "red",
+          },
+        },
+      }}
+    />
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );

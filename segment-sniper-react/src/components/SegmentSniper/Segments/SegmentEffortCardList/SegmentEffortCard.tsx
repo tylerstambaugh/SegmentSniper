@@ -8,6 +8,7 @@ import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSe
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
+import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
@@ -16,7 +17,9 @@ type SegmentEffortCardProps = {
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
-
+  const setSegmentEffortsList = useSegmentEffortsListStore(
+    (state) => state.setSegmentEffortsList
+  );
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
   const segmentDetails = useSegmentDetailsStore(
@@ -31,11 +34,33 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
     setShowDetails(!showDetails);
   }
 
+  const updateSegmentEffortStarred = (
+    segmentEffortsList: SegmentEffortListItem[],
+    segmentId: string,
+    starred: boolean
+  ): SegmentEffortListItem[] => {
+    return segmentEffortsList.map((item) =>
+      item.segmentId === segmentId
+        ? { ...item, summarySegment: { ...item.summarySegment, starred } }
+        : item
+    );
+  };
+
   async function handleStarButtonClick() {
-    await starSegment.mutateAsync({
+    const response = await starSegment.mutateAsync({
       segmentId: props.segmentEffortListItem.segmentId!,
       star: !segmentDetails?.starred!,
     });
+
+    if (!starSegment.isError && !starSegment.isLoading && response !== null) {
+      setSegmentEffortsList((prevList: SegmentEffortListItem[]) =>
+        updateSegmentEffortStarred(
+          prevList,
+          response.detailedSegment.segmentId,
+          response.detailedSegment.starred
+        )
+      );
+    }
   }
 
   return (
@@ -144,25 +169,3 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
 };
 
 export default SegmentEffortCard;
-
-// export interface SegmentEffort {
-//     segmentEffortId: string;
-//     name: string;
-//     activityId: string;
-//     elapsedTime: number;
-//     movingTime: number;
-//     startDate: string;
-//     startDateLocal: string;
-//     distance: number;
-//     startIndex: number;
-//     endIndex: number;
-//     deviceWatts: boolean;
-//     averageWatts: number;
-//     averageHeartRate: number;
-//     maxHeartRate: number;
-//     segment: SummarySegment;
-//     prRank: number | null;
-//     achievements: Achievement[];
-//     komRank: number | null;
-//     hidden: boolean;
-//   }

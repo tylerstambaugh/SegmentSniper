@@ -28,9 +28,9 @@ export default async function postRefreshToken(
   ).json();
 
   const response: TokenData = {
-    accessToken: tokenResponseJson["accessToken"],
-    expiration: tokenResponseJson["expiration"],
-    refreshToken: tokenResponseJson["refreshToken"],
+    accessToken: tokenResponseJson["refreshedToken"]["accessToken"],
+    expiration: tokenResponseJson["refreshedToken"]["expiration"],
+    refreshToken: tokenResponseJson["refreshedToken"]["refreshToken"],
   };
 
   return response;

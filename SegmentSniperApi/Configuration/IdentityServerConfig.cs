@@ -10,7 +10,7 @@ namespace SegmentSniper.Api.Configuration
         public static IIdentityServerBuilder ConfigureIdentityServer(this IIdentityServerBuilder builder, IConfiguration configuration, IWebHostEnvironment environment)
         {
             var thumbPrint = configuration["CertificateThumbprint"];
-            var connectionString = configuration.GetConnectionString("SegmentSniper");
+            var connectionString = configuration["SegmentSniperConnectionStringDev"];
 
             if (environment.IsDevelopment())
             {
