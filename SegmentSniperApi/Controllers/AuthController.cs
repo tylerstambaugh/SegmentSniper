@@ -81,8 +81,16 @@ namespace SegmentSniper.Api.Controllers
             {
                 try
                 {
-                    var refreshedToken = _refreshTokenActionHandler.Handle(new RefreshTokenRequest(refreshToken));
+                    var refreshedToken = await _refreshTokenActionHandler.HandleAsync(new RefreshTokenRequest(refreshToken));
+                    if(refreshedToken.RefreshedToken.AccessToken != null)
+                    {
                     return Ok(refreshedToken);
+
+                    }
+                    else
+                    {
+                        return BadRequest("Something went wrong");
+                    }
                 }
                 catch (Exception ex)
                 {

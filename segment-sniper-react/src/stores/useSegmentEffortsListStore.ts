@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { SegmentEffortListItem as SegmentEffortsListItem } from "../models/Segment/SegmentEffortListItem";
+import { SegmentEffortListItem } from "../models/Segment/SegmentEffortListItem";
 
 const persistOptions = {
   name: "segment-list-store",
@@ -18,11 +18,12 @@ const useSegmentEffortsListStore = create<SegmentEffortsListStore>()(
       persist(
         (set) => ({
           segmentEffortsList: [],
-          setSegmentEffortsList: (
-            segmentEffortsList: SegmentEffortsListItem[]
-          ) =>
+          setSegmentEffortsList: (segmentEffortsList) =>
             set((state) => {
-              state.segmentEffortsList = segmentEffortsList;
+              state.segmentEffortsList =
+                typeof segmentEffortsList === "function"
+                  ? segmentEffortsList(state.segmentEffortsList)
+                  : segmentEffortsList;
             }),
           resetSegmentEffortsList: () =>
             set((state) => {
@@ -39,7 +40,11 @@ const useSegmentEffortsListStore = create<SegmentEffortsListStore>()(
 export default useSegmentEffortsListStore;
 
 interface SegmentEffortsListStore {
-  segmentEffortsList: SegmentEffortsListItem[];
-  setSegmentEffortsList: (segmentEffortsList: SegmentEffortsListItem[]) => void;
+  segmentEffortsList: SegmentEffortListItem[];
+  setSegmentEffortsList: (
+    segmentEffortsList:
+      | SegmentEffortListItem[]
+      | ((prevList: SegmentEffortListItem[]) => SegmentEffortListItem[])
+  ) => void;
   resetSegmentEffortsList: () => void;
 }

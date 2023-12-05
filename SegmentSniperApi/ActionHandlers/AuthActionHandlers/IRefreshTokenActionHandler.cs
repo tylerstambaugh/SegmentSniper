@@ -6,7 +6,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
     public interface IRefreshTokenActionHandler
     {
-        Task<RefreshTokenRequest.Response> Handle(RefreshTokenRequest request);
+        Task<RefreshTokenRequest.Response> HandleAsync(RefreshTokenRequest request);
     }
 
     public class RefreshTokenRequest

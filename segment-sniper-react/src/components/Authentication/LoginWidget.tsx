@@ -61,7 +61,9 @@ export default function LoginWidget() {
 
   useEffect(() => {
     if (loginUser.error !== null) {
-      toast.error(`login error: ${loginUser.error}`);
+      toast.error(`login error: ${loginUser.error}`, {
+        position: "bottom-center",
+      });
     }
   }, [loginUser.error]);
 
