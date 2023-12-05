@@ -52,15 +52,10 @@ export default function LoginWidget() {
       password: password ?? "",
     };
 
-    try {
-      await loginUser.mutateAsync(loginRequest);
+    await loginUser.mutateAsync(loginRequest);
 
-      if (isAuthenticated) {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error(`login error: ${error}`);
+    if (isAuthenticated) {
+      navigate("/dashboard");
     }
   }
 

@@ -25,7 +25,7 @@ export const usePostStarSegment = () => {
 
     const response = await postStarSegment(contract);
 
-    setSegmentDetails(response.starredSegment);
+    setSegmentDetails(response.detailedSegment);
   }
 
   return { mutateAsync, isLoading, isError, error, data };

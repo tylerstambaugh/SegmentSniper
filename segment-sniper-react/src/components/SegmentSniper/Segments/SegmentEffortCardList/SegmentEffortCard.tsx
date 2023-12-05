@@ -1,7 +1,7 @@
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { SegmentEffort } from "../../../../models/Segment/SegmentEffort";
 import { SegmentEffortListItem } from "../../../../models/Segment/SegmentEffortListItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegmentDetails";
 import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
@@ -16,6 +16,7 @@ type SegmentEffortCardProps = {
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
+
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
   const segmentDetails = useSegmentDetailsStore(
@@ -33,7 +34,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   async function handleStarButtonClick() {
     await starSegment.mutateAsync({
       segmentId: props.segmentEffortListItem.segmentId!,
-      star: !segmentDetails?.isStarred!,
+      star: !segmentDetails?.starred!,
     });
   }
 
@@ -127,7 +128,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                   className="px-4"
                   onClick={() => handleStarButtonClick()}
                 >
-                  {segmentDetails && segmentDetails?.isStarred ? (
+                  {props.segmentEffortListItem.summarySegment.starred ? (
                     <FontAwesomeIcon icon={circleCheck} />
                   ) : (
                     <FontAwesomeIcon icon={regularStar} />

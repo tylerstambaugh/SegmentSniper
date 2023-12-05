@@ -20,7 +20,7 @@ export interface SegmentDetails {
   country: string;
   isPrivate: boolean;
   isHazardous: boolean;
-  isStarred: boolean;
+  starred: boolean;
   createdAt: string;
   updatedAt: string;
   totalElevationGain: number;

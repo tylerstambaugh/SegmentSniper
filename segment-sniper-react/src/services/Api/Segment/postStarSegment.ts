@@ -9,7 +9,7 @@ export type StarSegmentRequest = {
 };
 
 export type StarSegmentResponse = {
-  starredSegment: SegmentDetails;
+  detailedSegment: SegmentDetails;
 };
 
 export default async function postStarSegment(

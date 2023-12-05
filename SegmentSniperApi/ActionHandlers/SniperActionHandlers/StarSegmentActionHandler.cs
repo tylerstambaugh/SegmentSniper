@@ -37,7 +37,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         Star = request.Star
                     });
 
-                    DetailedSegment returnSegment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegment);
+                    DetailedSegment returnSegment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.StarredSegment);
 
                     return new StarSegmentRequest.Response(returnSegment);
 

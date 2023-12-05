@@ -7,6 +7,7 @@ export default function AuthenticatedUserMonitor() {
     (state) => state.setIsAuthenticated
   );
 
+  // set interval or polling
   useEffect(() => {
     if (tokenData) {
       const currentTime = new Date().getTime();
@@ -21,5 +22,6 @@ export default function AuthenticatedUserMonitor() {
       setIsAuthenticated(false);
     }
   }, [tokenData]);
+
   return null;
 }

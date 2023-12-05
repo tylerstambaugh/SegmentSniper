@@ -16,5 +16,5 @@ export interface SummarySegment {
   country: string;
   isPrivate: boolean;
   isHazardous: boolean;
-  isStarred: boolean;
+  starred: boolean;
 }

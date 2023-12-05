@@ -20,7 +20,7 @@
 
 .btn-secondary {  
   padding: 4px ;
-  border-radius: 9px;
+  border-radius: 7px;
   background-color: #ffca14;
   color: #292b2c;
   transition: background-color 0.4s ease;
@@ -34,7 +34,7 @@
 
 .primary-rounded-button {  
   padding: 8px ;
-  border-radius: 9px;
+  border-radius: 7px;
   background-color: #29dcb2;
   color: #292b2c;
   transition: background-color 0.4s ease;

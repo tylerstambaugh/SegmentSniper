@@ -6,13 +6,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../stores/useUserStore";
 import useTokenDataStore from "../stores/useTokenStore";
 import logo from "../assets/images/segment_sniper_logo.svg";
+import { useState } from "react";
 
 function Header() {
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
   const [user] = useUserStore((state) => [state.user]);
 
+  const [isNavbarOpen, setNavbarOpen] = useState(false);
+  
+  const handleNavbarToggle = () => setNavbarOpen(!isNavbarOpen);
+
+  const handleLinkClick = () => setNavbarOpen(false);
+
   return (
-    <Navbar bg="light" expand="md">
+    <Navbar
+      bg="light"
+      expand="md"
+      expanded={isNavbarOpen}
+      onSelect={handleLinkClick}
+    >
       <Container>
         <Link to={AppRoutes.Home}>
           <Navbar.Brand>
@@ -24,7 +36,7 @@ function Header() {
             />
           </Navbar.Brand>
         </Link>
-        <Navbar.Toggle />
+        <Navbar.Toggle onClick={handleNavbarToggle} />
 
         <Navbar.Collapse className="justify-content-end">
           {tokenData !== null && tokenData!.accessToken && user!.id ? (
@@ -34,14 +46,22 @@ function Header() {
               </Col>
               <Col md={3} className="d-flex justify-content-end">
                 <Navbar.Text className="ps-5">
-                  <Link to={AppRoutes.Logout}>Logout</Link>
+                  <Link to={AppRoutes.Logout} onClick={handleLinkClick}>
+                    Logout
+                  </Link>
                 </Navbar.Text>
               </Col>
             </Row>
           ) : (
-            <Navbar.Text className="d-flex">
-              <Link to={AppRoutes.Login}>Login</Link>
-            </Navbar.Text>
+            <Row>
+              <Col md={3} className="d-flex justify-content-end">
+                <Navbar.Text className="d-flex">
+                  <Link to={AppRoutes.Login} onClick={handleLinkClick}>
+                    Login
+                  </Link>
+                </Navbar.Text>
+              </Col>
+            </Row>
           )}
         </Navbar.Collapse>
       </Container>
