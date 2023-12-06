@@ -26,7 +26,7 @@ export const useGetSegmentDetails = () => {
 
     const response: SegmentDetailsResponse = await getSegmentDetails(contract);
 
-    setSegmentDetails(response.segmentDetails);
+    setSegmentDetails(response.detailedSegmentUIModel);
   }
 
   return { mutateAsync, isLoading, isError, error, data };

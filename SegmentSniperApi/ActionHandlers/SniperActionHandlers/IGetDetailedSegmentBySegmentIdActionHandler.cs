@@ -27,7 +27,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public class Response
         {
-            public List<DetailedSegmentUIModel> DetailedSegmentUIModel { get; set; }
+            public DetailedSegmentUIModel DetailedSegmentUIModel { get; set; }
         }
     }
 

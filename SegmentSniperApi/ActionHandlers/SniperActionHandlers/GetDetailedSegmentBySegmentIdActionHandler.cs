@@ -37,14 +37,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
 
-
                     DetailedSegmentUIModel segmentUiModel = _mapper.Map<DetailedSegment, DetailedSegmentUIModel>(segment);
-
-                    List<DetailedSegmentUIModel> returnList = new List<DetailedSegmentUIModel> { segmentUiModel };
 
                     return new GetDetailedSegmentBySegmentIdRequest.Response
                     {
-                        DetailedSegmentUIModel = returnList
+                        DetailedSegmentUIModel = segmentUiModel
                     };
                 }
 

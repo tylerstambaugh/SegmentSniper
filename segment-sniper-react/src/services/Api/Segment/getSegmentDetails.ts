@@ -8,7 +8,7 @@ export type SegmentDetailsRequest = {
 };
 
 export type SegmentDetailsResponse = {
-  segmentDetails: SegmentDetails;
+  detailedSegmentUIModel: SegmentDetails;
 };
 
 export default async function getSegmentDetails(

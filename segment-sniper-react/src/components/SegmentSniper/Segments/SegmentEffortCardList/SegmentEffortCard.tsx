@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
+import ActivityMap from "../../ActivityMap";
 
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
@@ -27,10 +28,9 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   );
 
   async function handleDetailsButtonClick() {
-    if (!showDetails && segmentDetails === null)
-      await getSegmentDetails.mutateAsync({
-        segmentId: props.segmentEffortListItem.segmentId!,
-      });
+    await getSegmentDetails.mutateAsync({
+      segmentId: props.segmentEffortListItem.segmentId!,
+    });
     setShowDetails(!showDetails);
   }
 
@@ -100,14 +100,25 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                 </Col>
               </Row>
               {showDetails ? (
-                <Row>
-                  <Col>
-                    <Col sm={12} md={6} lg={4} xl={3}>
-                      <span className="activity-card-label">Kom Time:</span>{" "}
-                      {segmentDetails?.xoms.overall}
+                <>
+                  <Row>
+                    <Col>
+                      <Col sm={12} md={6} lg={4} xl={3}>
+                        <span className="activity-card-label">Kom Time:</span>{" "}
+                        {segmentDetails?.xoms.overall}
+                      </Col>
                     </Col>
-                  </Col>
-                </Row>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <ActivityMap
+                        stravaMap={segmentDetails?.map}
+                        startLatlng={segmentDetails?.startLatlng!}
+                        endLatlng={segmentDetails?.endLatlng!}
+                      />
+                    </Col>
+                  </Row>
+                </>
               ) : (
                 <></>
               )}

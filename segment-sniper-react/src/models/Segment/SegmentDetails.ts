@@ -1,4 +1,5 @@
 import { Map } from "../Map";
+import { StravaMap } from "../StravaMap";
 import { AthleteSegmentStatsUiModel } from "./AthleteSegmentStats";
 import { Xoms } from "./Xoms";
 
@@ -24,7 +25,7 @@ export interface SegmentDetails {
   createdAt: string;
   updatedAt: string;
   totalElevationGain: number;
-  map: Map;
+  map: StravaMap;
   effortCount: number;
   athleteCount: number;
   starCount: number;

@@ -5,7 +5,6 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import postStarSegment, {
   StarSegmentRequest,
 } from "../../../services/Api/Segment/postStarSegment";
-import useSegmentDetailsStore from "../../../stores/useSegmentDetailsStore";
 
 export const usePostStarSegment = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
