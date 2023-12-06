@@ -1,5 +1,5 @@
 import { SegmentEffort } from "../Segment/SegmentEffort";
-import { StravaMap } from "./ActivityListItem";
+import { StravaMap } from "../StravaMap";
 
 export interface DetailedActivity {
   name: string;

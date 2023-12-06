@@ -32,7 +32,7 @@ const ActivityDetails = () => {
     useState<SegmentDetails>();
 
   const handleCloseSnipeSegmentsModal = () => {
-    setShowSnipeSegmentsModal(false), setSelectedActivityId("");
+    setShowSnipeSegmentsModal(false);
   };
   const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
   const handleCloseSegmentDetailModal = () => setShowSegmentDetailModal(false);
@@ -47,10 +47,6 @@ const ActivityDetails = () => {
     if (snipeSegments.error !== null)
       toast.error(`Snipe segments error: ${snipeSegments.error}`);
   }, [snipeSegments.error]);
-
-  function handleShowSegmentDetails(segmentId: string) {
-    setShowSegmentDetailModal(true);
-  }
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");

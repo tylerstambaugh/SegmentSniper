@@ -46,6 +46,10 @@ function ActivitySearchResults() {
     resetSegmentEffortsList();
   };
 
+  useEffect(() => {
+    setSelectedActivity("");
+  }, []);
+
   return (
     <Container fluid>
       <SnipeSegmentsModal

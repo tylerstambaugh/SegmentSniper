@@ -1,4 +1,5 @@
 import { SegmentEffortListItem } from "../Segment/SegmentEffortListItem";
+import { StravaMap } from "../StravaMap";
 
 export interface ActivityListItem {
   name?: string;
@@ -13,10 +14,4 @@ export interface ActivityListItem {
   endLatlng?: number[];
   stravaMap?: StravaMap;
   segmentEffortListItems?: SegmentEffortListItem[];
-}
-
-export interface StravaMap {
-  id: string;
-  polyLine?: string;
-  summaryPolyline?: string;
 }
