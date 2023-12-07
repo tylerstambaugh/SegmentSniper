@@ -11,8 +11,8 @@ import useSegmentDetailsStore from "../../../stores/useSegmentDetailsStore";
 export const useGetSegmentDetails = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  const setSegmentDetails = useSegmentDetailsStore(
-    (state) => state.setSegmentDetails
+  const addSegmentDetails = useSegmentDetailsStore(
+    (state) => state.addSegmentDetails
   );
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
@@ -26,7 +26,7 @@ export const useGetSegmentDetails = () => {
 
     const response: SegmentDetailsResponse = await getSegmentDetails(contract);
 
-    setSegmentDetails(response.detailedSegmentUIModel);
+    addSegmentDetails(response.detailedSegmentUIModel);
   }
 
   return { mutateAsync, isLoading, isError, error, data };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StravaMap } from "../../models/Activity/ActivityListItem";
 import useAppConfigStore from "../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
 import Polyline from "./Polyline";
+import { StravaMap } from "../../models/StravaMap";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;
@@ -41,6 +41,7 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
       }
     }
   }
+
 
   async function defineBounds() {
     const bounds = new window.google.maps.LatLngBounds();
