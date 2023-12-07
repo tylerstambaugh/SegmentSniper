@@ -23,8 +23,10 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   );
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
-  const segmentDetails = useSegmentDetailsStore(
-    (state) => state.segmentDetails
+  const segmentDetails = useSegmentDetailsStore((state) =>
+    state.segmentDetails.find(
+      (sd) => sd.segmentId === props.segmentEffortListItem.segmentId
+    )
   );
 
   async function handleDetailsButtonClick() {
@@ -49,7 +51,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   async function handleStarButtonClick() {
     const response = await starSegment.mutateAsync({
       segmentId: props.segmentEffortListItem.segmentId!,
-      star: !segmentDetails?.starred!,
+      star: segmentDetails?.starred!,
     });
 
     if (!starSegment.isError && !starSegment.isLoading && response !== null) {
@@ -112,7 +114,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                   <Row>
                     <Col>
                       <ActivityMap
-                        stravaMap={segmentDetails?.map}
+                        stravaMap={segmentDetails?.map!}
                         startLatlng={segmentDetails?.startLatlng!}
                         endLatlng={segmentDetails?.endLatlng!}
                       />

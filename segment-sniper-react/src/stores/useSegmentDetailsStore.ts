@@ -3,6 +3,7 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { ActivityListItem } from "../models/Activity/ActivityListItem";
 import { SegmentDetails } from "../models/Segment/SegmentDetails";
+import { v4 } from "uuid";
 
 const persistOptions = {
   name: "segment-details-store",
@@ -18,15 +19,28 @@ const useSegmentDetailsStore = create<SegmentDetailsStore>()(
     devtools(
       persist(
         (set) => ({
-          segmentDetails: null,
+          segmentDetails: [],
           selectedActivityId: null,
+          setSelectedActivityId: (selectedActivityId: string) => {
+            set((state) => (state.selectedActivityId = selectedActivityId));
+          },
+          addSegmentDetails: (segmentDetails: SegmentDetails) => {
+            set((state) => {
+              state.segmentDetails = [...state.segmentDetails, segmentDetails];
+            });
+          },
           setSegmentDetails: (segmentDetails: SegmentDetails) =>
             set((state) => {
-              state.segmentDetails = segmentDetails;
+              const index = state.segmentDetails?.findIndex(
+                (sd) => sd.segmentId === segmentDetails.segmentId
+              );
+              if (index >= 0) {
+                state.segmentDetails[index] = segmentDetails;
+              }
             }),
           resetSegmentDetails: () =>
             set((state) => {
-              state.segmentDetails = null;
+              state.segmentDetails = [];
             }),
         }),
         persistOptions
@@ -39,7 +53,10 @@ const useSegmentDetailsStore = create<SegmentDetailsStore>()(
 export default useSegmentDetailsStore;
 
 interface SegmentDetailsStore {
-  segmentDetails?: SegmentDetails | null;
+  segmentDetails: SegmentDetails[];
+  selectedActivityId: string | null;
+  addSegmentDetails: (segmentDetails: SegmentDetails) => void;
+  setSelectedActivityId: (selectedActivityId: string) => void;
   setSegmentDetails: (segmentDetails: SegmentDetails) => void;
   resetSegmentDetails: () => void;
 }
