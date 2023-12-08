@@ -13,11 +13,7 @@ var configuration = new ConfigurationBuilder()
 
 var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
-//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

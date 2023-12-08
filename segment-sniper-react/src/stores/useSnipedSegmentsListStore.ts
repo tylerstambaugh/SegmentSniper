@@ -20,11 +20,12 @@ const useSnipedSegmentsListStore = create<SnipedSegmentsListStore>()(
       persist(
         (set) => ({
           snipedSegmentsList: [],
-          setSnipedSegmentsList: (
-            snipedSegmentsList: SnipedSegmentListItem[]
-          ) =>
+          setSnipedSegmentsList: (snipedSegmentsList) =>
             set((state) => {
-              state.snipedSegmentsList = snipedSegmentsList;
+              state.snipedSegmentsList =
+                typeof snipedSegmentsList === "function"
+                  ? snipedSegmentsList(state.snipedSegmentsList)
+                  : snipedSegmentsList;
             }),
           resetSnipedSegmentsList: () =>
             set((state) => {
@@ -42,6 +43,10 @@ export default useSnipedSegmentsListStore;
 
 interface SnipedSegmentsListStore {
   snipedSegmentsList: SnipedSegmentListItem[];
-  setSnipedSegmentsList: (segmentList: SnipedSegmentListItem[]) => void;
+  setSnipedSegmentsList: (
+    snipedSegmentsList:
+      | SnipedSegmentListItem[]
+      | ((prevList: SnipedSegmentListItem[]) => SnipedSegmentListItem[])
+  ) => void;
   resetSnipedSegmentsList: () => void;
 }
