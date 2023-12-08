@@ -82,7 +82,7 @@ export default function LoginWidget() {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">
-                  <img src={logo} alt="logo" className="logo pb-2" />
+                  {/* <img src={logo} alt="logo" className="logo pb-2" /> */}
                   <div className="mb-3">
                     <Form
                       name="loginForm"

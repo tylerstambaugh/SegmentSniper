@@ -87,6 +87,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                             CreatedAt = model.CreatedAt,
                             Map = model.Map,
                             EffortCount = model.EffortCount,
+                            SummarySegment = segmentEffortModel.SummarySegment,
                             AthleteCount = model.AthleteCount,
                             Starred = model.Starred,
                             StarCount = model.StarCount,

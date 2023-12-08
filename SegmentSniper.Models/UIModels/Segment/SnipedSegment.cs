@@ -17,6 +17,7 @@ namespace SegmentSniper.Models.UIModels.Segment
         public int EffortCount { get; set; }
         public int AthleteCount { get; set; }
         public bool Starred { get; set; }
+        public SummarySegment SummarySegment { get; set; }
         public int StarCount { get; set; }
         public AthleteSegmentStatsUiModel AthleteSegmentStats { get; set; }
         public Xoms Xoms { get; set; }
