@@ -10,6 +10,8 @@ import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons"
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import ActivityMap from "../../ActivityMap";
+import { Point } from "google-map-react";
+import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
@@ -18,6 +20,7 @@ type SegmentEffortCardProps = {
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
+  const { calculateBearing, toDegrees, toRadians } = useFindHeading();
   const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
   );
@@ -28,6 +31,41 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
       (sd) => sd.segmentId === props.segmentEffortListItem.segmentId
     )
   );
+
+  const heading = (): string | number => {
+    let startPoint: { lat: number; lng: number } = {
+      lat: props.segmentEffortListItem.summarySegment.startLatlng[0],
+      lng: props.segmentEffortListItem.summarySegment.startLatlng[1],
+    };
+
+    let endPoint: { lat: number; lng: number } = {
+      lat: props.segmentEffortListItem.summarySegment.endLatlng[0],
+      lng: props.segmentEffortListItem.summarySegment.endLatlng[1],
+    };
+
+    const result = calculateBearing(startPoint, endPoint);
+
+    switch (true) {
+      case result > 337.5 && result <= 22.5:
+        return "N";
+      case result > 22.5 && result <= 67.5:
+        return "NE";
+      case result > 67.5 && result <= 112.5:
+        return "E";
+      case result > 112.5 && result <= 157.5:
+        return "SE";
+      case result > 157.5 && result <= 202.5:
+        return "S";
+      case result > 202.5 && result <= 247.5:
+        return "SW";
+      case result > 247.5 && result <= 292.5:
+        return "W";
+      case result > 292.5 && result <= 337.5:
+        return "NW";
+      default:
+        return "Unknown";
+    }
+  };
 
   async function handleDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
@@ -99,6 +137,10 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Hidden:</span>{" "}
                   {props.segmentEffortListItem.hidden ? `Yes` : "No"}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Direction:</span>{" "}
+                  <>{heading()}</>
                 </Col>
               </Row>
               {showDetails ? (
