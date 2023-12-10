@@ -2,10 +2,10 @@ import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsList
 import { Col, Container, Row } from "react-bootstrap";
 import SegmentEffortCard from "./SegmentEffortCard";
 import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 type SegmentEffortCardListProps = {
   activityId: string;
-  handleShowSnipeSegmentsModal: () => void;
 };
 
 const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
@@ -14,6 +14,7 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
       state.segmentEffortsList,
       state.resetSegmentEffortsList,
     ]);
+    const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<number>();
 
   return segmentEffortList.length > 0 ? (
     <>

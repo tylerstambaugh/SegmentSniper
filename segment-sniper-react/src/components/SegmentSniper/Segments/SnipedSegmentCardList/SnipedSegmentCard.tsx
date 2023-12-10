@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../ActivityMap";
+import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 type SnipedSegmentCardProps = {
   snipedSegment: SnipedSegmentListItem;
@@ -17,6 +18,7 @@ type SnipedSegmentCardProps = {
 const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
 
+  const { calculateBearing } = useFindHeading();
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
   const setSnipedSegments = useSnipedSegmentsListStore(
@@ -34,6 +36,20 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
     });
     setShowDetails(!showDetails);
   }
+
+  const heading = (): string => {
+    let startPoint: { lat: number; lng: number } = {
+      lat: props.snipedSegment.summarySegment!.startLatlng[0],
+      lng: props.snipedSegment.summarySegment!.startLatlng[1],
+    };
+
+    let endPoint: { lat: number; lng: number } = {
+      lat: props.snipedSegment.summarySegment!.endLatlng[0],
+      lng: props.snipedSegment.summarySegment!.endLatlng[1],
+    };
+
+    return calculateBearing(startPoint, endPoint);
+  };
 
   const updateSegmentEffortStarred = (
     snipedSegmentEffortList: SnipedSegmentListItem[],
@@ -94,6 +110,10 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                 ) : (
                   <></>
                 )}
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Direction:</span>{" "}
+                  <>{heading()}</>
+                </Col>
                 {showDetails ? (
                   <>
                     <Row>

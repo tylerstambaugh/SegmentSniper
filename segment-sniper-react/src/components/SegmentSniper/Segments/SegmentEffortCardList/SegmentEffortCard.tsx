@@ -20,7 +20,7 @@ type SegmentEffortCardProps = {
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
-  const { calculateBearing, toDegrees, toRadians } = useFindHeading();
+  const { calculateBearing } = useFindHeading();
   const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
   );
@@ -32,7 +32,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
     )
   );
 
-  const heading = (): string | number => {
+  const heading = (): string => {
     let startPoint: { lat: number; lng: number } = {
       lat: props.segmentEffortListItem.summarySegment.startLatlng[0],
       lng: props.segmentEffortListItem.summarySegment.startLatlng[1],
@@ -43,28 +43,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
       lng: props.segmentEffortListItem.summarySegment.endLatlng[1],
     };
 
-    const result = calculateBearing(startPoint, endPoint);
-
-    switch (true) {
-      case result > 337.5 && result <= 22.5:
-        return "N";
-      case result > 22.5 && result <= 67.5:
-        return "NE";
-      case result > 67.5 && result <= 112.5:
-        return "E";
-      case result > 112.5 && result <= 157.5:
-        return "SE";
-      case result > 157.5 && result <= 202.5:
-        return "S";
-      case result > 202.5 && result <= 247.5:
-        return "SW";
-      case result > 247.5 && result <= 292.5:
-        return "W";
-      case result > 292.5 && result <= 337.5:
-        return "NW";
-      default:
-        return "Unknown";
-    }
+    return calculateBearing(startPoint, endPoint);
   };
 
   async function handleDetailsButtonClick() {
@@ -89,7 +68,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
   async function handleStarButtonClick() {
     const response = await starSegment.mutateAsync({
       segmentId: props.segmentEffortListItem.segmentId!,
-      star: segmentDetails?.starred!,
+      star: !props.segmentEffortListItem.summarySegment.starred,
     });
 
     if (!starSegment.isError && !starSegment.isLoading && response !== null) {
