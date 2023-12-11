@@ -7,17 +7,18 @@ import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
 import useSnipedSegmentsListStore from "../../../../stores/useSnipedSegmentsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../ActivityMap";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 type SnipedSegmentCardProps = {
   snipedSegment: SnipedSegmentListItem;
+  showDetails: boolean;
+  setShowDetails: (segmentId: string) => void;
 };
 
 const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
-  const [showDetails, setShowDetails] = useState(false);
-
   const { calculateBearing } = useFindHeading();
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
@@ -30,11 +31,15 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
     )
   );
 
-  async function handleDetailsButtonClick() {
+  async function handleShowDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
       segmentId: props.snipedSegment.segmentId!,
     });
-    setShowDetails(!showDetails);
+    props.setShowDetails(props.snipedSegment.segmentId!);
+  }
+
+  function handleHideDetailsButtonClick() {
+    props.setShowDetails("");
   }
 
   const heading = (): string => {
@@ -64,7 +69,7 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
   async function handleStarButtonClick() {
     const response = await starSegment.mutateAsync({
       segmentId: props.snipedSegment.segmentId!,
-      star: segmentDetails?.starred!,
+      star: !props.snipedSegment.starred,
     });
 
     if (!starSegment.isError && !starSegment.isLoading && response !== null) {
@@ -114,7 +119,7 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                   <span className="activity-card-label">Direction:</span>{" "}
                   <>{heading()}</>
                 </Col>
-                {showDetails ? (
+                {props.showDetails ? (
                   <>
                     <Row>
                       <Col>
@@ -147,9 +152,13 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                     animation="border"
                   />
                 </Button>
-              ) : (
-                <Button onClick={() => handleDetailsButtonClick()}>
+              ) : !props.showDetails ? (
+                <Button onClick={() => handleShowDetailsButtonClick()}>
                   Details
+                </Button>
+              ) : (
+                <Button onClick={() => handleHideDetailsButtonClick()}>
+                  Less
                 </Button>
               )}
               {starSegment.isLoading ? (
@@ -173,7 +182,7 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                   onClick={() => handleStarButtonClick()}
                 >
                   {props.snipedSegment.starred ? (
-                    <FontAwesomeIcon icon={circleCheck} />
+                    <FontAwesomeIcon icon={solidStar} />
                   ) : (
                     <FontAwesomeIcon icon={regularStar} />
                   )}

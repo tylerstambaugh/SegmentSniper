@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../stores/useActivityListStore";
-import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
-import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
 import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";
 import toast from "react-hot-toast";
-import { SegmentEffortListItem } from "../models/Segment/SegmentEffortListItem";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import SegmentDetailsModal from "../components/SegmentSniper/Segments/SegmentDetailsModal";
 import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
@@ -89,10 +86,7 @@ const ActivityDetails = () => {
             <h4>Segment Efforts</h4>
           </Col>
         </Row>
-        <SegmentEffortCardList
-          activityId={selectedActivityId!}
-          handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
-        />
+        <SegmentEffortCardList activityId={selectedActivityId!} />
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
             <Button

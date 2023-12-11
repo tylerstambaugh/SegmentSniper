@@ -1,25 +1,24 @@
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import { SegmentEffort } from "../../../../models/Segment/SegmentEffort";
 import { SegmentEffortListItem } from "../../../../models/Segment/SegmentEffortListItem";
-import { useEffect, useState } from "react";
 import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegmentDetails";
 import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import ActivityMap from "../../ActivityMap";
-import { Point } from "google-map-react";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 type SegmentEffortCardProps = {
   segmentEffortListItem: SegmentEffortListItem;
   activityId: string;
+  setShowDetails: (segmentId: string) => void;
+  showDetails: boolean;
 };
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
-  const [showDetails, setShowDetails] = useState(false);
   const { calculateBearing } = useFindHeading();
   const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
@@ -46,11 +45,15 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
     return calculateBearing(startPoint, endPoint);
   };
 
-  async function handleDetailsButtonClick() {
+  async function handleShowDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
       segmentId: props.segmentEffortListItem.segmentId!,
     });
-    setShowDetails(!showDetails);
+    props.setShowDetails(props.segmentEffortListItem.segmentId!);
+  }
+
+  function handleHideDetailsButtonClick() {
+    props.setShowDetails("");
   }
 
   const updateSegmentEffortStarred = (
@@ -92,27 +95,31 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
             </Card.Title>
             <Card.Body>
               {" "}
-              <Row className="justify-content-between">
-                <Col sm={12} md={6} lg={4} xl={3}>
+              <Row className="d-flex justify-content-between">
+                <Col sm={6} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Distance:</span>{" "}
                   {props.segmentEffortListItem.distance}
                 </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Elapsed Time:</span>{" "}
+                <Col sm={6} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Time:</span>{" "}
                   {props.segmentEffortListItem.elapsedTime}
                 </Col>
+              </Row>
+              <Row>
                 {props.segmentEffortListItem.deviceWatts ? (
-                  <Col sm={12} md={6} lg={4} xl={3}>
+                  <Col sm={6} md={6} lg={4} xl={3}>
                     <span className="activity-card-label">Average Watts:</span>{" "}
                     {props.segmentEffortListItem.averageWatts}
                   </Col>
                 ) : (
                   <></>
                 )}
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Max Heart Rate:</span>{" "}
+                <Col sm={6} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">Max HR:</span>{" "}
                   {props.segmentEffortListItem.maxHeartrate}
                 </Col>
+              </Row>
+              <Row>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Hidden:</span>{" "}
                   {props.segmentEffortListItem.hidden ? `Yes` : "No"}
@@ -122,7 +129,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                   <>{heading()}</>
                 </Col>
               </Row>
-              {showDetails ? (
+              {props.showDetails ? (
                 <>
                   <Row>
                     <Col>
@@ -162,9 +169,13 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                     animation="border"
                   />
                 </Button>
-              ) : (
-                <Button onClick={() => handleDetailsButtonClick()}>
+              ) : !props.showDetails ? (
+                <Button onClick={() => handleShowDetailsButtonClick()}>
                   Details
+                </Button>
+              ) : (
+                <Button onClick={() => handleHideDetailsButtonClick()}>
+                  Less
                 </Button>
               )}
               {starSegment.isLoading ? (
@@ -188,7 +199,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                   onClick={() => handleStarButtonClick()}
                 >
                   {props.segmentEffortListItem.summarySegment.starred ? (
-                    <FontAwesomeIcon icon={circleCheck} />
+                    <FontAwesomeIcon icon={solidStar} />
                   ) : (
                     <FontAwesomeIcon icon={regularStar} />
                   )}

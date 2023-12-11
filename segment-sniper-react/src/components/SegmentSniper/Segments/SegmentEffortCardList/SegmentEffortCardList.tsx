@@ -2,7 +2,7 @@ import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsList
 import { Col, Container, Row } from "react-bootstrap";
 import SegmentEffortCard from "./SegmentEffortCard";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type SegmentEffortCardListProps = {
   activityId: string;
@@ -14,7 +14,11 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
       state.segmentEffortsList,
       state.resetSegmentEffortsList,
     ]);
-    const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<number>();
+  const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>();
+
+  useEffect(() => {
+    console.log("show details segment id", showDetailsSegmentId);
+  }, []);
 
   return segmentEffortList.length > 0 ? (
     <>
@@ -23,6 +27,8 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
           segmentEffortListItem={item}
           activityId={props.activityId}
           key={uuidv4()}
+          showDetails={showDetailsSegmentId === item.segmentId}
+          setShowDetails={setShowDetailsSegmentId}
         />
       ))}
     </>
