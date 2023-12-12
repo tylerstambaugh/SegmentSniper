@@ -1,3 +1,4 @@
+import { Headings } from "../../enums/Headings";
 import { Achievement } from "./Achievement";
 import { SummarySegment } from "./SummarySegment";
 
@@ -21,4 +22,5 @@ export interface SegmentEffortListItem {
   prRank?: number;
   hidden?: boolean;
   summarySegment: SummarySegment;
+  heading: string;
 }

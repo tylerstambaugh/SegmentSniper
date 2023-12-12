@@ -4,7 +4,6 @@ import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegme
 import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
@@ -31,19 +30,17 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
     )
   );
 
-  const heading = (): string => {
-    let startPoint: { lat: number; lng: number } = {
-      lat: props.segmentEffortListItem.summarySegment.startLatlng[0],
-      lng: props.segmentEffortListItem.summarySegment.startLatlng[1],
-    };
-
-    let endPoint: { lat: number; lng: number } = {
-      lat: props.segmentEffortListItem.summarySegment.endLatlng[0],
-      lng: props.segmentEffortListItem.summarySegment.endLatlng[1],
-    };
-
-    return calculateBearing(startPoint, endPoint);
+  let startPoint: { lat: number; lng: number } = {
+    lat: props.segmentEffortListItem.summarySegment.startLatlng[0],
+    lng: props.segmentEffortListItem.summarySegment.startLatlng[1],
   };
+
+  let endPoint: { lat: number; lng: number } = {
+    lat: props.segmentEffortListItem.summarySegment.endLatlng[0],
+    lng: props.segmentEffortListItem.summarySegment.endLatlng[1],
+  };
+
+  props.segmentEffortListItem.heading = calculateBearing(startPoint, endPoint);
 
   async function handleShowDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
@@ -126,7 +123,7 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Direction:</span>{" "}
-                  <>{heading()}</>
+                  <>{props.segmentEffortListItem.heading}</>
                 </Col>
               </Row>
               {props.showDetails ? (
