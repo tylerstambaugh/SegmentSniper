@@ -18,7 +18,6 @@ type SegmentEffortCardProps = {
 };
 
 const SegmentEffortCard = (props: SegmentEffortCardProps) => {
-  const { calculateBearing } = useFindHeading();
   const setSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.setSegmentEffortsList
   );
@@ -29,18 +28,6 @@ const SegmentEffortCard = (props: SegmentEffortCardProps) => {
       (sd) => sd.segmentId === props.segmentEffortListItem.segmentId
     )
   );
-
-  let startPoint: { lat: number; lng: number } = {
-    lat: props.segmentEffortListItem.summarySegment.startLatlng[0],
-    lng: props.segmentEffortListItem.summarySegment.startLatlng[1],
-  };
-
-  let endPoint: { lat: number; lng: number } = {
-    lat: props.segmentEffortListItem.summarySegment.endLatlng[0],
-    lng: props.segmentEffortListItem.summarySegment.endLatlng[1],
-  };
-
-  props.segmentEffortListItem.heading = calculateBearing(startPoint, endPoint);
 
   async function handleShowDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
