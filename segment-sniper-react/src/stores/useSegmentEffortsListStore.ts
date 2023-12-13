@@ -25,6 +25,18 @@ const useSegmentEffortsListStore = create<SegmentEffortsListStore>()(
                   ? segmentEffortsList(state.segmentEffortsList)
                   : segmentEffortsList;
             }),
+          setSegmentEffort: (segmentEffortListItem: SegmentEffortListItem) =>
+            set((state) => {
+              const segmentId = segmentEffortListItem.segmentId;
+              const index = state.segmentEffortsList.findIndex(
+                (item) => item.segmentId === segmentId
+              );
+              if (index !== -1) {
+                state.segmentEffortsList[index] = segmentEffortListItem;
+              } else {
+                state.segmentEffortsList.push(segmentEffortListItem);
+              }
+            }),
           resetSegmentEffortsList: () =>
             set((state) => {
               state.segmentEffortsList = [];
@@ -41,6 +53,7 @@ export default useSegmentEffortsListStore;
 
 interface SegmentEffortsListStore {
   segmentEffortsList: SegmentEffortListItem[];
+  setSegmentEffort: (segmentEffortListItem: SegmentEffortListItem) => void;
   setSegmentEffortsList: (
     segmentEffortsList:
       | SegmentEffortListItem[]
