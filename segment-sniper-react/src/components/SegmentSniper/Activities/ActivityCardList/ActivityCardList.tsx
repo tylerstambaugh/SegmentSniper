@@ -1,11 +1,7 @@
-import { useState } from "react";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import ActivityCard from "./ActivityCard";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
-import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
-import { AppRoutes } from "../../../../enums/AppRoutes";
-import { useNavigate } from "react-router-dom";
 
 interface ActivityCardListProps {
   handleShowSnipeSegmentsModal: () => void;

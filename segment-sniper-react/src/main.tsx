@@ -1,4 +1,4 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
 import Header from "./components/Header";
 import Routes from "./SegmentSniper.routes";
@@ -20,7 +20,7 @@ root.render(
   <QueryClientProvider client={client}>
     <AuthenticatedUserMonitor />
     <InitializeApp>
-      <Router basename="/">
+      <Router>
         <Header />
         <Routes />
       </Router>

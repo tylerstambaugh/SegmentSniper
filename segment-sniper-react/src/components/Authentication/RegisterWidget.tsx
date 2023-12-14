@@ -18,6 +18,7 @@ import { RegisterUserRequest } from "../../services/Api/Auth/postRegisterUser";
 import { LoginRequest } from "../../services/Api/Auth/postLogin";
 import { usePostLogin } from "../../hooks/Api/Auth/usePostLogin";
 import logo from "../../assets/images/segment_sniper_pro_logo.svg";
+import { AppRoutes } from "../../enums/AppRoutes";
 
 export default function RegisterWidget() {
   const navigate = useNavigate();
@@ -105,7 +106,7 @@ export default function RegisterWidget() {
         await loginUser.mutateAsync(loginRequest);
 
         if (!loginUser.error && tokenData!.accessToken !== null) {
-          navigate("/dashboard");
+          navigate(`/${AppRoutes.Dashboard}`);
         }
       } catch (error) {
         console.error("Login error:", error);

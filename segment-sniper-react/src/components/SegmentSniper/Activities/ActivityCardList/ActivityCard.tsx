@@ -24,7 +24,7 @@ const ActivityCard = (props: ActivityCardProps) => {
   const handleDetailsButtonClick = () => {
     setSelectedActivityId(props.activity.activityId!);
     setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
-    navigate(AppRoutes.ActivityDetails);
+    navigate(`/${AppRoutes.ActivityDetails}`);
   };
 
   return (

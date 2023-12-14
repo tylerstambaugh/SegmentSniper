@@ -34,7 +34,7 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
   async function handleSnipeSegments(request: SnipeSegmentsRequest) {
     request.activityId = selectedActivityId!;
     await snipeSegments.mutateAsync(request);
-    navigate(AppRoutes.SnipedSegments);
+    navigate(`/${AppRoutes.SnipedSegments}`);
   }
   interface SnipeSegmentsParametersForm {
     secondsFromLeader?: number;
