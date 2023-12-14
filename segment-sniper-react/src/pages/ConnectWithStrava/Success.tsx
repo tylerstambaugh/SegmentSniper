@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { AppRoutes } from "../../enums/AppRoutes";
 
 function ConnectWithStravaSuccess() {
   return (
@@ -10,7 +11,7 @@ function ConnectWithStravaSuccess() {
         </Col>
       </Row>
       <Row>
-        <Link to="../" className="rounded-button">
+        <Link to={`/${AppRoutes.Dashboard}`} className="rounded-button">
           Take me to the app
         </Link>
       </Row>

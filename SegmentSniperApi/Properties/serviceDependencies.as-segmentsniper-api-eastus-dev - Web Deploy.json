@@ -6,6 +6,14 @@
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/kv-segmentsiper-dev",
       "type": "secrets.keyVault",
       "connectionId": "VaultUri"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/as-segmentsniper-api-eastus-dev/providers/Microsoft.ServiceLinker/linkers/SegmentSniperConnectionStringDev_54DAD2F2BE",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/sqlserver-segmentsniper-dev/databases/sqldb-segmentsniper-dev",
+      "type": "mssql.azure",
+      "connectionId": "SegmentSniperConnectionStringDev",
+      "dynamicId": null
     }
   }
 }
