@@ -62,7 +62,7 @@ function ActivitySearchResults() {
             name="backToSearch"
             onClick={() => {
               clearSearchResults();
-              navigate(AppRoutes.Snipe);
+              navigate(`/${AppRoutes.Snipe}`);
             }}
           >
             Back
@@ -83,7 +83,7 @@ function ActivitySearchResults() {
             name="backToSearch"
             onClick={() => {
               resetActivityList();
-              navigate(AppRoutes.Snipe);
+              navigate(`/${AppRoutes.Snipe}`);
             }}
           >
             Back to Search

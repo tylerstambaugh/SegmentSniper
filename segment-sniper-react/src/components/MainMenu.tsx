@@ -22,7 +22,7 @@ export default function MainMenu() {
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
                     <Link
-                      to={AppRoutes.Snipe}
+                      to={`/${AppRoutes.Snipe}`}
                       className="primary-rounded-button
                       "
                       style={{ width: "155px" }}
@@ -38,7 +38,7 @@ export default function MainMenu() {
                       className="d-flex p-2 mb-2 justify-content-center"
                     >
                       <Link
-                        to={AppRoutes.Admin}
+                        to={`/${AppRoutes.Admin}`}
                         className="primary-rounded-button
                       "
                         style={{ width: "155px" }}

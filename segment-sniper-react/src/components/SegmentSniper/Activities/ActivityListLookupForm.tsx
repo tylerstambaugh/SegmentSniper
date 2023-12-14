@@ -81,7 +81,7 @@ function ActivityListLookupForm() {
     resetSnipedSegments();
     setSelectedActivityId("");
     await handleActivitySearch.mutateAsync(request);
-    navigate(AppRoutes.ActivitySearchResults);
+    navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
 
   useEffect(() => {

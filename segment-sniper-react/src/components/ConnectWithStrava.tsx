@@ -11,7 +11,11 @@ export default function ConnectWithStrava() {
   const appConfig = useAppConfigStore((state) => state.appConfig);
 
   async function handleConnectWithStrava() {
-    window.location.href = `http://www.strava.com/oauth/authorize?client_id=${appConfig?.clientId}&response_type=code&redirect_uri=${apiUrl}/ConnectWithStrava/ExchangeToken/${user?.id}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all,profile:write`;
+    const encodedRedirectUri = encodeURIComponent(
+      `${apiUrl}/ConnectWithStrava/ExchangeToken/${user?.id}`
+    );
+
+    window.location.href = `http://www.strava.com/oauth/authorize?client_id=${appConfig?.clientId}&response_type=code&redirect_uri=${encodedRedirectUri}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all,profile:write`;
   }
 
   return (

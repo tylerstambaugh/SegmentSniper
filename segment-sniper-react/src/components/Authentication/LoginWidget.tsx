@@ -69,7 +69,7 @@ export default function LoginWidget() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(AppRoutes.Dashboard);
+      navigate(`/${AppRoutes.Dashboard}`);
     }
   }, [isAuthenticated]);
 

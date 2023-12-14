@@ -42,7 +42,7 @@ export default function Routes({ defaultPage }: Props) {
   return (
     <>
       <RRRoutes>
-        <Route path="/app" element={<Outlet />}>
+        <Route path="/" element={<Outlet />}>
           <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.ForgotPassword} element={<ForgotPassword />} />
           <Route path={AppRoutes.Register} element={<Register />} />

@@ -13,7 +13,7 @@ const SnipedSegments = () => {
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
-    navigate(AppRoutes.ActivitySearchResults);
+    navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
   return (
     <Container>

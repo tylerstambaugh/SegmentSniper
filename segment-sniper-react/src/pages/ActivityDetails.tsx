@@ -37,7 +37,7 @@ const ActivityDetails = () => {
   async function handleSnipeSegments(request: SnipeSegmentsRequest) {
     request.activityId = selectedActivityId!;
     await snipeSegments.mutateAsync(request);
-    navigate(AppRoutes.SnipedSegments);
+    navigate(`/${AppRoutes.SnipedSegments}`);
   }
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const ActivityDetails = () => {
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
-    navigate(AppRoutes.ActivitySearchResults);
+    navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
 
   return (
@@ -93,7 +93,7 @@ const ActivityDetails = () => {
               name="backToSearch"
               onClick={() => {
                 setSelectedActivityId("");
-                navigate(AppRoutes.ActivitySearchResults);
+                navigate(`/${AppRoutes.ActivitySearchResults}`);
               }}
             >
               Back to Activities

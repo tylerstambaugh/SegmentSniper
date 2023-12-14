@@ -12,7 +12,7 @@ export default ({ mode }) => {
   const apiUrl = env.VITE_SEGMENT_SNIPER_API_URL;
 
   return defineConfig({
-    base: "/app",
+    base: "/",
     server: {
       https: true,
       port: 6767,
