@@ -13,7 +13,7 @@ function Header() {
   const [user] = useUserStore((state) => [state.user]);
 
   const [isNavbarOpen, setNavbarOpen] = useState(false);
-  
+
   const handleNavbarToggle = () => setNavbarOpen(!isNavbarOpen);
 
   const handleLinkClick = () => setNavbarOpen(false);
@@ -46,7 +46,7 @@ function Header() {
               </Col>
               <Col md={3} className="d-flex justify-content-end">
                 <Navbar.Text className="ps-5">
-                  <Link to={AppRoutes.Logout} onClick={handleLinkClick}>
+                  <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
                     Logout
                   </Link>
                 </Navbar.Text>
@@ -56,7 +56,7 @@ function Header() {
             <Row>
               <Col md={3} className="d-flex justify-content-end">
                 <Navbar.Text className="d-flex">
-                  <Link to={AppRoutes.Login} onClick={handleLinkClick}>
+                  <Link to={`/${AppRoutes.Login}`} onClick={handleLinkClick}>
                     Login
                   </Link>
                 </Navbar.Text>
