@@ -9,14 +9,14 @@
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING",
       "dynamicId": null
     },
+    "secrets2": {
+      "type": "secrets",
+      "connectionId": "VaultUri"
+    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "SegmentSniperConnectionStringDev",
       "dynamicId": null
-    },
-    "secrets2": {
-      "type": "secrets",
-      "connectionId": "VaultUri"
     }
   }
 }
