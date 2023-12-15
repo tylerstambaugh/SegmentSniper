@@ -147,11 +147,6 @@ export default function RegisterWidget() {
       <Row className="vh-100 d-flex justify-content-center mt-5">
         <Col md={6} lg={6} xs={10}>
           <Card>
-            <Row>
-              <Col>
-                <img src={logo} alt="logo" className="logo pb-2" />
-              </Col>
-            </Row>
             <Card.Title className="d-flex justify-content-center">
               Register Sniper
             </Card.Title>
@@ -250,7 +245,16 @@ export default function RegisterWidget() {
                     </Form.Control.Feedback>
                   </div>
                 </Form.Group>
-                <Row className="d-flex justify-content-around">
+                <Row className="d-flex justify-content-around text-center">
+                  <Col>
+                    <Button
+                      variant="secondary"
+                      type="reset"
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </Button>
+                  </Col>
                   <Col>
                     {registerUser.isLoading ? (
                       <Button
@@ -268,23 +272,10 @@ export default function RegisterWidget() {
                         />
                       </Button>
                     ) : (
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        className={"primary-rounded-button me-1"}
-                      >
+                      <Button variant="primary" type="submit">
                         Register
                       </Button>
                     )}
-                  </Col>
-                  <Col>
-                    <Button
-                      variant="secondary"
-                      type="reset"
-                      onClick={handleReset}
-                    >
-                      Reset
-                    </Button>
                   </Col>
                 </Row>
               </Form>

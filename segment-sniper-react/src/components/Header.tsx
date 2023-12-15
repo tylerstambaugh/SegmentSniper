@@ -9,7 +9,10 @@ import logo from "../assets/images/segment_sniper_logo.svg";
 import { useState } from "react";
 
 function Header() {
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
+  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
+    state.tokenData,
+    state.setIsAuthenticated,
+  ]);
   const [user] = useUserStore((state) => [state.user]);
 
   const [isNavbarOpen, setNavbarOpen] = useState(false);
@@ -26,7 +29,11 @@ function Header() {
       onSelect={handleLinkClick}
     >
       <Container>
-        <Link to={AppRoutes.Home}>
+        <Link
+          to={
+            !!isAuthenticated ? `/${AppRoutes.Home}` : `/${AppRoutes.Dashboard}`
+          }
+        >
           <Navbar.Brand>
             {" "}
             <img
@@ -36,7 +43,10 @@ function Header() {
             />
           </Navbar.Brand>
         </Link>
-        <Navbar.Toggle onClick={handleNavbarToggle} />
+        <Navbar.Toggle
+          onClick={handleNavbarToggle}
+          onBlur={handleNavbarToggle}
+        />
 
         <Navbar.Collapse className="justify-content-end">
           {tokenData !== null && tokenData!.accessToken && user!.id ? (

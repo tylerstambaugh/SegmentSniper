@@ -29,7 +29,7 @@ export default function LogoutWidget() {
                   <h2>You have successfully logged out. </h2>
                   <h3>
                     Click{" "}
-                    <Link to={AppRoutes.Login}>
+                    <Link to={`/${AppRoutes.Login}`}>
                       <Button>here </Button>
                     </Link>{" "}
                     to log back in.
