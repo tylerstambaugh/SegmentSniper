@@ -43,7 +43,10 @@ export default function ForgotPasswordWidget() {
           <Card className="shadow">
             <Card.Body>
               <div className="mb-3 text-center">
-                <img src={logo} alt="logo" className="logo pb-2" />
+                <p>
+                  You know the drill, enter your email and we'll send you a link
+                  you can use to reset your password.
+                </p>
                 <div className="mb-3">
                   <Form
                     name="loginForm"
@@ -97,27 +100,6 @@ export default function ForgotPasswordWidget() {
                       )}
                     </div>
                   </Form>
-                  <div className="d-flex inline mt-3">
-                    <Col>
-                      <Link
-                        to={AppRoutes.ForgotPassword}
-                        className="text-primary fw-bold"
-                      >
-                        Forgot Password
-                      </Link>
-                    </Col>
-                    <Col>
-                      <p className="mb-0  text-center">
-                        Don't have an account?{" "}
-                        <Link
-                          to={AppRoutes.Register}
-                          className="text-primary fw-bold"
-                        >
-                          Sign Up
-                        </Link>
-                      </p>
-                    </Col>
-                  </div>
                 </div>
               </div>
             </Card.Body>

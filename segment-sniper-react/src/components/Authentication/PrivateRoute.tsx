@@ -11,7 +11,9 @@ type Props = {
 };
 
 const PrivateRoute = (props: Props) => {
-  const [isAuthenticated] = useTokenDataStore((state) => [state.tokenData]);
+  const [isAuthenticated] = useTokenDataStore((state) => [
+    state.isAuthenticated,
+  ]);
   const user = useUserStore((state) => state.user);
 
   const userHasRequiredRole =
@@ -25,7 +27,7 @@ const PrivateRoute = (props: Props) => {
         <Row className="text-center ">
           <Col>
             <p>You must be logged in to access this resource.</p>
-            <Link to={AppRoutes.Login}>
+            <Link to={`/${AppRoutes.Login}`}>
               <Button>Login</Button>
             </Link>
           </Col>
@@ -40,7 +42,7 @@ const PrivateRoute = (props: Props) => {
         <Row className="text-center ">
           <Col>
             <p>You do have permission to access this resource.</p>
-            <Link to={AppRoutes.Home}>
+            <Link to={`/${AppRoutes.Home}`}>
               <Button>Home</Button>
             </Link>
           </Col>

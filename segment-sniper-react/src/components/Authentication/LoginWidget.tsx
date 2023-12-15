@@ -55,7 +55,7 @@ export default function LoginWidget() {
     await loginUser.mutateAsync(loginRequest);
 
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate(`/${AppRoutes.Dashboard}`);
     }
   }
 
@@ -165,7 +165,7 @@ export default function LoginWidget() {
                     <Row className="d-flex justify-content-around mt-2">
                       <Col xs={12} md={8} lg={10} xl={6}>
                         <Link
-                          to={AppRoutes.ForgotPassword}
+                          to={`/${AppRoutes.ForgotPassword}`}
                           className="text-primary fw-bold"
                         >
                           Forgot Password
@@ -175,7 +175,7 @@ export default function LoginWidget() {
                         <p className="mb-0  text-center">
                           Don't have an account?{" "}
                           <Link
-                            to={AppRoutes.Register}
+                            to={`/${AppRoutes.Register}`}
                             className="text-primary fw-bold"
                           >
                             Sign Up
