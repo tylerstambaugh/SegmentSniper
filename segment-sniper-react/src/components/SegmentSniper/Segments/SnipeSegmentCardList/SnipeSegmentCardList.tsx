@@ -1,19 +1,21 @@
 import { Container, Row, Col } from "react-bootstrap";
-import useSnipedSegmentsListStore from "../../../../stores/useSnipedSegmentsListStore";
-import SnipedSegmentCard from "./SnipedSegmentCard";
+import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
+import SnipeSegmentCard from "./SnipeSegmentCard";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-const SnipedSegmentsCardList = () => {
-  const snipedSegmentsList = useSnipedSegmentsListStore(
-    (state) => state.snipedSegmentsList
+const SnipeSegmentsCardList = () => {
+  const snipeSegmentsList = useSnipeSegmentsListStore(
+    (state) => state.snipeSegmentsList
   );
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
 
-  return snipedSegmentsList.length > 0 ? (
+  return snipeSegmentsList.length > 0 ? (
     <>
-      {snipedSegmentsList.map((item) => (
-        <SnipedSegmentCard
-          snipedSegment={item}
+      {snipeSegmentsList.map((item) => (
+        <SnipeSegmentCard
+          key={uuidv4()}
+          snipeSegment={item}
           showDetails={showDetailsSegmentId === item.segmentId}
           setShowDetails={setShowDetailsSegmentId}
         />
@@ -30,4 +32,4 @@ const SnipedSegmentsCardList = () => {
   );
 };
 
-export default SnipedSegmentsCardList;
+export default SnipeSegmentsCardList;

@@ -19,7 +19,7 @@ import {
 } from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
 import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
-import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
+import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import useActivityListStore from "../../../stores/useActivityListStore";
@@ -31,7 +31,7 @@ function ActivityListLookupForm() {
   const resetSegmentsList = useSegmentEffortsListStore(
     (state) => state.resetSegmentEffortsList
   );
-  const resetSnipedSegments = useSnipedSegmentsListStore(
+  const resetSnipedSegments = useSnipeSegmentsListStore(
     (state) => state.resetSnipedSegmentsList
   );
   const setSelectedActivityId = useActivityListStore(

@@ -10,10 +10,9 @@ import {
 } from "react-bootstrap";
 import SegmentEffortCard from "./SegmentEffortCard";
 import { v4 as uuidv4 } from "uuid";
-import { faFilter as filterBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
+import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 
 type SegmentEffortCardListProps = {
   activityId: string;
@@ -31,22 +30,14 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
     state.setSegmentEffort,
     state.resetSegmentEffortsList,
   ]);
+  const convertTime = useConvertTimeStringToNumericValue();
   const { calculateBearing } = useFindHeading();
   const [selectedSortOption, setSelectedSortOption] = useState<string>("");
-
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>();
 
   useEffect(() => {
     addHeadingToEfforts();
   }, []);
-
-  function timeStringToNumericValue(timeString: string): number {
-    const [hours, minutes, seconds] = timeString.split(":").map(Number);
-
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-
-    return totalSeconds;
-  }
 
   function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedSortOption(event.target.value);
@@ -64,8 +55,8 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
       setSegmentEffortsList(
         [...segmentEffortsList].sort(
           (a, b) =>
-            timeStringToNumericValue(a.elapsedTime!) -
-            timeStringToNumericValue(b.elapsedTime!)
+            convertTime.timeStringToNumericValue(a.elapsedTime!) -
+            convertTime.timeStringToNumericValue(b.elapsedTime!)
         )
       );
     }
@@ -73,8 +64,8 @@ const SegmentEffortCardList = (props: SegmentEffortCardListProps) => {
       setSegmentEffortsList(
         [...segmentEffortsList].sort(
           (a, b) =>
-            timeStringToNumericValue(b.elapsedTime!) -
-            timeStringToNumericValue(a.elapsedTime!)
+            convertTime.timeStringToNumericValue(b.elapsedTime!) -
+            convertTime.timeStringToNumericValue(a.elapsedTime!)
         )
       );
     }

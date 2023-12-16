@@ -8,7 +8,7 @@ import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import toast from "react-hot-toast";
 import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
-import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";
+import { SnipeSegmentsRequest } from "../services/Api/Segment/getSnipeSegmentsList";
 
 function ActivitySearchResults() {
   const navigate = useNavigate();

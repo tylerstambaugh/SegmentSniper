@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { SnipedSegmentListItem } from "../models/Segment/SnipedSegmentListItem";
+import { SnipeSegmentListItem } from "../models/Segment/SnipeSegmentListItem";
 
 const persistOptions = {
   name: "sniped-segment-list-store",
@@ -14,22 +14,22 @@ const devtoolOptions = {
 
 const initialState = [{}];
 
-const useSnipedSegmentsListStore = create<SnipedSegmentsListStore>()(
+const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
   immer(
     devtools(
       persist(
         (set) => ({
-          snipedSegmentsList: [],
+          snipeSegmentsList: [],
           setSnipedSegmentsList: (snipedSegmentsList) =>
             set((state) => {
-              state.snipedSegmentsList =
+              state.snipeSegmentsList =
                 typeof snipedSegmentsList === "function"
-                  ? snipedSegmentsList(state.snipedSegmentsList)
+                  ? snipedSegmentsList(state.snipeSegmentsList)
                   : snipedSegmentsList;
             }),
           resetSnipedSegmentsList: () =>
             set((state) => {
-              state.snipedSegmentsList = initialState;
+              state.snipeSegmentsList = initialState;
             }),
         }),
         persistOptions
@@ -39,14 +39,14 @@ const useSnipedSegmentsListStore = create<SnipedSegmentsListStore>()(
   )
 );
 
-export default useSnipedSegmentsListStore;
+export default useSnipeSegmentsListStore;
 
-interface SnipedSegmentsListStore {
-  snipedSegmentsList: SnipedSegmentListItem[];
+interface SnipeSegmentsListStore {
+  snipeSegmentsList: SnipeSegmentListItem[];
   setSnipedSegmentsList: (
     snipedSegmentsList:
-      | SnipedSegmentListItem[]
-      | ((prevList: SnipedSegmentListItem[]) => SnipedSegmentListItem[])
+      | SnipeSegmentListItem[]
+      | ((prevList: SnipeSegmentListItem[]) => SnipeSegmentListItem[])
   ) => void;
   resetSnipedSegmentsList: () => void;
 }

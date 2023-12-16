@@ -9,21 +9,16 @@ import ActivityMap from "../../ActivityMap";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
-  handleShowSnipeSegmentsModal: () => void;
 };
 
 const ActivityCard = (props: ActivityCardProps) => {
   const navigate = useNavigate();
-  const [setSegmentEffortsList] = useSegmentEffortsListStore((state) => [
-    state.setSegmentEffortsList,
-  ]);
   const [selectedActivityId, setSelectedActivityId] = useActivityListStore(
     (state) => [state.selectedActivityId, state.setSelectedActivityId]
   );
 
-  const handleDetailsButtonClick = () => {
+  const handleSnipeButtonClick = () => {
     setSelectedActivityId(props.activity.activityId!);
-    setSegmentEffortsList(props.activity.segmentEffortListItems ?? []);
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
 
@@ -35,16 +30,6 @@ const ActivityCard = (props: ActivityCardProps) => {
             <Card.Title className="px-2 pt-2 activity-card-heading">
               <Row>
                 <Col xs={9}>{props.activity.name}</Col>
-                <Col xs={3}>
-                  <Button
-                    onClick={() => {
-                      setSelectedActivityId(props.activity.activityId!);
-                      props.handleShowSnipeSegmentsModal();
-                    }}
-                  >
-                    Snipe!
-                  </Button>
-                </Col>
               </Row>
             </Card.Title>
             <Card.Body>
@@ -80,9 +65,7 @@ const ActivityCard = (props: ActivityCardProps) => {
             </Card.Body>
             <Card.Footer className="d-flex justify-content-center">
               {selectedActivityId === "" ? (
-                <Button onClick={() => handleDetailsButtonClick()}>
-                  Details
-                </Button>
+                <Button onClick={() => handleSnipeButtonClick()}>Snipe!</Button>
               ) : (
                 <></>
               )}

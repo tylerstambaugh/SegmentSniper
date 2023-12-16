@@ -1,6 +1,6 @@
 import { Map } from "../Map";
 import { StravaMap } from "../StravaMap";
-import { AthleteSegmentStatsUiModel } from "./AthleteSegmentStats";
+import { AthleteSegmentStats } from "./AthleteSegmentStats";
 import { Xoms } from "./Xoms";
 
 export interface SegmentDetails {
@@ -29,6 +29,6 @@ export interface SegmentDetails {
   effortCount: number;
   athleteCount: number;
   starCount: number;
-  athleteSegmentStats: AthleteSegmentStatsUiModel;
+  athleteSegmentStats: AthleteSegmentStats;
   xoms: Xoms;
 }

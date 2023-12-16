@@ -71,7 +71,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             if (string.IsNullOrWhiteSpace(request.UserId))
             {
-                throw new ArgumentException(nameof(request.UserId), "Segment Id cannot be empty");
+                throw new ArgumentException(nameof(request.UserId), "User Id cannot be empty");
             }
         }
 

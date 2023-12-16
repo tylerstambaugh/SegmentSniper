@@ -1,25 +1,22 @@
-import { SnipedSegmentListItem } from "../../../models/Segment/SnipedSegmentListItem";
+import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiPost } from "../BaseApiService";
+import { apiGet, apiPost } from "../BaseApiService";
 
 export type SnipeSegmentsRequest = {
   activityId?: string;
-  secondsOff?: number;
-  percentageOff?: number;
-  useQom: boolean;
 };
 
 export type SnipeSegmentsResponse = {
-  snipedSegments: SnipedSegmentListItem[];
+  snipedSegments: SnipeSegmentListItem[];
 };
 
 export default async function postSnipeSegmentsList(
   contract: ApiContract<SnipeSegmentsRequest>
 ) {
   try {
-    const response = apiPost<SnipeSegmentsRequest, SnipeSegmentsResponse>(
-      `${contract.baseUrl}/sniper/snipeSegments`,
+    const response = apiGet<SnipeSegmentsResponse>(
+      `${contract.baseUrl}/sniper/snipeSegments/${contract.request?.activityId}`,
       contract
     );
     return response;

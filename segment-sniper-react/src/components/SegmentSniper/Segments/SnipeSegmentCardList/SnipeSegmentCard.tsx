@@ -1,10 +1,10 @@
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import { SnipedSegmentListItem } from "../../../../models/Segment/SnipedSegmentListItem";
+import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
 import { useState } from "react";
 import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegmentDetails";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
 import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
-import useSnipedSegmentsListStore from "../../../../stores/useSnipedSegmentsListStore";
+import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
@@ -13,29 +13,29 @@ import ActivityMap from "../../ActivityMap";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 type SnipedSegmentCardProps = {
-  snipedSegment: SnipedSegmentListItem;
+  snipeSegment: SnipeSegmentListItem;
   showDetails: boolean;
   setShowDetails: (segmentId: string) => void;
 };
 
-const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
+const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const { calculateBearing } = useFindHeading();
   const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
-  const setSnipedSegments = useSnipedSegmentsListStore(
+  const setSnipedSegments = useSnipeSegmentsListStore(
     (state) => state.setSnipedSegmentsList
   );
   const segmentDetails = useSegmentDetailsStore((state) =>
     state.segmentDetails.find(
-      (sd) => sd.segmentId === props.snipedSegment.segmentId
+      (sd) => sd.segmentId === props.snipeSegment.segmentId
     )
   );
 
   async function handleShowDetailsButtonClick() {
     await getSegmentDetails.mutateAsync({
-      segmentId: props.snipedSegment.segmentId!,
+      segmentId: props.snipeSegment.segmentId!,
     });
-    props.setShowDetails(props.snipedSegment.segmentId!);
+    props.setShowDetails(props.snipeSegment.segmentId!);
   }
 
   function handleHideDetailsButtonClick() {
@@ -44,23 +44,23 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
 
   const heading = (): string => {
     let startPoint: { lat: number; lng: number } = {
-      lat: props.snipedSegment.summarySegment!.startLatlng[0],
-      lng: props.snipedSegment.summarySegment!.startLatlng[1],
+      lat: props.snipeSegment.summarySegment!.startLatlng[0],
+      lng: props.snipeSegment.summarySegment!.startLatlng[1],
     };
 
     let endPoint: { lat: number; lng: number } = {
-      lat: props.snipedSegment.summarySegment!.endLatlng[0],
-      lng: props.snipedSegment.summarySegment!.endLatlng[1],
+      lat: props.snipeSegment.summarySegment!.endLatlng[0],
+      lng: props.snipeSegment.summarySegment!.endLatlng[1],
     };
 
     return calculateBearing(startPoint, endPoint);
   };
 
   const updateSegmentEffortStarred = (
-    snipedSegmentEffortList: SnipedSegmentListItem[],
+    snipedSegmentEffortList: SnipeSegmentListItem[],
     segmentId: string,
     starred: boolean
-  ): SnipedSegmentListItem[] => {
+  ): SnipeSegmentListItem[] => {
     return snipedSegmentEffortList.map((item) =>
       item.segmentId === segmentId ? { ...item, starred: starred } : item
     );
@@ -68,12 +68,12 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
 
   async function handleStarButtonClick() {
     const response = await starSegment.mutateAsync({
-      segmentId: props.snipedSegment.segmentId!,
-      star: !props.snipedSegment.starred,
+      segmentId: props.snipeSegment.segmentId!,
+      star: !props.snipeSegment.starred,
     });
 
     if (!starSegment.isError && !starSegment.isLoading && response !== null) {
-      setSnipedSegments((prevList: SnipedSegmentListItem[]) =>
+      setSnipedSegments((prevList: SnipeSegmentListItem[]) =>
         updateSegmentEffortStarred(
           prevList,
           response.detailedSegment.segmentId,
@@ -89,28 +89,26 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
         <Col>
           <Card>
             <Card.Title className="p-2 activity-card-heading">
-              {props.snipedSegment.name}
+              {props.snipeSegment.name}
             </Card.Title>
             <Card.Body>
               <Row className="justify-content-between">
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Distance:</span>{" "}
-                  {props.snipedSegment.distance}
+                  {props.snipeSegment.distance}
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">KOM Time:</span>{" "}
-                  {props.snipedSegment.komTime}
+                  {props.snipeSegment.komTime}
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">
-                    Seconds From Leader:
-                  </span>{" "}
-                  {props.snipedSegment.secondsFromLeader}
+                  <span className="activity-card-label">Seconds From Kom:</span>{" "}
+                  {props.snipeSegment.secondsFromKom}
                 </Col>
-                {props.snipedSegment.athleteStats?.effortCount! > 1 ? (
+                {props.snipeSegment.athleteStats?.effortCount! > 1 ? (
                   <Col sm={12} md={6} lg={4} xl={3}>
                     <span className="activity-card-label">PR Time:</span>{" "}
-                    {props.snipedSegment.athleteStats?.prElapsedTime}
+                    {props.snipeSegment.athleteStats?.prElapsedTime}
                   </Col>
                 ) : (
                   <></>
@@ -181,7 +179,7 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
                   className="px-4"
                   onClick={() => handleStarButtonClick()}
                 >
-                  {props.snipedSegment.starred ? (
+                  {props.snipeSegment.starred ? (
                     <FontAwesomeIcon icon={solidStar} />
                   ) : (
                     <FontAwesomeIcon icon={regularStar} />
@@ -196,4 +194,4 @@ const SnipedSegmentCard = (props: SnipedSegmentCardProps) => {
   );
 };
 
-export default SnipedSegmentCard;
+export default SnipeSegmentCard;
