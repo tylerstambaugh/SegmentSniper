@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../stores/useActivityListStore";
-import { SnipeSegmentsRequest } from "../services/Api/Segment/postSnipeSegmentsList";
+import { SnipeSegmentsRequest } from "../services/Api/Segment/getSnipeSegmentsList";
 import toast from "react-hot-toast";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import SegmentDetailsModal from "../components/SegmentSniper/Segments/SegmentDetailsModal";
@@ -11,11 +11,12 @@ import { SegmentDetails } from "../models/Segment/SegmentDetails";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import ActivityCard from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCard";
+import SnipeSegmentsCardList from "../components/SegmentSniper/Segments/SnipeSegmentCardList/SnipeSegmentCardList";
+import useSnipeSegmentsListStore from "../stores/useSnipeSegmentsListStore";
+import { useGetSegmentDetails } from "../hooks/Api/Segments/useGetSegmentDetails";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
-  const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
-  const [showSegmentDetailModal, setShowSegmentDetailModal] = useState(false);
   const [activityList, setSelectedActivityId, selectedActivityId] =
     useActivityListStore((state) => [
       state.activityList,
@@ -25,20 +26,12 @@ const ActivityDetails = () => {
 
   const snipeSegments = useSnipeSegments();
 
-  const [segmentDetailsModalData, setSegmentDetailsModalData] =
-    useState<SegmentDetails>();
-
-  const handleCloseSnipeSegmentsModal = () => {
-    setShowSnipeSegmentsModal(false);
-  };
-  const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
-  const handleCloseSegmentDetailModal = () => setShowSegmentDetailModal(false);
-
-  async function handleSnipeSegments(request: SnipeSegmentsRequest) {
-    request.activityId = selectedActivityId!;
-    await snipeSegments.mutateAsync(request);
-    navigate(`/${AppRoutes.SnipedSegments}`);
-  }
+  useEffect(() => {
+    (async () => {
+      await snipeSegments.mutateAsync({ activityId: selectedActivityId! });
+    })();
+    console.log("getting snipe segments");
+  }, []);
 
   useEffect(() => {
     if (snipeSegments.error !== null)
@@ -66,27 +59,17 @@ const ActivityDetails = () => {
             <h3>Activity Details</h3>
           </Col>
         </Row>
-        <SnipeSegmentsModal
-          show={showSnipeSegmentsModal}
-          handleClose={handleCloseSnipeSegmentsModal}
-        />
-        <SegmentDetailsModal
-          show={showSegmentDetailModal}
-          handleClose={handleCloseSegmentDetailModal}
-          segment={segmentDetailsModalData}
-        />
         <ActivityCard
           activity={
             activityList.find((a) => a.activityId === selectedActivityId)!
           }
-          handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
         />
         <Row className="pt-3">
           <Col className="d-flex justify-content-around">
-            <h4>Segment Efforts</h4>
+            <h4>Segments</h4>
           </Col>
         </Row>
-        <SegmentEffortCardList activityId={selectedActivityId!} />
+        {snipeSegments.isLoading ? <>Loading</> : <SnipeSegmentsCardList />}
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
             <Button

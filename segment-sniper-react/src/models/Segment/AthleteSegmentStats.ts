@@ -1,4 +1,4 @@
-export interface AthleteSegmentStatsUiModel {
+export interface AthleteSegmentStats {
   prElapsedTime: string;
   prDate: string;
   prActivityId: number;

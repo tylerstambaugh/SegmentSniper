@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { SnipeSegmentsRequest } from "../../../services/Api/Segment/postSnipeSegmentsList";
+import { SnipeSegmentsRequest } from "../../../services/Api/Segment/getSnipeSegmentsList";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import useActivityListStore from "../../../stores/useActivityListStore";

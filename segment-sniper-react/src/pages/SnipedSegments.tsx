@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import SnipedSegmentsCardList from "../components/SegmentSniper/Segments/SnipedSegmentCardList/SnipedSegmentCardList";
-import useSnipedSegmentsListStore from "../stores/useSnipedSegmentsListStore";
+import SnipeSegmentsCardList from "../components/SegmentSniper/Segments/SnipeSegmentCardList/SnipeSegmentCardList";
+import useSnipeSegmentsListStore from "../stores/useSnipeSegmentsListStore";
 import { AppRoutes } from "../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
 import useActivityListStore from "../stores/useActivityListStore";
@@ -30,7 +30,7 @@ const SnipedSegments = () => {
           <h3>Sniped Segments</h3>
         </Col>
       </Row>
-      <SnipedSegmentsCardList />
+      <SnipeSegmentsCardList />
     </Container>
   );
 };

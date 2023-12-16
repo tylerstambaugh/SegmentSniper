@@ -1,16 +1,16 @@
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import postSnipeSegmentsList, {
+import getSnipeSegmentsList, {
   SnipeSegmentsRequest,
   SnipeSegmentsResponse,
-} from "../../../services/Api/Segment/postSnipeSegmentsList";
-import useSnipedSegmentsListStore from "../../../stores/useSnipedSegmentsListStore";
+} from "../../../services/Api/Segment/getSnipeSegmentsList";
+import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const setSnipedSegmentsList = useSnipedSegmentsListStore(
+  const setSnipedSegmentsList = useSnipeSegmentsListStore(
     (state) => state.setSnipedSegmentsList
   );
   const tokenData = useTokenDataStore((state) => state.tokenData);
@@ -24,7 +24,7 @@ export const useSnipeSegments = () => {
       request: request,
     };
 
-    const response: SnipeSegmentsResponse = await postSnipeSegmentsList(
+    const response: SnipeSegmentsResponse = await getSnipeSegmentsList(
       contract
     );
     setSnipedSegmentsList(response.snipedSegments);

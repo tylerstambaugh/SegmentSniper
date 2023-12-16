@@ -21,12 +21,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         public class Response
         {
-            public Response(List<SnipedSegment> snipedSegments)
+            public Response(List<SnipeSegment> snipedSegments)
             {
                 SnipedSegments = snipedSegments;
             }
 
-            public List<SnipedSegment> SnipedSegments { get; set; }
+            public List<SnipeSegment> SnipedSegments { get; set; }
         }
     }
 }

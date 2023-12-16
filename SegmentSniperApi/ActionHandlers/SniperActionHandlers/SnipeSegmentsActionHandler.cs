@@ -48,7 +48,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     segmentEfforts = segmentEfforts.GetRange(0, 10);
 
                     List<DetailedSegment> segmentModels = new List<DetailedSegment>();
-                    List<SnipedSegment> snipedSegments = new List<SnipedSegment>();
+                    List<SnipeSegment> snipedSegments = new List<SnipeSegment>();
 
                     foreach (DetailedSegmentEffort segmentEffortModel in segmentEfforts)
                     {
@@ -75,12 +75,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         int secondsOff = segmentEffortModel.MovingTime - segementLeaderTime;
 
 
-                        SnipedSegment UiModel = new SnipedSegment
+                        SnipeSegment UiModel = new SnipeSegment
                         {
                             SegmentId = model.SegmentId,
                             Name = model.Name,
-                            PercentageFromLeader = Math.Round(percentageOff, 0),
-                            SecondsFromLeader = secondsOff,
+                            //PercentageFromLeader = Math.Round(percentageOff, 0),
+                            //SecondsFromLeader = secondsOff,
                             ActivityType = model.ActivityType,
                             Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(model.Distance), 2),
                             KomTime = model.Xoms.Kom,
