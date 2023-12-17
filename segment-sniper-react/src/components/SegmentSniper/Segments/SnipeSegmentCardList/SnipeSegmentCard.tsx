@@ -20,7 +20,6 @@ type SnipedSegmentCardProps = {
 
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const { calculateBearing } = useFindHeading();
-  const getSegmentDetails = useGetSegmentDetails();
   const starSegment = usePostStarSegment();
   const setSnipedSegments = useSnipeSegmentsListStore(
     (state) => state.setSnipedSegmentsList
@@ -32,9 +31,6 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   );
 
   async function handleShowDetailsButtonClick() {
-    await getSegmentDetails.mutateAsync({
-      segmentId: props.snipeSegment.segmentId!,
-    });
     props.setShowDetails(props.snipeSegment.segmentId!);
   }
 
@@ -42,18 +38,20 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
     props.setShowDetails("");
   }
 
-  const heading = (): string => {
-    let startPoint: { lat: number; lng: number } = {
-      lat: props.snipeSegment.summarySegment!.startLatlng[0],
-      lng: props.snipeSegment.summarySegment!.startLatlng[1],
-    };
+  const heading = () => {
+    if (props.snipeSegment.summarySegment) {
+      let startPoint: { lat: number; lng: number } = {
+        lat: props.snipeSegment.summarySegment!.startLatlng[0],
+        lng: props.snipeSegment.summarySegment!.startLatlng[1],
+      };
 
-    let endPoint: { lat: number; lng: number } = {
-      lat: props.snipeSegment.summarySegment!.endLatlng[0],
-      lng: props.snipeSegment.summarySegment!.endLatlng[1],
-    };
+      let endPoint: { lat: number; lng: number } = {
+        lat: props.snipeSegment.summarySegment!.endLatlng[0],
+        lng: props.snipeSegment.summarySegment!.endLatlng[1],
+      };
 
-    return calculateBearing(startPoint, endPoint);
+      return calculateBearing(startPoint, endPoint);
+    }
   };
 
   const updateSegmentEffortStarred = (
@@ -135,22 +133,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
               </Row>
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
-              {getSegmentDetails.isLoading ? (
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  style={{ width: "75px" }}
-                >
-                  <Spinner
-                    as="span"
-                    variant="light"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    animation="border"
-                  />
-                </Button>
-              ) : !props.showDetails ? (
+              {!props.showDetails ? (
                 <Button onClick={() => handleShowDetailsButtonClick()}>
                   Details
                 </Button>

@@ -31,7 +31,7 @@ namespace StravaApiClient.Models.Activity
         public string SportType { get; set; }
 
         [JsonProperty("workout_type")]
-        public int WorkoutType { get; set; }
+        public int? WorkoutType { get; set; }
 
         [JsonProperty("start_date")]
         public DateTime StartDate { get; set; }

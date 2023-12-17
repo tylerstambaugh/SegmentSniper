@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../stores/useActivityListStore";
-import { SnipeSegmentsRequest } from "../services/Api/Segment/getSnipeSegmentsList";
 import toast from "react-hot-toast";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import SegmentDetailsModal from "../components/SegmentSniper/Segments/SegmentDetailsModal";
-import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
-import SegmentEffortCardList from "../components/SegmentSniper/Segments/SegmentEffortCardList/SegmentEffortCardList";
-import { SegmentDetails } from "../models/Segment/SegmentDetails";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
 import ActivityCard from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCard";
 import SnipeSegmentsCardList from "../components/SegmentSniper/Segments/SnipeSegmentCardList/SnipeSegmentCardList";
-import useSnipeSegmentsListStore from "../stores/useSnipeSegmentsListStore";
-import { useGetSegmentDetails } from "../hooks/Api/Segments/useGetSegmentDetails";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();

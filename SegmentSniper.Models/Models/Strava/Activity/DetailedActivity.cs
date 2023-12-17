@@ -13,7 +13,7 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         public double TotalElevationGain { get; set; }
         public string Type { get; set; }
         public string SportType { get; set; }
-        public int WorkoutType { get; set; }
+        public int? WorkoutType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime StartDateLocal { get; set; }
         public string Timezone { get; set; }
