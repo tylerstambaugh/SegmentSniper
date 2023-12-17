@@ -149,6 +149,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             CreateMap<DetailedSegment, DetailedSegmentUIModel>();
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
+            CreateMap<AthleteSegmentStats, AthleteSegmentStatsUiModel>();
 
             CreateMap<MapApiModel, MapModel>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
