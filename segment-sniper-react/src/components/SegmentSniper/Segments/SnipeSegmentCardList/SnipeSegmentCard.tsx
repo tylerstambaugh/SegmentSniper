@@ -1,16 +1,13 @@
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
-import { useState } from "react";
-import { useGetSegmentDetails } from "../../../../hooks/Api/Segments/useGetSegmentDetails";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
-import useSegmentDetailsStore from "../../../../stores/useSegmentDetailsStore";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck as circleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../ActivityMap";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
+import { SummarySegment } from "../../../../models/Segment/SummarySegment";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
@@ -21,13 +18,8 @@ type SnipedSegmentCardProps = {
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const { calculateBearing } = useFindHeading();
   const starSegment = usePostStarSegment();
-  const setSnipedSegments = useSnipeSegmentsListStore(
-    (state) => state.setSnipedSegmentsList
-  );
-  const segmentDetails = useSegmentDetailsStore((state) =>
-    state.segmentDetails.find(
-      (sd) => sd.segmentId === props.snipeSegment.segmentId
-    )
+  const [snipeSegmentsList, setSnipedSegments] = useSnipeSegmentsListStore(
+    (state) => [state.snipeSegmentsList, state.setSnipeSegmentsList]
   );
 
   async function handleShowDetailsButtonClick() {
@@ -39,15 +31,17 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   }
 
   const heading = () => {
-    if (props.snipeSegment.summarySegment) {
+    if (props.snipeSegment.detailedSegmentEffort?.segment) {
+      let segment: SummarySegment =
+        props.snipeSegment.detailedSegmentEffort?.segment;
       let startPoint: { lat: number; lng: number } = {
-        lat: props.snipeSegment.summarySegment!.startLatlng[0],
-        lng: props.snipeSegment.summarySegment!.startLatlng[1],
+        lat: segment.startLatlng[0],
+        lng: segment.startLatlng[1],
       };
 
       let endPoint: { lat: number; lng: number } = {
-        lat: props.snipeSegment.summarySegment!.endLatlng[0],
-        lng: props.snipeSegment.summarySegment!.endLatlng[1],
+        lat: segment.endLatlng[0],
+        lng: segment.endLatlng[1],
       };
 
       return calculateBearing(startPoint, endPoint);
@@ -93,7 +87,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
               <Row className="justify-content-between">
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">Distance:</span>{" "}
-                  {props.snipeSegment.distance}
+                  {props.snipeSegment.distance} mi.
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">KOM Time:</span>{" "}
@@ -120,9 +114,15 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                     <Row>
                       <Col>
                         <ActivityMap
-                          stravaMap={segmentDetails?.map!}
-                          startLatlng={segmentDetails?.startLatlng!}
-                          endLatlng={segmentDetails?.endLatlng!}
+                          stravaMap={props.snipeSegment.map!}
+                          startLatlng={
+                            props.snipeSegment.detailedSegmentEffort?.segment
+                              .startLatlng
+                          }
+                          endLatlng={
+                            props.snipeSegment.detailedSegmentEffort?.segment
+                              .endLatlng
+                          }
                         />
                       </Col>
                     </Row>

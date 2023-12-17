@@ -3,6 +3,7 @@ using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
+using SegmentSniper.Services.Common;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Segment;
@@ -76,27 +77,28 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             double percentageOffQom = Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime), 3) * 100;
 
             int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
-            int secondsOffQom = dse.MovingTime - xomsTime.KomTime;
+            int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
 
             SnipeSegment snipeSegment = new SnipeSegment
             {
+                ActivityId = dse.ActivityId,
+                DetailedSegmentEffort = dse,
                 SegmentId = dse.SummarySegment.Id,
                 Name = dse.Name,
                 KomTime = ConvertTimeInSeconds(xomsTime.KomTime),
                 QomTime = ConvertTimeInSeconds(xomsTime.QomTime),
                 PercentageFromKom = percentageOffKom,
                 PercentageFromQom = percentageOffQom,
-                SecondsFromKom = secondsOffKom,
-                SecondsFromQom = secondsOffQom,
+                SecondsFromKom = ConvertTimeInSeconds(secondsOffKom),
+                SecondsFromQom = ConvertTimeInSeconds(secondsOffQom),
                 ActivityType = detailedSegment.ActivityType,
-                Distance = detailedSegment.Distance,
+                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                 CreatedAt = detailedSegment.CreatedAt,
                 Map = detailedSegment.Map,
                 EffortCount = detailedSegment.EffortCount,
                 AthleteCount = detailedSegment.AthleteCount,
                 Starred = detailedSegment.Starred,
                 StarCount = detailedSegment.StarCount,
-                SummarySegment = dse.SummarySegment,
                 AthleteSegmentStats = _mapper.Map<AthleteSegmentStats, AthleteSegmentStatsUiModel>(detailedSegment.AthleteSegmentStats),
                 Xoms = detailedSegment.Xoms,
                 LocalLegend = detailedSegment.LocalLegend,

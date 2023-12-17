@@ -3,6 +3,11 @@ body {
   font-family: 'Roboto Mono', 'Lucida Console', monospace;
 }
 
+.custom-spinner {
+  border-color: #ffca14;
+  border-top-color: #f3f3f3;
+}
+
 .btn-primary {  
   padding: 4px ;
   border-radius: 7px;
@@ -92,8 +97,8 @@ body {
   display: flex;
   align-self: center;
   justify-self: center;
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #ffca14; /* Blue */
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #ffca14; 
   border-radius: 50%;
   width: 120px;
   height: 120px;

@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const setSnipedSegmentsList = useSnipeSegmentsListStore(
-    (state) => state.setSnipedSegmentsList
+    (state) => state.setSnipeSegmentsList
   );
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
