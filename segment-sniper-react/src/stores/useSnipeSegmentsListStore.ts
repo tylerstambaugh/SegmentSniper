@@ -27,6 +27,18 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
                   ? snipedSegmentsList(state.snipeSegmentsList)
                   : snipedSegmentsList;
             }),
+          setSnipeSegment: (snipeSegmentListItem: SnipeSegmentListItem) =>
+            set((state) => {
+              const segmentId = snipeSegmentListItem.segmentId;
+              const index = state.snipeSegmentsList.findIndex(
+                (item) => item.segmentId === segmentId
+              );
+              if (index !== -1) {
+                state.snipeSegmentsList[index] = snipeSegmentListItem;
+              } else {
+                state.snipeSegmentsList.push(snipeSegmentListItem);
+              }
+            }),
           resetSnipedSegmentsList: () =>
             set((state) => {
               state.snipeSegmentsList = initialState;
@@ -43,6 +55,7 @@ export default useSnipeSegmentsListStore;
 
 interface SnipeSegmentsListStore {
   snipeSegmentsList: SnipeSegmentListItem[];
+  setSnipeSegment: (snipeSegmentListITem: SnipeSegmentListItem) => void;
   setSnipeSegmentsList: (
     snipedSegmentsList:
       | SnipeSegmentListItem[]

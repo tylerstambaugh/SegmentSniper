@@ -5,19 +5,26 @@ import {
   Button,
   FormGroup,
   FormSelect,
+  Form,
 } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import SnipeSegmentCard from "./SnipeSegmentCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
+import { useFindHeading } from "../../../../hooks/useFindHeading";
 
 const SnipeSegmentsCardList = () => {
-  const [snipeSegmentsList, setSnipeSegmentsList] = useSnipeSegmentsListStore(
-    (state) => [state.snipeSegmentsList, state.setSnipeSegmentsList]
-  );
+  const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
+    useSnipeSegmentsListStore((state) => [
+      state.snipeSegmentsList,
+      state.setSnipeSegment,
+      state.setSnipeSegmentsList,
+    ]);
 
+  const [useQom, setUseQom] = useState(false);
   const convertTime = useConvertTimeStringToNumericValue();
+  const { calculateBearing } = useFindHeading();
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
   const [selectedSortOption, setSelectedSortOption] = useState<string>("");
 
@@ -65,6 +72,31 @@ const SnipeSegmentsCardList = () => {
     );
   }
 
+  useEffect(() => {
+    addHeadingToEfforts();
+  }, []);
+
+  function addHeadingToEfforts() {
+    snipeSegmentsList.map((item) => {
+      let segment = item.detailedSegmentEffort?.summarySegment;
+      if (segment) {
+        let startPoint: { lat: number; lng: number } = {
+          lat: segment.startLatlng[0],
+          lng: segment.startLatlng[1],
+        };
+
+        let endPoint: { lat: number; lng: number } = {
+          lat: segment.endLatlng[0],
+          lng: segment.endLatlng[1],
+        };
+
+        item = { ...item, heading: calculateBearing(startPoint, endPoint) };
+
+        setSnipeSegment(item);
+      }
+    });
+  }
+
   return snipeSegmentsList.length > 0 ? (
     <>
       <Container className="segment-list-options">
@@ -97,11 +129,27 @@ const SnipeSegmentsCardList = () => {
             <p>Filter Segment Heading</p>
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <p>Use QOM:</p>
+          </Col>
+          <Col>
+            <Form.Check
+              type="switch"
+              checked={useQom}
+              id="QomSwitch"
+              onChange={(e) => {
+                setUseQom(e.target.checked);
+              }}
+            />
+          </Col>
+        </Row>
       </Container>
       {snipeSegmentsList.map((item) => (
         <SnipeSegmentCard
           key={uuidv4()}
           snipeSegment={item}
+          useQom={useQom}
           showDetails={showDetailsSegmentId === item.segmentId}
           setShowDetails={setShowDetailsSegmentId}
         />

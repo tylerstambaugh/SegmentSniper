@@ -7,7 +7,6 @@ import { Xoms } from "./Xoms";
 
 export interface SnipeSegmentListItem {
   activityId?: string;
-  detailedSegmentEffort?: SegmentEffort;
   segmentId?: string;
   name?: string;
   komTime?: string;
@@ -27,4 +26,6 @@ export interface SnipeSegmentListItem {
   athleteStats?: AthleteSegmentStats;
   xoms?: Xoms;
   localLegend?: LocalLegend;
+  detailedSegmentEffort?: SegmentEffort;
+  heading?: string;
 }
