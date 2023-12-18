@@ -16,7 +16,7 @@ export interface SegmentEffort {
   averageWatts: number;
   averageHeartRate: number;
   maxHeartRate: number;
-  segment: SummarySegment;
+  summarySegment: SummarySegment;
   prRank: number | null;
   achievements: Achievement[];
   komRank: number | null;

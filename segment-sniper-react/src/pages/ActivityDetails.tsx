@@ -28,8 +28,7 @@ const ActivityDetails = () => {
     if (
       !snipeSegmentsList ||
       snipeSegmentsList.length === 0 ||
-      snipeSegmentsList[0].detailedSegmentEffort?.segment.id !==
-        selectedActivityId
+      snipeSegmentsList[0].activityId !== selectedActivityId
     ) {
       (async () => {
         await snipeSegments.mutateAsync({ activityId: selectedActivityId! });

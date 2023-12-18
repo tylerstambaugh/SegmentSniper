@@ -51,7 +51,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         DetailedSegment detailedSegment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(detailedSegmentResponse.DetailedSegmentApiModel);
 
                         var snipeSegment = CreateSnipeSegmentFromDetails(dse, detailedSegment);
-
+                        snipeSegment.ActivityId = activity.ActivityId;
                         snipeSegments.Add(snipeSegment);
                     }
 

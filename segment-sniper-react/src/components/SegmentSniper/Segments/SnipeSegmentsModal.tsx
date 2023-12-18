@@ -62,9 +62,9 @@ function ShowSnipeSegmentsModal(props: ShowSnipeSegmentsModalProps) {
     },
     onSubmit: async (values: SnipeSegmentsParametersForm) => {
       const snipeProps: SnipeSegmentsRequest = {
-        secondsOff: values.secondsFromLeader,
-        percentageOff: values.percentageFromLeader,
-        useQom: values.useQom,
+        // secondsOff: values.secondsFromLeader,
+        // percentageOff: values.percentageFromLeader,
+        // useQom: values.useQom,
       };
       await handleSnipeSegments(snipeProps);
       props.handleClose();

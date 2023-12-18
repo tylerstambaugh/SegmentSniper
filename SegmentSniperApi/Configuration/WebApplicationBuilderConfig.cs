@@ -29,7 +29,8 @@ namespace SegmentSniper.Api.Configuration
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
                 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
-                
+                builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
             }
 

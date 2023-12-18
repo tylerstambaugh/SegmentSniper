@@ -8,10 +8,12 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../ActivityMap";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 import { SummarySegment } from "../../../../models/Segment/SummarySegment";
+import { BooleanSchema } from "yup";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
   showDetails: boolean;
+  useQom: boolean;
   setShowDetails: (segmentId: string) => void;
 };
 
@@ -29,24 +31,6 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   function handleHideDetailsButtonClick() {
     props.setShowDetails("");
   }
-
-  const heading = () => {
-    if (props.snipeSegment.detailedSegmentEffort?.segment) {
-      let segment: SummarySegment =
-        props.snipeSegment.detailedSegmentEffort?.segment;
-      let startPoint: { lat: number; lng: number } = {
-        lat: segment.startLatlng[0],
-        lng: segment.startLatlng[1],
-      };
-
-      let endPoint: { lat: number; lng: number } = {
-        lat: segment.endLatlng[0],
-        lng: segment.endLatlng[1],
-      };
-
-      return calculateBearing(startPoint, endPoint);
-    }
-  };
 
   const updateSegmentEffortStarred = (
     snipedSegmentEffortList: SnipeSegmentListItem[],
@@ -90,12 +74,28 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   {props.snipeSegment.distance} mi.
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">KOM Time:</span>{" "}
-                  {props.snipeSegment.komTime}
+                  <span className="activity-card-label">My Time:</span>{" "}
+                  {props.snipeSegment.detailedSegmentEffort?.elapsedTime}
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Seconds From Kom:</span>{" "}
-                  {props.snipeSegment.secondsFromKom}
+                  <span className="activity-card-label">My PR Time:</span>{" "}
+                  {props.snipeSegment.athleteStats?.prElapsedTime}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">
+                    {!props.useQom ? `KOM Time:` : `QOM Time:`}
+                  </span>{" "}
+                  {!props.useQom
+                    ? props.snipeSegment.komTime
+                    : props.snipeSegment.qomTime}
+                </Col>
+                <Col sm={12} md={6} lg={4} xl={3}>
+                  <span className="activity-card-label">
+                    Seconds From {!props.useQom ? `KOM:` : `QOM:`}
+                  </span>{" "}
+                  {!props.useQom
+                    ? props.snipeSegment.secondsFromKom
+                    : props.snipeSegment.secondsFromQom}
                 </Col>
                 {props.snipeSegment.athleteStats?.effortCount! > 1 ? (
                   <Col sm={12} md={6} lg={4} xl={3}>
@@ -106,8 +106,8 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   <></>
                 )}
                 <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Direction:</span>{" "}
-                  <>{heading()}</>
+                  <span className="activity-card-label">Heading:</span>{" "}
+                  <>{props.snipeSegment.heading}</>
                 </Col>
                 {props.showDetails ? (
                   <>
@@ -116,12 +116,12 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                         <ActivityMap
                           stravaMap={props.snipeSegment.map!}
                           startLatlng={
-                            props.snipeSegment.detailedSegmentEffort?.segment
-                              .startLatlng
+                            props.snipeSegment.detailedSegmentEffort
+                              ?.summarySegment.startLatlng
                           }
                           endLatlng={
-                            props.snipeSegment.detailedSegmentEffort?.segment
-                              .endLatlng
+                            props.snipeSegment.detailedSegmentEffort
+                              ?.summarySegment.endLatlng
                           }
                         />
                       </Col>
