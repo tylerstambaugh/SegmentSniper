@@ -1,6 +1,7 @@
 
 :root {
-  --slider-main-color: #ffca14;
+  --slider-main-color: #969696;
+  --slider-thumb-color: #ffca14;
   --slider-main-color-hover: #d3a510;
   --slider-track-color: #29dcb2;
   --slider-mark-color: #20ad8c;
@@ -96,6 +97,10 @@ body {
   border: 1px solid;
 }
 
+.snipe-options-heading {
+  font-weight: 800;
+}
+
 .activity-card-label {
   font-weight: 600;
 }
@@ -117,7 +122,7 @@ body {
   /* max width of your slider */
   max-width: 275px;
   /* Optional: Only If you want to center your slider in the page */
-  margin: auto;
+  /* margin: auto; */
   padding-bottom: 2rem;
 }
 
@@ -127,7 +132,7 @@ body {
   /* thickness of the track */
   height: 6px;
  /* default color of your track */
-  background: var(--slider-track-color);
+  background: var(--slider-main-color);
 }
 
 .customSlider-track.customSlider-track-0 {
@@ -138,7 +143,7 @@ body {
 .customSlider-thumb {
   cursor: pointer;
   /*color for the thumb */
-  background: var(--slider-main-color);
+  background: var(--slider-thumb-color);
   /* shape of the thumb: circle */
   width: 20px;
   height: 20px;
@@ -164,3 +169,4 @@ body {
   pointer-events: none; /* Make the slider unclickable when disabled */
   cursor: not-allowed; /* Show a not-allowed cursor when hovering over the disabled slider */
 }
+

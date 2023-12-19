@@ -10,11 +10,8 @@ interface SliderProps {
 }
 
 const Slider = ({ onChange, value, min, max, disabled }: SliderProps) => {
-  const [sliderValue, setSliderValue] = useState(value);
-
   const handleSliderChange = (newValue: number) => {
     onChange(newValue);
-    setSliderValue(newValue);
   };
 
   return (
@@ -23,11 +20,10 @@ const Slider = ({ onChange, value, min, max, disabled }: SliderProps) => {
       trackClassName="customSlider-track"
       thumbClassName="customSlider-thumb"
       markClassName="customSlider-mark"
-      marks={25}
       min={min}
       max={max}
-      defaultValue={sliderValue}
-      value={sliderValue || 0}
+      defaultValue={value}
+      value={value || 0}
       onChange={(value) => handleSliderChange(value)}
       disabled={disabled}
     />

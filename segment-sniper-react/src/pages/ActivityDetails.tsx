@@ -68,25 +68,24 @@ const ActivityDetails = () => {
           }
           showMap={false}
         />
-        <Row className="pt-3">
-          <Col className="d-flex justify-content-around">
-            <h4>Segments: {snipeSegmentsList.length}</h4>
+
+        <Row>
+          <Col className="text-center">
+            {snipeSegments.isLoading ? (
+              <Spinner
+                as="span"
+                variant="secondary"
+                role="status"
+                aria-hidden="true"
+                animation="border"
+                className="custom=spinner"
+              />
+            ) : (
+              <SnipeSegmentsCardList />
+            )}
           </Col>
         </Row>
-        <Col className="text-center">
-          {snipeSegments.isLoading ? (
-            <Spinner
-              as="span"
-              variant="secondary"
-              role="status"
-              aria-hidden="true"
-              animation="border"
-              className="custom=spinner"
-            />
-          ) : (
-            <SnipeSegmentsCardList />
-          )}
-        </Col>
+
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
             <Button
