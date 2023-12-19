@@ -8,9 +8,11 @@ export const useConvertTimeStringToNumericValue = () => {
   }
 
   function numericTimeToString(timeNumber: number): string {
-    const hours: number = timeNumber / 3600;
-    const minutes: number = (timeNumber - hours * 3600) / 60;
-    const seconds: number = timeNumber - hours * 3600 - minutes * 60;
+    const hours: number = Math.floor(timeNumber / 3600);
+    const minutes: number = Math.floor((timeNumber - hours * 3600) / 60);
+    const seconds: number = Math.floor(
+      timeNumber - hours * 3600 - minutes * 60
+    );
 
     return `${hours}:${minutes}:${seconds}`;
   }

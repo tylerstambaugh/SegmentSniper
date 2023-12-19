@@ -42,7 +42,6 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     }
   }
 
-
   async function defineBounds() {
     const bounds = new window.google.maps.LatLngBounds();
     for (let i = 0; i < polylinePath.length; i++) {
@@ -60,7 +59,7 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
   }, [polylinePath]);
 
   return (
-    <div style={{ height: "400px", width: "100%" }}>
+    <div style={{ height: "300px", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
         center={center}

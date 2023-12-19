@@ -66,10 +66,11 @@ const ActivityDetails = () => {
           activity={
             activityList.find((a) => a.activityId === selectedActivityId)!
           }
+          showMap={false}
         />
         <Row className="pt-3">
           <Col className="d-flex justify-content-around">
-            <h4>Segments</h4>
+            <h4>Segments: {snipeSegmentsList.length}</h4>
           </Col>
         </Row>
         <Col className="text-center">
