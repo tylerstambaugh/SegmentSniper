@@ -13,7 +13,7 @@ const ActivityCardList = (props: ActivityCardListProps) => {
   return activityList.length > 0 ? (
     <>
       {activityList.map((item) => (
-        <ActivityCard activity={item} key={uuidv4()} />
+        <ActivityCard activity={item} key={uuidv4()} showMap={true} />
       ))}
     </>
   ) : (

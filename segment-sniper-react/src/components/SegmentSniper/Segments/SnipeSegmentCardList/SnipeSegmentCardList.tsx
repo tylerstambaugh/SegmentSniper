@@ -6,6 +6,7 @@ import {
   FormGroup,
   FormSelect,
   Form,
+  FloatingLabel,
 } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import SnipeSegmentCard from "./SnipeSegmentCard";
@@ -13,6 +14,7 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
+import Slider from "../../../UI_Components/Slider/Slider";
 
 const SnipeSegmentsCardList = () => {
   const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
@@ -23,10 +25,12 @@ const SnipeSegmentsCardList = () => {
     ]);
 
   const [useQom, setUseQom] = useState(false);
-  const convertTime = useConvertTimeStringToNumericValue();
   const { calculateBearing } = useFindHeading();
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
   const [selectedSortOption, setSelectedSortOption] = useState<string>("");
+  const [secondsFromLeader, setSecondsFromLeader] = useState<number>();
+  const [percentageFromLeader, setPercentageFromLeader] = useState<number>();
+  const [snipeBy, setSnipeBy] = useState<string>();
 
   function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedSortOption(event.target.value);
@@ -97,12 +101,101 @@ const SnipeSegmentsCardList = () => {
     });
   }
 
+  function handlePercentageFromLeaderChange(value: number) {
+    setPercentageFromLeader(value);
+    console.log("percentage from leader value:", percentageFromLeader);
+  }
+
+  function handleSecondsFromLeaderChange(value: number) {
+    setSecondsFromLeader(value);
+  }
+
   return snipeSegmentsList.length > 0 ? (
     <>
       <Container className="segment-list-options">
         <Row>
           <Col>
-            <p className="mb-0">Options:</p>
+            <p className="mb-0">Snipe Options:</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} className="justify-content-around">
+            <FormGroup controlId="percentageRadio">
+              <Form.Label id="percentageRadioButton" className="">
+                Snipe By:
+              </Form.Label>
+              <Form.Check
+                type="radio"
+                inline
+                value={`usePercentage`}
+                name="Percentage"
+                label="%"
+                checked={snipeBy === "usePercentage"}
+                onChange={(e) => setSnipeBy(e.target.value)}
+              />
+              <Form.Check
+                type="radio"
+                inline
+                value={`useSeconds`}
+                name="Seconds"
+                label="Seconds"
+                checked={snipeBy === "useSeconds"}
+                onChange={(e) => setSnipeBy(e.target.value)}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={9}>Percentage From {useQom ? `QOM` : "KOM"}:</Col>
+          <Col xs={9}>
+            <Slider
+              onChange={(value) => handlePercentageFromLeaderChange(value)}
+              value={percentageFromLeader}
+              min={0}
+              max={100}
+              disabled={snipeBy !== "usePercentage"}
+            />
+          </Col>
+          <Col xs={3} className="d-inline">
+            <Form.Control
+              type="number"
+              value={percentageFromLeader}
+              style={{
+                width: "80%",
+                display: "inline-block",
+                marginRight: "5px",
+              }}
+            ></Form.Control>
+            <span style={{ display: "inline-block" }}>%</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={9}>Seconds From {useQom ? `QOM` : "KOM"}:</Col>
+          <Col xs={8}>
+            <Slider
+              onChange={(value) => handleSecondsFromLeaderChange(value)}
+              value={secondsFromLeader}
+              min={0}
+              max={100}
+              disabled={snipeBy !== "useSeconds"}
+            />
+          </Col>
+          <Col xs={4} className="d-inline">
+            <Form.Control
+              type="number"
+              value={secondsFromLeader}
+              style={{
+                width: "80%",
+                display: "inline-block",
+                marginRight: "5px",
+              }}
+            ></Form.Control>
+            <span style={{ display: "inline-block" }}>Secs</span>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p>Segment Heading:</p>
           </Col>
         </Row>
         <Row className="d-flex align-items-center ">
@@ -124,11 +217,7 @@ const SnipeSegmentsCardList = () => {
             <Button onClick={() => handleResetSort()}>Reset</Button>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <p>Filter Segment Heading</p>
-          </Col>
-        </Row>
+
         <Row>
           <Col>
             <p>Use QOM:</p>

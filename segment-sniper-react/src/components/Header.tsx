@@ -49,7 +49,10 @@ function Header() {
         />
 
         <Navbar.Collapse className="justify-content-end">
-          {tokenData !== null && tokenData!.accessToken && user!.id ? (
+          {tokenData !== null &&
+          tokenData!.accessToken &&
+          user !== null &&
+          user!.id ? (
             <Row className="d-flex">
               <Col md={9} className="d-flex justify-content-end">
                 <Navbar.Text>{`Signed in as: ${user!.firstName}`}</Navbar.Text>

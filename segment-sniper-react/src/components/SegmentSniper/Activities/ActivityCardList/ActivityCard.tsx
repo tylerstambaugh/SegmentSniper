@@ -6,9 +6,12 @@ import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsList
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import { useState } from "react";
 import ActivityMap from "../../ActivityMap";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
+  showMap: boolean;
 };
 
 const ActivityCard = (props: ActivityCardProps) => {
@@ -16,7 +19,7 @@ const ActivityCard = (props: ActivityCardProps) => {
   const [selectedActivityId, setSelectedActivityId] = useActivityListStore(
     (state) => [state.selectedActivityId, state.setSelectedActivityId]
   );
-
+  const [showMap, setShowMap] = useState<boolean>(props.showMap);
   const handleSnipeButtonClick = () => {
     setSelectedActivityId(props.activity.activityId!);
     navigate(`/${AppRoutes.ActivityDetails}`);
@@ -29,7 +32,22 @@ const ActivityCard = (props: ActivityCardProps) => {
           <Card>
             <Card.Title className="px-2 pt-2 activity-card-heading">
               <Row>
-                <Col xs={9}>{props.activity.name}</Col>
+                <Col xs={9}>{props.activity.name} </Col>
+                <Col xs={3}>
+                  <Button onClick={() => setShowMap(!showMap)}>
+                    {showMap ? (
+                      <>
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                        Map
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faEye} />
+                        Map
+                      </>
+                    )}
+                  </Button>
+                </Col>
               </Row>
             </Card.Title>
             <Card.Body>
@@ -53,15 +71,20 @@ const ActivityCard = (props: ActivityCardProps) => {
                   {props.activity.achievementCount}
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <ActivityMap
-                    stravaMap={props.activity.stravaMap!}
-                    startLatlng={props.activity.startLatlng!}
-                    endLatlng={props.activity.endLatlng}
-                  />
-                </Col>
-              </Row>
+
+              {showMap ? (
+                <Row>
+                  <Col>
+                    <ActivityMap
+                      stravaMap={props.activity.stravaMap!}
+                      startLatlng={props.activity.startLatlng!}
+                      endLatlng={props.activity.endLatlng}
+                    />
+                  </Col>
+                </Row>
+              ) : (
+                <></>
+              )}
             </Card.Body>
             <Card.Footer className="d-flex justify-content-center">
               {selectedActivityId === "" ? (

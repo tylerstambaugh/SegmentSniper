@@ -9,6 +9,7 @@ import ActivityMap from "../../ActivityMap";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 import { SummarySegment } from "../../../../models/Segment/SummarySegment";
 import { BooleanSchema } from "yup";
+import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
@@ -18,8 +19,8 @@ type SnipedSegmentCardProps = {
 };
 
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
-  const { calculateBearing } = useFindHeading();
   const starSegment = usePostStarSegment();
+  const convertTime = useConvertTimeStringToNumericValue();
   const [snipeSegmentsList, setSnipedSegments] = useSnipeSegmentsListStore(
     (state) => [state.snipeSegmentsList, state.setSnipeSegmentsList]
   );
@@ -59,6 +60,9 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
     }
   }
 
+  const myTime: string = convertTime.numericTimeToString(
+    props.snipeSegment.detailedSegmentEffort?.elapsedTime!
+  );
   return (
     <Container className="py-2">
       <Row>
@@ -74,8 +78,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   {props.snipeSegment.distance} mi.
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">My Time:</span>{" "}
-                  {props.snipeSegment.detailedSegmentEffort?.elapsedTime}
+                  <span className="activity-card-label">My Time:</span> {myTime}
                 </Col>
                 <Col sm={12} md={6} lg={4} xl={3}>
                   <span className="activity-card-label">My PR Time:</span>{" "}
