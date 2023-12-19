@@ -7,16 +7,20 @@ import {
   FormSelect,
   Form,
   FloatingLabel,
+  FormLabel,
 } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import SnipeSegmentCard from "./SnipeSegmentCard";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 import Slider from "../../../UI_Components/Slider/Slider";
+import { Headings } from "../../../../enums/Headings";
 
 const SnipeSegmentsCardList = () => {
+  const animatedComponents = makeAnimated();
   const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
     useSnipeSegmentsListStore((state) => [
       state.snipeSegmentsList,
@@ -30,7 +34,35 @@ const SnipeSegmentsCardList = () => {
   const [selectedSortOption, setSelectedSortOption] = useState<string>("");
   const [secondsFromLeader, setSecondsFromLeader] = useState<number>();
   const [percentageFromLeader, setPercentageFromLeader] = useState<number>();
-  const [snipeBy, setSnipeBy] = useState<string>();
+  const [headingsFilter, setHeadingsFilter] = useState<string[]>([]);
+  const headingsArray: { label: string; value: string }[] = Object.entries(
+    Headings
+  ).map(([key, value]) => ({ label: value, value: key }));
+
+  useEffect(() => {
+    addHeadingToEfforts();
+  }, []);
+
+  function addHeadingToEfforts() {
+    snipeSegmentsList.map((item) => {
+      let segment = item.detailedSegmentEffort?.summarySegment;
+      if (segment) {
+        let startPoint: { lat: number; lng: number } = {
+          lat: segment.startLatlng[0],
+          lng: segment.startLatlng[1],
+        };
+
+        let endPoint: { lat: number; lng: number } = {
+          lat: segment.endLatlng[0],
+          lng: segment.endLatlng[1],
+        };
+
+        item = { ...item, heading: calculateBearing(startPoint, endPoint) };
+
+        setSnipeSegment(item);
+      }
+    });
+  }
 
   function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedSortOption(event.target.value);
@@ -64,8 +96,21 @@ const SnipeSegmentsCardList = () => {
     }
   }
 
-  function handleResetSort() {
+  function handlePercentageFromLeaderChange(value: number) {
+    setPercentageFromLeader(value);
+    console.log("percentage from leader value:", percentageFromLeader);
+  }
+
+  function handleSecondsFromLeaderChange(value: number) {
+    setSecondsFromLeader(value);
+  }
+
+  function handleResetSnipeOptions() {
     setSelectedSortOption("Sort by");
+    setPercentageFromLeader(0);
+    setSecondsFromLeader(0);
+    setUseQom(false);
+    setHeadingsFilter([]);
     setShowDetailsSegmentId("");
     setSnipeSegmentsList(
       [...snipeSegmentsList].sort(
@@ -76,126 +121,91 @@ const SnipeSegmentsCardList = () => {
     );
   }
 
-  useEffect(() => {
-    addHeadingToEfforts();
-  }, []);
-
-  function addHeadingToEfforts() {
-    snipeSegmentsList.map((item) => {
-      let segment = item.detailedSegmentEffort?.summarySegment;
-      if (segment) {
-        let startPoint: { lat: number; lng: number } = {
-          lat: segment.startLatlng[0],
-          lng: segment.startLatlng[1],
-        };
-
-        let endPoint: { lat: number; lng: number } = {
-          lat: segment.endLatlng[0],
-          lng: segment.endLatlng[1],
-        };
-
-        item = { ...item, heading: calculateBearing(startPoint, endPoint) };
-
-        setSnipeSegment(item);
-      }
-    });
-  }
-
-  function handlePercentageFromLeaderChange(value: number) {
-    setPercentageFromLeader(value);
-    console.log("percentage from leader value:", percentageFromLeader);
-  }
-
-  function handleSecondsFromLeaderChange(value: number) {
-    setSecondsFromLeader(value);
-  }
-
   return snipeSegmentsList.length > 0 ? (
     <>
       <Container className="segment-list-options">
         <Row>
           <Col>
-            <p className="mb-0">Snipe Options:</p>
+            <p className="mb-1 snipe-options-heading">Snipe Options</p>
           </Col>
         </Row>
         <Row>
-          <Col xs={12} className="justify-content-around">
-            <FormGroup controlId="percentageRadio">
-              <Form.Label id="percentageRadioButton" className="">
-                Snipe By:
-              </Form.Label>
-              <Form.Check
-                type="radio"
-                inline
-                value={`usePercentage`}
-                name="Percentage"
-                label="%"
-                checked={snipeBy === "usePercentage"}
-                onChange={(e) => setSnipeBy(e.target.value)}
-              />
-              <Form.Check
-                type="radio"
-                inline
-                value={`useSeconds`}
-                name="Seconds"
-                label="Seconds"
-                checked={snipeBy === "useSeconds"}
-                onChange={(e) => setSnipeBy(e.target.value)}
-              />
-            </FormGroup>
+          <Col xs={12} className="justify-content-start">
+            Percentage From {useQom ? `QOM` : "KOM"}:
           </Col>
-        </Row>
-        <Row>
-          <Col xs={9}>Percentage From {useQom ? `QOM` : "KOM"}:</Col>
-          <Col xs={9}>
+          <Col xs={8} className="pt-2">
             <Slider
               onChange={(value) => handlePercentageFromLeaderChange(value)}
               value={percentageFromLeader}
               min={0}
               max={100}
-              disabled={snipeBy !== "usePercentage"}
+              disabled={false}
             />
           </Col>
-          <Col xs={3} className="d-inline">
+          <Col xs={4} className="pb-2">
             <Form.Control
               type="number"
-              value={percentageFromLeader}
+              value={percentageFromLeader || ""}
               style={{
                 width: "80%",
                 display: "inline-block",
                 marginRight: "5px",
               }}
-            ></Form.Control>
+              onChange={(e) => setPercentageFromLeader(Number(e.target.value))}
+              pattern="[0-9]*"
+            />
             <span style={{ display: "inline-block" }}>%</span>
           </Col>
         </Row>
-        <Row>
-          <Col xs={9}>Seconds From {useQom ? `QOM` : "KOM"}:</Col>
-          <Col xs={8}>
-            <Slider
-              onChange={(value) => handleSecondsFromLeaderChange(value)}
-              value={secondsFromLeader}
-              min={0}
-              max={100}
-              disabled={snipeBy !== "useSeconds"}
-            />
+        <FormGroup>
+          <Row className="pb-2">
+            <Col xs={8}>
+              <FormLabel>Seconds From {useQom ? `QOM` : "KOM"}:</FormLabel>
+            </Col>
+            <Col xs={4} className="mr-3">
+              <Form.Control
+                type="number"
+                value={secondsFromLeader}
+                pattern="[0-9]*"
+                style={{
+                  width: "80%",
+                  display: "inline-block",
+                  marginRight: "5px",
+                }}
+              />
+            </Col>
+          </Row>
+        </FormGroup>
+        <Row className="pb-2">
+          <Col>
+            <p>Segment Heading:</p>
           </Col>
-          <Col xs={4} className="d-inline">
-            <Form.Control
-              type="number"
-              value={secondsFromLeader}
-              style={{
-                width: "80%",
-                display: "inline-block",
-                marginRight: "5px",
-              }}
-            ></Form.Control>
-            <span style={{ display: "inline-block" }}>Secs</span>
+
+          <Col>
+            <Select
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              isMulti
+              options={headingsArray}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={(e) => console.log(e)}
+            />
           </Col>
         </Row>
         <Row>
           <Col>
-            <p>Segment Heading:</p>
+            <p>Use QOM:</p>
+          </Col>
+          <Col>
+            <Form.Check
+              type="switch"
+              checked={useQom}
+              id="QomSwitch"
+              onChange={(e) => {
+                setUseQom(e.target.checked);
+              }}
+            />
           </Col>
         </Row>
         <Row className="d-flex align-items-center ">
@@ -214,26 +224,20 @@ const SnipeSegmentsCardList = () => {
             </FormGroup>
           </Col>
           <Col>
-            <Button onClick={() => handleResetSort()}>Reset</Button>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <p>Use QOM:</p>
-          </Col>
-          <Col>
-            <Form.Check
-              type="switch"
-              checked={useQom}
-              id="QomSwitch"
-              onChange={(e) => {
-                setUseQom(e.target.checked);
-              }}
-            />
+            <Button
+              variant="secondary"
+              onClick={() => handleResetSnipeOptions()}
+            >
+              Reset
+            </Button>
           </Col>
         </Row>
       </Container>
+      <Row className="pt-3">
+        <Col className="d-flex justify-content-around">
+          <h4>Segments: {snipeSegmentsList.length}</h4>
+        </Col>
+      </Row>
       {snipeSegmentsList.map((item) => (
         <SnipeSegmentCard
           key={uuidv4()}
