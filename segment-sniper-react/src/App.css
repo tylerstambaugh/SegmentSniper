@@ -101,6 +101,11 @@ body {
   font-weight: 800;
 }
 
+.snipe-option-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .activity-card-label {
   font-weight: 600;
 }

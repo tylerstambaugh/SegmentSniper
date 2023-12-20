@@ -98,7 +98,6 @@ const SnipeSegmentsCardList = () => {
 
   function handlePercentageFromLeaderChange(value: number) {
     setPercentageFromLeader(value);
-    console.log("percentage from leader value:", percentageFromLeader);
   }
 
   function handleSecondsFromLeaderChange(value: number) {
@@ -124,14 +123,22 @@ const SnipeSegmentsCardList = () => {
   return snipeSegmentsList.length > 0 ? (
     <>
       <Container className="segment-list-options">
-        <Row>
+        <Row className="pb-2">
           <Col>
             <p className="mb-1 snipe-options-heading">Snipe Options</p>
           </Col>
+          <Col className="text-end">
+            <Button
+              variant="secondary"
+              onClick={() => handleResetSnipeOptions()}
+            >
+              Reset
+            </Button>
+          </Col>
         </Row>
         <Row>
-          <Col xs={12} className="justify-content-start">
-            Percentage From {useQom ? `QOM` : "KOM"}:
+          <Col xs={12} className=" text-start snipe-option-label">
+            % From {useQom ? `QOM` : "KOM"}:
           </Col>
           <Col xs={8} className="pt-2">
             <Slider
@@ -159,45 +166,56 @@ const SnipeSegmentsCardList = () => {
         </Row>
         <FormGroup>
           <Row className="pb-2">
-            <Col xs={6} className="justify-content-end">
-              <FormLabel>Seconds From {useQom ? `QOM` : "KOM"}:</FormLabel>
+            <Col xs={8} className="text-start">
+              <FormLabel className=" snipe-option-label">
+                Seconds From {useQom ? `QOM` : "KOM"}:
+              </FormLabel>
             </Col>
-            <Col xs={6} className="justify-content-end">
+            <Col className="">
               <Form.Control
                 type="number"
-                value={secondsFromLeader}
+                value={secondsFromLeader || ""}
+                onChange={(e) => setSecondsFromLeader(Number(e.target.value))}
                 pattern="[0-9]*"
                 style={{
                   width: "80%",
                   display: "inline-block",
-                  marginRight: "5px",
+                  marginRight: "25px",
                 }}
               />
             </Col>
           </Row>
         </FormGroup>
         <Row className="pb-2">
-          <Col xs={6} className="justify-content-end">
+          <Col xs={6} className="text-start snipe-option-label">
             <p>Heading:</p>
           </Col>
 
-          <Col xs={6} className="justify-content-end">
+          <Col xs={6} className="text-end">
             <Select
               closeMenuOnSelect={false}
               components={animatedComponents}
+              value={headingsArray.filter((h) =>
+                headingsFilter.includes(h.value)
+              )}
               isMulti
               options={headingsArray}
               className="basic-multi-select"
               classNamePrefix="select"
-              onChange={(e) => console.log(e)}
+              onChange={(selectedOptions) => {
+                const selectedValues = selectedOptions.map(
+                  (option) => option.value
+                );
+                setHeadingsFilter(selectedValues);
+              }}
             />
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className="text-start snipe-option-label">
             <p>Use QOM:</p>
           </Col>
-          <Col>
+          <Col className="text-end">
             <Form.Check
               type="switch"
               checked={useQom}
@@ -208,14 +226,17 @@ const SnipeSegmentsCardList = () => {
             />
           </Col>
         </Row>
-        <Row className="d-flex align-items-center ">
-          <Col className="mb-2 mb-sm-0">
+        <Row>
+          <Col className="text-start snipe-option-label">
+            <p>Sort By:</p>
+          </Col>
+          <Col>
             <FormGroup controlId="sortControl">
               <FormSelect
                 value={selectedSortOption}
                 onChange={(e) => handleSortChange(e)}
               >
-                <option>Sort by</option>
+                <option>Select</option>
                 <option value="longestDistance">Longest Distance</option>
                 <option value="shortestDistance">Shortest Distance</option>
                 <option value="shortestTime">Shortest Time</option>
@@ -223,15 +244,8 @@ const SnipeSegmentsCardList = () => {
               </FormSelect>
             </FormGroup>
           </Col>
-          <Col>
-            <Button
-              variant="secondary"
-              onClick={() => handleResetSnipeOptions()}
-            >
-              Reset
-            </Button>
-          </Col>
         </Row>
+        <Row></Row>
       </Container>
       <Row className="pt-3">
         <Col className="d-flex justify-content-around">
