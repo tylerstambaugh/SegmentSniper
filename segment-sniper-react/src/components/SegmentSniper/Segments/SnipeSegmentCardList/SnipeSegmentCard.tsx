@@ -72,46 +72,77 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
               {props.snipeSegment.name}
             </Card.Title>
             <Card.Body>
-              <Row className="justify-content-between">
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Distance:</span>{" "}
-                  {props.snipeSegment.distance} mi.
-                </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">My Time:</span> {myTime}
-                </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">My PR Time:</span>{" "}
-                  {props.snipeSegment.athleteStats?.prElapsedTime}
-                </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">
-                    {!props.useQom ? `KOM Time:` : `QOM Time:`}
-                  </span>{" "}
-                  {!props.useQom
-                    ? props.snipeSegment.komTime
-                    : props.snipeSegment.qomTime}
-                </Col>
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">
-                    Seconds From {!props.useQom ? `KOM:` : `QOM:`}
-                  </span>{" "}
-                  {!props.useQom
-                    ? props.snipeSegment.secondsFromKom
-                    : props.snipeSegment.secondsFromQom}
-                </Col>
-                {props.snipeSegment.athleteStats?.effortCount! > 1 ? (
-                  <Col sm={12} md={6} lg={4} xl={3}>
-                    <span className="activity-card-label">PR Time:</span>{" "}
-                    {props.snipeSegment.athleteStats?.prElapsedTime}
+              <Container>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">Distance:</span>{" "}
                   </Col>
-                ) : (
-                  <></>
-                )}
-                <Col sm={12} md={6} lg={4} xl={3}>
-                  <span className="activity-card-label">Heading:</span>{" "}
-                  <>{props.snipeSegment.heading}</>
-                </Col>
+                  <Col className="justify-content-end text-end">
+                    {props.snipeSegment.distance} mi.
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">My Time:</span>
+                  </Col>
+                  <Col className="justify-content-end text-end">{myTime}</Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">My PR Time:</span>
+                  </Col>
+                  <Col className="justify-content-end text-end">
+                    {convertTime.numericTimeToString(
+                      props.snipeSegment.athleteSegmentStats?.prElapsedTime ?? 0
+                    )}
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">
+                      {!props.useQom ? `KOM Time:` : `QOM Time:`}
+                    </span>
+                  </Col>
+                  <Col className="justify-content-end text-end">
+                    {!props.useQom
+                      ? props.snipeSegment.komTime
+                      : props.snipeSegment.qomTime}
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">
+                      Time Off {!props.useQom ? `KOM:` : `QOM:`}
+                    </span>
+                  </Col>
+                  <Col className="justify-content-end text-end">
+                    {!props.useQom
+                      ? props.snipeSegment.secondsFromKom
+                      : props.snipeSegment.secondsFromQom}
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">
+                      % Off {!props.useQom ? `KOM:` : `QOM:`}
+                    </span>
+                  </Col>
+                  <Col className="justify-content-end text-end">
+                    {!props.useQom
+                      ? `${props.snipeSegment.percentageFromKom}%`
+                      : `${props.snipeSegment.percentageFromQom}%`}
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col xs={7}>
+                    <span className="activity-card-label">Heading:</span>
+                  </Col>
+                  <Col className="justify-content-end text-end">
+                    <>{props.snipeSegment.heading}</>
+                  </Col>
+                </Row>
+              </Container>
+              <Row>
                 {props.showDetails ? (
                   <>
                     <Row>

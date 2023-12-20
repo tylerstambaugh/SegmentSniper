@@ -1,5 +1,5 @@
 export interface AthleteSegmentStats {
-  prElapsedTime: string;
+  prElapsedTime: number;
   prDate: string;
   prActivityId: number;
   effortCount: number;

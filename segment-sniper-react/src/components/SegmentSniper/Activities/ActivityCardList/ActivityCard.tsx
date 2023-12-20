@@ -86,13 +86,13 @@ const ActivityCard = (props: ActivityCardProps) => {
                 <></>
               )}
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-center">
-              {selectedActivityId === "" ? (
+            {selectedActivityId === "" ? (
+              <Card.Footer className="d-flex justify-content-center">
                 <Button onClick={() => handleSnipeButtonClick()}>Snipe!</Button>
-              ) : (
-                <></>
-              )}
-            </Card.Footer>
+              </Card.Footer>
+            ) : (
+              <></>
+            )}
           </Card>
         </Col>
       </Row>

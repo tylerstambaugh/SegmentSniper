@@ -73,8 +73,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
-            double percentageOffKom = Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime), 3) * 100;
-            double percentageOffQom = Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime), 3) * 100;
+            int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
+            int percentageOffQom = (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
+
 
             int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
             int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
@@ -148,7 +149,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             int hours = seconds / 3600;
             int minutes = seconds / 60 - (hours * 60);
             int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
-            return $"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}";
+
+            var timeAsString = "";
+            if(hours > 0)
+            {
+                timeAsString = $"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}";
+            }
+            if(hours == 0)
+            {
+                timeAsString = $"{minutes:D2}:{remainingSeconds:D2}";
+            }
+
+            return timeAsString;
         }
 
         private void ValidateRequest(GetSnipeSegmentsByActivityIdRequest request)
