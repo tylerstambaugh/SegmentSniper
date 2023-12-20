@@ -159,10 +159,10 @@ const SnipeSegmentsCardList = () => {
         </Row>
         <FormGroup>
           <Row className="pb-2">
-            <Col xs={8}>
+            <Col xs={6} className="justify-content-end">
               <FormLabel>Seconds From {useQom ? `QOM` : "KOM"}:</FormLabel>
             </Col>
-            <Col xs={4} className="mr-3">
+            <Col xs={6} className="justify-content-end">
               <Form.Control
                 type="number"
                 value={secondsFromLeader}
@@ -177,11 +177,11 @@ const SnipeSegmentsCardList = () => {
           </Row>
         </FormGroup>
         <Row className="pb-2">
-          <Col>
-            <p>Segment Heading:</p>
+          <Col xs={6} className="justify-content-end">
+            <p>Heading:</p>
           </Col>
 
-          <Col>
+          <Col xs={6} className="justify-content-end">
             <Select
               closeMenuOnSelect={false}
               components={animatedComponents}

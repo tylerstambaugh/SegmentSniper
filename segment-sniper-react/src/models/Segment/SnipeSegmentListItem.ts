@@ -23,7 +23,7 @@ export interface SnipeSegmentListItem {
   athleteCount?: number;
   starred?: boolean;
   starCount?: number;
-  athleteStats?: AthleteSegmentStats;
+  athleteSegmentStats?: AthleteSegmentStats;
   xoms?: Xoms;
   localLegend?: LocalLegend;
   detailedSegmentEffort?: SegmentEffort;

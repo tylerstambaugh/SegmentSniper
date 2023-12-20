@@ -14,7 +14,9 @@ export const useConvertTimeStringToNumericValue = () => {
       timeNumber - hours * 3600 - minutes * 60
     );
 
-    return `${hours}:${minutes}:${seconds}`;
+    let returnString =
+      hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+    return returnString;
   }
 
   return { timeStringToNumericValue, numericTimeToString };
