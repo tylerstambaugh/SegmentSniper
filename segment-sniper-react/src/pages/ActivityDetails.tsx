@@ -24,23 +24,6 @@ const ActivityDetails = () => {
 
   const snipeSegments = useSnipeSegments();
 
-  useEffect(() => {
-    if (
-      !snipeSegmentsList ||
-      snipeSegmentsList.length === 0 ||
-      snipeSegmentsList[0].activityId !== selectedActivityId
-    ) {
-      (async () => {
-        await snipeSegments.mutateAsync({ activityId: selectedActivityId! });
-      })();
-    }
-  }, [selectedActivityId]);
-
-  useEffect(() => {
-    if (snipeSegments.error !== null)
-      toast.error(`Snipe segments error: ${snipeSegments.error}`);
-  }, [snipeSegments.error]);
-
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
     navigate(`/${AppRoutes.ActivitySearchResults}`);
@@ -70,7 +53,7 @@ const ActivityDetails = () => {
         />
 
         <Row>
-          <Col className="text-center">
+          {/* <Col className="text-center">
             {snipeSegments.isLoading ? (
               <Spinner
                 as="span"
@@ -80,10 +63,10 @@ const ActivityDetails = () => {
                 animation="border"
                 className="custom=spinner"
               />
-            ) : (
-              <SnipeSegmentsCardList />
-            )}
-          </Col>
+            ) : ( */}
+          <SnipeSegmentsCardList />
+          {/* )}
+          </Col> */}
         </Row>
 
         <Row className="justify-content-center">
