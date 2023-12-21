@@ -8,6 +8,7 @@ import {
   Form,
   FloatingLabel,
   FormLabel,
+  Spinner,
 } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
 import SnipeSegmentCard from "./SnipeSegmentCard";
@@ -18,6 +19,9 @@ import makeAnimated from "react-select/animated";
 import { useFindHeading } from "../../../../hooks/useFindHeading";
 import Slider from "../../../UI_Components/Slider/Slider";
 import { Headings } from "../../../../enums/Headings";
+import { useSnipeSegments } from "../../../../hooks/Api/Segments/useSnipeSegments";
+import useActivityListStore from "../../../../stores/useActivityListStore";
+import toast from "react-hot-toast";
 
 const SnipeSegmentsCardList = () => {
   const animatedComponents = makeAnimated();
@@ -27,7 +31,10 @@ const SnipeSegmentsCardList = () => {
       state.setSnipeSegment,
       state.setSnipeSegmentsList,
     ]);
-
+  const snipeSegments = useSnipeSegments();
+  const selectedActivityId = useActivityListStore(
+    (state) => state.selectedActivityId
+  );
   const [useQom, setUseQom] = useState(false);
   const { calculateBearing } = useFindHeading();
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
@@ -40,8 +47,25 @@ const SnipeSegmentsCardList = () => {
   ).map(([key, value]) => ({ label: value, value: key }));
 
   useEffect(() => {
-    addHeadingToEfforts();
+    if (
+      !snipeSegmentsList ||
+      snipeSegmentsList.length === 0 ||
+      snipeSegmentsList[0].activityId !== selectedActivityId
+    ) {
+      async () => {
+        await snipeSegments.mutateAsync({ activityId: selectedActivityId! });
+      };
+    }
   }, []);
+
+  useEffect(() => {
+    addHeadingToEfforts();
+  }, [snipeSegmentsList.length]);
+
+  useEffect(() => {
+    if (snipeSegments.error !== null)
+      toast.error(`Snipe segments error: ${snipeSegments.error}`);
+  }, [snipeSegments.error]);
 
   function addHeadingToEfforts() {
     snipeSegmentsList.map((item) => {
@@ -252,15 +276,32 @@ const SnipeSegmentsCardList = () => {
           <h4>Segments: {snipeSegmentsList.length}</h4>
         </Col>
       </Row>
-      {snipeSegmentsList.map((item) => (
-        <SnipeSegmentCard
-          key={uuidv4()}
-          snipeSegment={item}
-          useQom={useQom}
-          showDetails={showDetailsSegmentId === item.segmentId}
-          setShowDetails={setShowDetailsSegmentId}
-        />
-      ))}
+      <Row>
+        {snipeSegments.isLoading ? (
+          <Col className="text-center">
+            <Spinner
+              as="span"
+              variant="secondary"
+              role="status"
+              aria-hidden="true"
+              animation="border"
+              className="custom=spinner"
+            />
+          </Col>
+        ) : (
+          <Col>
+            {snipeSegmentsList.map((item) => (
+              <SnipeSegmentCard
+                key={uuidv4()}
+                snipeSegment={item}
+                useQom={useQom}
+                showDetails={showDetailsSegmentId === item.segmentId}
+                setShowDetails={setShowDetailsSegmentId}
+              />
+            ))}
+          </Col>
+        )}
+      </Row>
     </>
   ) : (
     <Container fluid>
