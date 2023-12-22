@@ -4,7 +4,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
     public interface IGetSnipeSegmentsByActivityIdActionHandler
     {
-        Task<GetSnipeSegmentsByActivityIdRequest.Response> HandleAsync(GetSnipeSegmentsByActivityIdRequest request);
+        Task<ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>> HandleAsync(GetSnipeSegmentsByActivityIdRequest request);
     }
 
     public class GetSnipeSegmentsByActivityIdRequest

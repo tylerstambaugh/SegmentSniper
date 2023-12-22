@@ -22,87 +22,92 @@ import { Headings } from "../../../../enums/Headings";
 import { useSnipeSegments } from "../../../../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import toast from "react-hot-toast";
+import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
 
 const SnipeSegmentsCardList = () => {
-  const animatedComponents = makeAnimated();
+  const snipeSegments = useSnipeSegments();
   const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
     useSnipeSegmentsListStore((state) => [
-      state.snipeSegmentsList,
+      state.snipeSegmentsList || [],
       state.setSnipeSegment,
       state.setSnipeSegmentsList,
     ]);
-  const snipeSegments = useSnipeSegments();
   const selectedActivityId = useActivityListStore(
     (state) => state.selectedActivityId
   );
+  const [filteredSnipeSegments, setFilteredSnipeSegments] =
+    useState<SnipeSegmentListItem[]>(snipeSegmentsList);
   const [useQom, setUseQom] = useState(false);
-  const { calculateBearing } = useFindHeading();
+  const [filtering, setFiltering] = useState(false);
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
-  const [selectedSortOption, setSelectedSortOption] = useState<string>("");
-  const [secondsFromLeader, setSecondsFromLeader] = useState<number>();
   const [percentageFromLeader, setPercentageFromLeader] = useState<number>();
+  const [secondsFromLeader, setSecondsFromLeader] = useState<number>();
   const [headingsFilter, setHeadingsFilter] = useState<string[]>([]);
+  const [selectedSortOption, setSelectedSortOption] = useState<string>("");
   const headingsArray: { label: string; value: string }[] = Object.entries(
     Headings
   ).map(([key, value]) => ({ label: value, value: key }));
+  const animatedComponents = makeAnimated();
+  const { calculateBearing } = useFindHeading();
 
   useEffect(() => {
-    if (
-      !snipeSegmentsList ||
-      snipeSegmentsList.length === 0 ||
-      snipeSegmentsList[0].activityId !== selectedActivityId
-    ) {
-      async () => {
+    const fetchSnipeSegments = async () => {
+      try {
         await snipeSegments.mutateAsync({ activityId: selectedActivityId! });
-      };
+      } catch (error) {
+        toast.error(`Error fetching snipe segments: ${error}`);
+      }
+    };
+
+    if (
+      !Array.isArray(snipeSegmentsList) ||
+      snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
+        .length === 0
+    ) {
+      fetchSnipeSegments().then(() => addHeadingToEfforts());
     }
   }, []);
 
-  useEffect(() => {
-    addHeadingToEfforts();
-  }, [snipeSegmentsList.length]);
-
-  useEffect(() => {
-    if (snipeSegments.error !== null)
-      toast.error(`Snipe segments error: ${snipeSegments.error}`);
-  }, [snipeSegments.error]);
-
   function addHeadingToEfforts() {
-    snipeSegmentsList.map((item) => {
-      let segment = item.detailedSegmentEffort?.summarySegment;
-      if (segment) {
-        let startPoint: { lat: number; lng: number } = {
-          lat: segment.startLatlng[0],
-          lng: segment.startLatlng[1],
-        };
+    setSnipeSegmentsList((prevList) =>
+      prevList.map((item) => {
+        let segment = item.detailedSegmentEffort?.summarySegment;
+        if (segment) {
+          let startPoint: { lat: number; lng: number } = {
+            lat: segment.startLatlng[0],
+            lng: segment.startLatlng[1],
+          };
 
-        let endPoint: { lat: number; lng: number } = {
-          lat: segment.endLatlng[0],
-          lng: segment.endLatlng[1],
-        };
+          let endPoint: { lat: number; lng: number } = {
+            lat: segment.endLatlng[0],
+            lng: segment.endLatlng[1],
+          };
 
-        item = { ...item, heading: calculateBearing(startPoint, endPoint) };
-
-        setSnipeSegment(item);
-      }
-    });
+          return {
+            ...item,
+            heading: calculateBearing(startPoint, endPoint),
+          };
+        }
+        return item;
+      })
+    );
   }
 
   function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedSortOption(event.target.value);
     if (event.target.value === "shortestDistance") {
-      setSnipeSegmentsList(
-        [...snipeSegmentsList].sort((a, b) => a.distance! - b.distance!)
+      setFilteredSnipeSegments(
+        [...filteredSnipeSegments].sort((a, b) => a.distance! - b.distance!)
       );
     }
     if (event.target.value === "longestDistance") {
-      setSnipeSegmentsList(
-        [...snipeSegmentsList].sort((a, b) => b.distance! - a.distance!)
+      setFilteredSnipeSegments(
+        [...filteredSnipeSegments].sort((a, b) => b.distance! - a.distance!)
       );
     }
     if (event.target.value === "shortestTime") {
-      setSnipeSegmentsList(
-        [...snipeSegmentsList].sort(
+      setFilteredSnipeSegments(
+        [...filteredSnipeSegments].sort(
           (a, b) =>
             a.detailedSegmentEffort?.elapsedTime! -
             b.detailedSegmentEffort?.elapsedTime!
@@ -110,8 +115,8 @@ const SnipeSegmentsCardList = () => {
       );
     }
     if (event.target.value === "longestTime") {
-      setSnipeSegmentsList(
-        [...snipeSegmentsList].sort(
+      setFilteredSnipeSegments(
+        [...filteredSnipeSegments].sort(
           (a, b) =>
             b.detailedSegmentEffort?.elapsedTime! -
             a.detailedSegmentEffort?.elapsedTime!
@@ -127,6 +132,16 @@ const SnipeSegmentsCardList = () => {
   function handleSecondsFromLeaderChange(value: number) {
     setSecondsFromLeader(value);
   }
+
+  useEffect(() => {
+    if (snipeSegmentsList.length > 0) {
+      let newList = snipeSegmentsList.filter(
+        (s) => s.activityId === selectedActivityId
+      );
+      setFilteredSnipeSegments(newList);
+    }
+    console.log("filteredList", filteredSnipeSegments);
+  }, [snipeSegmentsList, selectedActivityId]);
 
   function handleResetSnipeOptions() {
     setSelectedSortOption("Sort by");
@@ -144,7 +159,7 @@ const SnipeSegmentsCardList = () => {
     );
   }
 
-  return snipeSegmentsList.length > 0 ? (
+  return (
     <>
       <Container className="segment-list-options">
         <Row className="pb-2">
@@ -273,12 +288,20 @@ const SnipeSegmentsCardList = () => {
       </Container>
       <Row className="pt-3">
         <Col className="d-flex justify-content-around">
-          <h4>Segments: {snipeSegmentsList.length}</h4>
+          <h4>
+            Segments:{" "}
+            {
+              filteredSnipeSegments.filter(
+                (l) => l.activityId === selectedActivityId
+              ).length
+            }
+          </h4>
         </Col>
       </Row>
       <Row>
-        {snipeSegments.isLoading ? (
+        {snipeSegments.isLoading || filtering ? (
           <Col className="text-center">
+            <span>Hang tight, we're working on it</span>
             <Spinner
               as="span"
               variant="secondary"
@@ -289,8 +312,24 @@ const SnipeSegmentsCardList = () => {
             />
           </Col>
         ) : (
+          <></>
+        )}
+      </Row>
+      {snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
+        .length === 0 &&
+      !snipeSegments.isLoading &&
+      !filtering ? (
+        <Container fluid>
+          <Row className="align-items-center justify-content-center pt-5">
+            <Col className="text-center">
+              <h4>No Segments to Snipe</h4>
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <Row>
           <Col>
-            {snipeSegmentsList.map((item) => (
+            {filteredSnipeSegments.map((item) => (
               <SnipeSegmentCard
                 key={uuidv4()}
                 snipeSegment={item}
@@ -300,17 +339,9 @@ const SnipeSegmentsCardList = () => {
               />
             ))}
           </Col>
-        )}
-      </Row>
+        </Row>
+      )}
     </>
-  ) : (
-    <Container fluid>
-      <Row className="align-items-center justify-content-center pt-5">
-        <Col className="text-center">
-          <h4>No Segments to Snipe</h4>
-        </Col>
-      </Row>
-    </Container>
   );
 };
 

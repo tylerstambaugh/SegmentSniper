@@ -158,9 +158,9 @@ namespace SegmentSniper.Api.Controllers
                 ActivityId = activityId,
             };
 
-            var returnList = await _getSnipeSegmentsByActivityIdActionHandler.HandleAsync(request);
-            if (returnList != null) return Ok(returnList);
-            else return StatusCode(421, "Unable to get list of snipe segments");
+            var result = await _getSnipeSegmentsByActivityIdActionHandler.HandleAsync(request);
+            if (result.StatusCode == 200) return Ok(result.Data);
+            else return StatusCode(result.StatusCode, result.ErrorMessage);
         }
     }
 }
