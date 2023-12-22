@@ -28,7 +28,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             _mapper = mapper;
         }
 
-        public async Task<GetSnipeSegmentsByActivityIdRequest.Response> HandleAsync(GetSnipeSegmentsByActivityIdRequest request)
+        public async Task<ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>> HandleAsync(GetSnipeSegmentsByActivityIdRequest request)
         {
             ValidateRequest(request);
 
@@ -55,17 +55,16 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         snipeSegments.Add(snipeSegment);
                     }
 
-                    return new GetSnipeSegmentsByActivityIdRequest.Response(snipeSegments);
+                    return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(200, new GetSnipeSegmentsByActivityIdRequest.Response(snipeSegments));
                 }
                 catch (Exception ex)
                 {
-                    //do something different here instead of throwing the exception. log it and return null?
-                    throw new ApplicationException("Something went wrong handling the request.", ex);
+                    return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(500, null, ex.Message);
                 }
             }
             else
             {
-                throw new ApplicationException("Something went wrong 'handling the request");
+                return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(500, null);
             }
         }
 

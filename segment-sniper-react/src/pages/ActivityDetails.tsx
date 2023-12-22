@@ -18,11 +18,6 @@ const ActivityDetails = () => {
       state.setSelectedActivityId,
       state.selectedActivityId,
     ]);
-  const snipeSegmentsList: SnipeSegmentListItem[] = useSnipeSegmentsListStore(
-    (state) => state.snipeSegmentsList
-  );
-
-  const snipeSegments = useSnipeSegments();
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
@@ -51,24 +46,9 @@ const ActivityDetails = () => {
           }
           showMap={false}
         />
-
         <Row>
-          {/* <Col className="text-center">
-            {snipeSegments.isLoading ? (
-              <Spinner
-                as="span"
-                variant="secondary"
-                role="status"
-                aria-hidden="true"
-                animation="border"
-                className="custom=spinner"
-              />
-            ) : ( */}
           <SnipeSegmentsCardList />
-          {/* )}
-          </Col> */}
         </Row>
-
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
             <Button

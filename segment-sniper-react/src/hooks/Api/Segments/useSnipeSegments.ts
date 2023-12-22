@@ -10,8 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const setSnipedSegmentsList = useSnipeSegmentsListStore(
-    (state) => state.setSnipeSegmentsList
+  const [snipeSegmentsList, setSnipedSegmentsList] = useSnipeSegmentsListStore(
+    (state) => [state.snipeSegmentsList, state.setSnipeSegmentsList]
   );
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
@@ -27,7 +27,17 @@ export const useSnipeSegments = () => {
     const response: SnipeSegmentsResponse = await getSnipeSegmentsList(
       contract
     );
+
     setSnipedSegmentsList(response.snipedSegments);
+
+    // {
+    //   snipeSegmentsList.length === 0
+    //     ? setSnipedSegmentsList(response.snipedSegments)
+    //     : setSnipedSegmentsList((prevList) => ({
+    //         ...prevList,
+    //         ...response.snipedSegments,
+    //       }));
+    // }
   }
   return { mutateAsync, isLoading, isError, error, data };
 };
