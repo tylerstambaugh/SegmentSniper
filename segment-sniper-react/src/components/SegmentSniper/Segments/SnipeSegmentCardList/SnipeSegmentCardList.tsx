@@ -26,19 +26,21 @@ import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentLis
 import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 
 const SnipeSegmentsCardList = () => {
-  const snipeSegments = useSnipeSegments();
-  const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
-    useSnipeSegmentsListStore((state) => [
-      state.snipeSegmentsList || [],
-      state.setSnipeSegment,
-      state.setSnipeSegmentsList,
-    ]);
   const selectedActivityId = useActivityListStore(
     (state) => state.selectedActivityId
   );
-  const [filteredSnipeSegments, setFilteredSnipeSegments] = useState<
-    SnipeSegmentListItem[]
-  >(snipeSegmentsList.filter((s) => s.activityId === selectedActivityId));
+  const snipeSegments = useSnipeSegments();
+  const [snipeSegmentsList, setSnipeSegment, setSnipeSegmentsList] =
+    useSnipeSegmentsListStore((state) => [
+      state.snipeSegmentsList.filter(
+        (s) => s.activityId === selectedActivityId
+      ) || [],
+      state.setSnipeSegment,
+      state.setSnipeSegmentsList,
+    ]);
+
+  const [filteredSnipeSegments, setFilteredSnipeSegments] =
+    useState<SnipeSegmentListItem[]>(snipeSegmentsList);
   const [useQom, setUseQom] = useState(false);
   const [filtering, setFiltering] = useState(false);
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
@@ -131,41 +133,46 @@ const SnipeSegmentsCardList = () => {
     handleSortChange();
   }, [selectedSortOption]);
 
-  function handleFilterChange() {
+  async function handleFilterChange() {
     console.log("handling filter change");
+    console.log("% from leader", percentageFromLeader);
+    console.log(`seconds from leader`, secondsFromLeader);
+
     setFiltering(true);
-    setFilteredSnipeSegments((prevList) =>
-      prevList.filter((s) => {
+
+    setFilteredSnipeSegments(() => {
+      const newFilteredList = snipeSegmentsList.filter((s) => {
+        let secondsFromKom = convertTime.timeStringToNumericValue(
+          s.secondsFromKom!
+        );
+        let secondsFromQom = convertTime.timeStringToNumericValue(
+          s.secondsFromQom!
+        );
         const percentageFilter =
-          !percentageFromLeader ||
+          percentageFromLeader !== undefined &&
           (useQom
             ? s.percentageFromQom! < percentageFromLeader
             : s.percentageFromKom! < percentageFromLeader);
 
         const secondsFilter =
-          !secondsFromLeader ||
+          secondsFromLeader !== undefined &&
           (useQom
-            ? convertTime.timeStringToNumericValue(s.secondsFromQom!) <
-              secondsFromLeader
-            : convertTime.timeStringToNumericValue(s.secondsFromKom!) <
-              secondsFromLeader);
+            ? secondsFromKom < secondsFromLeader
+            : secondsFromQom < secondsFromLeader);
 
-        return percentageFilter && secondsFilter;
-      })
-    );
-    handleSortChange();
+        return percentageFilter || secondsFilter;
+      });
+
+      handleSortChange();
+
+      return newFilteredList;
+    });
     setFiltering(false);
   }
 
-  function handlePercentageFromLeaderChange(value: number) {
-    setPercentageFromLeader(value);
+  useEffect(() => {
     handleFilterChange();
-  }
-
-  function handleSecondsFromLeaderChange(value: number) {
-    setSecondsFromLeader(value);
-    handleFilterChange();
-  }
+  }, [percentageFromLeader, secondsFromLeader]);
 
   useEffect(() => {
     console.log("filtered segments", filteredSnipeSegments);
@@ -173,8 +180,8 @@ const SnipeSegmentsCardList = () => {
 
   function handleResetSnipeOptions() {
     setSelectedSortOption("Sort by");
-    setPercentageFromLeader(0);
-    setSecondsFromLeader(0);
+    setPercentageFromLeader(undefined);
+    setSecondsFromLeader(undefined);
     setUseQom(false);
     setHeadingsFilter([]);
     setShowDetailsSegmentId("");
@@ -184,6 +191,9 @@ const SnipeSegmentsCardList = () => {
           +new Date(a.detailedSegmentEffort?.startDate!) -
           +new Date(b.detailedSegmentEffort?.startDate!)
       )
+    );
+    setFilteredSnipeSegments(
+      snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
     );
   }
 
@@ -209,7 +219,7 @@ const SnipeSegmentsCardList = () => {
           </Col>
           <Col xs={8} className="pt-2">
             <Slider
-              onChange={(value) => handlePercentageFromLeaderChange(value)}
+              onChange={(value) => setPercentageFromLeader(value)}
               value={percentageFromLeader}
               min={0}
               max={100}
@@ -219,14 +229,13 @@ const SnipeSegmentsCardList = () => {
           <Col xs={4} className="pb-2">
             <Form.Control
               type="number"
-              value={percentageFromLeader || ""}
+              value={percentageFromLeader}
               style={{
                 width: "80%",
                 display: "inline-block",
                 marginRight: "5px",
               }}
-              onChange={(e) => setPercentageFromLeader(Number(e.target.value))}
-              onBlur={() => handleFilterChange()}
+              onBlur={(e) => setPercentageFromLeader(Number(e.target.value))}
               pattern="[0-9]*"
             />
             <span style={{ display: "inline-block" }}>%</span>
@@ -242,9 +251,8 @@ const SnipeSegmentsCardList = () => {
             <Col className="">
               <Form.Control
                 type="number"
-                value={secondsFromLeader || ""}
-                onChange={(e) => setSecondsFromLeader(Number(e.target.value))}
-                onBlur={(e) => handleFilterChange()}
+                defaultValue={secondsFromLeader || ""}
+                onBlur={(e) => setSecondsFromLeader(Number(e.target.value))}
                 pattern="[0-9]*"
                 style={{
                   width: "80%",
