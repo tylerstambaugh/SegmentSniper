@@ -1,9 +1,17 @@
 export const useConvertTimeStringToNumericValue = () => {
   function timeStringToNumericValue(timeString: string): number {
-    const [hours, minutes, seconds] = timeString.split(":").map(Number);
+    let totalSeconds = 0;
+    if (timeString.split(":").length === 3) {
+      const [hours, minutes, seconds] = timeString.split(":").map(Number);
 
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+      totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
+      return totalSeconds;
+    }
+    if (timeString.split(":").length === 2) {
+      const [minutes, seconds] = timeString.split(":").map(Number);
+      totalSeconds = minutes * 60 + seconds;
+    }
     return totalSeconds;
   }
 
