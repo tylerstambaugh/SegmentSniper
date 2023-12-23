@@ -23,6 +23,7 @@ import { useSnipeSegments } from "../../../../hooks/Api/Segments/useSnipeSegment
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import toast from "react-hot-toast";
 import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
+import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 
 const SnipeSegmentsCardList = () => {
   const snipeSegments = useSnipeSegments();
@@ -35,8 +36,9 @@ const SnipeSegmentsCardList = () => {
   const selectedActivityId = useActivityListStore(
     (state) => state.selectedActivityId
   );
-  const [filteredSnipeSegments, setFilteredSnipeSegments] =
-    useState<SnipeSegmentListItem[]>(snipeSegmentsList);
+  const [filteredSnipeSegments, setFilteredSnipeSegments] = useState<
+    SnipeSegmentListItem[]
+  >(snipeSegmentsList.filter((s) => s.activityId === selectedActivityId));
   const [useQom, setUseQom] = useState(false);
   const [filtering, setFiltering] = useState(false);
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
@@ -49,6 +51,7 @@ const SnipeSegmentsCardList = () => {
   ).map(([key, value]) => ({ label: value, value: key }));
   const animatedComponents = makeAnimated();
   const { calculateBearing } = useFindHeading();
+  const convertTime = useConvertTimeStringToNumericValue();
 
   useEffect(() => {
     const fetchSnipeSegments = async () => {
@@ -93,19 +96,18 @@ const SnipeSegmentsCardList = () => {
     );
   }
 
-  function handleSortChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedSortOption(event.target.value);
-    if (event.target.value === "shortestDistance") {
+  function handleSortChange() {
+    if (selectedSortOption === "shortestDistance") {
       setFilteredSnipeSegments(
         [...filteredSnipeSegments].sort((a, b) => a.distance! - b.distance!)
       );
     }
-    if (event.target.value === "longestDistance") {
+    if (selectedSortOption === "longestDistance") {
       setFilteredSnipeSegments(
         [...filteredSnipeSegments].sort((a, b) => b.distance! - a.distance!)
       );
     }
-    if (event.target.value === "shortestTime") {
+    if (selectedSortOption === "shortestTime") {
       setFilteredSnipeSegments(
         [...filteredSnipeSegments].sort(
           (a, b) =>
@@ -114,7 +116,7 @@ const SnipeSegmentsCardList = () => {
         )
       );
     }
-    if (event.target.value === "longestTime") {
+    if (selectedSortOption === "longestTime") {
       setFilteredSnipeSegments(
         [...filteredSnipeSegments].sort(
           (a, b) =>
@@ -125,23 +127,49 @@ const SnipeSegmentsCardList = () => {
     }
   }
 
+  useEffect(() => {
+    handleSortChange();
+  }, [selectedSortOption]);
+
+  function handleFilterChange() {
+    console.log("handling filter change");
+    setFiltering(true);
+    setFilteredSnipeSegments((prevList) =>
+      prevList.filter((s) => {
+        const percentageFilter =
+          !percentageFromLeader ||
+          (useQom
+            ? s.percentageFromQom! < percentageFromLeader
+            : s.percentageFromKom! < percentageFromLeader);
+
+        const secondsFilter =
+          !secondsFromLeader ||
+          (useQom
+            ? convertTime.timeStringToNumericValue(s.secondsFromQom!) <
+              secondsFromLeader
+            : convertTime.timeStringToNumericValue(s.secondsFromKom!) <
+              secondsFromLeader);
+
+        return percentageFilter && secondsFilter;
+      })
+    );
+    handleSortChange();
+    setFiltering(false);
+  }
+
   function handlePercentageFromLeaderChange(value: number) {
     setPercentageFromLeader(value);
+    handleFilterChange();
   }
 
   function handleSecondsFromLeaderChange(value: number) {
     setSecondsFromLeader(value);
+    handleFilterChange();
   }
 
   useEffect(() => {
-    if (snipeSegmentsList.length > 0) {
-      let newList = snipeSegmentsList.filter(
-        (s) => s.activityId === selectedActivityId
-      );
-      setFilteredSnipeSegments(newList);
-    }
-    console.log("filteredList", filteredSnipeSegments);
-  }, [snipeSegmentsList, selectedActivityId]);
+    console.log("filtered segments", filteredSnipeSegments);
+  }, [filteredSnipeSegments]);
 
   function handleResetSnipeOptions() {
     setSelectedSortOption("Sort by");
@@ -198,6 +226,7 @@ const SnipeSegmentsCardList = () => {
                 marginRight: "5px",
               }}
               onChange={(e) => setPercentageFromLeader(Number(e.target.value))}
+              onBlur={() => handleFilterChange()}
               pattern="[0-9]*"
             />
             <span style={{ display: "inline-block" }}>%</span>
@@ -215,6 +244,7 @@ const SnipeSegmentsCardList = () => {
                 type="number"
                 value={secondsFromLeader || ""}
                 onChange={(e) => setSecondsFromLeader(Number(e.target.value))}
+                onBlur={(e) => handleFilterChange()}
                 pattern="[0-9]*"
                 style={{
                   width: "80%",
@@ -273,7 +303,9 @@ const SnipeSegmentsCardList = () => {
             <FormGroup controlId="sortControl">
               <FormSelect
                 value={selectedSortOption}
-                onChange={(e) => handleSortChange(e)}
+                onChange={(e) => {
+                  setSelectedSortOption(e.target.value);
+                }}
               >
                 <option>Select</option>
                 <option value="longestDistance">Longest Distance</option>

@@ -12,7 +12,7 @@ const devtoolOptions = {
   name: "Sniped Segment List Store",
 };
 
-const initialState = [{}];
+const initialState: SnipeSegmentListItem[] = [];
 
 const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
   immer(
@@ -26,6 +26,11 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
                 typeof snipedSegmentsList === "function"
                   ? snipedSegmentsList(state.snipeSegmentsList)
                   : snipedSegmentsList;
+            }),
+          appendSnipeSegmentList: (snipeSegmentList: SnipeSegmentListItem[]) =>
+            set((state) => {
+              state.snipeSegmentsList =
+                state.snipeSegmentsList.concat(snipeSegmentList);
             }),
           setSnipeSegment: (snipeSegmentListItem: SnipeSegmentListItem) =>
             set((state) => {
@@ -61,5 +66,6 @@ interface SnipeSegmentsListStore {
       | SnipeSegmentListItem[]
       | ((prevList: SnipeSegmentListItem[]) => SnipeSegmentListItem[])
   ) => void;
+  appendSnipeSegmentList: (snipedSegmentList: SnipeSegmentListItem[]) => void;
   resetSnipedSegmentsList: () => void;
 }
