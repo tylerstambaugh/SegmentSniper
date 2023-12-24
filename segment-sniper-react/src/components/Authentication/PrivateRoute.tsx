@@ -21,7 +21,7 @@ const PrivateRoute = (props: Props) => {
       ? true
       : false;
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || user === null) {
     return (
       <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
         <Row className="text-center ">

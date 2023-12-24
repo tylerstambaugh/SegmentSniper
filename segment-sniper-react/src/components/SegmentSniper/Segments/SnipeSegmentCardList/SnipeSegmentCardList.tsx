@@ -44,8 +44,10 @@ const SnipeSegmentsCardList = () => {
   const [useQom, setUseQom] = useState(false);
   const [filtering, setFiltering] = useState(false);
   const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
-  const [percentageFromLeader, setPercentageFromLeader] = useState<number>();
-  const [secondsFromLeader, setSecondsFromLeader] = useState<number>();
+  const [percentageFromLeader, setPercentageFromLeader] = useState<
+    number | null
+  >();
+  const [secondsFromLeader, setSecondsFromLeader] = useState<number | null>();
   const [headingsFilter, setHeadingsFilter] = useState<string[]>([]);
   const [selectedSortOption, setSelectedSortOption] = useState<string>("");
   const headingsArray: { label: string; value: string }[] = Object.entries(
@@ -134,10 +136,6 @@ const SnipeSegmentsCardList = () => {
   }, [selectedSortOption]);
 
   async function handleFilterChange() {
-    console.log("handling filter change");
-    console.log("% from leader", percentageFromLeader);
-    console.log(`seconds from leader`, secondsFromLeader);
-
     setFiltering(true);
 
     setFilteredSnipeSegments(() => {
@@ -148,19 +146,22 @@ const SnipeSegmentsCardList = () => {
         let secondsFromQom = convertTime.timeStringToNumericValue(
           s.secondsFromQom!
         );
+
         const percentageFilter =
-          percentageFromLeader !== undefined &&
-          (useQom
-            ? s.percentageFromQom! < percentageFromLeader
-            : s.percentageFromKom! < percentageFromLeader);
+          (percentageFromLeader != null &&
+            (useQom
+              ? s.percentageFromQom! < percentageFromLeader
+              : s.percentageFromKom! < percentageFromLeader)) ||
+          percentageFromLeader === 0;
 
         const secondsFilter =
-          secondsFromLeader !== undefined &&
+          secondsFromLeader != null &&
           (useQom
-            ? secondsFromKom < secondsFromLeader
-            : secondsFromQom < secondsFromLeader);
+            ? secondsFromQom < secondsFromLeader
+            : secondsFromKom < secondsFromLeader);
 
-        return percentageFilter || secondsFilter;
+        const komFilter = useQom ? secondsFromQom !== 0 : secondsFromKom !== 0;
+        return komFilter && (percentageFilter || secondsFilter);
       });
 
       handleSortChange();
@@ -173,10 +174,6 @@ const SnipeSegmentsCardList = () => {
   useEffect(() => {
     handleFilterChange();
   }, [percentageFromLeader, secondsFromLeader]);
-
-  useEffect(() => {
-    console.log("filtered segments", filteredSnipeSegments);
-  }, [filteredSnipeSegments]);
 
   function handleResetSnipeOptions() {
     setSelectedSortOption("Sort by");
@@ -220,7 +217,7 @@ const SnipeSegmentsCardList = () => {
           <Col xs={8} className="pt-2">
             <Slider
               onChange={(value) => setPercentageFromLeader(value)}
-              value={percentageFromLeader}
+              value={percentageFromLeader || undefined}
               min={0}
               max={100}
               disabled={false}
@@ -229,13 +226,14 @@ const SnipeSegmentsCardList = () => {
           <Col xs={4} className="pb-2">
             <Form.Control
               type="number"
-              value={percentageFromLeader}
+              value={percentageFromLeader || ""}
               style={{
                 width: "80%",
                 display: "inline-block",
                 marginRight: "5px",
               }}
               onBlur={(e) => setPercentageFromLeader(Number(e.target.value))}
+              onChange={(e) => setPercentageFromLeader(Number(e.target.value))}
               pattern="[0-9]*"
             />
             <span style={{ display: "inline-block" }}>%</span>
@@ -251,7 +249,7 @@ const SnipeSegmentsCardList = () => {
             <Col className="">
               <Form.Control
                 type="number"
-                defaultValue={secondsFromLeader || ""}
+                defaultValue={secondsFromLeader || undefined}
                 onBlur={(e) => setSecondsFromLeader(Number(e.target.value))}
                 pattern="[0-9]*"
                 style={{
