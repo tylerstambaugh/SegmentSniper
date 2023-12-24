@@ -10,6 +10,7 @@ import { usePostLogin } from "../../hooks/Api/Auth/usePostLogin";
 import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 
 import useTokenDataStore from "../../stores/useTokenStore";
+import useUserStore from "../../stores/useUserStore";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
@@ -18,6 +19,7 @@ export default function LoginWidget() {
   const [isAuthenticated] = useTokenDataStore((state) => [
     state.isAuthenticated,
   ]);
+  const user = useUserStore((state) => state.user);
   const loginUser = usePostLogin();
   const navigate = useNavigate();
   interface LoginForm {
@@ -75,7 +77,7 @@ export default function LoginWidget() {
 
   return (
     <>
-      {!isAuthenticated ? (
+      {!isAuthenticated || user === null ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>
