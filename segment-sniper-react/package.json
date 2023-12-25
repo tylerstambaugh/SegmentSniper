@@ -40,7 +40,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.34.1",
+    "@tanstack/eslint-plugin-query": "^4.36.1",
     "@types/googlemaps": "^3.43.3",
     "@types/luxon": "^3.3.5",
     "@types/mapbox__polyline": "^1.0.5",

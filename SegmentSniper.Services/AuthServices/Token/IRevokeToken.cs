@@ -2,7 +2,8 @@
 {
     public interface IRevokeToken
     {
-        Task<RevokeTokenContract.Result> Execute(RevokeTokenContract contract);
+        Task<RevokeTokenContract.Result> ExecuteSingleUser(RevokeTokenContract contract);
+        Task<bool> ExecuteAllUsers();
     }
 
     public class RevokeTokenContract

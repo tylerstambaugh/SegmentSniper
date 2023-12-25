@@ -23,6 +23,7 @@ namespace SegmentSniper.Api.Configuration
             //action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
+            services.AddScoped<IRevokeTokenActionHandler, RevokeTokenActionHandler>();
             services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
             services.AddScoped<IGetActivityListByIdActionHandler, GetActivityListByIdActionHandler>();
             services.AddScoped<IGetActivityListForTimeRangeActionHandler, GetActivityListForTimeRangeActionHandler>();
@@ -36,6 +37,7 @@ namespace SegmentSniper.Api.Configuration
 
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();
+            services.AddScoped<IRevokeToken, RevokeToken>();
             services.AddScoped<ICreateToken, CreateToken>();
             services.AddScoped<IRefreshToken, RefreshToken>();
             services.AddScoped<IAuthenticateUser, AuthenticateUser>();
