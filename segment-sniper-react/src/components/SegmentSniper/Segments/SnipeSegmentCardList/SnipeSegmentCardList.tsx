@@ -60,7 +60,11 @@ const SnipeSegmentsCardList = () => {
   useEffect(() => {
     const fetchSnipeSegments = async () => {
       try {
-        await snipeSegments.mutateAsync({ activityId: selectedActivityId! });
+        await snipeSegments
+          .mutateAsync({ activityId: selectedActivityId! })
+          .then(() => addHeadingToEfforts())
+          .then(() => setFilteredSnipeSegments(snipeSegmentsList))
+          .finally();
       } catch (error) {
         toast.error(`Error fetching snipe segments: ${error}`);
       }
@@ -71,7 +75,7 @@ const SnipeSegmentsCardList = () => {
       snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
         .length === 0
     ) {
-      fetchSnipeSegments().then(() => addHeadingToEfforts());
+      fetchSnipeSegments();
     }
   }, []);
 
@@ -160,6 +164,12 @@ const SnipeSegmentsCardList = () => {
             ? secondsFromQom < secondsFromLeader
             : secondsFromKom < secondsFromLeader);
 
+        const headingFilter =
+          headingsFilter.length > 0 && headingsFilter.includes(s.heading!);
+        // console.log("heading", s.heading);
+        // console.log("headingFilter", headingFilter);
+        // console.log("headings filter", headingsFilter);
+
         const komFilter = useQom ? secondsFromQom !== 0 : secondsFromKom !== 0;
         return komFilter && (percentageFilter || secondsFilter);
       });
@@ -175,24 +185,29 @@ const SnipeSegmentsCardList = () => {
     handleFilterChange();
   }, [percentageFromLeader, secondsFromLeader]);
 
-  function handleResetSnipeOptions() {
+  useEffect(() => {
+    console.log("% from leader filter", percentageFromLeader);
+    console.log("seconds from leader filter", secondsFromLeader);
+    console.log("filtered segments list", filteredSnipeSegments);
+  }, []);
+
+  const handleResetSnipeOptions = () => {
     setSelectedSortOption("Sort by");
     setPercentageFromLeader(undefined);
     setSecondsFromLeader(undefined);
     setUseQom(false);
     setHeadingsFilter([]);
     setShowDetailsSegmentId("");
-    setSnipeSegmentsList(
-      [...snipeSegmentsList].sort(
-        (a, b) =>
-          +new Date(a.detailedSegmentEffort?.startDate!) -
-          +new Date(b.detailedSegmentEffort?.startDate!)
-      )
-    );
     setFilteredSnipeSegments(
-      snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
+      snipeSegmentsList
+        .filter((s) => s.activityId === selectedActivityId)
+        .sort(
+          (a, b) =>
+            +new Date(a.detailedSegmentEffort?.startDate!) -
+            +new Date(b.detailedSegmentEffort?.startDate!)
+        )
     );
-  }
+  };
 
   return (
     <>
@@ -249,8 +264,9 @@ const SnipeSegmentsCardList = () => {
             <Col className="">
               <Form.Control
                 type="number"
-                defaultValue={secondsFromLeader || undefined}
+                value={secondsFromLeader || ""}
                 onBlur={(e) => setSecondsFromLeader(Number(e.target.value))}
+                onChange={(e) => setSecondsFromLeader(Number(e.target.value))}
                 pattern="[0-9]*"
                 style={{
                   width: "80%",
@@ -324,21 +340,25 @@ const SnipeSegmentsCardList = () => {
         </Row>
         <Row></Row>
       </Container>
-      <Row className="pt-3">
-        <Col className="d-flex justify-content-around">
-          <h4>
-            Segments:{" "}
-            {
-              filteredSnipeSegments.filter(
-                (l) => l.activityId === selectedActivityId
-              ).length
-            }
-          </h4>
-        </Col>
-      </Row>
+      {!snipeSegments.isLoading ? (
+        <Row className="pt-3">
+          <Col className="d-flex justify-content-around">
+            <h4>
+              Segments:{" "}
+              {
+                filteredSnipeSegments.filter(
+                  (l) => l.activityId === selectedActivityId
+                ).length
+              }
+            </h4>
+          </Col>
+        </Row>
+      ) : (
+        <></>
+      )}
       <Row>
         {snipeSegments.isLoading || filtering ? (
-          <Col className="text-center">
+          <Col className="text-center pt-3">
             <span>Hang tight, we're working on it</span>
             <Spinner
               as="span"
@@ -353,12 +373,12 @@ const SnipeSegmentsCardList = () => {
           <></>
         )}
       </Row>
-      {snipeSegmentsList.filter((s) => s.activityId === selectedActivityId)
+      {filteredSnipeSegments.filter((s) => s.activityId === selectedActivityId)
         .length === 0 &&
       !snipeSegments.isLoading &&
       !filtering ? (
         <Container fluid>
-          <Row className="align-items-center justify-content-center pt-5">
+          <Row className="align-items-center justify-content-center">
             <Col className="text-center">
               <h4>No Segments to Snipe</h4>
             </Col>

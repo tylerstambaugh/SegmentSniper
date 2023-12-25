@@ -1,12 +1,14 @@
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import useUserStore from "../../stores/useUserStore";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { useEffect } from "react";
 import { useResetAllStores } from "../../hooks/resetAllStores";
 import useTokenDataStore from "../../stores/useTokenStore";
+import { usePostRevokeUserToken } from "../../hooks/Api/Auth/usePostRevokeUserToken";
 
 export default function LogoutWidget() {
+  const revokeUserToken = usePostRevokeUserToken();
   const resetAllStores = useResetAllStores();
 
   const tokenData = useTokenDataStore((state) => state.tokenData);
@@ -14,12 +16,21 @@ export default function LogoutWidget() {
 
   //need to call the api and revoke the token
   useEffect(() => {
+    revokeUserToken.mutateAsync({ userName: user?.id! });
     resetAllStores();
   }, []);
 
-  return (
+  return revokeUserToken.isLoading ? (
+    <Container>
+      <Row>
+        <Col>Logging out...</Col>
+      </Row>
+    </Container>
+  ) : (
     <>
-      {tokenData === null && user === null ? (
+      {tokenData === null &&
+      user === null &&
+      !!revokeUserToken.data?.success ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>

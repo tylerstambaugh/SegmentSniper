@@ -8,6 +8,7 @@ using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using System.Security.Claims;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SegmentSniper.Api.Controllers
 {
@@ -20,13 +21,15 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRegisterUserActionHandler _registerUserActionHandler;
         private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
         private readonly ICheckForStravaTokenActionHandler _checkForStravaTokenActionHandler;
+        private readonly IRevokeTokenActionHandler _revokeTokenActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
             _refreshTokenActionHandler = refreshTokenActionHandler;
             _checkForStravaTokenActionHandler = checkForStravaTokenActionHandler;
+            _revokeTokenActionHandler = revokeTokenActionHandler;
         }
 
         [AllowAnonymous]
@@ -121,7 +124,20 @@ namespace SegmentSniper.Api.Controllers
         [Route("revoke/{username}")]
         public async Task<IActionResult> Revoke(string username)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var result = await _revokeTokenActionHandler.HandleRevokeSingleUserToken(new RevokeUserTokenRequest(userId));
+
+                if(result.Success)
+                    return Ok();
+                return BadRequest("Unable to revoke token.");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}");
+            }
         }
     }
 }
