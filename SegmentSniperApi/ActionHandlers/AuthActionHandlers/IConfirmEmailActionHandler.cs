@@ -8,6 +8,7 @@
 
     public class ConfirmEmailRequest
     {
+        public string UserId { get; set; }
         public string Email { get; set; }
         public Guid ConfirmationCode { get; set; }
         public class ConfirmEmailResponse
