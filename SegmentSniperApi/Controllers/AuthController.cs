@@ -22,14 +22,16 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
         private readonly ICheckForStravaTokenActionHandler _checkForStravaTokenActionHandler;
         private readonly IRevokeTokenActionHandler _revokeTokenActionHandler;
+        private readonly IConfirmEmailActionHandler _confirmEmailActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
             _refreshTokenActionHandler = refreshTokenActionHandler;
             _checkForStravaTokenActionHandler = checkForStravaTokenActionHandler;
             _revokeTokenActionHandler = revokeTokenActionHandler;
+            _confirmEmailActionHandler = confirmEmailActionHandler;
         }
 
         [AllowAnonymous]
@@ -106,7 +108,10 @@ namespace SegmentSniper.Api.Controllers
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest confirmEmailRequest)
         {
-
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            }
         }
 
         [Authorize]

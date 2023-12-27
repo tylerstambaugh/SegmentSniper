@@ -12,6 +12,7 @@ using SegmentSniper.Data.Entities.Auth;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -76,11 +77,18 @@ namespace SegmentSniper.Api.Configuration
                     options.Password.RequiredLength = 6;
                     options.Password.RequiredUniqueChars = 1;
                     options.User.RequireUniqueEmail = true;
+
+                    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
                 }
             )
                .AddRoles<IdentityRole>()
                .AddDefaultTokenProviders()
                .AddEntityFrameworkStores<SegmentSniperDbContext>();
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(24);
+            });
 
             IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
 
