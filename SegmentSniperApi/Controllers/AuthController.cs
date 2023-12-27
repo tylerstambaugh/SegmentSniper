@@ -71,7 +71,6 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken(RefreshTokenData refreshToken)
@@ -100,6 +99,14 @@ namespace SegmentSniper.Api.Controllers
                     return BadRequest($"Invalid access or refresh token: {nameof(refreshToken)}");
                 }
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest confirmEmailRequest)
+        {
+
         }
 
         [Authorize]
