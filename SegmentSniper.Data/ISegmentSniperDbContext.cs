@@ -11,6 +11,7 @@ namespace SegmentSniper.Data
 
         DbSet<ApplicationUser> Users { get; set; }
         DbSet<StravaApiToken> StravaToken { get; set; }
+        DbSet<EmailConfirmation> EmailConfirmation { get; set; }
 
         int SaveChanges();
     }

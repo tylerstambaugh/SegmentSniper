@@ -75,6 +75,7 @@ namespace SegmentSniper.Api.Configuration
                     options.Password.RequireUppercase = true;
                     options.Password.RequiredLength = 6;
                     options.Password.RequiredUniqueChars = 1;
+                    options.User.RequireUniqueEmail = true;
                 }
             )
                .AddRoles<IdentityRole>()

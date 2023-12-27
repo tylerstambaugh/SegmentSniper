@@ -34,6 +34,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedSegmentBySegmentIdActionHandler, GetDetailedSegmentBySegmentIdActionHandler>();
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
             services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
+            services.AddScoped<IConfirmEmailActionHandler, ConfirmEmailActionHandler>();
 
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();
@@ -44,6 +45,8 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
             services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
             services.AddScoped<IGetUserRoles, GetUserRoles>();
+            services.AddScoped<ISendEmailConfirmation, SendEmailConfirmation>();
+
             
             //strava API service
             services.AddScoped<IStravaRequestClient, StravaRequestClient>();
