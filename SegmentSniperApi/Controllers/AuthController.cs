@@ -111,6 +111,21 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                var result = await _confirmEmailActionHandler.HandleAsync(new ConfirmEmailRequest
+                {
+                    Email = confirmEmailRequest.Email,
+                    UserId = userId,
+                    ConfirmationToken = confirmEmailRequest.ConfirmationToken,
+                });
+
+                if (result)
+                    return Ok();
+                return BadRequest("Unable to verify account");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
             }
         }
 

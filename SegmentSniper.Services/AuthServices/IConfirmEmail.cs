@@ -2,20 +2,24 @@
 {
     public interface IConfirmEmail
     {
-        public void Execute(ConfirmEmailContract contract);
+         Task<bool> Execute(ConfirmEmailContract contract);
     }
 
     public class ConfirmEmailContract
     {
-        public ConfirmEmailContract(string userId, string email, string confirmationToken)
+        public ConfirmEmailContract()
+        {
+            
+        }
+        public ConfirmEmailContract(string userId, string emailAddress, string confirmationToken)
         {
             UserId = userId;
-            Email = email;
+            EmailAddress = emailAddress;
             ConfirmationToken = confirmationToken;
         }
 
         public string UserId { get; set; }
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
         public string ConfirmationToken { get; set; }
     }
 }

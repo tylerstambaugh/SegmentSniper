@@ -6,22 +6,25 @@ namespace SegmentSniper.Services.AuthServices
 {
     public class ConfirmEmail : IConfirmEmail
     {
-        private readonly ISegmentSniperDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ConfirmEmail(ISegmentSniperDbContext context, UserManager<ApplicationUser> userManager)
+        public ConfirmEmail(UserManager<ApplicationUser> userManager)
         {
-            _context = context;
             _userManager = userManager;
         }
 
-        public bool Execute(ConfirmEmailContract contract)
+        public async Task<bool> Execute(ConfirmEmailContract contract)
         {
-            var recordToUpdate = _context.EmailConfirmation.Where(r => r.UserId == contract.UserId);
-
-            if(recordToUpdate.Any() )
+            var user = await _userManager.FindByIdAsync(contract.UserId);
+            if (user != null )
             {
-                _userManager.ConfirmEmailAsync(_userManager.FindByIdAsync(contract.UserId), )
+                var updateResult = await _userManager.ConfirmEmailAsync(user, contract.ConfirmationToken);
+
+                return updateResult.Succeeded;
+            }
+            else
+            {
+                return false;
             }
         }
     }

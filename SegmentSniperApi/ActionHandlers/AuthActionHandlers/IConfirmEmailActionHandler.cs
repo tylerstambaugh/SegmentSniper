@@ -2,15 +2,14 @@
 {
     public interface IConfirmEmailActionHandler
     {
-
-
+        Task<bool> HandleAsync(ConfirmEmailRequest request);
     }
 
     public class ConfirmEmailRequest
     {
         public string UserId { get; set; }
         public string Email { get; set; }
-        public Guid ConfirmationCode { get; set; }
+        public string ConfirmationToken { get; set; }
         public class ConfirmEmailResponse
         {
             public bool Success { get; set; }

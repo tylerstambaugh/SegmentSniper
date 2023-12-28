@@ -8,6 +8,7 @@ using MimeKit.Text;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using static Duende.IdentityServer.Models.IdentityResources;
+using static System.Net.WebRequestMethods;
 
 namespace SegmentSniper.Services.AuthServices
 {
@@ -15,12 +16,10 @@ namespace SegmentSniper.Services.AuthServices
     {
         private readonly IConfiguration _configuration;
 
-        private ISegmentSniperDbContext _context { get; }
         private UserManager<ApplicationUser> _userManager { get; }
 
-        public SendEmailConfirmation(ISegmentSniperDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public SendEmailConfirmation(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
-            _context = context;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -36,39 +35,28 @@ namespace SegmentSniper.Services.AuthServices
                 throw new ApplicationException($"User {contract.EmailAddress} was not found");
             }
 
-            var emailConfirmGuid = new Guid();
-            _context.EmailConfirmation.Add(new EmailConfirmation
-            {
-                UserId = user.Id,
-                ConfirmationCode = emailConfirmGuid,
-                Expiration = DateTime.UtcNow.AddMinutes(60)
-            });
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var baseUrl = _configuration["ApiBaseUrl"];
+            var confirmationLink = $"https//{baseUrl}/auth/confirmEmail/{token}";
 
-            _context.SaveChanges();
+            string emailBody = @"
+                <!DOCTYPE html>
+                <html lang=""en"">
+                <head>
+                    <meta charset=""UTF-8"">
+                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                    <title>Email Confirmation</title>
+                </head>
+                <body>
+                    <p>Dear " + user.FirstName + @",</p>
+                    <p>Thank you for registering with Segment Sniper Pro. To complete your registration and confirm your email address, please click the following link:</p>
+                    <p><a href=""" + confirmationLink + @""">Confirm Email Address</a></p>
+                    <p>If you did not register with our service, you can safely ignore this email.</p>
+                    <p>Best regards,<br>The Segment Sniper Pro Team</p>
+                </body>
+                </html>";
 
-//            string emailBody = @"
-//<!DOCTYPE html>
-//<html lang=\"en\">
-//            < head >
-            
-//                < meta charset =\"UTF-8\">
-//                < meta name =\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-//                < title > Email Confirmation </ title >
-//            </ head >
-//            < body >
-            
-//                < p > Dear " + user.Name + @",</ p >
-            
-//                < p > Thank you for registering with our service.To complete your registration and confirm your email address, please click the following link:</ p >
-            
-//                < p >< a href = """ + confirmationLink + @""" > Confirm Email Address </ a ></ p >
-            
-//                < p > If you did not register with our service, you can safely ignore this email.</ p >
-            
-//                < p > Best regards,< br > Your Service Team </ p >
-//            </ body >
-//            </ html > ";
-                        // create email message
+            // create email message
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(_configuration["GmailUserName"]));
             email.To.Add(MailboxAddress.Parse(contract.EmailAddress));
