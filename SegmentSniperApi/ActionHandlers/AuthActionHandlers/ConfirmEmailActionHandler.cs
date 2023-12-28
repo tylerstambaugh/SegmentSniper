@@ -13,17 +13,18 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             _confirmEmail = confirmEmail;
         }
 
-        public Task<bool> Handle(ConfirmEmailRequest request)
+        public async Task<bool> HandleAsync(ConfirmEmailRequest request)
         {
             ValidatedRequest(request);
 
-            var result = _confirmEmail.Execute(new ConfirmEmailContract
+            var result = await _confirmEmail.Execute(new ConfirmEmailContract
             {
-                Email = request.Email,
-                ConfirmationCode = request.ConfirmationCode,
                 UserId = request.UserId,
-            
+                EmailAddress = request.Email,
+                ConfirmationToken = request.ConfirmationToken,            
             });
+
+            return result;
         }
 
         private void ValidatedRequest(ConfirmEmailRequest request)
@@ -38,9 +39,9 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
                 throw new ArgumentException(nameof(request.Email));
             }
 
-            if (request.ConfirmationCode == Guid.Empty)
+            if (string.IsNullOrWhiteSpace(request.ConfirmationToken))
             {
-                throw new ArgumentException(nameof(request.ConfirmationCode));
+                throw new ArgumentException(nameof(request.ConfirmationToken));
             }
 
             if (string.IsNullOrWhiteSpace(request.UserId))
