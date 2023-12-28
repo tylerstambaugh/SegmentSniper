@@ -7,8 +7,7 @@
 
     public class ConfirmEmailRequest
     {
-        public string UserId { get; set; }
-        public string Email { get; set; }
+        public string? UserId { get; set; }
         public string ConfirmationToken { get; set; }
         public class ConfirmEmailResponse
         {

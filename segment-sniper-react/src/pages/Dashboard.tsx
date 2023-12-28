@@ -5,11 +5,13 @@ import ConnectWithStrava from "../components/ConnectWithStrava";
 import { useGetUserHasStravaToken } from "../hooks/Api/Auth/useGetHasStravaToken";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import ConfirmEmail from "./ConfirmEmail";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const user = useUserStore((state) => state.user);
   const checkUserHasTokenData = useGetUserHasStravaToken();
-
+  const navigate = useNavigate();
   async function checkUserHasTokenDataFunc() {
     await checkUserHasTokenData.mutateAsync();
   }
@@ -23,6 +25,12 @@ export default function Dashboard() {
       toast.error(`API Error: ${checkUserHasTokenData.error}`);
     }
   }, [checkUserHasTokenData.error!]);
+
+  useEffect(() => {
+    if (!user?.verifiedEmail) {
+      navigate("/confirm-email");
+    }
+  }, []);
 
   return (
     <>

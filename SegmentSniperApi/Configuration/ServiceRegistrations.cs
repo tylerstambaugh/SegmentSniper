@@ -35,6 +35,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
             services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
             services.AddScoped<IConfirmEmailActionHandler, ConfirmEmailActionHandler>();
+            services.AddScoped<ISendEmailConfirmationActionHandler, SendEmailConfirmationActionHandler>();
 
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();

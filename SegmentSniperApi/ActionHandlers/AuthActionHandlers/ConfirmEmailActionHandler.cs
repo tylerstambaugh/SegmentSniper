@@ -20,7 +20,6 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             var result = await _confirmEmail.Execute(new ConfirmEmailContract
             {
                 UserId = request.UserId,
-                EmailAddress = request.Email,
                 ConfirmationToken = request.ConfirmationToken,            
             });
 
@@ -32,11 +31,6 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             if(request == null)
             {
                 throw new ArgumentNullException(nameof(request));
-            }
-
-            if(string.IsNullOrWhiteSpace(request.Email))
-            {
-                throw new ArgumentException(nameof(request.Email));
             }
 
             if (string.IsNullOrWhiteSpace(request.ConfirmationToken))

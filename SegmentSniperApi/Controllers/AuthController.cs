@@ -22,15 +22,17 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRefreshTokenActionHandler _refreshTokenActionHandler;
         private readonly ICheckForStravaTokenActionHandler _checkForStravaTokenActionHandler;
         private readonly IRevokeTokenActionHandler _revokeTokenActionHandler;
+        private readonly ISendEmailConfirmationActionHandler _sendConfirmationEmailActionHandler;
         private readonly IConfirmEmailActionHandler _confirmEmailActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, ISendEmailConfirmationActionHandler sendConfirmationEmailActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
             _refreshTokenActionHandler = refreshTokenActionHandler;
             _checkForStravaTokenActionHandler = checkForStravaTokenActionHandler;
             _revokeTokenActionHandler = revokeTokenActionHandler;
+            _sendConfirmationEmailActionHandler = sendConfirmationEmailActionHandler;
             _confirmEmailActionHandler = confirmEmailActionHandler;
         }
 
@@ -103,8 +105,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost]
+        [Authorize, HttpPost]
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest confirmEmailRequest)
         {
@@ -114,7 +115,6 @@ namespace SegmentSniper.Api.Controllers
 
                 var result = await _confirmEmailActionHandler.HandleAsync(new ConfirmEmailRequest
                 {
-                    Email = confirmEmailRequest.Email,
                     UserId = userId,
                     ConfirmationToken = confirmEmailRequest.ConfirmationToken,
                 });
@@ -129,8 +129,29 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet]
+        [Authorize, HttpGet]
+        [Route("send-confirm-email")]
+        public async Task<IActionResult> SendConfirmEmail()
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
+                {
+                    UserId = userId,
+                });
+
+                if (response.Success) return Ok();
+                return BadRequest("Unable to send email");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
+            }
+        }
+
+       [Authorize, HttpGet]
        [Route("check-for-strava-token")]
         public async Task<IActionResult> CheckForStravaToken()
         {
@@ -146,8 +167,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet]
+        [Authorize, HttpGet]
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {

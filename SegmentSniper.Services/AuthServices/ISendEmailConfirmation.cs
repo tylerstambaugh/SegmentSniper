@@ -2,20 +2,25 @@
 {
     public interface ISendEmailConfirmation
     {
-        Task Execute(SendEmailConfirmationContract contract);
+        Task<SendEmailConfirmationContract.Result> Execute(SendEmailConfirmationContract contract);
     }
 
     public class SendEmailConfirmationContract
     {
-        public SendEmailConfirmationContract(string emailAddress)
+        public SendEmailConfirmationContract()
         {
-            EmailAddress = emailAddress;
+            
+        }
+        public SendEmailConfirmationContract(string userId)
+        {
+            UserId = userId;
         }
 
-        public string EmailAddress { get; set; }
+        public string UserId { get; set; }
 
         public class Result
         {
+            public bool Success { get; set; }
         }
     }
 }
