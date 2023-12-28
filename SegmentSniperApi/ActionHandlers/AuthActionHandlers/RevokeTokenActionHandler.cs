@@ -12,7 +12,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
         }
         public async Task<RevokeUserTokenRequest.Response> HandleRevokeSingleUserToken(RevokeUserTokenRequest request)
         {
-            var result = await _revokeToken.ExecuteSingleUser(new RevokeTokenContract(request.UserName));
+            var result = await _revokeToken.ExecuteSingleUser(new RevokeTokenContract(request.UserId));
 
             return new RevokeUserTokenRequest.Response(result.Success);
         }

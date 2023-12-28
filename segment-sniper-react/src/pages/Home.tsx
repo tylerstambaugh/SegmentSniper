@@ -27,18 +27,20 @@ function Home() {
                 power of the wind, or uncovering the segments that you are close
                 to #1, we're leveraging new technology in your quest to dominate
                 your routes.
+                <Row className="text-center my-1 py-1">
+                  <Col sm={12}>
+                    <p>Are you ready to get started?</p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={12} className="pb-4">
+                    <Button onClick={() => navigate(`/${AppRoutes.Login}`)}>
+                      Start Sniping!
+                    </Button>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
-          </Col>
-        </Row>
-        <Row className="text-center my-1 py-1">
-          <Col sm={12}>
-            <p>Are you ready to get started?</p>
-          </Col>
-          <Col sm={12} className="pb-4">
-            <Button onClick={() => navigate(`/${AppRoutes.Login}`)}>
-              Start Sniping!
-            </Button>
           </Col>
         </Row>
       </Container>

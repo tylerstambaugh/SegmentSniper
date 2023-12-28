@@ -35,7 +35,7 @@ namespace SegmentSniper.Services.AuthServices
                     Email = contract.RegisterUser.Email,
                     NormalizedEmail = contract.RegisterUser.Email,
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    EmailConfirmed = true,
+                    EmailConfirmed = false,
 
                 };
                 var createUser = await _userManager.CreateAsync(userToAdd, contract.RegisterUser.Password);

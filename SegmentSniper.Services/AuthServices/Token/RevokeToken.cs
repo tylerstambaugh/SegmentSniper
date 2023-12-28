@@ -14,9 +14,9 @@ namespace SegmentSniper.Services.AuthServices.Token
         public async Task<RevokeTokenContract.Result> ExecuteSingleUser(RevokeTokenContract contract)
         {
             ValidateContract(contract);
-            var user = await _userManager.FindByNameAsync(contract.UserName);
+            var user = await _userManager.FindByIdAsync(contract.UserId);
             if (user == null)
-                throw new ArgumentException(nameof(contract.UserName));
+                throw new ArgumentException(nameof(contract.UserId));
 
             user.RefreshToken = null;
             await _userManager.UpdateAsync(user);
@@ -42,9 +42,9 @@ namespace SegmentSniper.Services.AuthServices.Token
             {
                 throw new ArgumentNullException(nameof(contract), $"Value cannot be null. (Parameter 'contract') ");
             }
-            if (string.IsNullOrWhiteSpace(contract.UserName))
+            if (string.IsNullOrWhiteSpace(contract.UserId))
             {
-                throw new ArgumentException($"Value cannot be null ${nameof(contract.UserName)}", nameof(contract));
+                throw new ArgumentException($"Value cannot be null ${nameof(contract.UserId)}", nameof(contract));
             }
         }
     }

@@ -105,7 +105,7 @@ export default function RegisterWidget() {
       try {
         await loginUser.mutateAsync(loginRequest);
 
-        if (!loginUser.error && tokenData!.accessToken !== null) {
+        if (!loginUser.error && tokenData?.accessToken !== null) {
           navigate(`/${AppRoutes.Dashboard}`);
         }
       } catch (error) {

@@ -8,12 +8,12 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
     public class RevokeUserTokenRequest
     {
-        public RevokeUserTokenRequest(string userName)
+        public RevokeUserTokenRequest(string userId)
         {
-            UserName = userName;
+            UserId = userId;
         }
 
-        public string UserName { get; }
+        public string UserId { get; }
         public class Response
         {
             public Response(bool success)
