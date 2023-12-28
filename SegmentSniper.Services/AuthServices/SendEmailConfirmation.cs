@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
-using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
-using static Duende.IdentityServer.Models.IdentityResources;
-using static System.Net.WebRequestMethods;
 
 namespace SegmentSniper.Services.AuthServices
 {
@@ -24,22 +21,25 @@ namespace SegmentSniper.Services.AuthServices
             _configuration = configuration;
         }
 
-        public async Task Execute(SendEmailConfirmationContract contract)
+        public async Task<SendEmailConfirmationContract.Result> Execute(SendEmailConfirmationContract contract)
         {
             ValidateContract(contract);
 
-            var user = _userManager.FindByEmailAsync(contract.EmailAddress).Result;
+            var user = _userManager.FindByIdAsync(contract.UserId).Result;
 
             if (user == null)
             {
-                throw new ApplicationException($"User {contract.EmailAddress} was not found");
+                throw new ApplicationException($"User {contract.UserId} was not found");
             }
 
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var baseUrl = _configuration["ApiBaseUrl"];
-            var confirmationLink = $"https//{baseUrl}/auth/confirmEmail/{token}";
+            try
+            {
 
-            string emailBody = @"
+
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var baseUrl = _configuration["AppBaseUrl"];
+                var confirmationLink = $"{baseUrl}/confirm-email?t={token}";
+                string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
                 <head>
@@ -50,25 +50,39 @@ namespace SegmentSniper.Services.AuthServices
                 <body>
                     <p>Dear " + user.FirstName + @",</p>
                     <p>Thank you for registering with Segment Sniper Pro. To complete your registration and confirm your email address, please click the following link:</p>
-                    <p><a href=""" + confirmationLink + @""">Confirm Email Address</a></p>
+                    <p><a href=""" + confirmationLink + @""" target=""_blank"">Confirm Email Address</a></p>
                     <p>If you did not register with our service, you can safely ignore this email.</p>
                     <p>Best regards,<br>The Segment Sniper Pro Team</p>
                 </body>
                 </html>";
 
-            // create email message
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(_configuration["GmailUserName"]));
-            email.To.Add(MailboxAddress.Parse(contract.EmailAddress));
-            email.Subject = "Segment Sniper Confirm Email";
-            email.Body = new TextPart(TextFormat.Html) { Text = "<h1>Example HTML Message Body</h1>" };
 
-            // send email
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_configuration["GmailUserName"], _configuration["GmailPassword"]);
-            smtp.Send(email);
-            smtp.Disconnect(true);
+                // create email message
+                var email = new MimeMessage();
+                email.From.Add(MailboxAddress.Parse(_configuration["GmailUserName"]));
+                email.To.Add(MailboxAddress.Parse(user.NormalizedEmail));
+                email.Subject = "Segment Sniper Confirm Email";
+                email.Body = new TextPart(TextFormat.Html) { Text = emailBody };
+
+                // send email
+                using var smtp = new SmtpClient();
+                smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                var smtpUsername = _configuration["GmailUserName"];
+                var smtpPassword = _configuration["GmailPassword"];
+                smtp.Authenticate(smtpUsername, smtpPassword);
+                var result = smtp.Send(email);
+                smtp.Disconnect(true);
+
+                if (result != null)
+                    return new SendEmailConfirmationContract.Result { Success = true };
+                else
+                { return new SendEmailConfirmationContract.Result { Success = false }; }
+            }
+            catch(Exception ex)
+            {
+                throw new ApplicationException("Failed to send confirmation email", ex);
+            }
+
         }
 
         private void ValidateContract(SendEmailConfirmationContract contract)
@@ -77,9 +91,9 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentNullException(nameof(contract));
             }
-            if (string.IsNullOrWhiteSpace(contract.EmailAddress))
+            if (string.IsNullOrWhiteSpace(contract.UserId))
             {
-                throw new ArgumentException(nameof(contract.EmailAddress));
+                throw new ArgumentException(nameof(contract.UserId));
             }
         }
     }

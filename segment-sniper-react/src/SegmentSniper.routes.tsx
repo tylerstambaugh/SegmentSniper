@@ -22,6 +22,7 @@ import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/ActivitySearchResults";
 import SnipedSegments from "./pages/SnipedSegments";
 import ActivityDetails from "./pages/ActivityDetails";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 interface Props {
   defaultPage?: string;
@@ -70,6 +71,14 @@ export default function Routes({ defaultPage }: Props) {
             element={
               <PrivateRoute userRoles={[UserRole.Admin]}>
                 <Admin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.ConfirmEmail}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <ConfirmEmail />
               </PrivateRoute>
             }
           />

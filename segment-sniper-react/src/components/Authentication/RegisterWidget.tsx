@@ -115,6 +115,12 @@ export default function RegisterWidget() {
     }
   }
 
+  useEffect(() => {
+    if (!loginUser.error && tokenData?.accessToken !== null) {
+      navigate(`/${AppRoutes.Dashboard}`);
+    }
+  }, [tokenData?.accessToken]);
+
   function handleReset() {
     formik.resetForm({
       values: {
