@@ -5,22 +5,28 @@ import { AppRoutes } from "../../enums/AppRoutes";
 import { useEffect } from "react";
 import { useResetAllStores } from "../../hooks/resetAllStores";
 import useTokenDataStore from "../../stores/useTokenStore";
-import { usePostRevokeUserToken } from "../../hooks/Api/Auth/usePostRevokeUserToken";
+import { useGetLogout } from "../../hooks/Api/Auth/useGetLogout";
 
 export default function LogoutWidget() {
-  const revokeUserToken = usePostRevokeUserToken();
+  const logout = useGetLogout();
   const resetAllStores = useResetAllStores();
 
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const user = useUserStore((state) => state.user);
 
-  //need to call the api and revoke the token
   useEffect(() => {
-    revokeUserToken.mutateAsync({ userName: user?.id! });
-    resetAllStores();
+    const revokeTokenAsync = async () => {
+      try {
+        await logout.mutateAsync().then(() => resetAllStores());
+      } catch (error) {
+        console.error("Error revoking user token:", error);
+      }
+    };
+
+    revokeTokenAsync();
   }, []);
 
-  return revokeUserToken.isLoading ? (
+  return logout.isLoading ? (
     <Container>
       <Row>
         <Col>Logging out...</Col>
@@ -28,9 +34,7 @@ export default function LogoutWidget() {
     </Container>
   ) : (
     <>
-      {tokenData === null &&
-      user === null &&
-      !!revokeUserToken.data?.success ? (
+      {tokenData === null && user === null ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>
@@ -39,11 +43,9 @@ export default function LogoutWidget() {
                 <div className="mb-3 text-center">
                   <h2>You have successfully logged out. </h2>
                   <h3>
-                    Click{" "}
                     <Link to={`/${AppRoutes.Login}`}>
-                      <Button>here </Button>
+                      <Button className="px-4">Login</Button>
                     </Link>{" "}
-                    to log back in.
                   </h3>
                 </div>
               </Card.Body>

@@ -16,6 +16,7 @@ export type User = {
   firstName?: string | null;
   emailAddress?: string | null;
   hasStravaTokenData?: boolean;
+  verifiedEmail?: boolean;
   roles?: string[];
 };
 
@@ -24,6 +25,7 @@ const initialUserState: User = {
   firstName: null,
   emailAddress: null,
   hasStravaTokenData: false,
+  verifiedEmail: false,
   roles: [],
 };
 

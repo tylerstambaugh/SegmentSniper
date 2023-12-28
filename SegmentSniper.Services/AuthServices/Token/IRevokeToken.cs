@@ -8,12 +8,12 @@
 
     public class RevokeTokenContract
     {
-        public RevokeTokenContract(string userName)
+        public RevokeTokenContract(string userId)
         {
-            UserName = userName;
+            UserId = userId;
         }
 
-        public string UserName { get; }
+        public string UserId { get; }
 
         public class Result
         {            

@@ -77,6 +77,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         FirstName = authenticatedUser.FirstName,
                         Email = authenticatedUser.Email,
                         HasStravaTokenData = hasStravaTokenData,
+                        VerifiedEmail = authenticatedUser.EmailConfirmed,
                         Roles = user.Roles,
                     };
 

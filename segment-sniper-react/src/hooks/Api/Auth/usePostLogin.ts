@@ -21,11 +21,10 @@ export const usePostLogin = () => {
       request: request,
     };
 
-
-    const response: LoginResponse = await postLogin(contract);
-
-    setUser(response.userData);
-    setTokenData(response.tokenData);
+    await postLogin(contract).then((res) => {
+      setUser(res.userData);
+      setTokenData(res.tokenData);
+    });
   }
 
   return { mutateAsync, isLoading, isError, error, data };

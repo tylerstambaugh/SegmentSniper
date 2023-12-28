@@ -147,9 +147,9 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("revoke/{username}")]
-        public async Task<IActionResult> Revoke(string username)
+        [HttpGet]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
         {
             try
             {
@@ -157,7 +157,7 @@ namespace SegmentSniper.Api.Controllers
                 var result = await _revokeTokenActionHandler.HandleRevokeSingleUserToken(new RevokeUserTokenRequest(userId));
 
                 if(result.Success)
-                    return Ok();
+                    return Ok(result.Success);
                 return BadRequest("Unable to revoke token.");
 
             }
