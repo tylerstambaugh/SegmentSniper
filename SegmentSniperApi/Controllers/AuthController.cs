@@ -131,7 +131,7 @@ namespace SegmentSniper.Api.Controllers
 
         [Authorize, HttpGet]
         [Route("send-confirm-email")]
-        public async Task<IActionResult> SendConfirmEmail()
+        public async Task<IActionResult> SendConfirmEmail(SendEmailConfirmationRequest request)
         {
             try
             {
@@ -139,6 +139,8 @@ namespace SegmentSniper.Api.Controllers
 
                 var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
                 {
+                    AccessToken = request.AccessToken,
+                    RefreshToken = request.RefreshToken,
                     UserId = userId,
                 });
 

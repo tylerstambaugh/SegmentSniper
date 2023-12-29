@@ -1,10 +1,10 @@
-import ConfirmEmailWidget from "../components/Authentication/ConfirmEmailWidget";
+import ConfirmEmailSendCodeWidget from "../components/Authentication/ConfirmEmailSendCodeWidget";
 import useUserStore from "../stores/useUserStore";
 
 function ConfirmEmail() {
   return (
     <>
-      <ConfirmEmailWidget />
+      <ConfirmEmailSendCodeWidget />
     </>
   );
 }

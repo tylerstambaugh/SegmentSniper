@@ -3,6 +3,7 @@ export enum AppRoutes {
   Dashboard = "dashboard",
   Register = "register",
   ConfirmEmail = "confirm-email",
+  ConfirmEmailCheckCode = "confirm-email-check-code",
   ForgotPassword = "forgot-password",
   Login = "login",
   Logout = "logout",
