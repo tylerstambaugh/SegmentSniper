@@ -5,6 +5,7 @@ import useApiConfigStore from "../../../stores/useApiConfigStore";
 
 import useTokenDataStore from "../../../stores/useTokenStore";
 import getSendEmailConfirmation, {
+  SendEmailConfirmationCodeRequest,
   SendEmailConfirmationCodeResponse,
 } from "../../../services/Api/Auth/getSendEmailConfirmationCode";
 import { useEffect } from "react";
@@ -20,9 +21,15 @@ export const useGetSendEmailConfirmation = () => {
   });
 
   async function sendEmailConfirmationQuery() {
+    const request: SendEmailConfirmationCodeRequest = {
+      accessToken: tokenData?.accessToken!,
+      refreshToken: tokenData?.refreshToken!,
+    };
+
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseUrl,
       token: tokenData?.accessToken!,
+      request: request,
       abortController,
     };
 

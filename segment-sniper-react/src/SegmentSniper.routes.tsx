@@ -23,6 +23,7 @@ import ActivitySearchResults from "./pages/ActivitySearchResults";
 import SnipedSegments from "./pages/SnipedSegments";
 import ActivityDetails from "./pages/ActivityDetails";
 import ConfirmEmail from "./pages/ConfirmEmail";
+import ConfirmEmailCheckCode from "./pages/ConfirmEmailCheckCode";
 
 interface Props {
   defaultPage?: string;
@@ -49,6 +50,10 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
           <Route path={AppRoutes.Logout} element={<Logout />} />
+          <Route
+            path={AppRoutes.ConfirmEmailCheckCode}
+            element={<ConfirmEmailCheckCode />}
+          />
           <Route
             path={AppRoutes.ConnectWithStravaSuccess}
             element={<ConnectWithStravaSuccess />}

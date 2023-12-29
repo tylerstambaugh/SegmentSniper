@@ -6,58 +6,19 @@ import { useEffect, useState } from "react";
 import { useGetSendEmailConfirmation } from "../../hooks/Api/Auth/useGetSendEmailConfirmation";
 import { faHouseMedicalCircleExclamation } from "@fortawesome/free-solid-svg-icons/faHouseMedicalCircleExclamation";
 
-export default function ConfirmEmailWidget() {
+export default function ConfirmEmailSendCodeWidget() {
   const user = useUserStore((state) => state.user);
-  const params = useParams();
-  const confirmToken = params.t;
   const [clickedConfirmEmail, setClickedConfirmEmail] = useState(false);
-  const confirmEmailQuery = useGetSendEmailConfirmation();
+  const sendEmailQuery = useGetSendEmailConfirmation();
 
   async function handleClickConfirmEmail() {
     setClickedConfirmEmail(true);
-    await confirmEmailQuery.query.refetch();
+    await sendEmailQuery.query.refetch();
   }
-
-  useEffect(() => {
-    if (confirmToken && confirmToken !== null) {
-      const fetchData = async () => {
-        console.log("confirmToken=:", confirmToken);
-
-        console.log("need to try and confirm the code");
-      };
-
-      fetchData();
-    }
-  }, [confirmToken]);
 
   return (
     <>
       {user?.verifiedEmail ? (
-        <Container>
-          <Row>
-            <Col>
-              <h4>You're verified, time to start sniping</h4>
-              <Link to={`/${AppRoutes.SnipedSegments}`}>
-                <Button className="px-4">Snipe!</Button>
-              </Link>{" "}
-            </Col>
-          </Row>
-        </Container>
-      ) : confirmToken && confirmEmailQuery.query.isLoading ? (
-        <Row>
-          <Col>
-            <h2>Hang tight, we're making sure it's you.</h2>
-            <Spinner
-              as="span"
-              variant="light"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              animation="border"
-            />
-          </Col>
-        </Row>
-      ) : confirmEmailQuery.data?.success ? (
         <Container>
           <Row>
             <Col>

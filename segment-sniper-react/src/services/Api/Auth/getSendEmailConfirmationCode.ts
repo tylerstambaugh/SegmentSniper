@@ -2,6 +2,11 @@ import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "../BaseApiService";
 
+export type SendEmailConfirmationCodeRequest = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export type SendEmailConfirmationCodeResponse = {
   success: boolean;
 };
