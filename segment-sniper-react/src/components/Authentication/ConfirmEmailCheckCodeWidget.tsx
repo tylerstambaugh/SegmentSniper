@@ -1,10 +1,8 @@
 import { Row, Col, Spinner, Container, Button } from "react-bootstrap";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import useUserStore from "../../stores/useUserStore";
-import { useEffect } from "react";
-import { useGetSendEmailConfirmation } from "../../hooks/Api/Auth/useGetSendEmailConfirmation";
-import { usePostLogin } from "../../hooks/Api/Auth/usePostLogin";
+import { useEffect, useState } from "react";
 import useTokenDataStore, { TokenData } from "../../stores/useTokenStore";
 import { usePostCheckEmailVerificationCode } from "../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
 import { VerifyEmailConfirmationCodeRequest } from "../../services/Api/Auth/postVerifyEmailConfirmationCode";
@@ -15,13 +13,20 @@ export default function ConfirmEmailCheckCodeWidget() {
     state.setTokenData,
     state.setIsAuthenticated,
   ]);
-  const params = useParams();
-  const confirmToken = params.t;
-  const accessToken = params.at;
-  const refreshToken = params.rt;
   const checkVerificationCode = usePostCheckEmailVerificationCode();
+  const [confirmationCode, setConfirmationCode] = useState<string>("");
+
+  const location = useLocation();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const accessToken = searchParams.get("at");
+    const refreshToken = searchParams.get("rt");
+    const confirmationToken = searchParams.get("confirmationToken");
+    console.log("confirmationToken:", searchParams.get("confirmationToken"));
+    console.log("accessToken:", searchParams.get("at"));
+    console.log("refreshToken:", searchParams.get("rt"));
+
     if (accessToken && refreshToken) {
       let tokenData: TokenData = {
         accessToken: accessToken,
@@ -31,22 +36,20 @@ export default function ConfirmEmailCheckCodeWidget() {
       setTokenDateStore(tokenData);
       setIsAuthenticated(true);
     }
-  }, [accessToken, refreshToken]);
 
-  useEffect(() => {
-    if (confirmToken && confirmToken !== null) {
+    if (confirmationToken) {
       const fetchData = async () => {
         let request: VerifyEmailConfirmationCodeRequest = {
-          confirmationCode: confirmToken,
+          confirmationToken: confirmationToken,
         };
         checkVerificationCode.mutateAsync(request);
       };
 
       fetchData();
     }
-  }, [confirmToken]);
+  }, [location.search]);
 
-  return confirmToken && checkVerificationCode.isLoading ? (
+  return confirmationCode === null || checkVerificationCode.isLoading ? (
     <Row>
       <Col>
         <h2>Hang tight, we're making sure it's you.</h2>
@@ -72,6 +75,15 @@ export default function ConfirmEmailCheckCodeWidget() {
       </Row>
     </Container>
   ) : (
-    <></>
+    <Container>
+      <Row>
+        <Col>
+          <h4>Something ain't right. Please try again</h4>
+          <Link to={`/${AppRoutes.ConfirmEmail}`}>
+            <Button className="px-4">Try Again</Button>
+          </Link>{" "}
+        </Col>
+      </Row>
+    </Container>
   );
 }

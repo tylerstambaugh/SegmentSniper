@@ -36,7 +36,7 @@ namespace SegmentSniper.Services.AuthServices
             {
                 var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var baseUrl = _configuration["AppBaseUrl"];
-                var confirmationLink = $"{baseUrl}/confirm-email?t={confirmationToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
+                var confirmationLink = $"{baseUrl}/confirm-email-check-code?confirmationToken={confirmationToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">

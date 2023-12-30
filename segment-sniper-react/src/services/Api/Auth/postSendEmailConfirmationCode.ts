@@ -1,6 +1,6 @@
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "../BaseApiService";
+import { apiPost } from "../BaseApiService";
 
 export type SendEmailConfirmationCodeRequest = {
   accessToken: string;
@@ -11,12 +11,12 @@ export type SendEmailConfirmationCodeResponse = {
   success: boolean;
 };
 
-export default async function getSendEmailConfirmation(contract: ApiContract) {
+export default async function postSendEmailConfirmation(contract: ApiContract) {
   try {
-    const response = apiGet<SendEmailConfirmationCodeResponse>(
-      `${contract.baseUrl}/auth/send-confirm-email`,
-      contract
-    );
+    const response = apiPost<
+      SendEmailConfirmationCodeRequest,
+      SendEmailConfirmationCodeResponse
+    >(`${contract.baseUrl}/auth/send-confirm-email`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

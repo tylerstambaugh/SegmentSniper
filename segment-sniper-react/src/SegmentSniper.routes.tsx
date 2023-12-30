@@ -37,7 +37,8 @@ export default function Routes({ defaultPage }: Props) {
     if (defaultPage) {
       navigate(defaultPage);
     } else {
-      navigate(location.pathname);
+      const currentPathWithSearch = location.pathname + window.location.search;
+      navigate(currentPathWithSearch);
     }
   }, []);
 

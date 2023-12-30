@@ -3,7 +3,7 @@ import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponse
 import { apiGet, apiPost } from "../BaseApiService";
 
 export type VerifyEmailConfirmationCodeRequest = {
-  confirmationCode: string;
+  confirmationToken: string;
 };
 
 export type VerifyEmailConfirmationCodeResponse = {

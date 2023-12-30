@@ -1,40 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-
+import { useMutation } from "@tanstack/react-query";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
-
 import useTokenDataStore from "../../../stores/useTokenStore";
-import getSendEmailConfirmation, {
+import postSendEmailConfirmation, {
   SendEmailConfirmationCodeRequest,
   SendEmailConfirmationCodeResponse,
-} from "../../../services/Api/Auth/getSendEmailConfirmationCode";
+} from "../../../services/Api/Auth/postSendEmailConfirmationCode";
 import { useEffect } from "react";
 
-export const useGetSendEmailConfirmation = () => {
+export const usePostSendEmailConfirmation = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const abortController = new AbortController();
-  const query = useQuery({
-    queryFn: sendEmailConfirmationQuery,
-    queryKey: ["sendEmailConfirmationCode"],
-    enabled: false,
-  });
+  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
-  async function sendEmailConfirmationQuery() {
-    const request: SendEmailConfirmationCodeRequest = {
-      accessToken: tokenData?.accessToken!,
-      refreshToken: tokenData?.refreshToken!,
-    };
-
+  async function trigger(request: SendEmailConfirmationCodeRequest) {
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseUrl,
       token: tokenData?.accessToken!,
+      abortController: abortController,
       request: request,
-      abortController,
     };
-
     const response: SendEmailConfirmationCodeResponse =
-      await getSendEmailConfirmation(contract);
+      await postSendEmailConfirmation(contract);
 
     return response;
   }
@@ -45,7 +33,5 @@ export const useGetSendEmailConfirmation = () => {
     };
   }, []);
 
-  const { isLoading, isError, data } = query;
-
-  return { query, isLoading, isError, data };
+  return { mutateAsync, isLoading, isError, error, data };
 };
