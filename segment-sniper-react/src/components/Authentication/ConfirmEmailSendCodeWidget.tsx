@@ -3,17 +3,24 @@ import useUserStore from "../../stores/useUserStore";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { useEffect, useState } from "react";
-import { useGetSendEmailConfirmation } from "../../hooks/Api/Auth/useGetSendEmailConfirmation";
-import { faHouseMedicalCircleExclamation } from "@fortawesome/free-solid-svg-icons/faHouseMedicalCircleExclamation";
+import { usePostSendEmailConfirmation } from "../../hooks/Api/Auth/usePostSendEmailConfirmation";
+import useTokenDataStore from "../../stores/useTokenStore";
+import { SendEmailConfirmationCodeRequest } from "../../services/Api/Auth/postSendEmailConfirmationCode";
 
 export default function ConfirmEmailSendCodeWidget() {
   const user = useUserStore((state) => state.user);
   const [clickedConfirmEmail, setClickedConfirmEmail] = useState(false);
-  const sendEmailQuery = useGetSendEmailConfirmation();
+
+  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const sendEmail = usePostSendEmailConfirmation();
 
   async function handleClickConfirmEmail() {
     setClickedConfirmEmail(true);
-    await sendEmailQuery.query.refetch();
+    let request: SendEmailConfirmationCodeRequest = {
+      accessToken: tokenData?.accessToken!,
+      refreshToken: tokenData?.refreshToken!,
+    };
+    await sendEmail.mutateAsync(request);
   }
 
   return (

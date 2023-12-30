@@ -129,7 +129,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [Authorize, HttpGet]
+        [Authorize, HttpPost]
         [Route("send-confirm-email")]
         public async Task<IActionResult> SendConfirmEmail(SendEmailConfirmationRequest request)
         {

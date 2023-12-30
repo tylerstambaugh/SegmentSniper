@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect } from "react";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
 import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
+import toast from "react-hot-toast";
 
 interface InitializeComponentProps {
   children: ReactNode;
@@ -26,7 +27,7 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
           googleMapsApiKey: appConfigData?.googleMapsApiKey ?? "",
         });
       } catch (error) {
-        // Handle error
+        toast.error(`Error fetching app config: ${error}`);
       }
     };
     initializeApp();
