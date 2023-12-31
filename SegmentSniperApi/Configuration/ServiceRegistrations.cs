@@ -48,6 +48,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetUserRoles, GetUserRoles>();
             services.AddScoped<ISendEmailConfirmation, SendEmailConfirmation>();
             services.AddScoped<IConfirmEmail, ConfirmEmail>();
+            services.AddScoped<IGetAuthenticatedUser, GetAuthenticatedUser>();
 
             
             //strava API service

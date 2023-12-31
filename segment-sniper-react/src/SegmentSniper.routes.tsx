@@ -36,10 +36,11 @@ export default function Routes({ defaultPage }: Props) {
   useEffect(() => {
     if (defaultPage) {
       navigate(defaultPage);
-    } else {
-      const currentPathWithSearch = location.pathname + window.location.search;
-      navigate(currentPathWithSearch);
     }
+    // else {
+    //   const currentPathWithSearch = location.pathname + window.location.search;
+    //   navigate(currentPathWithSearch);
+    // }
   }, []);
 
   return (

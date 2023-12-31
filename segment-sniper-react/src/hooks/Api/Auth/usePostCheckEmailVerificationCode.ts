@@ -8,6 +8,7 @@ import postVerifyEmailConfirmationCode, {
   VerifyEmailConfirmationCodeRequest,
   VerifyEmailConfirmationCodeResponse,
 } from "../../../services/Api/Auth/postVerifyEmailConfirmationCode";
+import useUserStore from "../../../stores/useUserStore";
 
 export const usePostCheckEmailVerificationCode = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -25,7 +26,6 @@ export const usePostCheckEmailVerificationCode = () => {
 
     const response: VerifyEmailConfirmationCodeResponse =
       await postVerifyEmailConfirmationCode(contract);
-
     return response;
   }
 
