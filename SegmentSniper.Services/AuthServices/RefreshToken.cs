@@ -5,7 +5,6 @@ using SegmentSniper.Services.AuthServices.Token;
 using System.IdentityModel.Tokens.Jwt;
 using static SegmentSniper.Services.AuthServices.IGetPrincipalFromExpiredToken;
 using static SegmentSniper.Services.AuthServices.IRefreshToken;
-using static SegmentSniper.Services.AuthServices.Token.ICreateToken;
 
 namespace SegmentSniper.Services.AuthServices
 {
@@ -28,11 +27,13 @@ namespace SegmentSniper.Services.AuthServices
         {
             string? accessToken = contract.TokenToRefresh.AccessToken;
             string? refreshToken = contract.TokenToRefresh.RefreshToken;
+            try
+            {
 
             var principal = _getPrincipalFromExpiredToken.Execute(new GetPrincipalFromExpiredTokenContract(accessToken));
             if (principal == null)
             {
-               throw new ArgumentException($"Invalid access or refresh token {nameof(principal)}");
+                throw new ArgumentException($"Invalid access or refresh token {nameof(principal)}");
             }
 
             string username = principal.Principal.Identity.Name;
@@ -59,6 +60,11 @@ namespace SegmentSniper.Services.AuthServices
                     Expiration = newAccessToken.ValidTo,
                 }
             };
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error creating refresh token:", ex);
+            }
         }
     }
 }

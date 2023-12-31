@@ -117,10 +117,12 @@ namespace SegmentSniper.Api.Controllers
                 {
                     UserId = userId,
                     ConfirmationToken = confirmEmailRequest.ConfirmationToken,
+                    AccessToken = confirmEmailRequest.AccessToken,
+                    RefreshToken = confirmEmailRequest.RefreshToken,
                 });
 
-                if (result)
-                    return Ok();
+                if (result.Success)
+                    return Ok(result);
                 return BadRequest("Unable to verify account");
             }
             catch (Exception ex)

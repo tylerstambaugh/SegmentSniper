@@ -1,5 +1,4 @@
-﻿using IdentityModel.Client;
-using SegmentSniper.Models.Models.Auth;
+﻿using SegmentSniper.Models.Models.Auth;
 
 namespace SegmentSniper.Services.AuthServices
 {
@@ -17,7 +16,7 @@ namespace SegmentSniper.Services.AuthServices
 
             public class Result
             {
-                public SegmentSniperTokenData RefreshedToken { get; set;}
+                public SegmentSniperTokenData RefreshedToken { get; set; }
             }
         }
     }

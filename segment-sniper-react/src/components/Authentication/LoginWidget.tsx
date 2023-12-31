@@ -70,14 +70,14 @@ export default function LoginWidget() {
   }, [loginUser.error]);
 
   useEffect(() => {
-    if (isAuthenticated && user !== null) {
+    if (isAuthenticated && user?.id !== null) {
       navigate(`/${AppRoutes.Dashboard}`);
     }
   }, [isAuthenticated]);
 
   return (
     <>
-      {!isAuthenticated || user === null ? (
+      {!isAuthenticated || user?.id === null ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>

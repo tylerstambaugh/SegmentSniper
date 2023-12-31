@@ -1,13 +1,19 @@
+import { TokenData } from "../../../stores/useTokenStore";
+import { User } from "../../../stores/useUserStore";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet, apiPost } from "../BaseApiService";
 
 export type VerifyEmailConfirmationCodeRequest = {
   confirmationToken: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
 export type VerifyEmailConfirmationCodeResponse = {
   success: boolean;
+  tokenData: TokenData;
+  userData: User;
 };
 
 export default async function postVerifyEmailConfirmationCode(
