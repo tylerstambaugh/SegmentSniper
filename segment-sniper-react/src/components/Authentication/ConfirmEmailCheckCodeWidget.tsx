@@ -52,10 +52,13 @@ export default function ConfirmEmailCheckCodeWidget() {
             .mutateAsync(request)
             .then((res) => {
               setUser(res.userData);
-              setTokenDateStore(res.tokenData);
               setIsAuthenticated(true);
             });
-          if (checkVerificationCode.data?.success) {
+          if (!checkVerificationCode.isError) {
+            console.log(
+              "confirm email success",
+              checkVerificationCode.data?.success
+            );
             setVerificationComplete(true);
           }
           await refreshTokenQuery.refetch();
@@ -68,24 +71,24 @@ export default function ConfirmEmailCheckCodeWidget() {
     }
   }, [location.search]);
 
-  return !checkVerificationCode.data?.success ? (
+  return verificationComplete ? (
+    <Container>
+      <Row>
+        <Col>
+          <h4>You're verified, time to start sniping</h4>
+          <Link to={`/${AppRoutes.Dashboard}`}>
+            <Button className="px-4">Snipe!</Button>
+          </Link>{" "}
+        </Col>
+      </Row>
+    </Container>
+  ) : checkVerificationCode.isError ? (
     <Container>
       <Row>
         <Col>
           <h4>Hmm, that didn't work. Please try again</h4>
           <Link to={`/${AppRoutes.Home}`}>
             <Button className="px-4">Home</Button>
-          </Link>{" "}
-        </Col>
-      </Row>
-    </Container>
-  ) : checkVerificationCode.data?.success && verificationComplete ? (
-    <Container>
-      <Row>
-        <Col>
-          <h4>You're verified, time to start sniping</h4>
-          <Link to={`/${AppRoutes.SnipedSegments}`}>
-            <Button className="px-4">Snipe!</Button>
           </Link>{" "}
         </Col>
       </Row>

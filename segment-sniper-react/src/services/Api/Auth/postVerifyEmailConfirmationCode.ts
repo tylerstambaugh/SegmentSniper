@@ -12,7 +12,6 @@ export type VerifyEmailConfirmationCodeRequest = {
 
 export type VerifyEmailConfirmationCodeResponse = {
   success: boolean;
-  tokenData: TokenData;
   userData: User;
 };
 
