@@ -1,7 +1,9 @@
-﻿using SegmentSniper.Models.Models.Auth.User;
+﻿using SegmentSniper.Models.Models.Auth;
+using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.StravaToken;
 using static SegmentSniper.Services.AuthServices.IGetAuthenticatedUser;
+using static SegmentSniper.Services.AuthServices.IRefreshToken;
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
@@ -46,13 +48,12 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
                     Roles = userData.Roles,
                 };
 
-                //var newTokenData = await _refresh.Execute(new RefreshTokenContract(new RefreshTokenData(request.RefreshToken, request.AccessToken)));
-
+                var newTokenData = await _refresh.Execute(new RefreshTokenContract(new RefreshTokenData(request.RefreshToken, request.AccessToken)));
 
                 return new ConfirmEmailRequest.Response
                 {
                     Success = result,
-                    //TokenData = newTokenData.RefreshedToken,
+                    TokenData = newTokenData.RefreshedToken,
                     UserData = userDto
                 };
             }

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useResetAllStores } from "../../hooks/resetAllStores";
 import useTokenDataStore from "../../stores/useTokenStore";
 import { useGetLogout } from "../../hooks/Api/Auth/useGetLogout";
+import toast from "react-hot-toast";
 
 export default function LogoutWidget() {
   const logout = useGetLogout();
@@ -19,7 +20,7 @@ export default function LogoutWidget() {
       try {
         await logout.mutateAsync().then(() => resetAllStores());
       } catch (error) {
-        console.error("Error revoking user token:", error);
+        toast.error(`Error revoking user token:${error} `);
       }
     };
 
