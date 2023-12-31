@@ -15,10 +15,12 @@ import useRefreshTokenQuery from "../../hooks/Api/Auth/useRefreshTokenQuery";
 export default function ConfirmEmailCheckCodeWidget() {
   const setUser = useUserStore((state) => state.setUser);
   const refreshTokenQuery = useRefreshTokenQuery();
-  const [setTokenDateStore, setIsAuthenticated] = useTokenDataStore((state) => [
-    state.setTokenData,
-    state.setIsAuthenticated,
-  ]);
+  const [tokenDataStore, setTokenDateStore, setIsAuthenticated] =
+    useTokenDataStore((state) => [
+      state.tokenData,
+      state.setTokenData,
+      state.setIsAuthenticated,
+    ]);
   const checkVerificationCode = usePostCheckEmailVerificationCode();
   const [confirmationCode, setConfirmationCode] = useState<string>("");
   const [verificationComplete, setVerificationComplete] = useState(false);
@@ -30,9 +32,6 @@ export default function ConfirmEmailCheckCodeWidget() {
     const refreshToken = searchParams.get("rt");
     const cleanedRefreshToken = refreshToken?.replace(/\s+/g, "+") ?? "";
     const confirmationToken = searchParams.get("confirmationToken");
-    console.log("confirmationToken:", searchParams.get("confirmationToken"));
-    console.log("accessToken:", searchParams.get("at"));
-    console.log("refreshToken:", searchParams.get("rt"));
 
     if (confirmationToken) {
       try {
@@ -44,22 +43,22 @@ export default function ConfirmEmailCheckCodeWidget() {
             expiration: new Date(now.getTime() + 5 * 60 * 1000),
           };
           setTokenDateStore(tempTokenData);
-
-          await refreshTokenQuery.refetch();
-
           let request: VerifyEmailConfirmationCodeRequest = {
             confirmationToken: confirmationToken,
             accessToken: accessToken ?? "",
-            refreshToken: cleanedRefreshToken ?? "",
+            refreshToken: tokenDataStore?.refreshToken ?? cleanedRefreshToken,
           };
           const response = await checkVerificationCode
             .mutateAsync(request)
             .then((res) => {
               setUser(res.userData);
+              setTokenDateStore(res.tokenData);
               setIsAuthenticated(true);
             });
-          if (checkVerificationCode.data?.success)
+          if (checkVerificationCode.data?.success) {
             setVerificationComplete(true);
+          }
+          await refreshTokenQuery.refetch();
         };
 
         fetchData();
@@ -69,7 +68,7 @@ export default function ConfirmEmailCheckCodeWidget() {
     }
   }, [location.search]);
 
-  return confirmationCode !== null || !checkVerificationCode.isLoading ? (
+  return !checkVerificationCode.data?.success ? (
     <Container>
       <Row>
         <Col>
