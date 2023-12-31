@@ -55,10 +55,6 @@ export default function ConfirmEmailCheckCodeWidget() {
               setIsAuthenticated(true);
             });
           if (!checkVerificationCode.isError) {
-            console.log(
-              "confirm email success",
-              checkVerificationCode.data?.success
-            );
             setVerificationComplete(true);
           }
           await refreshTokenQuery.refetch();
