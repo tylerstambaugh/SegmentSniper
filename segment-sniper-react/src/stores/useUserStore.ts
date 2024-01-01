@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import { ApplicationUser } from "../models/ApplicationUser";
 
 const persistOptions = {
   name: "user-store",
@@ -35,10 +36,17 @@ const useUserStore = create<UserStore>()(
       persist(
         (set) => ({
           user: initialUserState,
-          setUser: (user: User | null) =>
+          users: [],
+          setUser: (user: User | null) => {
             set((state) => {
               state.user = user;
-            }),
+            });
+          },
+          setUsers: (users: ApplicationUser[]) => {
+            set((state) => {
+              state.users = users;
+            });
+          },
           resetUserStore: () => {
             set((state) => {
               state.user = null;
@@ -56,6 +64,8 @@ export default useUserStore;
 
 interface UserStore {
   user: User | null;
+  users: ApplicationUser[] | null;
   setUser: (user: User | null) => void;
+  setUsers: (users: ApplicationUser[]) => void;
   resetUserStore: () => void;
 }
