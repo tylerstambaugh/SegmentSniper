@@ -27,7 +27,7 @@ export default function AuthenticatedUserMonitor() {
     } else {
       setIsAuthenticated(false);
     }
-  }, [tokenData]);
+  }, [tokenData, userData]);
 
   return null;
 }
