@@ -90,9 +90,13 @@ export default function ConfirmEmailCheckCodeWidget() {
       </Row>
     </Container>
   ) : (
-    <Row>
-      <Col>
-        <h2>Hang tight, we're making sure it's you.</h2>
+    <Container>
+      <Row>
+        <Col>
+          <h2>Hang tight, we're making sure it's you.</h2>
+        </Col>
+      </Row>
+      <Row>
         <Spinner
           as="span"
           variant="light"
@@ -101,7 +105,7 @@ export default function ConfirmEmailCheckCodeWidget() {
           aria-hidden="true"
           animation="border"
         />
-      </Col>
-    </Row>
+      </Row>
+    </Container>
   );
 }
