@@ -14,7 +14,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
         public async Task<SendEmailConfirmationRequest.Response> HandleAsync(SendEmailConfirmationRequest request)
         {
 
-            var result = await _sendEmailConfirmation.Execute(new SendEmailConfirmationContract(request.UserId, request.AccessToken, request.RefreshToken));
+            var result = await _sendEmailConfirmation.ExecuteAsync(new SendEmailConfirmationContract(request.UserId, request.AccessToken, request.RefreshToken));
 
             return new SendEmailConfirmationRequest.Response { Success = result.Success };
         }

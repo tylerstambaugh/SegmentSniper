@@ -155,6 +155,13 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
+        [Authorize, HttpPost]
+        [Route("send-change-password-email")]
+        public async Task<IActionResult> SendChangePasswordEmail(SendPasswordResetEmailRequest request)
+        {
+
+        }
+
        [Authorize, HttpGet]
        [Route("check-for-strava-token")]
         public async Task<IActionResult> CheckForStravaToken()

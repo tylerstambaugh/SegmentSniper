@@ -1,5 +1,4 @@
-﻿
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -9,21 +8,24 @@ using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Services.AuthServices
 {
-    public class SendEmailConfirmation : ISendEmailConfirmation
+    public class SendPasswordResetEmail : ISendPasswordResetEmail
     {
+
+
         private readonly IConfiguration _configuration;
 
         private UserManager<ApplicationUser> _userManager { get; }
 
-        public SendEmailConfirmation(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public SendPasswordResetEmail(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
         }
 
-        public async Task<SendEmailConfirmationContract.Result> ExecuteAsync(SendEmailConfirmationContract contract)
+        public async Task<SendChangePasswordEmailContract.Result> Execute(SendChangePasswordEmailContract contract)
         {
             ValidateContract(contract);
+
 
             var user = _userManager.FindByIdAsync(contract.UserId).Result;
 
@@ -34,9 +36,9 @@ namespace SegmentSniper.Services.AuthServices
 
             try
             {
-                var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var baseUrl = _configuration["AppBaseUrl"];
-                var confirmationLink = $"{baseUrl}/confirm-email-check-code?passwordResetToken={passwordResetToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
+                var confirmationLink = $"{baseUrl}/confirm-email-check-code?confirmationToken={confirmationToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
@@ -47,10 +49,15 @@ namespace SegmentSniper.Services.AuthServices
                 </head>
                 <body>
                     <p>Dear " + user.FirstName + @",</p>
-                    <p>Thank you for registering with Segment Sniper Pro. To complete your registration and confirm your email address, please click the following link:</p>
-                    <p><a href=""" + confirmationLink + @""" target=""_blank"">Confirm Email Address</a></p>
-                    <p>If you did not register with our service, you can safely ignore this email.</p>
-                    <p>Best regards,<br>The Segment Sniper Pro Team</p>
+                    <p>We received a request to change the password for your [Your Application Name] account. If you initiated this request, please follow the instructions below to complete the password change process.</p>
+                    <p>**Click the link below to reset your password:**</p>
+                    <p><a href=""" + confirmationLink + @""" target=""_blank"">Password Reset Link</a></p>
+                    <p>Please note that this link is valid for a limited time. If you did not request a password change or believe this request is in error, please disregard this email.</p>
+                    
+                   p>For security reasons, we recommend that you do not share this link with others. [Your Application Name] will never ask you to share your password or click on links in unsolicited emails.</p>
+                   p>BIf you encounter any issues or have further questions, please contact our support team at [Support Email or Phone Number].</p>
+                   p>Thank you for using Segment Sniper Pro.</p>
+                   p>Best regards,<br>The Segment Sniper Pro Team</p>
                 </body>
                 </html>";
 
@@ -59,7 +66,7 @@ namespace SegmentSniper.Services.AuthServices
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse(_configuration["GmailUserName"]));
                 email.To.Add(MailboxAddress.Parse(user.NormalizedEmail));
-                email.Subject = "Segment Sniper Confirm Email";
+                email.Subject = "Segment Sniper Forgot Password";
                 email.Body = new TextPart(TextFormat.Html) { Text = emailBody };
 
                 // send email
@@ -72,18 +79,18 @@ namespace SegmentSniper.Services.AuthServices
                 smtp.Disconnect(true);
 
                 if (result != null)
-                    return new SendEmailConfirmationContract.Result { Success = true };
+                    return new SendChangePasswordEmailContract.Result { Success = true };
                 else
-                { return new SendEmailConfirmationContract.Result { Success = false }; }
+                { return new SendChangePasswordEmailContract.Result { Success = false }; }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Failed to send confirmation email", ex);
             }
 
         }
 
-        private void ValidateContract(SendEmailConfirmationContract contract)
+        private void ValidateContract(SendChangePasswordEmailContract contract)
         {
             if (contract == null)
             {
