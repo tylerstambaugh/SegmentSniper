@@ -28,8 +28,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
             try
             {
-
-                var result = await _confirmEmail.Execute(new ConfirmEmailContract
+                var result = await _confirmEmail.ExecuteAsync(new ConfirmEmailContract
                 {
                     UserId = request.UserId,
                     ConfirmationToken = request.ConfirmationToken,
@@ -52,7 +51,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
                 return new ConfirmEmailRequest.Response
                 {
-                    Success = result,
+                    Success = result.Success,
                     //TokenData = newTokenData.RefreshedToken,
                     UserData = userDto
                 };

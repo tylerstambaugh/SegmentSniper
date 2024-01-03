@@ -2,7 +2,7 @@
 {
     public interface IConfirmEmail
     {
-         Task<bool> Execute(ConfirmEmailContract contract);
+         Task<ConfirmEmailContract.Result> ExecuteAsync(ConfirmEmailContract contract);
     }
 
     public class ConfirmEmailContract
@@ -21,5 +21,15 @@
         public string UserId { get; set; }
         public string EmailAddress { get; set; }
         public string ConfirmationToken { get; set; }
+
+        public class Result
+        {
+            public Result(bool success)
+            {
+                Success = success;
+            }
+
+            public bool Success { get; }
+        }
     }
 }

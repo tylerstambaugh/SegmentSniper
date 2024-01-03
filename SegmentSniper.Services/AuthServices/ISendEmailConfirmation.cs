@@ -2,7 +2,7 @@
 {
     public interface ISendEmailConfirmation
     {
-        Task<SendEmailConfirmationContract.Result> Execute(SendEmailConfirmationContract contract);
+        Task<SendEmailConfirmationContract.Result> ExecuteAsync(SendEmailConfirmationContract contract);
     }
 
     public class SendEmailConfirmationContract

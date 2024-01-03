@@ -30,6 +30,8 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
             services.AddScoped<IConfirmEmailActionHandler, ConfirmEmailActionHandler>();
             services.AddScoped<ISendEmailConfirmationActionHandler, SendEmailConfirmationActionHandler>();
+            services.AddScoped<ISendPasswordResetEmailActionHandler, SendPasswordResetEmailActionHandler>();
+            services.AddScoped<IResetPasswordActionHandler, ResetPasswordActionHandler>();
 
             //strava action handlers
             services.AddScoped<IGetActivityListByIdActionHandler, GetActivityListByIdActionHandler>();
@@ -56,6 +58,8 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetUserRoles, GetUserRoles>();
             services.AddScoped<ISendEmailConfirmation, SendEmailConfirmation>();
             services.AddScoped<IConfirmEmail, ConfirmEmail>();
+            services.AddScoped<ISendPasswordResetEmail, SendPasswordResetEmail>();
+            services.AddScoped<IResetPassword,  ResetPassword>();
             services.AddScoped<IGetAuthenticatedUser, GetAuthenticatedUser>();
 
             //admin services

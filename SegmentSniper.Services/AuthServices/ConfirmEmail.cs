@@ -13,18 +13,40 @@ namespace SegmentSniper.Services.AuthServices
             _userManager = userManager;
         }
 
-        public async Task<bool> Execute(ConfirmEmailContract contract)
+        public async Task<ConfirmEmailContract.Result> ExecuteAsync(ConfirmEmailContract contract)
         {
+            ValidateContract(contract);
+
             var user = await _userManager.FindByIdAsync(contract.UserId);
             if (user != null )
             {
                 var updateResult = await _userManager.ConfirmEmailAsync(user, contract.ConfirmationToken);
 
-                return updateResult.Succeeded;
+                return new ConfirmEmailContract.Result(updateResult.Succeeded);
             }
             else
             {
-                return false;
+                return new ConfirmEmailContract.Result(false);
+            }
+        }
+
+        private void ValidateContract(ConfirmEmailContract contract)
+        {
+            if (contract == null)
+            {
+                throw new ArgumentNullException(nameof(contract));
+            }
+            if (string.IsNullOrWhiteSpace(contract.UserId))
+            {
+                throw new ArgumentException(nameof(contract.UserId));
+            }
+            if (string.IsNullOrWhiteSpace(contract.EmailAddress))
+            {
+                throw new ArgumentException(nameof(contract.EmailAddress));
+            }
+            if (string.IsNullOrWhiteSpace(contract.ConfirmationToken))
+            {
+                throw new ArgumentException(nameof(contract.ConfirmationToken));
             }
         }
     }
