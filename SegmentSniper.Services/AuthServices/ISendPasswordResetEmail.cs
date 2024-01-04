@@ -2,21 +2,17 @@
 {
     public interface ISendPasswordResetEmail
     {
-        Task<SendChangePasswordEmailContract.Result> Execute(SendChangePasswordEmailContract contract);
+        Task<SendChangePasswordEmailContract.Result> ExecuteAsync(SendChangePasswordEmailContract contract);
     }
 
     public class SendChangePasswordEmailContract
     {
-        public SendChangePasswordEmailContract(string userId, string accessToken, string refreshToken)
+        public SendChangePasswordEmailContract(string emailAddress)
         {
-            UserId = userId;
-            AccessToken = accessToken;
-            RefreshToken = refreshToken;
+            EmailAddress = emailAddress;
         }
+        public string EmailAddress { get; }
 
-        public string UserId { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
         public class Result
         {
             public bool Success { get; set; }

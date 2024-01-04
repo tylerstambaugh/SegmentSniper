@@ -1,8 +1,4 @@
-﻿using Duende.IdentityServer.Validation;
-using Microsoft.AspNetCore.Identity;
-using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Services.AuthServices;
-using System.Diagnostics.Contracts;
+﻿using SegmentSniper.Services.AuthServices;
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
@@ -19,7 +15,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
         {
             ValidatedRequest(request);
 
-            var result = await _sendChangePasswordEmail.Execute(new SendChangePasswordEmailContract(request.UserId, request.AccessToken, request.RefreshToken));
+            var result = await _sendChangePasswordEmail.ExecuteAsync(new SendChangePasswordEmailContract(request.EmailAddress));
 
             return new SendPasswordResetEmailRequest.Response { Success = result.Success };
         }
@@ -30,17 +26,9 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (string.IsNullOrWhiteSpace(request.UserId))
+            if (string.IsNullOrWhiteSpace(request.EmailAddress))
             {
-                throw new ArgumentException(nameof(request.UserId));
-            }
-            if (string.IsNullOrWhiteSpace(request.AccessToken))
-            {
-                throw new ArgumentException(nameof(request.AccessToken));
-            }
-            if (string.IsNullOrWhiteSpace(request.RefreshToken))
-            {
-                throw new ArgumentException(nameof(request.RefreshToken));
+                throw new ArgumentException(nameof(request.EmailAddress));
             }
         }
     }

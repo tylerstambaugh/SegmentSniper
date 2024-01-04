@@ -53,13 +53,6 @@ namespace SegmentSniper.Api.Controllers
                 return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
             }
         }
-
-        [HttpPost]
-        [Route("forgot-password")]
-        public async Task<IActionResult> SendForgotPasswordEmail(/*SendForgotPasswordEmailRequest request*/)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 }

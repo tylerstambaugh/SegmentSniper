@@ -13,7 +13,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
         public async Task<PasswordResetRequest.Response> HandleAsync(PasswordResetRequest request)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,16 +12,13 @@
         {
 
         }
-        public SendPasswordResetEmailRequest(string userId, string accessToken, string refreshToken)
+        public SendPasswordResetEmailRequest(string emailAddress)
         {
-            UserId = userId;
-            AccessToken = accessToken;
-            RefreshToken = refreshToken;
+            EmailAddress = emailAddress;
         }
 
-        public string UserId { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string EmailAddress { get; }
+
         public class Response
         {
             public bool Success { get; set; }
