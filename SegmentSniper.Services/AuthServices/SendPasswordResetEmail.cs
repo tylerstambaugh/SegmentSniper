@@ -22,23 +22,22 @@ namespace SegmentSniper.Services.AuthServices
             _configuration = configuration;
         }
 
-        public async Task<SendChangePasswordEmailContract.Result> Execute(SendChangePasswordEmailContract contract)
+        public async Task<SendChangePasswordEmailContract.Result> ExecuteAsync(SendChangePasswordEmailContract contract)
         {
             ValidateContract(contract);
 
-
-            var user = _userManager.FindByIdAsync(contract.UserId).Result;
+            var user = _userManager.FindByEmailAsync(contract.EmailAddress).Result;
 
             if (user == null)
             {
-                throw new ApplicationException($"User {contract.UserId} was not found");
+                throw new ApplicationException($"Email address {contract.EmailAddress} was not found");
             }
 
             try
             {
-                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var passwordResetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var baseUrl = _configuration["AppBaseUrl"];
-                var confirmationLink = $"{baseUrl}/confirm-email-check-code?confirmationToken={confirmationToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
+                var confirmationLink = $"{baseUrl}/confirm-email-check-code?prt={passwordResetToken}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
@@ -96,17 +95,9 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentNullException(nameof(contract));
             }
-            if (string.IsNullOrWhiteSpace(contract.UserId))
+            if (string.IsNullOrWhiteSpace(contract.EmailAddress))
             {
-                throw new ArgumentException(nameof(contract.UserId));
-            }
-            if (string.IsNullOrWhiteSpace(contract.AccessToken))
-            {
-                throw new ArgumentException(nameof(contract.AccessToken));
-            }
-            if (string.IsNullOrWhiteSpace(contract.RefreshToken))
-            {
-                throw new ArgumentException(nameof(contract.RefreshToken));
+                throw new ArgumentException(nameof(contract.EmailAddress));
             }
         }
     }
