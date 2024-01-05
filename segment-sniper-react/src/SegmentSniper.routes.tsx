@@ -24,6 +24,7 @@ import SnipedSegments from "./pages/SnipedSegments";
 import ActivityDetails from "./pages/ActivityDetails";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/ConfirmEmailCheckCode";
+import ResetPassword from "./pages/ResetPassword";
 
 interface Props {
   defaultPage?: string;
@@ -49,6 +50,7 @@ export default function Routes({ defaultPage }: Props) {
         <Route path="/" element={<Outlet />}>
           <Route path={AppRoutes.Home} element={<Home />} />
           <Route path={AppRoutes.ForgotPassword} element={<ForgotPassword />} />
+          <Route path={AppRoutes.ResetPassword} element={<ResetPassword />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
           <Route path={AppRoutes.Logout} element={<Logout />} />

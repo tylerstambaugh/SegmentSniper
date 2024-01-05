@@ -46,44 +46,44 @@ app.MapControllers();
 
 await SeedData.Initialize(app.Services, configuration);
 
-var spaPath = "/app";
-if (app.Environment.IsDevelopment())
-{
-    app.MapWhen(y => y.Request.Path.StartsWithSegments(spaPath), client =>
-    {
-        client.UseSpa(spa =>
-        {
-            spa.UseProxyToSpaDevelopmentServer("https://localhost:6767");
-        });
-    });
-}
-else
-{
-    app.Map(new PathString(spaPath), client =>
-    {
-        client.UseSpaStaticFiles();
-        client.UseSpa(spa =>
-        {
-            spa.Options.SourcePath = "SegmentSniper.React";
+//var spaPath = "/app";
+//if (app.Environment.IsDevelopment())
+//{
+//    app.MapWhen(y => y.Request.Path.StartsWithSegments(spaPath), client =>
+//    {
+//        client.UseSpa(spa =>
+//        {
+//            spa.UseProxyToSpaDevelopmentServer("https://localhost:6767");
+//        });
+//    });
+//}
+//else
+//{
+//    app.Map(new PathString(spaPath), client =>
+//    {
+//        client.UseSpaStaticFiles();
+//        client.UseSpa(spa =>
+//        {
+//            spa.Options.SourcePath = "SegmentSniper.React";
 
-            // adds no-store header to index page to prevent deployment issues (prevent linking to old .js files)
-            // .js and other static resources are still cached by the browser
-            spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
-            {
-                OnPrepareResponse = ctx =>
-                {
-                    ResponseHeaders headers = ctx.Context.Response.GetTypedHeaders();
-                    headers.CacheControl = new CacheControlHeaderValue
-                    {
-                        NoCache = true,
-                        NoStore = true,
-                        MustRevalidate = true
-                    };
-                }
-            };
-        });
-    });
-}
+//            // adds no-store header to index page to prevent deployment issues (prevent linking to old .js files)
+//            // .js and other static resources are still cached by the browser
+//            spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+//            {
+//                OnPrepareResponse = ctx =>
+//                {
+//                    ResponseHeaders headers = ctx.Context.Response.GetTypedHeaders();
+//                    headers.CacheControl = new CacheControlHeaderValue
+//                    {
+//                        NoCache = true,
+//                        NoStore = true,
+//                        MustRevalidate = true
+//                    };
+//                }
+//            };
+//        });
+//    });
+//}
 
 if (app.Environment.IsDevelopment())
 {

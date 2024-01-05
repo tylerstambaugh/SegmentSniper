@@ -5,6 +5,7 @@ export enum AppRoutes {
   ConfirmEmail = "confirm-email",
   ConfirmEmailCheckCode = "confirm-email-check-code",
   ForgotPassword = "forgot-password",
+  ResetPassword = "reset-password",
   Login = "login",
   Logout = "logout",
   ConnectWithStravaSuccess = "connect-with-strava-success",

@@ -13,7 +13,16 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
         public async Task<PasswordResetRequest.Response> HandleAsync(PasswordResetRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _resetPassword.ExecuteAsync(new PasswordResetContract(request.UserId, request.PasswordResetToken, request.NewPassword));
+
+                return new PasswordResetRequest.Response(result.Success);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error while resetting password:", ex);
+            }
         }
     }
 }
