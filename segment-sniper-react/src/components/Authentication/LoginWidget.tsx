@@ -79,7 +79,7 @@ export default function LoginWidget() {
     <>
       {!isAuthenticated || user?.id === null ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
-          <Col md={6} lg={5} xs={10}>
+          <Col md={6} lg={3} xs={10}>
             <div className="border "></div>
             <Card className="shadow">
               <Card.Body>
@@ -165,7 +165,7 @@ export default function LoginWidget() {
                       </Row>
                     </Form>
                     <Row className="d-flex justify-content-around mt-2">
-                      <Col xs={12} md={8} lg={10} xl={6}>
+                      <Col xs={12} md={8} lg={10} xl={8} className="py-3">
                         <Link
                           to={`/${AppRoutes.ForgotPassword}`}
                           className="text-primary fw-bold"
@@ -173,7 +173,7 @@ export default function LoginWidget() {
                           Forgot Password
                         </Link>
                       </Col>
-                      <Col xs={12} md={8} lg={10} xl={6}>
+                      <Col xs={12} md={8} lg={10} xl={8}>
                         <p className="mb-0  text-center">
                           Don't have an account?{" "}
                           <Link

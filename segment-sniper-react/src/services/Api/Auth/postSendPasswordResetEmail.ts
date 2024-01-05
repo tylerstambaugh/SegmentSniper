@@ -11,7 +11,7 @@ export type SendPasswordResetEmailResponse = {
 };
 
 export default async function postSendPasswordResetEmail(
-  contract: ApiContract
+  contract: ApiContract<SendPasswordResetEmailRequest>
 ) {
   try {
     const response = apiPost<
