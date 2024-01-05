@@ -37,7 +37,7 @@ namespace SegmentSniper.Services.AuthServices
             {
                 var passwordResetToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var baseUrl = _configuration["AppBaseUrl"];
-                var confirmationLink = $"{baseUrl}/confirm-email-check-code?prt={passwordResetToken}";
+                var confirmationLink = $"{baseUrl}/confirm-email-check-code?prt={passwordResetToken}&uid={user.Id}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
@@ -48,13 +48,13 @@ namespace SegmentSniper.Services.AuthServices
                 </head>
                 <body>
                     <p>Dear " + user.FirstName + @",</p>
-                    <p>We received a request to change the password for your [Your Application Name] account. If you initiated this request, please follow the instructions below to complete the password change process.</p>
+                    <p>We received a request to change the password for your Segment Sniper Pro account. If you initiated this request, please follow the instructions below to complete the password change process.</p>
                     <p>**Click the link below to reset your password:**</p>
                     <p><a href=""" + confirmationLink + @""" target=""_blank"">Password Reset Link</a></p>
                     <p>Please note that this link is valid for a limited time. If you did not request a password change or believe this request is in error, please disregard this email.</p>
                     
-                   p>For security reasons, we recommend that you do not share this link with others. [Your Application Name] will never ask you to share your password or click on links in unsolicited emails.</p>
-                   p>BIf you encounter any issues or have further questions, please contact our support team at [Support Email or Phone Number].</p>
+                   p>For security reasons, we recommend that you do not share this link with others. Segment Sniper Pro will never ask you to share your password or click on links in unsolicited emails.</p>
+                   p>BIf you encounter any issues or have further questions, please contact our support team at segmentsniperpro@gmail.com.</p>
                    p>Thank you for using Segment Sniper Pro.</p>
                    p>Best regards,<br>The Segment Sniper Pro Team</p>
                 </body>

@@ -25,8 +25,9 @@ namespace SegmentSniper.Api.Controllers
         private readonly ISendEmailConfirmationActionHandler _sendConfirmationEmailActionHandler;
         private readonly IConfirmEmailActionHandler _confirmEmailActionHandler;
         private readonly ISendPasswordResetEmailActionHandler _sendPasswordResetEmailActionHandler;
+        private readonly IResetPasswordActionHandler _resetPasswordActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, ISendEmailConfirmationActionHandler sendConfirmationEmailActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler, ISendPasswordResetEmailActionHandler sendPasswordResetEmailActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, ISendEmailConfirmationActionHandler sendConfirmationEmailActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler, ISendPasswordResetEmailActionHandler sendPasswordResetEmailActionHandler, IResetPasswordActionHandler resetPasswordActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
@@ -36,6 +37,7 @@ namespace SegmentSniper.Api.Controllers
             _sendConfirmationEmailActionHandler = sendConfirmationEmailActionHandler;
             _confirmEmailActionHandler = confirmEmailActionHandler;
             _sendPasswordResetEmailActionHandler = sendPasswordResetEmailActionHandler;
+            _resetPasswordActionHandler = resetPasswordActionHandler;
         }
 
         [AllowAnonymous]
@@ -168,6 +170,29 @@ namespace SegmentSniper.Api.Controllers
 
                 if (response.Success) return Ok();
                 return BadRequest("Unable to reset password.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
+            }
+        }
+
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        {
+            try
+            {
+
+                var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
+                {
+                    AccessToken = request.AccessToken,
+                    RefreshToken = request.RefreshToken,
+                    UserId = userId,
+                });
+
+                if (response.Success) return Ok();
+                return BadRequest("Unable to send email");
             }
             catch (Exception ex)
             {
