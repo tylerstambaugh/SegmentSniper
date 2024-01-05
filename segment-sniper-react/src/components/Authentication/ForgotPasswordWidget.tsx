@@ -32,7 +32,7 @@ export default function ForgotPasswordWidget() {
     },
     onSubmit: async (values: ForgotPasswordForm) => {
       setValidated(true);
-      let request: SendPasswordResetEmailRequest = {
+      const request: SendPasswordResetEmailRequest = {
         emailAddress: values.emailAddress!,
       };
       await sendPasswordResetEmail.mutateAsync(request).then(() => {
@@ -48,7 +48,7 @@ export default function ForgotPasswordWidget() {
     <>
       {emailSent ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
-          <Col md={6} lg={5} xs={10}>
+          <Col md={6} lg={3} xs={10}>
             <div className="border "></div>
             <Card className="shadow">
               <Card.Body>
@@ -61,7 +61,7 @@ export default function ForgotPasswordWidget() {
         </Row>
       ) : (
         <Row className="vh-100 d-flex justify-content-center mt-5">
-          <Col md={6} lg={5} xs={10}>
+          <Col md={6} lg={3} xs={10}>
             <div className="border "></div>
             <Card className="shadow">
               <Card.Body>

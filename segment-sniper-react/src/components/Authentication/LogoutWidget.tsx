@@ -27,12 +27,10 @@ export default function LogoutWidget() {
     revokeTokenAsync();
   }, []);
 
-  return logout.isLoading ? (
-    <Container>
-      <Row>
-        <Col>Logging out...</Col>
-      </Row>
-    </Container>
+  return logout.error ? (
+    <>
+      <h2>There was an issue logging out. Dangit.</h2>
+    </>
   ) : (
     <>
       {tokenData === null && user === null ? (
@@ -54,9 +52,11 @@ export default function LogoutWidget() {
           </Col>
         </Row>
       ) : (
-        <>
-          <h2>There was an issue logging out. Dangit.</h2>
-        </>
+        <Container>
+          <Row>
+            <Col>Logging out...</Col>
+          </Row>
+        </Container>
       )}
     </>
   );

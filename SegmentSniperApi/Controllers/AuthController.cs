@@ -159,12 +159,11 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Route("send-password-reset-email")]
-        public async Task<IActionResult> SendPasswordResetEmail(SendPasswordResetEmailRequest request)
+        public async Task<IActionResult> SendPasswordResetEmail([FromBody] string emailAddress)
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-
+                var request = new SendPasswordResetEmailRequest(emailAddress);
                 var response = await _sendPasswordResetEmailActionHandler.HandleAsync(request);
 
                 if (response.Success) return Ok();
