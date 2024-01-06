@@ -22,7 +22,8 @@ export default function ResetPasswordWidget() {
     useState<boolean>(false);
 
   const searchParams = new URLSearchParams(location.search);
-
+  const resetPasswordToken = searchParams.get("prt");
+  const userId = searchParams.get("uid");
   interface ResetPasswordForm {
     password: string | null;
     confirmPassword: string | null;

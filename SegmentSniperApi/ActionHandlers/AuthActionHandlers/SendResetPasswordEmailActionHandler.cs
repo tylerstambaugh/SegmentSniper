@@ -2,25 +2,25 @@
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
-    public class SendPasswordResetEmailActionHandler : ISendPasswordResetEmailActionHandler
+    public class SendResetPasswordEmailActionHandler : ISendResetPasswordEmailActionHandler
     {
         private readonly ISendPasswordResetEmail _sendChangePasswordEmail;
 
-        public SendPasswordResetEmailActionHandler(ISendPasswordResetEmail sendChangePasswordEmail)
+        public SendResetPasswordEmailActionHandler(ISendPasswordResetEmail sendChangePasswordEmail)
         {
             _sendChangePasswordEmail = sendChangePasswordEmail;
         }
 
-        public async Task<SendPasswordResetEmailRequest.Response> HandleAsync(SendPasswordResetEmailRequest request)
+        public async Task<SendResetPasswordEmailRequest.Response> HandleAsync(SendResetPasswordEmailRequest request)
         {
             ValidatedRequest(request);
 
             var result = await _sendChangePasswordEmail.ExecuteAsync(new SendChangePasswordEmailContract(request.EmailAddress));
 
-            return new SendPasswordResetEmailRequest.Response { Success = result.Success };
+            return new SendResetPasswordEmailRequest.Response { Success = result.Success };
         }
 
-        private void ValidatedRequest(SendPasswordResetEmailRequest request)
+        private void ValidatedRequest(SendResetPasswordEmailRequest request)
         {
             if (request == null)
             {
