@@ -2,12 +2,12 @@
 {
     public interface IResetPasswordActionHandler
     {
-        Task<PasswordResetRequest.Response> HandleAsync(PasswordResetRequest request);
+        Task<ResetPasswordRequest.Response> HandleAsync(ResetPasswordRequest request);
     }
 
-    public class PasswordResetRequest
+    public class ResetPasswordRequest
     {
-        public PasswordResetRequest(string userId, string passwordResetToken, string newPassword)
+        public ResetPasswordRequest(string userId, string passwordResetToken, string newPassword)
         {
             UserId = userId;
             PasswordResetToken = passwordResetToken;

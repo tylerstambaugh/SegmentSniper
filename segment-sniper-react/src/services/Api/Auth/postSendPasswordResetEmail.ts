@@ -17,7 +17,7 @@ export default async function postSendPasswordResetEmail(
     const response = apiPost<
       SendPasswordResetEmailRequest,
       SendPasswordResetEmailResponse
-    >(`${contract.baseUrl}/auth/send-password-reset-email`, contract);
+    >(`${contract.baseUrl}/auth/send-reset-password-email`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

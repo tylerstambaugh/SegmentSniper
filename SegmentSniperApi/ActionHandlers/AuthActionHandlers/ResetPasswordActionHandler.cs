@@ -11,13 +11,13 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             _resetPassword = resetPassword;
         }
 
-        public async Task<PasswordResetRequest.Response> HandleAsync(PasswordResetRequest request)
+        public async Task<ResetPasswordRequest.Response> HandleAsync(ResetPasswordRequest request)
         {
             try
             {
                 var result = await _resetPassword.ExecuteAsync(new PasswordResetContract(request.UserId, request.PasswordResetToken, request.NewPassword));
 
-                return new PasswordResetRequest.Response(result.Success);
+                return new ResetPasswordRequest.Response(result.Success);
             }
             catch (Exception ex)
             {

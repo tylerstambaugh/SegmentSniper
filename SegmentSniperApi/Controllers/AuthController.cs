@@ -8,6 +8,7 @@ using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using System.Security.Claims;
+using System.Security.Policy;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SegmentSniper.Api.Controllers
@@ -24,10 +25,10 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRevokeTokenActionHandler _revokeTokenActionHandler;
         private readonly ISendEmailConfirmationActionHandler _sendConfirmationEmailActionHandler;
         private readonly IConfirmEmailActionHandler _confirmEmailActionHandler;
-        private readonly ISendPasswordResetEmailActionHandler _sendPasswordResetEmailActionHandler;
+        private readonly ISendResetPasswordEmailActionHandler _sendResetPasswordEmailActionHandler;
         private readonly IResetPasswordActionHandler _resetPasswordActionHandler;
 
-        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, ISendEmailConfirmationActionHandler sendConfirmationEmailActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler, ISendPasswordResetEmailActionHandler sendPasswordResetEmailActionHandler, IResetPasswordActionHandler resetPasswordActionHandler)
+        public AuthController(ILoginUserActionHandler loginUserActionHandler, IRegisterUserActionHandler registerUserActionHandler, IRefreshTokenActionHandler refreshTokenActionHandler, ICheckForStravaTokenActionHandler checkForStravaTokenActionHandler, IRevokeTokenActionHandler revokeTokenActionHandler, ISendEmailConfirmationActionHandler sendConfirmationEmailActionHandler, IConfirmEmailActionHandler confirmEmailActionHandler, ISendResetPasswordEmailActionHandler sendResetPasswordEmailActionHandler, IResetPasswordActionHandler resetPasswordActionHandler)
         {
             _loginUserActionHandler = loginUserActionHandler;
             _registerUserActionHandler = registerUserActionHandler;
@@ -36,7 +37,7 @@ namespace SegmentSniper.Api.Controllers
             _revokeTokenActionHandler = revokeTokenActionHandler;
             _sendConfirmationEmailActionHandler = sendConfirmationEmailActionHandler;
             _confirmEmailActionHandler = confirmEmailActionHandler;
-            _sendPasswordResetEmailActionHandler = sendPasswordResetEmailActionHandler;
+            _sendResetPasswordEmailActionHandler = sendResetPasswordEmailActionHandler;
             _resetPasswordActionHandler = resetPasswordActionHandler;
         }
 
@@ -110,6 +111,30 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [Authorize, HttpPost]
+        [Route("send-confirm-email")]
+        public async Task<IActionResult> SendConfirmEmail(SendEmailConfirmationRequest request)
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
+                {
+                    AccessToken = request.AccessToken,
+                    RefreshToken = request.RefreshToken,
+                    UserId = userId,
+                });
+
+                if (response.Success) return Ok();
+                return BadRequest("Unable to send email");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
+            }
+        }
+
+        [Authorize, HttpPost]
         [Route("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest confirmEmailRequest)
         {
@@ -135,23 +160,16 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [Authorize, HttpPost]
-        [Route("send-confirm-email")]
-        public async Task<IActionResult> SendConfirmEmail(SendEmailConfirmationRequest request)
+        [AllowAnonymous, HttpPost]
+        [Route("send-reset-password-email")]
+        public async Task <IActionResult> SendResetPasswordEmail(SendResetPasswordEmailRequest request)
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-
-                var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
-                {
-                    AccessToken = request.AccessToken,
-                    RefreshToken = request.RefreshToken,
-                    UserId = userId,
-                });
-
-                if (response.Success) return Ok();
-                return BadRequest("Unable to send email");
+                var response = await _sendResetPasswordEmailActionHandler.HandleAsync(request);
+                if(response.Success)
+                    return Ok(response);
+                return BadRequest("Unable to reset password");
             }
             catch (Exception ex)
             {
@@ -159,37 +177,14 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("send-password-reset-email")]
-        public async Task<IActionResult> SendPasswordResetEmail([FromBody] string emailAddress)
-        {
-            try
-            {
-                var request = new SendPasswordResetEmailRequest(emailAddress);
-                var response = await _sendPasswordResetEmailActionHandler.HandleAsync(request);
-
-                if (response.Success) return Ok();
-                return BadRequest("Unable to reset password.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
-            }
-        }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
             try
             {
-
-                var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
-                {
-                    AccessToken = request.AccessToken,
-                    RefreshToken = request.RefreshToken,
-                    UserId = userId,
-                });
+                var response = await _resetPasswordActionHandler.HandleAsync(request);
 
                 if (response.Success) return Ok();
                 return BadRequest("Unable to send email");
