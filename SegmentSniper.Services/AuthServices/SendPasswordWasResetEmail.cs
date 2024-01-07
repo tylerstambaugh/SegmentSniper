@@ -8,36 +8,25 @@ using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Services.AuthServices
 {
-    public class SendPasswordResetEmail : ISendPasswordResetEmail
+    public class SendPasswordWasResetEmail : ISendPasswordWasResetEmail
     {
-
-
         private readonly IConfiguration _configuration;
 
         private UserManager<ApplicationUser> _userManager { get; }
 
-        public SendPasswordResetEmail(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public SendPasswordWasResetEmail(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
         }
 
-        public async Task<SendChangePasswordEmailContract.Result> ExecuteAsync(SendChangePasswordEmailContract contract)
+        public async Task<SendPasswordWasResetEmailContract.Result> ExecuteAsync(SendPasswordWasResetEmailContract contract)
         {
             ValidateContract(contract);
-
             var user = _userManager.FindByEmailAsync(contract.EmailAddress).Result;
-
-            if (user == null)
-            {
-                throw new ApplicationException($"Email address {contract.EmailAddress} was not found");
-            }
-
+            var baseUrl = _configuration["AppBaseUrl"];
             try
             {
-                var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var baseUrl = _configuration["AppBaseUrl"];
-                var resetPasswordLink = $"{baseUrl}/reset-password?prt={passwordResetToken}&uid={user.Id}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
@@ -48,15 +37,11 @@ namespace SegmentSniper.Services.AuthServices
                 </head>
                 <body>
                     <p>Dear " + user.FirstName + @",</p>
-                    <p>We received a request to change the password for your Segment Sniper Pro account. If you initiated this request, please follow the instructions below to complete the password change process.</p>
-                    <p>**Click the link below to reset your password:**</p>
-                    <p><a href=""" + resetPasswordLink + @""" target=""_blank"">Password Reset Link</a></p>
-                    <p>Please note that this link is valid for a limited time. If you did not request a password change or believe this request is in error, please disregard this email.</p>
-                    
-                   p>For security reasons, we recommend that you do not share this link with others. Segment Sniper Pro will never ask you to share your password or click on links in unsolicited emails.</p>
-                   p>BIf you encounter any issues or have further questions, please contact our support team at segmentsniperpro@gmail.com.</p>
-                   p>Thank you for using Segment Sniper Pro.</p>
-                   p>Best regards,<br>The Segment Sniper Pro Team</p>
+                    <p>A password reset was recently performed on your account</p>
+                    <p>If you did not recently reset your password, please go to the app and do so now, or contact the Segment Sniper Pro team for assistance.</p>
+                    <p><a href=""" + baseUrl + @""" target=""""_blank"""">Segment Sniper Pro</a></p>
+
+                    <p>Best regards,<br>The Segment Sniper Pro Team</p>
                 </body>
                 </html>";
 
@@ -65,8 +50,7 @@ namespace SegmentSniper.Services.AuthServices
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse(_configuration["GmailUserName"]));
                 email.To.Add(MailboxAddress.Parse(user.NormalizedEmail));
-                email.Subject = "Segment Sniper Password Reset";
-                email.Subject = "Segment Sniper Password Reset";
+                email.Subject = "Segment Sniper Confirm Email";
                 email.Body = new TextPart(TextFormat.Html) { Text = emailBody };
 
                 // send email
@@ -79,18 +63,17 @@ namespace SegmentSniper.Services.AuthServices
                 smtp.Disconnect(true);
 
                 if (result != null)
-                    return new SendChangePasswordEmailContract.Result { Success = true };
+                    return new SendPasswordWasResetEmailContract.Result(true);
                 else
-                { return new SendChangePasswordEmailContract.Result { Success = false }; }
+                    return new SendPasswordWasResetEmailContract.Result(false);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Failed to send confirmation email", ex);
+                throw new ApplicationException("Failed to send password was reset email", ex);
             }
-
         }
 
-        private void ValidateContract(SendChangePasswordEmailContract contract)
+        private void ValidateContract(SendPasswordWasResetEmailContract contract)
         {
             if (contract == null)
             {

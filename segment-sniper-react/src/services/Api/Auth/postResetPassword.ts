@@ -5,8 +5,7 @@ import { apiPost } from "../BaseApiService";
 export type ResetPasswordRequest = {
   userId: string;
   passwordResetToken: string;
-  password: string;
-  confirmPassword: string;
+  newPassword: string;
 };
 
 export type ResetPasswordResponse = {

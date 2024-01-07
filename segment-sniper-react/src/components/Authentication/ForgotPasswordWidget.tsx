@@ -11,6 +11,7 @@ import { SendPasswordResetEmailRequest } from "../../services/Api/Auth/postSendP
 
 export default function ForgotPasswordWidget() {
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
   const [emailAddress, setEmailAddress] = useState("");
   const sendPasswordResetEmail = usePostSendPasswordResetEmail();
   const [emailSent, setEmailSent] = useState(false);
@@ -52,9 +53,18 @@ export default function ForgotPasswordWidget() {
             <div className="border "></div>
             <Card className="shadow">
               <Card.Body>
-                <div className="mb-3 text-center">
-                  <p>The password reset email has been sent.</p>
-                </div>
+                <Row>
+                  <Col className="mb-3 text-center">
+                    <p>The password reset email has been sent.</p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="mb-3 text-center">
+                    <Button onClick={() => navigate(`/${AppRoutes.Home}`)}>
+                      Home
+                    </Button>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>

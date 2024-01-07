@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http.Headers;
-using Microsoft.Net.Http.Headers;
 using SegmentSniper.Api.Configuration;
 using System.Net;
-using Azure.Identity;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -22,7 +19,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -40,50 +36,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapControllers();
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "api/");
 
 await SeedData.Initialize(app.Services, configuration);
-
-//var spaPath = "/app";
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapWhen(y => y.Request.Path.StartsWithSegments(spaPath), client =>
-//    {
-//        client.UseSpa(spa =>
-//        {
-//            spa.UseProxyToSpaDevelopmentServer("https://localhost:6767");
-//        });
-//    });
-//}
-//else
-//{
-//    app.Map(new PathString(spaPath), client =>
-//    {
-//        client.UseSpaStaticFiles();
-//        client.UseSpa(spa =>
-//        {
-//            spa.Options.SourcePath = "SegmentSniper.React";
-
-//            // adds no-store header to index page to prevent deployment issues (prevent linking to old .js files)
-//            // .js and other static resources are still cached by the browser
-//            spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
-//            {
-//                OnPrepareResponse = ctx =>
-//                {
-//                    ResponseHeaders headers = ctx.Context.Response.GetTypedHeaders();
-//                    headers.CacheControl = new CacheControlHeaderValue
-//                    {
-//                        NoCache = true,
-//                        NoStore = true,
-//                        MustRevalidate = true
-//                    };
-//                }
-//            };
-//        });
-//    });
-//}
 
 if (app.Environment.IsDevelopment())
 {
