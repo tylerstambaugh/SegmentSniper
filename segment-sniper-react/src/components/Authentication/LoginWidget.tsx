@@ -84,108 +84,99 @@ export default function LoginWidget() {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">
-                  {/* <img src={logo} alt="logo" className="logo pb-2" /> */}
-                  <div className="mb-3">
-                    <Form
-                      name="loginForm"
-                      onSubmit={(e) => {
-                        setValidated(true);
-                        formik.handleSubmit(e);
-                      }}
-                    >
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control
-                          type="text"
-                          placeholder="Email Address"
-                          name="emailAddress"
-                          isInvalid={!!formik.errors.emailAddress}
-                          onChange={(e) => {
-                            formik.setFieldValue(
-                              "emailAddress",
-                              e.target.value
-                            );
-                            setEmailAddress(e.target.value);
-                          }}
-                          onBlur={formik.handleBlur}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {formik.errors.emailAddress}
-                        </Form.Control.Feedback>
-                      </Form.Group>
+                  <Form
+                    name="loginForm"
+                    onSubmit={(e) => {
+                      setValidated(true);
+                      formik.handleSubmit(e);
+                    }}
+                  >
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Control
+                        type="text"
+                        placeholder="Email Address"
+                        name="emailAddress"
+                        isInvalid={!!formik.errors.emailAddress}
+                        onChange={(e) => {
+                          formik.setFieldValue("emailAddress", e.target.value);
+                          setEmailAddress(e.target.value);
+                        }}
+                        onBlur={formik.handleBlur}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.emailAddress}
+                      </Form.Control.Feedback>
+                    </Form.Group>
 
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formBasicPassword"
-                      >
-                        <Form.Control
-                          type="password"
-                          placeholder="Password"
-                          name="password"
-                          isInvalid={!!formik.errors.password}
-                          onChange={(e) => {
-                            formik.setFieldValue("password", e.target.value);
-                            setPassword(e.target.value);
-                          }}
-                          onBlur={formik.handleBlur}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          {formik.errors.password}
-                        </Form.Control.Feedback>
-                      </Form.Group>
-                      <Row className="d-flex justify-content-center">
-                        <Col xs={12} md={12} lg={8} xl={8}>
-                          <div className="d-grid">
-                            {loginUser.isLoading ? (
-                              <Button
-                                type="submit"
-                                variant="secondary"
-                                className={"me-1"}
-                              >
-                                <Spinner
-                                  as="span"
-                                  variant="light"
-                                  size="sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                  animation="border"
-                                />
-                              </Button>
-                            ) : (
-                              <Button
-                                type="submit"
-                                variant="primary"
-                                className={"me-1 primary-rounded-button "}
-                                disabled={loginUser.isLoading}
-                              >
-                                Login
-                              </Button>
-                            )}
-                          </div>
-                        </Col>
-                      </Row>
-                    </Form>
-                    <Row className="d-flex justify-content-around mt-2">
-                      <Col xs={12} md={8} lg={10} xl={8} className="py-3">
-                        <Link
-                          to={`/${AppRoutes.ForgotPassword}`}
-                          className="text-primary fw-bold"
-                        >
-                          Forgot Password
-                        </Link>
-                      </Col>
-                      <Col xs={12} md={8} lg={10} xl={8}>
-                        <p className="mb-0  text-center">
-                          Don't have an account?{" "}
-                          <Link
-                            to={`/${AppRoutes.Register}`}
-                            className="text-primary fw-bold"
-                          >
-                            Sign Up
-                          </Link>
-                        </p>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                      <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        isInvalid={!!formik.errors.password}
+                        onChange={(e) => {
+                          formik.setFieldValue("password", e.target.value);
+                          setPassword(e.target.value);
+                        }}
+                        onBlur={formik.handleBlur}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {formik.errors.password}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Row className="d-flex justify-content-center">
+                      <Col xs={12} md={12} lg={8} xl={8}>
+                        <div className="d-grid">
+                          {loginUser.isLoading ? (
+                            <Button
+                              type="submit"
+                              variant="secondary"
+                              className={"me-1"}
+                            >
+                              <Spinner
+                                as="span"
+                                variant="light"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                animation="border"
+                              />
+                            </Button>
+                          ) : (
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className={"me-1 primary-rounded-button "}
+                              disabled={loginUser.isLoading}
+                            >
+                              Login
+                            </Button>
+                          )}
+                        </div>
                       </Col>
                     </Row>
-                  </div>
+                  </Form>
+                  <Row className="d-flex justify-content-around mt-2">
+                    <Col xs={12} md={8} lg={10} xl={8} className="py-3">
+                      <Link
+                        to={`/${AppRoutes.ForgotPassword}`}
+                        className="text-primary fw-bold"
+                      >
+                        Forgot Password
+                      </Link>
+                    </Col>
+                    <Col xs={12} md={8} lg={10} xl={8}>
+                      <p className="mb-0  text-center">
+                        Don't have an account?{" "}
+                        <Link
+                          to={`/${AppRoutes.Register}`}
+                          className="text-primary fw-bold"
+                        >
+                          Sign Up
+                        </Link>
+                      </p>
+                    </Col>
+                  </Row>
                 </div>
               </Card.Body>
             </Card>
