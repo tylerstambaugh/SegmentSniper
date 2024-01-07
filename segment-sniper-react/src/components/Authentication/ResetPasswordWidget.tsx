@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
@@ -12,15 +12,20 @@ import {
   Form,
 } from "react-bootstrap";
 import { usePostResetPassword } from "../../hooks/Api/Auth/usePostResetPassword";
+import { ResetPasswordRequest } from "../../services/Api/Auth/postResetPassword";
+import { AppRoutes } from "../../enums/AppRoutes";
+import toast from "react-hot-toast";
 
 export default function ResetPasswordWidget() {
   const resetPassword = usePostResetPassword();
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [emailSent, setEmailSent] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
+  const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const resetPasswordToken = searchParams.get("prt");
   const userId = searchParams.get("uid");
@@ -43,12 +48,42 @@ export default function ResetPasswordWidget() {
       .oneOf([yup.ref("password")], "Passwords must match"),
   });
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const resetPasswordToken = searchParams.get("prt");
+    const userId = searchParams.get("uid");
+    console.log("reset token", resetPasswordToken);
+    console.log("userId", userId);
+  }, [location.search]);
+
   const formik = useFormik<ResetPasswordForm>({
     initialValues: {
       password: null,
       confirmPassword: null,
     },
-    onSubmit: async (values: ResetPasswordForm) => {},
+    onSubmit: async (values: ResetPasswordForm) => {
+      console.log("reset token", resetPasswordToken);
+      console.log("userId", userId);
+
+      let passwordResetRequest: ResetPasswordRequest = {
+        passwordResetToken: resetPasswordToken ?? "",
+        userId: userId ?? "",
+        password: values.password ?? "",
+        confirmPassword: values.confirmPassword ?? "",
+      };
+
+      let response = await resetPassword.mutateAsync(passwordResetRequest);
+      if (response.success) {
+        navigate(AppRoutes.Login);
+      } else {
+        let error = resetPassword.error;
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Unable to reset password. Please try again");
+        }
+      }
+    },
     validationSchema,
     validateOnChange: validated,
     validateOnBlur: validated,
@@ -62,18 +97,70 @@ export default function ResetPasswordWidget() {
     setShowConfirmPassword(!showConfirmPassword);
   }
 
-  return (
+  return resetPassword.error ? (
     <Container>
       <Row className="vh-100 d-flex justify-content-center mt-5">
         <Col md={6} lg={6} xs={10}>
           <Card>
             <Card.Title className="d-flex justify-content-center">
-              Register Sniper
+              Reset Password
+            </Card.Title>
+            <Card.Body className="d-flex">
+              <Row className="d-flex justify-text-center">
+                <Col>
+                  <h4>An error occurred.</h4>
+                </Col>
+                <Row>
+                  <Col>
+                    <Button onClick={() => window.location.reload()}>
+                      Try Again
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button onClick={() => navigate(`/${AppRoutes.Home}`)}>
+                      Home
+                    </Button>
+                  </Col>
+                </Row>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  ) : emailSent ? (
+    <Container>
+      <Row className="vh-100 d-flex justify-content-center mt-5">
+        <Col md={6} lg={6} xs={10}>
+          <Card>
+            <Card.Title className="d-flex justify-content-center">
+              Reset Password
             </Card.Title>
             <Card.Body>
-              <p>Fill out the form to register a new sniper</p>
+              <Row className="justify-text-center">
+                <Col>
+                  <h3>
+                    Please check you email and follow the instructions to reset
+                    your password.{" "}
+                  </h3>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  ) : (
+    <Container>
+      <Row className="vh-100 d-flex justify-content-center mt-5">
+        <Col md={6} lg={4} xs={10}>
+          <Card>
+            <Card.Title className="d-flex justify-content-center">
+              Reset Password
+            </Card.Title>
+            <Card.Body>
               <Form
-                name="registerForm"
+                name="resetPasswordForm"
                 onSubmit={(e) => {
                   setValidated(true);
                   formik.handleSubmit(e);
@@ -152,7 +239,7 @@ export default function ResetPasswordWidget() {
                       </Button>
                     ) : (
                       <Button variant="primary" type="submit">
-                        Register
+                        Reset
                       </Button>
                     )}
                   </Col>
