@@ -27,8 +27,14 @@ export default function ResetPasswordWidget() {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const resetPasswordToken = searchParams.get("prt");
-  const userId = searchParams.get("uid");
+  const [resetPasswordToken, setResetPasswordToken] = useState(
+    searchParams.get("prt")
+  );
+  const [cleanedPasswordResetToken, setCleanedPasswordResetToken] =
+    useState("");
+  const [queryStringUserId, setQueryStringUserId] = useState(
+    searchParams.get("uid")
+  );
   interface ResetPasswordForm {
     password: string | null;
     confirmPassword: string | null;
@@ -50,10 +56,11 @@ export default function ResetPasswordWidget() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const resetPasswordToken = searchParams.get("prt");
-    const userId = searchParams.get("uid");
-    console.log("reset token", resetPasswordToken);
-    console.log("userId", userId);
+    setResetPasswordToken(searchParams.get("prt"));
+    setCleanedPasswordResetToken(
+      resetPasswordToken?.replace(/\s+/g, "+") ?? ""
+    );
+    setQueryStringUserId(searchParams.get("uid"));
   }, [location.search]);
 
   const formik = useFormik<ResetPasswordForm>({
@@ -62,14 +69,10 @@ export default function ResetPasswordWidget() {
       confirmPassword: null,
     },
     onSubmit: async (values: ResetPasswordForm) => {
-      console.log("reset token", resetPasswordToken);
-      console.log("userId", userId);
-
       let passwordResetRequest: ResetPasswordRequest = {
-        passwordResetToken: resetPasswordToken ?? "",
-        userId: userId ?? "",
-        password: values.password ?? "",
-        confirmPassword: values.confirmPassword ?? "",
+        passwordResetToken: cleanedPasswordResetToken ?? "",
+        userId: queryStringUserId ?? "",
+        newPassword: values.password ?? "",
       };
 
       let response = await resetPassword.mutateAsync(passwordResetRequest);
@@ -105,19 +108,25 @@ export default function ResetPasswordWidget() {
             <Card.Title className="d-flex justify-content-center">
               Reset Password
             </Card.Title>
-            <Card.Body className="d-flex">
-              <Row className="d-flex justify-text-center">
+            <Card.Body className="d-flex justify-content-center">
+              <Row className="text-center">
                 <Col>
                   <h4>An error occurred.</h4>
                 </Col>
-                <Row>
+                <Row className="justify-content-center">
                   <Col>
-                    <Button onClick={() => window.location.reload()}>
+                    <Button
+                      className="w-100"
+                      onClick={() => window.location.reload()}
+                    >
                       Try Again
                     </Button>
                   </Col>
                   <Col>
-                    <Button onClick={() => navigate(`/${AppRoutes.Home}`)}>
+                    <Button
+                      className="w-100"
+                      onClick={() => navigate(`/${AppRoutes.Home}`)}
+                    >
                       Home
                     </Button>
                   </Col>
@@ -222,26 +231,28 @@ export default function ResetPasswordWidget() {
                 </Form.Group>
                 <Row className="d-flex justify-content-around text-center">
                   <Col>
-                    {resetPassword.isLoading ? (
-                      <Button
-                        type="submit"
-                        variant="secondary"
-                        className={"me-1"}
-                      >
-                        <Spinner
-                          as="span"
-                          variant="light"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                          animation="border"
-                        />
-                      </Button>
-                    ) : (
-                      <Button variant="primary" type="submit">
-                        Reset
-                      </Button>
-                    )}
+                    <div className="d-grid">
+                      {resetPassword.isLoading ? (
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          className={"me-1 mx-4"}
+                        >
+                          <Spinner
+                            as="span"
+                            variant="light"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            animation="border"
+                          />
+                        </Button>
+                      ) : (
+                        <Button variant="primary" type="submit">
+                          Reset
+                        </Button>
+                      )}
+                    </div>
                   </Col>
                 </Row>
               </Form>

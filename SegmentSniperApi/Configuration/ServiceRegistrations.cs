@@ -59,6 +59,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISendEmailConfirmation, SendEmailConfirmation>();
             services.AddScoped<IConfirmEmail, ConfirmEmail>();
             services.AddScoped<ISendPasswordResetEmail, SendPasswordResetEmail>();
+            services.AddScoped<ISendPasswordWasResetEmail, SendPasswordWasResetEmail>();
             services.AddScoped<IResetPassword,  ResetPassword>();
             services.AddScoped<IGetAuthenticatedUser, GetAuthenticatedUser>();
 

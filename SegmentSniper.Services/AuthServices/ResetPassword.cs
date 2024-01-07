@@ -16,19 +16,30 @@ namespace SegmentSniper.Services.AuthServices
         {
             ValidateContract(contract);
 
-
             var user = await _userManager.FindByIdAsync(contract.UserId);
             if (user != null)
             {
-                var updateResult = await _userManager.ResetPasswordAsync(user, contract.ChangePasswordToken, contract.NewPassword);
-
-                return new PasswordResetContract.Result(updateResult.Succeeded);
+                try
+                {
+                    var updateResult = await _userManager.ResetPasswordAsync(user, contract.ChangePasswordToken, contract.NewPassword);
+                    if (updateResult.Succeeded)
+                    {
+                        return new PasswordResetContract.Result(true);
+                    }
+                    else
+                    {
+                        throw new ApplicationException($"Password reset failed: {updateResult.Errors}");
+                    }
+                }
+                catch 
+                {
+                    throw;
+                }
             }
             else
             {
-                return new PasswordResetContract.Result(false);
+                throw new ArgumentException("User not found");
             }
-
         }
 
         private void ValidateContract(PasswordResetContract contract)

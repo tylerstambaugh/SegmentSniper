@@ -186,8 +186,8 @@ namespace SegmentSniper.Api.Controllers
             {
                 var response = await _resetPasswordActionHandler.HandleAsync(request);
 
-                if (response.Success) return Ok();
-                return BadRequest("Unable to send email");
+                if (response.Success) return Ok(new ResetPasswordRequest.Response(response.Success));
+                return BadRequest("Unable to reset password");
             }
             catch (Exception ex)
             {
