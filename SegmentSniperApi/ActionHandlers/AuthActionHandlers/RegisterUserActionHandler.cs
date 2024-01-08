@@ -1,4 +1,6 @@
-﻿using SegmentSniper.Models.Models.Auth.User;
+﻿using Microsoft.AspNetCore.Identity;
+using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 
 namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
@@ -6,15 +8,23 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
     public class RegisterUserActionHandler : IRegisterUserActionHandler
     {
         private readonly IRegisterUser _registerUserService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RegisterUserActionHandler(IRegisterUser registerUserService)
+        public RegisterUserActionHandler(IRegisterUser registerUserService, UserManager<ApplicationUser> userManager)
         {
             _registerUserService = registerUserService;
+            _userManager = userManager;
         }
 
-        public async Task<UserDto> Handle(RegisterUserRequest request)
+        public async Task<UserDto> HandleAsync(RegisterUserRequest request)
         {
             ValidateRequest(request);
+
+            var existingUser = await _userManager.FindByEmailAsync(request.User.Email);
+            if(existingUser != null) 
+            {
+                throw new ApplicationException("An account with that email address already exists");
+            }
 
             var contract = new RegisterUserContract(new RegisterUserDto
             {
@@ -33,6 +43,26 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
+            }
+
+            if(request.User == null)
+            {
+                throw new ArgumentNullException(nameof(request.User));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.User.Email))
+            {
+                throw new ArgumentNullException(nameof(request.User.Email));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.User.FirstName))
+            {
+                throw new ArgumentNullException(nameof(request.User.FirstName));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.User.Password))
+            {
+                throw new ArgumentNullException(nameof(request.User.Password));
             }
         }
 

@@ -75,7 +75,9 @@ export default function RegisterWidget() {
     },
     onSubmit: async (values: RegisterForm) => {
       await handleRegisterUser();
-      await handleLoginUser();
+      if (!!registerUser.isError) {
+        await handleLoginUser();
+      }
     },
     validationSchema,
     validateOnChange: validated,
@@ -91,7 +93,10 @@ export default function RegisterWidget() {
     try {
       await registerUser.mutateAsync(registerUserRequest);
     } catch (error) {
-      toast.error(`Registration error: ${error}`);
+      toast.error(`${error}`, {
+        duration: 5000,
+        position: "bottom-center",
+      });
     }
   }
 
@@ -109,7 +114,6 @@ export default function RegisterWidget() {
           navigate(`/${AppRoutes.Dashboard}`);
         }
       } catch (error) {
-        console.error("Login error:", error);
         toast.error(`login error: ${error}`);
       }
     }
@@ -141,12 +145,6 @@ export default function RegisterWidget() {
   function toggleConfirmPasswordVisibility() {
     setShowConfirmPassword(!showConfirmPassword);
   }
-
-  useEffect(() => {
-    if (registerUser.error) {
-      toast.error(`${registerUser.error}`);
-    }
-  }, [registerUser.isError]);
 
   return (
     <Container>
