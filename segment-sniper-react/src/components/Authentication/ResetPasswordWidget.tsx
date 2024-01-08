@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
@@ -22,6 +22,7 @@ export default function ResetPasswordWidget() {
   const [validated, setValidated] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [emailSent, setEmailSent] = useState<boolean>(false);
+  const [passwordResetSucess, setPasswordResetSuccess] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
@@ -77,7 +78,7 @@ export default function ResetPasswordWidget() {
 
       let response = await resetPassword.mutateAsync(passwordResetRequest);
       if (response.success) {
-        navigate(AppRoutes.Login);
+        setPasswordResetSuccess(true);
       } else {
         let error = resetPassword.error;
         if (error instanceof Error) {
@@ -153,6 +154,30 @@ export default function ResetPasswordWidget() {
                     your password.{" "}
                   </h3>
                 </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  ) : passwordResetSucess ? (
+    <Container>
+      <Row className="vh-100 d-flex justify-content-center mt-5">
+        <Col md={6} lg={6} xs={10}>
+          <Card>
+            <Card.Title className="d-flex justify-content-center">
+              Reset Password
+            </Card.Title>
+            <Card.Body className="d-flex justify-content-center">
+              <Row className="text-center">
+                <div className="mb-3 text-center">
+                  <h2>Password reset successfully. </h2>
+                  <h3>
+                    <Link to={`/${AppRoutes.Login}`}>
+                      <Button className="px-4">Login</Button>
+                    </Link>{" "}
+                  </h3>
+                </div>
               </Row>
             </Card.Body>
           </Card>

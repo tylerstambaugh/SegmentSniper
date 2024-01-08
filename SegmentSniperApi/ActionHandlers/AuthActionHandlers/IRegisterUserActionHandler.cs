@@ -4,7 +4,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 {
     public interface IRegisterUserActionHandler
     {
-        Task<UserDto> Handle(RegisterUserRequest contract);
+        Task<UserDto> HandleAsync(RegisterUserRequest contract);
     }
 
     public class RegisterUserRequest

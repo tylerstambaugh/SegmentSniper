@@ -34,7 +34,7 @@ root.render(
         },
         error: {
           style: {
-            background: "red",
+            background: "#fd2c60",
           },
         },
       }}

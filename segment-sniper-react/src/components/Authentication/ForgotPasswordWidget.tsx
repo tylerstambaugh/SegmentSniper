@@ -4,10 +4,11 @@ import { AppRoutes } from "../../enums/AppRoutes";
 import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePostSendPasswordResetEmail } from "../../hooks/Api/Auth/usePostSendPasswordResetEmail";
 import useTokenDataStore from "../../stores/useTokenStore";
 import { SendPasswordResetEmailRequest } from "../../services/Api/Auth/postSendPasswordResetEmail";
+import toast from "react-hot-toast";
 
 export default function ForgotPasswordWidget() {
   const [validated, setValidated] = useState(false);
@@ -45,9 +46,44 @@ export default function ForgotPasswordWidget() {
     validateOnBlur: validated,
   });
 
+  useEffect(() => {
+    if (sendPasswordResetEmail.error instanceof Error) {
+      toast.error(sendPasswordResetEmail.error.message);
+    }
+  }, [sendPasswordResetEmail.error]);
+
   return (
     <>
-      {emailSent ? (
+      {sendPasswordResetEmail.error ? (
+        <>
+          <Row className="vh-100 d-flex justify-content-center mt-5">
+            <Col md={6} lg={3} xs={10}>
+              <div className="border "></div>
+              <Card className="shadow">
+                <Card.Body>
+                  <Row>
+                    <Col className="mb-3 text-center">
+                      <p>
+                        Something wasn't right. Check your info and try again.
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="mb-3 text-center">
+                      <Button
+                        className="w-100"
+                        onClick={() => window.location.reload()}
+                      >
+                        Try Again
+                      </Button>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </>
+      ) : emailSent ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={3} xs={10}>
             <div className="border "></div>

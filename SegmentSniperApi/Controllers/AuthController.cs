@@ -47,7 +47,7 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var registeredUser = await _registerUserActionHandler.Handle(new RegisterUserRequest { User = registerUser });
+                var registeredUser = await _registerUserActionHandler.HandleAsync(new RegisterUserRequest { User = registerUser });
                 if (registeredUser != null)
                 {
                     return Ok(registeredUser);
@@ -56,7 +56,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
 
@@ -191,7 +191,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
+                return BadRequest($"{ex.Message}");
             }
         }
 
