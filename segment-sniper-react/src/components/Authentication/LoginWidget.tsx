@@ -167,7 +167,7 @@ export default function LoginWidget() {
                     </Col>
                     <Col xs={12} md={8} lg={10} xl={8}>
                       <p className="mb-0  text-center">
-                        Don't have an account?{" "}
+                        Don't have an account? <br />
                         <Link
                           to={`/${AppRoutes.Register}`}
                           className="text-primary fw-bold"

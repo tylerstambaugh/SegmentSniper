@@ -1,4 +1,4 @@
-import { Row, Col, Spinner, Container, Button } from "react-bootstrap";
+import { Row, Col, Spinner, Container, Button, Card } from "react-bootstrap";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import useUserStore from "../../stores/useUserStore";
@@ -69,42 +69,60 @@ export default function ConfirmEmailCheckCodeWidget() {
 
   return verificationComplete ? (
     <Container>
-      <Row>
-        <Col>
-          <h4>You're verified, time to start sniping</h4>
-          <Link to={`/${AppRoutes.Dashboard}`}>
-            <Button className="px-4">Snipe!</Button>
-          </Link>{" "}
+      <Row className="justify-content-center text-center">
+        <Col md={6} lg={6} xs={10}>
+          <Card>
+            <Row>
+              <Col>
+                <h4>You're verified, time to start sniping</h4>
+                <Link to={`/${AppRoutes.Dashboard}`}>
+                  <Button className="px-4">Snipe!</Button>
+                </Link>{" "}
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
     </Container>
   ) : checkVerificationCode.isError ? (
     <Container>
-      <Row>
-        <Col>
-          <h4>Hmm, that didn't work. Please try again</h4>
-          <Link to={`/${AppRoutes.Home}`}>
-            <Button className="px-4">Home</Button>
-          </Link>{" "}
+      <Row className="justify-content-center text-center">
+        <Col md={6} lg={6} xs={10}>
+          <Card>
+            <Row>
+              <Col>
+                <h4>Hmm, that didn't work. Please try again</h4>
+                <Link to={`/${AppRoutes.Home}`}>
+                  <Button className="px-4">Home</Button>
+                </Link>{" "}
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
     </Container>
   ) : (
     <Container>
-      <Row>
-        <Col>
-          <h2>Hang tight, we're making sure it's you.</h2>
+      <Row className="justify-content-center text-center">
+        <Col md={6} lg={6} xs={10}>
+          <Card>
+            <Row>
+              <Col>
+                <h2>Hang tight, we're making sure it's you.</h2>
+              </Col>
+            </Row>
+            <Row>
+              <Spinner
+                as="span"
+                variant="light"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                animation="border"
+              />
+            </Row>
+          </Card>
         </Col>
-      </Row>
-      <Row>
-        <Spinner
-          as="span"
-          variant="light"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-          animation="border"
-        />
       </Row>
     </Container>
   );
