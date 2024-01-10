@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="true"
-     inkscape:zoom="4"
-     inkscape:cx="233.875"
-     inkscape:cy="45.625"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="254.73522"
+     inkscape:cy="55.331106"
      inkscape:window-width="1920"
      inkscape:window-height="1009"
      inkscape:window-x="1072"
@@ -275,21 +275,24 @@
     <path
        style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
        d="m 27.516687,21.431266 h 6.846099"
-       id="path7" />
+       id="path7"
+       inkscape:label="path7" />
     <path
        style="display:inline;fill:#29dcb2;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
        d="M 27.516687,21.431266 37.570861,11.360555"
-       id="path10" />
+       id="path10"
+       inkscape:label="path10" />
     <path
        style="display:inline;fill:#29dcb2;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
        d="M 37.537788,11.344019 27.814344,1.3229176"
-       id="path11" />
+       id="path11"
+       inkscape:label="path11" />
     <path
        style="display:inline;fill:#29dcb2;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
        d="m 27.880489,1.3559906 h 6.482297"
        id="path12" />
     <path
-       style="display:inline;fill:#29dcb2;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
+       style="display:inline;opacity:1;fill:#29dcb2;fill-opacity:1;stroke:#29dcb2;stroke-width:0.264584;stroke-opacity:1"
        d="M 34.263567,21.398193 44.218522,11.377092"
        id="path13" />
     <path
@@ -328,9 +331,10 @@
        id="path21"
        clip-path="url(#clipPath50)" />
     <path
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.2650002;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:#ffffff;stroke:#ffffff;stroke-width:0.265113;stroke-dasharray:none;stroke-opacity:1"
        d="M 34.313178,21.563558 44.218524,11.377092"
-       id="path23" />
+       id="path23"
+       inkscape:label="path23" />
     <path
        style="display:inline;fill:#ffffff;stroke:#ffffff;stroke-width:0.264999;stroke-dasharray:none;stroke-opacity:1"
        d="m 44.134807,11.316114 0.09509,-0.09198"
@@ -352,7 +356,7 @@
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Grid"
-     style="display:inline" />
+     style="display:inline;opacity:1" />
   <g
      inkscape:groupmode="layer"
      id="layer5"
@@ -371,11 +375,11 @@
        xml:space="preserve"
        transform="matrix(0.26458339,0,0,0.26458339,-10.460228,-8.3596742)"
        id="text246"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24.6667px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code';white-space:pre;shape-inside:url(#rect246);display:inline;fill:#fd2c60;fill-opacity:1;stroke:#000000;stroke-opacity:1"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:29.33334941px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code';white-space:pre;shape-inside:url(#rect246);display:inline;fill:#fd2c60;fill-opacity:1;stroke:#000000;stroke-opacity:1"><tspan
          x="216.25391"
-         y="64.269382"
+         y="68.578143"
          id="tspan6"><tspan
-           style="font-family:ro;-inkscape-font-specification:ro;fill:#000000"
+           style="font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono';fill:#000000"
            id="tspan5">SEGMENT</tspan></tspan></text>
   </g>
 </svg>

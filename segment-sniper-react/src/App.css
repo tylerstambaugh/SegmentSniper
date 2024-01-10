@@ -171,7 +171,7 @@ body {
 
 .disabledSlider {
   opacity: 0.5; /* Adjust the opacity to visually indicate a disabled state */
-  pointer-events: none; /* Make the slider unclickable when disabled */
+  pointer-events: none; /* Make the slider un-clickable when disabled */
   cursor: not-allowed; /* Show a not-allowed cursor when hovering over the disabled slider */
 }
 
