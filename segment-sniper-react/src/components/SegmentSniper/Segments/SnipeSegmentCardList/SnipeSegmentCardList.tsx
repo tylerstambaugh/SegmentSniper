@@ -54,7 +54,6 @@ const SnipeSegmentsCardList = () => {
     Headings
   ).map(([key, value]) => ({ label: value, value: key }));
   const animatedComponents = makeAnimated();
-  const { calculateBearing } = useFindHeading();
   const convertTime = useConvertTimeStringToNumericValue();
 
   useEffect(() => {
@@ -63,7 +62,6 @@ const SnipeSegmentsCardList = () => {
         const result = await snipeSegments.mutateAsync({
           activityId: selectedActivityId!,
         });
-        addHeadingToEfforts();
         if (result) {
           setFilteredSnipeSegments(
             result
@@ -88,31 +86,6 @@ const SnipeSegmentsCardList = () => {
       fetchSnipeSegments();
     }
   }, [selectedActivityId]);
-
-  function addHeadingToEfforts() {
-    setSnipeSegmentsList((prevList) =>
-      prevList.map((item) => {
-        let segment = item.detailedSegmentEffort?.summarySegment;
-        if (segment) {
-          let startPoint: { lat: number; lng: number } = {
-            lat: segment.startLatlng[0],
-            lng: segment.startLatlng[1],
-          };
-
-          let endPoint: { lat: number; lng: number } = {
-            lat: segment.endLatlng[0],
-            lng: segment.endLatlng[1],
-          };
-
-          return {
-            ...item,
-            heading: calculateBearing(startPoint, endPoint),
-          };
-        }
-        return item;
-      })
-    );
-  }
 
   function handleSortChange() {
     if (selectedSortOption === "shortestDistance") {
@@ -171,14 +144,14 @@ const SnipeSegmentsCardList = () => {
           percentageFromLeader === undefined;
         console.log("percentage filter", percentageFilter);
 
-        const secondsFilter =
-          (secondsFromLeader != null &&
-            secondsFromLeader != undefined &&
-            (useQom
-              ? secondsFromQom <= secondsFromLeader
-              : secondsFromKom <= secondsFromLeader)) ||
-          secondsFromLeader === undefined;
-        console.log("seconds filter:", secondsFilter);
+        // const secondsFilter =
+        //   (secondsFromLeader != null &&
+        //     secondsFromLeader != undefined &&
+        //     (useQom
+        //       ? secondsFromQom <= secondsFromLeader
+        //       : secondsFromKom <= secondsFromLeader)) ||
+        //   secondsFromLeader === undefined;
+        // console.log("seconds filter:", secondsFilter);
 
         const headingFilter =
           headingsFilter.length > 0 && headingsFilter.includes(s.heading!);
@@ -187,7 +160,7 @@ const SnipeSegmentsCardList = () => {
         // console.log("headings filter", headingsFilter);
 
         const komFilter = useQom ? secondsFromQom !== 0 : secondsFromKom !== 0;
-        return komFilter && (percentageFilter || secondsFilter);
+        return komFilter && percentageFilter;
       });
 
       handleSortChange();

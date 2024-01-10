@@ -9,6 +9,7 @@ using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -102,6 +103,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 AthleteSegmentStats = _mapper.Map<AthleteSegmentStats, AthleteSegmentStatsUiModel>(detailedSegment.AthleteSegmentStats),
                 Xoms = detailedSegment.Xoms,
                 LocalLegend = detailedSegment.LocalLegend,
+                Heading = HeadingCalculator.CalculateBearing(dse.SummarySegment.StartLatlng, dse.SummarySegment.EndLatlng),
             };
 
             return snipeSegment;
@@ -161,6 +163,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             return timeAsString;
         }
+             
 
         private void ValidateRequest(GetSnipeSegmentsByActivityIdRequest request)
         {

@@ -2,7 +2,6 @@ import { StravaMap } from "../StravaMap";
 import { AthleteSegmentStats } from "./AthleteSegmentStats";
 import { LocalLegend } from "./LocalLegend";
 import { SegmentEffort } from "./SegmentEffort";
-import { SummarySegment } from "./SummarySegment";
 import { Xoms } from "./Xoms";
 
 export interface SnipeSegmentListItem {
