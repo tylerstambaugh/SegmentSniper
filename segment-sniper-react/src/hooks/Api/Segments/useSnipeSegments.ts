@@ -39,6 +39,8 @@ export const useSnipeSegments = () => {
     snipeSegmentsList.length === 0
       ? setSnipedSegmentsList(response.snipedSegments)
       : response.snipedSegments.map((s) => setSnipeSegment(s));
+
+    return response.snipedSegments;
   }
   return { mutateAsync, isLoading, isError, error, data };
 };
