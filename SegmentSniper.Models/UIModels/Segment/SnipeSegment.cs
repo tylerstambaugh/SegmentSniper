@@ -26,6 +26,7 @@ namespace SegmentSniper.Models.UIModels.Segment
         public AthleteSegmentStatsUiModel AthleteSegmentStats { get; set; }
         public Xoms Xoms { get; set; }
         public LocalLegend LocalLegend { get; set; }
+        public string Heading { get; set; }
     }
 
 }
