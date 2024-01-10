@@ -11,10 +11,9 @@
         {
             
         }
-        public ConfirmEmailContract(string userId, string emailAddress, string confirmationToken)
+        public ConfirmEmailContract(string userId, string confirmationToken)
         {
             UserId = userId;
-            EmailAddress = emailAddress;
             ConfirmationToken = confirmationToken;
         }
 

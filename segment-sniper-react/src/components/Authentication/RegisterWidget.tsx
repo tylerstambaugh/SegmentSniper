@@ -264,7 +264,7 @@ export default function RegisterWidget() {
                       <Button
                         type="submit"
                         variant="secondary"
-                        className={"me-1"}
+                        className={"pl-3 pr-3"}
                       >
                         <Spinner
                           as="span"

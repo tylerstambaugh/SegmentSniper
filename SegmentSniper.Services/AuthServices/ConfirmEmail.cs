@@ -40,10 +40,6 @@ namespace SegmentSniper.Services.AuthServices
             {
                 throw new ArgumentException(nameof(contract.UserId));
             }
-            if (string.IsNullOrWhiteSpace(contract.EmailAddress))
-            {
-                throw new ArgumentException(nameof(contract.EmailAddress));
-            }
             if (string.IsNullOrWhiteSpace(contract.ConfirmationToken))
             {
                 throw new ArgumentException(nameof(contract.ConfirmationToken));

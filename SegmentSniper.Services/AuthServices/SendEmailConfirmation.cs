@@ -34,9 +34,9 @@ namespace SegmentSniper.Services.AuthServices
 
             try
             {
-                var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var baseUrl = _configuration["AppBaseUrl"];
-                var confirmationLink = $"{baseUrl}/confirm-email-check-code?passwordResetToken={passwordResetToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
+                var confirmationLink = $"{baseUrl}/confirm-email-check-code?confirmationToken={confirmationToken}&at={contract.AccessToken}&rt={contract.RefreshToken}";
                 string emailBody = @"
                 <!DOCTYPE html>
                 <html lang=""en"">
