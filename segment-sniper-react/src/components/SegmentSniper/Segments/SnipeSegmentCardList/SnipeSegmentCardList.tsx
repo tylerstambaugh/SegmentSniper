@@ -60,11 +60,21 @@ const SnipeSegmentsCardList = () => {
   useEffect(() => {
     const fetchSnipeSegments = async () => {
       try {
-        await snipeSegments
-          .mutateAsync({ activityId: selectedActivityId! })
-          .then(() => addHeadingToEfforts())
-          .then(() => setFilteredSnipeSegments(snipeSegmentsList))
-          .finally();
+        const result = await snipeSegments.mutateAsync({
+          activityId: selectedActivityId!,
+        });
+        addHeadingToEfforts();
+        if (result) {
+          setFilteredSnipeSegments(
+            result
+              .filter((s) => s.activityId === selectedActivityId)
+              .sort(
+                (a, b) =>
+                  +new Date(a.detailedSegmentEffort?.startDate!) -
+                  +new Date(b.detailedSegmentEffort?.startDate!)
+              )
+          );
+        }
       } catch (error) {
         toast.error(`Error fetching snipe segments: ${error}`);
       }
@@ -77,7 +87,7 @@ const SnipeSegmentsCardList = () => {
     ) {
       fetchSnipeSegments();
     }
-  }, []);
+  }, [selectedActivityId]);
 
   function addHeadingToEfforts() {
     setSnipeSegmentsList((prevList) =>
@@ -153,16 +163,22 @@ const SnipeSegmentsCardList = () => {
 
         const percentageFilter =
           (percentageFromLeader != null &&
+            percentageFromLeader != undefined &&
             (useQom
-              ? s.percentageFromQom! < percentageFromLeader
-              : s.percentageFromKom! < percentageFromLeader)) ||
-          percentageFromLeader === 0;
+              ? s.percentageFromQom! <= percentageFromLeader
+              : s.percentageFromKom! <= percentageFromLeader)) ||
+          percentageFromLeader === 0 ||
+          percentageFromLeader === undefined;
+        console.log("percentage filter", percentageFilter);
 
         const secondsFilter =
-          secondsFromLeader != null &&
-          (useQom
-            ? secondsFromQom < secondsFromLeader
-            : secondsFromKom < secondsFromLeader);
+          (secondsFromLeader != null &&
+            secondsFromLeader != undefined &&
+            (useQom
+              ? secondsFromQom <= secondsFromLeader
+              : secondsFromKom <= secondsFromLeader)) ||
+          secondsFromLeader === undefined;
+        console.log("seconds filter:", secondsFilter);
 
         const headingFilter =
           headingsFilter.length > 0 && headingsFilter.includes(s.heading!);
@@ -189,15 +205,18 @@ const SnipeSegmentsCardList = () => {
     console.log("% from leader filter", percentageFromLeader);
     console.log("seconds from leader filter", secondsFromLeader);
     console.log("filtered segments list", filteredSnipeSegments);
-  }, []);
+  }, [filteredSnipeSegments]);
 
   const handleResetSnipeOptions = () => {
+    console.log("running reset snipe options.");
+
     setSelectedSortOption("Sort by");
     setPercentageFromLeader(undefined);
     setSecondsFromLeader(undefined);
     setUseQom(false);
     setHeadingsFilter([]);
     setShowDetailsSegmentId("");
+
     setFilteredSnipeSegments(
       snipeSegmentsList
         .filter((s) => s.activityId === selectedActivityId)
