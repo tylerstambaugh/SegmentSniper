@@ -22,7 +22,7 @@ export default function ResetPasswordWidget() {
   const [validated, setValidated] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [emailSent, setEmailSent] = useState<boolean>(false);
-  const [passwordResetSucess, setPasswordResetSuccess] = useState(false);
+  const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
@@ -160,7 +160,7 @@ export default function ResetPasswordWidget() {
         </Col>
       </Row>
     </Container>
-  ) : passwordResetSucess ? (
+  ) : passwordResetSuccess ? (
     <Container>
       <Row className="vh-100 d-flex justify-content-center mt-5">
         <Col md={6} lg={6} xs={10}>

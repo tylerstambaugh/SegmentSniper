@@ -75,7 +75,7 @@ export default function RegisterWidget() {
     },
     onSubmit: async (values: RegisterForm) => {
       await handleRegisterUser();
-      if (!!registerUser.isError) {
+      if (!registerUser.isError) {
         await handleLoginUser();
       }
     },

@@ -36,11 +36,7 @@ function Header() {
         >
           <Navbar.Brand>
             {" "}
-            <img
-              src={logo}
-              alt="segmentSniperProLogo"
-              className="header-image"
-            />
+            <img src={logo} alt="segmentSniperLogo" className="header-image" />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle
