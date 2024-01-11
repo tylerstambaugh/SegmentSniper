@@ -27,6 +27,7 @@ namespace SegmentSniper.Models.UIModels.Segment
         public Xoms Xoms { get; set; }
         public LocalLegend LocalLegend { get; set; }
         public string Heading { get; set; }
+        //test
     }
 
 }
