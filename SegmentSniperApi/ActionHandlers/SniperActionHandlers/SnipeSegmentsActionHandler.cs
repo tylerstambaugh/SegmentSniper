@@ -52,7 +52,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     foreach (DetailedSegmentEffort segmentEffortModel in segmentEfforts)
                     {
-                        //get detailed segment for each segment Id
+                        //get detailed segments for each segment Id
                         var detailedSegmentResponse = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(segmentEffortModel.SummarySegment.Id));
                         DetailedSegment model = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(detailedSegmentResponse.DetailedSegmentApiModel);
                         segmentModels.Add(model);
