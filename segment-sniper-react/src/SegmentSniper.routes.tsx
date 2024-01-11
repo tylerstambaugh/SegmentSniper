@@ -7,24 +7,24 @@ import {
   Outlet,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Register from "./pages/Register";
+import Register from "./pages/Authentication/Register";
 import { AppRoutes } from "./enums/AppRoutes";
-import Login from "./pages/Login";
-import ForgotPassword from "./pages/ForgotPassword";
-import PrivateRoute from "./components/Authentication/PrivateRoute";
+import Login from "./pages/Authentication/Login";
+import ForgotPassword from "./pages/Authentication/ForgotPassword";
+import PrivateRoute from "./components/Organisms/Authentication/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
-import Logout from "./pages/Logout";
+import Logout from "./pages/Authentication/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
 import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
-import SegmentSniper from "./pages/SegmentSniper";
+import SegmentSniper from "./pages/SegmentSniper/SegmentSniper";
 import Admin from "./pages/Admin";
 import { UserRole } from "./enums/Roles";
-import ActivitySearchResults from "./pages/ActivitySearchResults";
-import SnipedSegments from "./pages/SnipedSegments";
-import ActivityDetails from "./pages/ActivityDetails";
-import ConfirmEmail from "./pages/ConfirmEmail";
-import ConfirmEmailCheckCode from "./pages/ConfirmEmailCheckCode";
-import ResetPassword from "./pages/ResetPassword";
+import ActivitySearchResults from "./pages/SegmentSniper/ActivitySearchResults";
+import SnipedSegments from "./pages/SegmentSniper/SnipedSegments";
+import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
+import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
+import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
+import ResetPassword from "./pages/Authentication/ResetPassword";
 
 interface Props {
   defaultPage?: string;
