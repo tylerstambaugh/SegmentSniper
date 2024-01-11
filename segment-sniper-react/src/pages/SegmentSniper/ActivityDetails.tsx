@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
-import ActivityCard from "../../components/Molecules/ActivityCard";
-import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegmentCardList";
+import ActivityCard from "../../components/Molecules/Activity/ActivityCard";
+import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 

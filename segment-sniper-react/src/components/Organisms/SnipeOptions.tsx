@@ -1,13 +1,27 @@
-import { useState } from "react";
-import PercentageFromLeaderFilter from "../Molecules/PercentageFromLeaderFilter";
+import { useEffect, useState } from "react";
+import PercentageFromLeaderFilter from "../Molecules/Filters/PercentageFromLeaderFilter";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import useActivityListStore from "../../stores/useActivityListStore";
+import SecondsFromLeaderFilter from "../Molecules/Filters/SecondsFromLeaderFilter";
+import HeadingsFilter from "../Molecules/Filters/HeadingsFilter";
+import LeaderTypeFilter from "../Molecules/Filters/LeaderTypeFilter";
 
-export interface SnipeOptionsProps {}
+export interface FilterOptions {
+  percentageFromLeader?: number | null;
+  secondsFromLeader?: number | null;
+  useQom: boolean;
+  headings: string[];
+  sortBy: string | null;
+}
 
-const SnipeOptions = (props: SnipeOptionsProps) => {
-  const [useQom, setUseQom] = useState<boolean>(false);
+export interface SnipeOptionsProps {
+  onChange: (values: FilterOptions) => void;
+  onReset: () => void;
+}
+
+const SnipeOptions = ({ onReset, onChange }: SnipeOptionsProps) => {
+  const [leaderTypeQom, setLeaderTypeQom] = useState<boolean>(false);
   const [percentageFromLeader, setPercentageFromLeader] = useState<
     number | undefined
   >();
@@ -21,14 +35,21 @@ const SnipeOptions = (props: SnipeOptionsProps) => {
     (state) => state.selectedActivityId
   );
 
-  const [
-    snipeSegmentList,
-    queriedSnipeSegmentsList,
-    setQueriedSnipeSegmentsList,
-  ] = useSnipeSegmentsListStore((state) => [
-    state.snipeSegmentsList,
-    state.queriedSnipeSegmentsList,
-    state.setQueriedSnipeSegmentsList,
+  useEffect(() => {
+    let filterOptions: FilterOptions = {
+      percentageFromLeader: percentageFromLeader,
+      secondsFromLeader: secondsFromLeader,
+      headings: headingsFilter,
+      sortBy: selectedSortOption,
+      useQom: leaderTypeQom,
+    };
+    onChange(filterOptions);
+  }, [
+    percentageFromLeader,
+    secondsFromLeader,
+    selectedSortOption,
+    headingsFilter,
+    leaderTypeQom,
   ]);
 
   const handleResetSnipeOptions = () => {
@@ -37,26 +58,22 @@ const SnipeOptions = (props: SnipeOptionsProps) => {
     setSelectedSortOption("Sort by");
     setPercentageFromLeader(undefined);
     setSecondsFromLeader(undefined);
-    setUseQom(false);
+    setLeaderTypeQom(false);
     setHeadingsFilter([]);
+    onReset();
+
     //setShowDetailsSegmentId("");
 
-    setQueriedSnipeSegmentsList(
-      snipeSegmentList
-        .filter((s) => s.activityId === selectedActivityId)
-        .sort(
-          (a, b) =>
-            +new Date(a.detailedSegmentEffort?.startDate!) -
-            +new Date(b.detailedSegmentEffort?.startDate!)
-        )
-    );
+    // setQueriedSnipeSegmentsList(
+    //   snipeSegmentList
+    //     .filter((s) => s.activityId === selectedActivityId)
+    //     .sort(
+    //       (a, b) =>
+    //         +new Date(a.detailedSegmentEffort?.startDate!) -
+    //         +new Date(b.detailedSegmentEffort?.startDate!)
+    //     )
+    // );
   };
-
-  function handlePercentageFromLeaderFilterChange(
-    percentageFromLeader: number
-  ) {
-    setPercentageFromLeader(percentageFromLeader);
-  }
 
   return (
     <>
@@ -66,21 +83,35 @@ const SnipeOptions = (props: SnipeOptionsProps) => {
             <p className="mb-1 snipe-options-heading">Snipe Options</p>
           </Col>
           <Col className="text-end">
-            <Button
-              variant="secondary"
-              onClick={() => handleResetSnipeOptions()}
-            >
+            <Button variant="secondary" onClick={handleResetSnipeOptions}>
               Reset
             </Button>
           </Col>
         </Row>
         <Row>
+          <LeaderTypeFilter
+            leaderTypeQom={leaderTypeQom}
+            onChange={setLeaderTypeQom}
+          />
+        </Row>
+        <Row>
           <PercentageFromLeaderFilter
-            useQom={useQom}
+            useQom={leaderTypeQom}
             percentageFromLeader={percentageFromLeader}
-            handlePercentageFromLeaderFilterChange={
-              handlePercentageFromLeaderFilterChange
-            }
+            onChange={setPercentageFromLeader}
+          />
+        </Row>
+        <Row>
+          <SecondsFromLeaderFilter
+            useQom={leaderTypeQom}
+            secondsFromLeader={secondsFromLeader}
+            onChange={setSecondsFromLeader}
+          />
+        </Row>
+        <Row>
+          <HeadingsFilter
+            headings={headingsFilter}
+            onChange={setHeadingsFilter}
           />
         </Row>
       </Container>

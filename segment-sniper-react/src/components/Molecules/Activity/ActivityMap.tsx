@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import useAppConfigStore from "../../stores/useAppConfigStore";
+import useAppConfigStore from "../../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
-import Polyline from "../Atoms/Polyline";
-import { StravaMap } from "../../models/StravaMap";
+import Polyline from "../../Atoms/Polyline";
+import { StravaMap } from "../../../models/StravaMap";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;

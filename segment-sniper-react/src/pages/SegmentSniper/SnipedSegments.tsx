@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegmentCardList";
+import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
 import useActivityListStore from "../../stores/useActivityListStore";

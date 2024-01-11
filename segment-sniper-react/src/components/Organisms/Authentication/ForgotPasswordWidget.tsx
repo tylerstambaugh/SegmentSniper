@@ -58,7 +58,6 @@ export default function ForgotPasswordWidget() {
         <>
           <Row className="vh-100 d-flex justify-content-center mt-5">
             <Col md={6} lg={3} xs={10}>
-              <div className="border "></div>
               <Card className="shadow">
                 <Card.Body>
                   <Row>
@@ -86,7 +85,6 @@ export default function ForgotPasswordWidget() {
       ) : emailSent ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">
           <Col md={6} lg={3} xs={10}>
-            <div className="border "></div>
             <Card className="shadow">
               <Card.Body>
                 <Row>

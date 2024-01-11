@@ -1,15 +1,12 @@
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
-import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
-import { usePostStarSegment } from "../../hooks/Api/Segments/usePostStarSegment";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
+import { usePostStarSegment } from "../../../hooks/Api/Segments/usePostStarSegment";
+import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import ActivityMap from "./ActivityMap";
-import { useFindHeading } from "../../hooks/useFindHeading";
-import { SummarySegment } from "../../models/Segment/SummarySegment";
-import { BooleanSchema } from "yup";
-import { useConvertTimeStringToNumericValue } from "../../hooks/useConvertTimeStringToNumericValue";
+import ActivityMap from "../Activity/ActivityMap";
+import { useConvertTimeStringToNumericValue } from "../../../hooks/useConvertTimeStringToNumericValue";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
