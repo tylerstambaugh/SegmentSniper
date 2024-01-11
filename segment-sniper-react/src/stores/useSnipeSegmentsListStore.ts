@@ -20,12 +20,19 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
       persist(
         (set) => ({
           snipeSegmentsList: [],
+          queriedSnipeSegmentsList: [],
           setSnipeSegmentsList: (snipedSegmentsList) =>
             set((state) => {
               state.snipeSegmentsList =
                 typeof snipedSegmentsList === "function"
                   ? snipedSegmentsList(state.snipeSegmentsList)
                   : snipedSegmentsList;
+            }),
+          setQueriedSnipeSegmentsList: (
+            queriedSnipeSegmentsList: SnipeSegmentListItem[]
+          ) =>
+            set((state) => {
+              state.queriedSnipeSegmentsList = queriedSnipeSegmentsList;
             }),
           appendSnipeSegmentList: (snipeSegmentList: SnipeSegmentListItem[]) =>
             set((state) => {
@@ -48,6 +55,10 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
             set((state) => {
               state.snipeSegmentsList = initialState;
             }),
+          resetQueriedSnipeSegmentsList: () =>
+            set((state) => {
+              state.queriedSnipeSegmentsList = initialState;
+            }),
         }),
         persistOptions
       ),
@@ -60,6 +71,7 @@ export default useSnipeSegmentsListStore;
 
 interface SnipeSegmentsListStore {
   snipeSegmentsList: SnipeSegmentListItem[];
+  queriedSnipeSegmentsList: SnipeSegmentListItem[];
   setSnipeSegment: (snipeSegmentListITem: SnipeSegmentListItem) => void;
   setSnipeSegmentsList: (
     snipedSegmentsList:
@@ -67,5 +79,9 @@ interface SnipeSegmentsListStore {
       | ((prevList: SnipeSegmentListItem[]) => SnipeSegmentListItem[])
   ) => void;
   appendSnipeSegmentList: (snipedSegmentList: SnipeSegmentListItem[]) => void;
+  setQueriedSnipeSegmentsList: (
+    queriedSnipeSegmentsList: SnipeSegmentListItem[]
+  ) => void;
   resetSnipedSegmentsList: () => void;
+  resetQueriedSnipeSegmentsList: () => void;
 }
