@@ -1,27 +1,27 @@
 import { Row, Col, Form } from "react-bootstrap";
-import Slider from "../Atoms/Slider/Slider";
+import Slider from "../../Atoms/Slider/Slider";
 import { useState } from "react";
 
 export interface PercentageFromLeaderProps {
   useQom: boolean;
   percentageFromLeader: number | undefined;
-  handlePercentageFromLeaderFilterChange: (
-    percentageFromLeader: number
-  ) => void;
+  onChange: (value: number) => void;
 }
 
-const PercentageFromLeaderFilter = (props: PercentageFromLeaderProps) => {
+const PercentageFromLeaderFilter = ({
+  useQom,
+  percentageFromLeader,
+  onChange,
+}: PercentageFromLeaderProps) => {
   return (
     <Row>
       <Col xs={12} className=" text-start snipe-option-label">
-        % From {props.useQom ? `QOM` : "KOM"}:
+        % From {useQom ? `QOM` : "KOM"}:
       </Col>
       <Col xs={8} className="pt-2">
         <Slider
-          onChange={(value) =>
-            props.handlePercentageFromLeaderFilterChange(value)
-          }
-          value={props.percentageFromLeader || undefined}
+          onChange={onChange}
+          value={percentageFromLeader || undefined}
           min={0}
           max={100}
           disabled={false}
@@ -30,18 +30,14 @@ const PercentageFromLeaderFilter = (props: PercentageFromLeaderProps) => {
       <Col xs={4} className="pb-2">
         <Form.Control
           type="number"
-          value={props.percentageFromLeader || ""}
+          value={percentageFromLeader || ""}
           style={{
             width: "80%",
             display: "inline-block",
             marginRight: "5px",
           }}
-          onBlur={(e) =>
-            props.handlePercentageFromLeaderFilterChange(Number(e.target.value))
-          }
-          onChange={(e) =>
-            props.handlePercentageFromLeaderFilterChange(Number(e.target.value))
-          }
+          onBlur={(e) => onChange(Number(e.target.value))}
+          onChange={(e) => onChange(Number(e.target.value))}
           pattern="[0-9]*"
         />
         <span style={{ display: "inline-block" }}>%</span>

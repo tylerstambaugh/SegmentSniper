@@ -10,20 +10,20 @@ import {
   FormLabel,
   Spinner,
 } from "react-bootstrap";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
 import SnipeSegmentCard from "./SnipeSegmentCard";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useFindHeading } from "../../hooks/useFindHeading";
-import Slider from "../Atoms/Slider/Slider";
-import { Headings } from "../../enums/Headings";
-import { useSnipeSegments } from "../../hooks/Api/Segments/useSnipeSegments";
-import useActivityListStore from "../../stores/useActivityListStore";
+import { useFindHeading } from "../../../hooks/useFindHeading";
+import Slider from "../../Atoms/Slider/Slider";
+import { Headings } from "../../../enums/Headings";
+import { useSnipeSegments } from "../../../hooks/Api/Segments/useSnipeSegments";
+import useActivityListStore from "../../../stores/useActivityListStore";
 import toast from "react-hot-toast";
-import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
-import { useConvertTimeStringToNumericValue } from "../../hooks/useConvertTimeStringToNumericValue";
+import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
+import { useConvertTimeStringToNumericValue } from "../../../hooks/useConvertTimeStringToNumericValue";
 
 const SnipeSegmentsCardList = () => {
   const selectedActivityId = useActivityListStore(

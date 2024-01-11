@@ -10,10 +10,6 @@ interface SliderProps {
 }
 
 const Slider = ({ onChange, value, min, max, disabled }: SliderProps) => {
-  const handleSliderChange = (newValue: number) => {
-    onChange(newValue);
-  };
-
   return (
     <ReactSlider
       className={`customSlider ${disabled ? "disabledSlider" : ""}`}
@@ -24,7 +20,7 @@ const Slider = ({ onChange, value, min, max, disabled }: SliderProps) => {
       max={max}
       defaultValue={value}
       value={value || 0}
-      onChange={(value) => handleSliderChange(value)}
+      onChange={onChange}
       disabled={disabled}
     />
   );
