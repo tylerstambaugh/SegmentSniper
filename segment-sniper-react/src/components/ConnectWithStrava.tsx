@@ -17,7 +17,7 @@ export default function ConnectWithStrava() {
 
     window.location.href = `http://www.strava.com/oauth/authorize?client_id=${appConfig?.clientId}&response_type=code&redirect_uri=${encodedRedirectUri}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all,profile:write`;
   }
-
+  //oh boy
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
       <Row sm={2} className="text-center ">
