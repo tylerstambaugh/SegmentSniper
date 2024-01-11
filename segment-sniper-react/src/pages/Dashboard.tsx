@@ -1,11 +1,11 @@
 import { Col, Container, Row } from "react-bootstrap";
 import useUserStore from "../stores/useUserStore";
-import MainMenu from "../components/MainMenu";
-import ConnectWithStrava from "../components/ConnectWithStrava";
+import MainMenu from "../components/Organisms/MainMenu";
+import ConnectWithStrava from "../components/Organisms/ConnectWithStrava";
 import { useGetUserHasStravaToken } from "../hooks/Api/Auth/useGetHasStravaToken";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import ConfirmEmail from "./ConfirmEmail";
+import ConfirmEmail from "./Authentication/ConfirmEmail";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {

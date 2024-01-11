@@ -1,4 +1,4 @@
-import AdminWidget from "../components/Admin/AdminMenu";
+import AdminWidget from "../components/Organisms/Admin/AdminMenu";
 
 function Admin() {
   return (
