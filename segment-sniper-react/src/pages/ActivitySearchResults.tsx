@@ -3,35 +3,20 @@ import useActivityListStore from "../stores/useActivityListStore";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../enums/AppRoutes";
-import ActivityCardList from "../components/SegmentSniper/Activities/ActivityCardList/ActivityCardList";
+import ActivityCardList from "../components/Molecules/ActivityCardList";
 import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 import { useSnipeSegments } from "../hooks/Api/Segments/useSnipeSegments";
 import toast from "react-hot-toast";
-import SnipeSegmentsModal from "../components/SegmentSniper/Segments/SnipeSegmentsModal";
-import { SnipeSegmentsRequest } from "../services/Api/Segment/getSnipeSegmentsList";
 
 function ActivitySearchResults() {
   const navigate = useNavigate();
-  const [
-    setSelectedActivity,
-    selectedActivityId,
-    setSelectedActivityId,
-    resetActivityList,
-  ] = useActivityListStore((state) => [
-    state.setSelectedActivityId,
-    state.selectedActivityId,
-    state.setSelectedActivityId,
-    state.resetActivityList,
-  ]);
+  const [setSelectedActivity, resetActivityList] = useActivityListStore(
+    (state) => [state.setSelectedActivityId, state.resetActivityList]
+  );
   const [showSnipeSegmentsModal, setShowSnipeSegmentsModal] = useState(false);
   const resetSegmentEffortsList = useSegmentEffortsListStore(
     (state) => state.resetSegmentEffortsList
   );
-
-  const handleCloseSnipeSegmentsModal = () => {
-    setShowSnipeSegmentsModal(false), setSelectedActivityId("");
-  };
-  const handleShowSnipeSegmentsModal = () => setShowSnipeSegmentsModal(true);
 
   const snipeSegments = useSnipeSegments();
 
@@ -52,10 +37,6 @@ function ActivitySearchResults() {
 
   return (
     <Container fluid>
-      <SnipeSegmentsModal
-        show={showSnipeSegmentsModal}
-        handleClose={handleCloseSnipeSegmentsModal}
-      />
       <Row className="pt-3">
         <Col className="d-flex justify-content-around">
           <Button
@@ -72,9 +53,7 @@ function ActivitySearchResults() {
       </Row>
       <Row>
         <Col>
-          <ActivityCardList
-            handleShowSnipeSegmentsModal={handleShowSnipeSegmentsModal}
-          />
+          <ActivityCardList />
         </Col>
       </Row>
       <Row className="justify-content-center">

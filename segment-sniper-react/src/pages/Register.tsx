@@ -1,4 +1,4 @@
-import RegisterWidget from "../components/Authentication/RegisterWidget";
+import RegisterWidget from "../components/Organisms/Authentication/RegisterWidget";
 
 function Register() {
   return <RegisterWidget />;

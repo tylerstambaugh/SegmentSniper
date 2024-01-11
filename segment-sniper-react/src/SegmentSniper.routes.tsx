@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import { AppRoutes } from "./enums/AppRoutes";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
-import PrivateRoute from "./components/Authentication/PrivateRoute";
+import PrivateRoute from "./components/Organisms/Authentication/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";

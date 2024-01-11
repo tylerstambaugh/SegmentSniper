@@ -1,4 +1,4 @@
-import ConfirmEmailSendCodeWidget from "../components/Authentication/ConfirmEmailSendCodeWidget";
+import ConfirmEmailSendCodeWidget from "../components/Organisms/Authentication/ConfirmEmailSendCodeWidget";
 import useUserStore from "../stores/useUserStore";
 
 function ConfirmEmail() {

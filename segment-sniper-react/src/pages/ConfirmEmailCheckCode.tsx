@@ -1,4 +1,4 @@
-import ConfirmEmailCheckCodeWidget from "../components/Authentication/ConfirmEmailCheckCodeWidget";
+import ConfirmEmailCheckCodeWidget from "../components/Organisms/Authentication/ConfirmEmailCheckCodeWidget";
 
 function ConfirmEmailCheckCode() {
   return (
