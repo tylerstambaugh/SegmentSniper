@@ -9,6 +9,9 @@ import ActivityCard from "../../components/Molecules/Activity/ActivityCard";
 import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
+import SnipeOptions, {
+  FilterOptions,
+} from "../../components/Organisms/SnipeOptions";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
@@ -18,10 +21,26 @@ const ActivityDetails = () => {
       state.setSelectedActivityId,
       state.selectedActivityId,
     ]);
+  const [
+    snipeSegmentList,
+    queriedSnipeSegmentList,
+    setSnipeSegmentList,
+    setQueriedSnipeSegmentList,
+  ] = useSnipeSegmentsListStore((state) => [
+    state.snipeSegmentsList,
+    state.queriedSnipeSegmentsList,
+    state.setSnipeSegmentsList,
+    state.setQueriedSnipeSegmentsList,
+  ]);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>();
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
     navigate(`/${AppRoutes.ActivitySearchResults}`);
+  }
+
+  function handleFilterOptionsChange(values: FilterOptions) {
+    setFilterOptions(values);
   }
 
   return (
@@ -46,6 +65,7 @@ const ActivityDetails = () => {
           }
           showMap={false}
         />
+        <SnipeOptions onChange={handleFilterOptionsChange} />
         <Row>
           <SnipeSegmentsCardList />
         </Row>

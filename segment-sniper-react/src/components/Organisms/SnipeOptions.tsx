@@ -17,10 +17,9 @@ export interface FilterOptions {
 
 export interface SnipeOptionsProps {
   onChange: (values: FilterOptions) => void;
-  onReset: () => void;
 }
 
-const SnipeOptions = ({ onReset, onChange }: SnipeOptionsProps) => {
+const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   const [leaderTypeQom, setLeaderTypeQom] = useState<boolean>(false);
   const [percentageFromLeader, setPercentageFromLeader] = useState<
     number | undefined
@@ -35,15 +34,18 @@ const SnipeOptions = ({ onReset, onChange }: SnipeOptionsProps) => {
     (state) => state.selectedActivityId
   );
 
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>();
+
   useEffect(() => {
-    let filterOptions: FilterOptions = {
+    let newFilterOptions: FilterOptions = {
       percentageFromLeader: percentageFromLeader,
       secondsFromLeader: secondsFromLeader,
       headings: headingsFilter,
       sortBy: selectedSortOption,
       useQom: leaderTypeQom,
     };
-    onChange(filterOptions);
+    setFilterOptions(newFilterOptions);
+    onChange(filterOptions!);
   }, [
     percentageFromLeader,
     secondsFromLeader,
@@ -60,7 +62,6 @@ const SnipeOptions = ({ onReset, onChange }: SnipeOptionsProps) => {
     setSecondsFromLeader(undefined);
     setLeaderTypeQom(false);
     setHeadingsFilter([]);
-    onReset();
 
     //setShowDetailsSegmentId("");
 
