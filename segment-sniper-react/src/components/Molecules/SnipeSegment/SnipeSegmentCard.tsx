@@ -11,7 +11,7 @@ import { useConvertTimeStringToNumericValue } from "../../../hooks/useConvertTim
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
   showDetails: boolean;
-  useQom: boolean;
+  leaderTypeQom: boolean;
   setShowDetails: (segmentId: string) => void;
 };
 
@@ -97,11 +97,11 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                 <Row className="justify-content-start text-start">
                   <Col xs={7}>
                     <span className="activity-card-label">
-                      {!props.useQom ? `KOM Time:` : `QOM Time:`}
+                      {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
                     </span>
                   </Col>
                   <Col className="justify-content-end text-end">
-                    {!props.useQom
+                    {!props.leaderTypeQom
                       ? props.snipeSegment.komTime
                       : props.snipeSegment.qomTime}
                   </Col>
@@ -109,11 +109,11 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                 <Row className="justify-content-start text-start">
                   <Col xs={7}>
                     <span className="activity-card-label">
-                      Time Off {!props.useQom ? `KOM:` : `QOM:`}
+                      Time Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
                     </span>
                   </Col>
                   <Col className="justify-content-end text-end">
-                    {!props.useQom
+                    {!props.leaderTypeQom
                       ? props.snipeSegment.secondsFromKom
                       : props.snipeSegment.secondsFromQom}
                   </Col>
@@ -121,11 +121,11 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                 <Row className="justify-content-start text-start">
                   <Col xs={7}>
                     <span className="activity-card-label">
-                      % Off {!props.useQom ? `KOM:` : `QOM:`}
+                      % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
                     </span>
                   </Col>
                   <Col className="justify-content-end text-end">
-                    {!props.useQom
+                    {!props.leaderTypeQom
                       ? `${props.snipeSegment.percentageFromKom}%`
                       : `${props.snipeSegment.percentageFromQom}%`}
                   </Col>

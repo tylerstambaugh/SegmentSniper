@@ -2,13 +2,13 @@ import { FormGroup, Row, Col, FormLabel, Form } from "react-bootstrap";
 import {} from "react-router-dom";
 
 export interface SecondsFromLeaderProps {
-  useQom: boolean;
+  leaderTypeQom: boolean;
   secondsFromLeader: number | undefined;
   onChange: (value: number) => void;
 }
 
 const SecondsFromLeaderFilter = ({
-  useQom,
+  leaderTypeQom: leaderTypeQom,
   secondsFromLeader,
   onChange,
 }: SecondsFromLeaderProps) => {
@@ -17,7 +17,7 @@ const SecondsFromLeaderFilter = ({
       <Row className="pb-2">
         <Col xs={8} className="text-start">
           <FormLabel className=" snipe-option-label">
-            Seconds From {useQom ? `QOM` : "KOM"}:
+            Seconds From {leaderTypeQom ? `QOM` : "KOM"}:
           </FormLabel>
         </Col>
         <Col className="">
