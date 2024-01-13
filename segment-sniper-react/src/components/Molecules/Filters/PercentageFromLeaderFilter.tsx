@@ -3,20 +3,20 @@ import Slider from "../../Atoms/Slider/Slider";
 import { useState } from "react";
 
 export interface PercentageFromLeaderProps {
-  useQom: boolean;
+  leaderTypeQom: boolean;
   percentageFromLeader: number | undefined;
   onChange: (value: number) => void;
 }
 
 const PercentageFromLeaderFilter = ({
-  useQom,
+  leaderTypeQom: leaderTypeQom,
   percentageFromLeader,
   onChange,
 }: PercentageFromLeaderProps) => {
   return (
     <Row>
       <Col xs={12} className=" text-start snipe-option-label">
-        % From {useQom ? `QOM` : "KOM"}:
+        % From {leaderTypeQom ? `QOM` : "KOM"}:
       </Col>
       <Col xs={8} className="pt-2">
         <Slider

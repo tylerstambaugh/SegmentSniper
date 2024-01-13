@@ -16,11 +16,10 @@ import Dashboard from "./pages/Dashboard";
 import Logout from "./pages/Authentication/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
 import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
-import SegmentSniper from "./pages/SegmentSniper/SegmentSniper";
+import SegmentSniper from "./pages/SegmentSniper/ActivityLookup";
 import Admin from "./pages/Admin";
 import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/SegmentSniper/ActivitySearchResults";
-import SnipedSegments from "./pages/SegmentSniper/SnipedSegments";
 import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
 import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
@@ -112,14 +111,6 @@ export default function Routes({ defaultPage }: Props) {
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
                 <ActivityDetails />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.SnipedSegments}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <SnipedSegments />
               </PrivateRoute>
             }
           />

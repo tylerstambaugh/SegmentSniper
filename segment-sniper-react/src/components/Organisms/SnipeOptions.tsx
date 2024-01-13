@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import PercentageFromLeaderFilter from "../Molecules/Filters/PercentageFromLeaderFilter";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import useActivityListStore from "../../stores/useActivityListStore";
 import SecondsFromLeaderFilter from "../Molecules/Filters/SecondsFromLeaderFilter";
 import HeadingsFilter from "../Molecules/Filters/HeadingsFilter";
 import LeaderTypeFilter from "../Molecules/Filters/LeaderTypeFilter";
+import SortFilter from "../Molecules/Filters/SortFilter";
 
 export interface FilterOptions {
   percentageFromLeader?: number | null;
   secondsFromLeader?: number | null;
-  useQom: boolean;
+  leaderTypeQom: boolean;
   headings: string[];
   sortBy: string | null;
 }
@@ -30,9 +31,6 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   const [headingsFilter, setHeadingsFilter] = useState<string[]>([]);
   const [selectedSortOption, setSelectedSortOption] =
     useState<string>("Sort By");
-  const selectedActivityId = useActivityListStore(
-    (state) => state.selectedActivityId
-  );
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>();
 
@@ -42,7 +40,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
       secondsFromLeader: secondsFromLeader,
       headings: headingsFilter,
       sortBy: selectedSortOption,
-      useQom: leaderTypeQom,
+      leaderTypeQom: leaderTypeQom,
     };
     setFilterOptions(newFilterOptions);
     onChange(filterOptions!);
@@ -55,8 +53,6 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   ]);
 
   const handleResetSnipeOptions = () => {
-    console.log("running reset snipe options.");
-
     setSelectedSortOption("Sort by");
     setPercentageFromLeader(undefined);
     setSecondsFromLeader(undefined);
@@ -78,43 +74,55 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
 
   return (
     <>
-      <Container className="segment-list-options">
-        <Row className="pb-2">
-          <Col>
-            <p className="mb-1 snipe-options-heading">Snipe Options</p>
-          </Col>
-          <Col className="text-end">
-            <Button variant="secondary" onClick={handleResetSnipeOptions}>
-              Reset
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <LeaderTypeFilter
-            leaderTypeQom={leaderTypeQom}
-            onChange={setLeaderTypeQom}
-          />
-        </Row>
-        <Row>
-          <PercentageFromLeaderFilter
-            useQom={leaderTypeQom}
-            percentageFromLeader={percentageFromLeader}
-            onChange={setPercentageFromLeader}
-          />
-        </Row>
-        <Row>
-          <SecondsFromLeaderFilter
-            useQom={leaderTypeQom}
-            secondsFromLeader={secondsFromLeader}
-            onChange={setSecondsFromLeader}
-          />
-        </Row>
-        <Row>
-          <HeadingsFilter
-            headings={headingsFilter}
-            onChange={setHeadingsFilter}
-          />
-        </Row>
+      <Container>
+        <Card>
+          <Card.Title className="p-2 activity-card-heading">
+            <Row className="pb-2">
+              <Col>
+                <p className="mb-1 snipe-options-heading">Snipe Options</p>
+              </Col>
+              <Col className="text-end">
+                <Button variant="secondary" onClick={handleResetSnipeOptions}>
+                  Reset
+                </Button>
+              </Col>
+            </Row>
+          </Card.Title>
+          <Card.Body>
+            <Row>
+              <LeaderTypeFilter
+                leaderTypeQom={leaderTypeQom}
+                onChange={setLeaderTypeQom}
+              />
+            </Row>
+            <Row>
+              <PercentageFromLeaderFilter
+                leaderTypeQom={leaderTypeQom}
+                percentageFromLeader={percentageFromLeader}
+                onChange={setPercentageFromLeader}
+              />
+            </Row>
+            <Row>
+              <SecondsFromLeaderFilter
+                leaderTypeQom={leaderTypeQom}
+                secondsFromLeader={secondsFromLeader}
+                onChange={setSecondsFromLeader}
+              />
+            </Row>
+            <Row>
+              <HeadingsFilter
+                headings={headingsFilter}
+                onChange={setHeadingsFilter}
+              />
+            </Row>
+            <Row>
+              <SortFilter
+                sortBy={selectedSortOption}
+                onChange={setSelectedSortOption}
+              />
+            </Row>
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );
