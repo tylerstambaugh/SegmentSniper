@@ -12,6 +12,7 @@ import SnipeOptions, {
   FilterOptions,
 } from "../../components/Organisms/SnipeOptions";
 import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
+import { useConvertTimeStringToNumericValue } from "../../hooks/useConvertTimeStringToNumericValue";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
@@ -33,11 +34,15 @@ const ActivityDetails = () => {
     state.setSnipeSegmentsList,
     state.setQueriedSnipeSegmentsList,
   ]);
-
+  const convertTime = useConvertTimeStringToNumericValue();
   const handleSorting = useHandleSortChange();
   const [filtering, setFiltering] = useState<boolean>(false);
   const [filterOptions, setFilterOptions] = useState<FilterOptions>();
 
+  function backToActivitiesButtonClick() {
+    setSelectedActivityId("");
+    navigate(`/${AppRoutes.ActivitySearchResults}`);
+  }
   useEffect(() => {
     const fetchSnipeSegments = async () => {
       try {
@@ -56,30 +61,58 @@ const ActivityDetails = () => {
     ) {
       fetchSnipeSegments();
     }
-
-    setQueriedSnipeSegmentList(
-      snipeSegmentList
-        .filter((s) => s.activityId === selectedActivityId)
-        .sort(
-          (a, b) =>
-            +new Date(a.detailedSegmentEffort?.startDate!) -
-            +new Date(b.detailedSegmentEffort?.startDate!)
-        )
-    );
+    handleSorting.Sort("date");
   }, [selectedActivityId]);
-
-  function backToActivitiesButtonClick() {
-    setSelectedActivityId("");
-    navigate(`/${AppRoutes.ActivitySearchResults}`);
-  }
 
   function handleFilterOptionsChange(values: FilterOptions) {
     setFiltering(true);
     setFilterOptions(values);
     console.log("handleFilterOptionChange : values =", values);
-
-    handleSorting.Sort(values.sortBy ?? "shortestTime");
     setFiltering(false);
+  }
+
+  function applyFilter() {
+    const newFilteredList = [...queriedSnipeSegmentList].filter((s) => {
+      let secondsFromKom = convertTime.timeStringToNumericValue(
+        s.secondsFromKom!
+      );
+      let secondsFromQom = convertTime.timeStringToNumericValue(
+        s.secondsFromQom!
+      );
+
+      const percentageFilter =
+        (filterOptions!.percentageFromLeader != null &&
+          filterOptions!.percentageFromLeader != undefined &&
+          (filterOptions?.leaderTypeQom
+            ? s.percentageFromQom! <= filterOptions!.percentageFromLeader
+            : s.percentageFromKom! <= filterOptions!.percentageFromLeader)) ||
+        filterOptions!.percentageFromLeader === 0 ||
+        filterOptions!.percentageFromLeader === undefined;
+      console.log("percentage filter", percentageFilter);
+
+      // const secondsFilter =
+      //   (secondsFromLeader != null &&
+      //     secondsFromLeader != undefined &&
+      //     (useQom
+      //       ? secondsFromQom <= secondsFromLeader
+      //       : secondsFromKom <= secondsFromLeader)) ||
+      //   secondsFromLeader === undefined;
+      // console.log("seconds filter:", secondsFilter);
+
+      const headingFilter =
+        filterOptions?.headings &&
+        filterOptions?.headings.length > 0 &&
+        filterOptions?.headings.includes(s.heading!);
+      // console.log("heading", s.heading);
+      // console.log("headingFilter", headingFilter);
+      // console.log("headings filter", headingsFilter);
+
+      const komFilter = filterOptions?.leaderTypeQom
+        ? secondsFromQom !== 0
+        : secondsFromKom !== 0;
+      return komFilter && percentageFilter;
+    });
+    setQueriedSnipeSegmentList(newFilteredList);
   }
 
   useEffect(() => {

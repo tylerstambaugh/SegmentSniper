@@ -10,6 +10,16 @@ const useHandleSortChange = () => {
   function Sort(selectedSortOption: string) {
     console.log("doing sorting by:", selectedSortOption);
 
+    if (selectedSortOption === "date") {
+      setQueriedSegmentsList(
+        [...queriedSegmentsList].sort(
+          (a, b) =>
+            +new Date(a.detailedSegmentEffort?.startDate!) -
+            +new Date(b.detailedSegmentEffort?.startDate!)
+        )
+      );
+    }
+
     if (selectedSortOption === "shortestDistance") {
       setQueriedSegmentsList(
         [...queriedSegmentsList].sort((a, b) => a.distance! - b.distance!)
