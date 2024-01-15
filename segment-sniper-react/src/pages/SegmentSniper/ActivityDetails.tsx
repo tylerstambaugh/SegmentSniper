@@ -13,6 +13,9 @@ import SnipeOptions, {
 } from "../../components/Organisms/SnipeOptions";
 import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
 import { useConvertTimeStringToNumericValue } from "../../hooks/useConvertTimeStringToNumericValue";
+import useHandlePercentageFromLeaderFilter from "../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter";
+import useHandleSecondsFromLeaderFilter from "../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter";
+import useHandleHeadingsFilter from "../../hooks/SegmentSniper/useHandleHeadingsFilter";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
@@ -36,13 +39,24 @@ const ActivityDetails = () => {
   ]);
   const convertTime = useConvertTimeStringToNumericValue();
   const handleSorting = useHandleSortChange();
+  const handlePercentageFromLeaderFilter =
+    useHandlePercentageFromLeaderFilter();
+  const handleSecondsFromLeaderFilter = useHandleSecondsFromLeaderFilter();
+  const handleHeadingsFilter = useHandleHeadingsFilter();
   const [filtering, setFiltering] = useState<boolean>(false);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>();
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    percentageFromLeader: undefined,
+    secondsFromLeader: undefined,
+    leaderTypeQom: false,
+    headings: [],
+    sortBy: "SortBy",
+  });
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
     navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
+
   useEffect(() => {
     const fetchSnipeSegments = async () => {
       try {
@@ -61,63 +75,37 @@ const ActivityDetails = () => {
     ) {
       fetchSnipeSegments();
     }
+    setQueriedSnipeSegmentList(
+      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
+    );
     handleSorting.Sort("date");
   }, [selectedActivityId]);
 
-  function handleFilterOptionsChange(values: FilterOptions) {
+  async function handleFilterOptionsChange(values: FilterOptions) {
     setFiltering(true);
-    setFilterOptions(values);
-    console.log("handleFilterOptionChange : values =", values);
+    console.log("handleFilterOptionChange : values =", filterOptions);
+
+    if (values.percentageFromLeader)
+      await handlePercentageFromLeaderFilter.Handle(
+        values.percentageFromLeader,
+        values.leaderTypeQom
+      );
+
+    if (values.secondsFromLeader) {
+      await handleSecondsFromLeaderFilter.Handle(
+        values.secondsFromLeader,
+        values.leaderTypeQom
+      );
+    }
+
+    if (values.headings) {
+      await handleHeadingsFilter.Handle(values.headings);
+    }
+
+    handleSorting.Sort(values.sortBy!);
+
     setFiltering(false);
   }
-
-  function applyFilter() {
-    const newFilteredList = [...queriedSnipeSegmentList].filter((s) => {
-      let secondsFromKom = convertTime.timeStringToNumericValue(
-        s.secondsFromKom!
-      );
-      let secondsFromQom = convertTime.timeStringToNumericValue(
-        s.secondsFromQom!
-      );
-
-      const percentageFilter =
-        (filterOptions!.percentageFromLeader != null &&
-          filterOptions!.percentageFromLeader != undefined &&
-          (filterOptions?.leaderTypeQom
-            ? s.percentageFromQom! <= filterOptions!.percentageFromLeader
-            : s.percentageFromKom! <= filterOptions!.percentageFromLeader)) ||
-        filterOptions!.percentageFromLeader === 0 ||
-        filterOptions!.percentageFromLeader === undefined;
-      console.log("percentage filter", percentageFilter);
-
-      // const secondsFilter =
-      //   (secondsFromLeader != null &&
-      //     secondsFromLeader != undefined &&
-      //     (useQom
-      //       ? secondsFromQom <= secondsFromLeader
-      //       : secondsFromKom <= secondsFromLeader)) ||
-      //   secondsFromLeader === undefined;
-      // console.log("seconds filter:", secondsFilter);
-
-      const headingFilter =
-        filterOptions?.headings &&
-        filterOptions?.headings.length > 0 &&
-        filterOptions?.headings.includes(s.heading!);
-      // console.log("heading", s.heading);
-      // console.log("headingFilter", headingFilter);
-      // console.log("headings filter", headingsFilter);
-
-      const komFilter = filterOptions?.leaderTypeQom
-        ? secondsFromQom !== 0
-        : secondsFromKom !== 0;
-      return komFilter && percentageFilter;
-    });
-    setQueriedSnipeSegmentList(newFilteredList);
-  }
-
-  useEffect(() => {
-    console.log("leaderTypeQom", filterOptions?.leaderTypeQom);
-  }, [filterOptions]);
 
   return (
     <>
