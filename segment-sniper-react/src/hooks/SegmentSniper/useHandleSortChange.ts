@@ -7,7 +7,7 @@ const useHandleSortChange = () => {
     SnipeSegmentListItem[]
   >([]);
 
-  function Sort(selectedSortOption: string) {
+  async function Sort(selectedSortOption: string) {
     console.log("doing sorting by:", selectedSortOption);
 
     if (selectedSortOption === "date") {

@@ -32,8 +32,6 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   const [selectedSortOption, setSelectedSortOption] =
     useState<string>("Sort By");
 
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>();
-
   useEffect(() => {
     let newFilterOptions: FilterOptions = {
       percentageFromLeader: percentageFromLeader,
@@ -42,8 +40,8 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
       sortBy: selectedSortOption,
       leaderTypeQom: leaderTypeQom,
     };
-    setFilterOptions(newFilterOptions);
-    onChange(filterOptions!);
+    console.log("snipe options filter values", newFilterOptions);
+    onChange(newFilterOptions);
   }, [
     percentageFromLeader,
     secondsFromLeader,
@@ -58,18 +56,6 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
     setSecondsFromLeader(undefined);
     setLeaderTypeQom(false);
     setHeadingsFilter([]);
-
-    //setShowDetailsSegmentId("");
-
-    // setQueriedSnipeSegmentsList(
-    //   snipeSegmentList
-    //     .filter((s) => s.activityId === selectedActivityId)
-    //     .sort(
-    //       (a, b) =>
-    //         +new Date(a.detailedSegmentEffort?.startDate!) -
-    //         +new Date(b.detailedSegmentEffort?.startDate!)
-    //     )
-    // );
   };
 
   return (

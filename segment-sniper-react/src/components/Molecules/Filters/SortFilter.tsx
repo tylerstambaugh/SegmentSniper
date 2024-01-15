@@ -20,6 +20,7 @@ const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
             }}
           >
             <option>Sort By</option>
+            <option value="date">Date</option>
             <option value="longestDistance">Longest Distance</option>
             <option value="shortestDistance">Shortest Distance</option>
             <option value="shortestTime">Shortest Time</option>
