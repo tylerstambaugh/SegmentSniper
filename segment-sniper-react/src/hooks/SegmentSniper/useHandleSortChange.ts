@@ -1,11 +1,11 @@
-import { useState } from "react";
-import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
-import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
+import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 
 const useHandleSortChange = () => {
-  const [queriedSegmentsList, setQueriedSegmentsList] = useState<
-    SnipeSegmentListItem[]
-  >([]);
+  const [queriedSegmentsList, setQueriedSegmentsList] =
+    useSnipeSegmentsListStore((state) => [
+      state.queriedSnipeSegmentsList,
+      state.setQueriedSnipeSegmentsList,
+    ]);
 
   async function Sort(selectedSortOption: string) {
     console.log("doing sorting by:", selectedSortOption);

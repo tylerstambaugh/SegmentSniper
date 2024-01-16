@@ -12,7 +12,6 @@ import SnipeOptions, {
   FilterOptions,
 } from "../../components/Organisms/SnipeOptions";
 import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
-import { useConvertTimeStringToNumericValue } from "../../hooks/useConvertTimeStringToNumericValue";
 import useHandlePercentageFromLeaderFilter from "../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter";
 import useHandleSecondsFromLeaderFilter from "../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter";
 import useHandleHeadingsFilter from "../../hooks/SegmentSniper/useHandleHeadingsFilter";
@@ -37,7 +36,6 @@ const ActivityDetails = () => {
     state.setSnipeSegmentsList,
     state.setQueriedSnipeSegmentsList,
   ]);
-  const convertTime = useConvertTimeStringToNumericValue();
   const handleSorting = useHandleSortChange();
   const handlePercentageFromLeaderFilter =
     useHandlePercentageFromLeaderFilter();
@@ -60,7 +58,7 @@ const ActivityDetails = () => {
   useEffect(() => {
     const fetchSnipeSegments = async () => {
       try {
-        const result = await snipeSegments.mutateAsync({
+        await snipeSegments.mutateAsync({
           activityId: selectedActivityId!,
         });
       } catch (error) {
@@ -75,6 +73,7 @@ const ActivityDetails = () => {
     ) {
       fetchSnipeSegments();
     }
+
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
@@ -82,30 +81,51 @@ const ActivityDetails = () => {
   }, [selectedActivityId]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
+    let segmentList = snipeSegmentList.filter(
+      (s) => s.activityId === selectedActivityId
+    );
+
+    setQueriedSnipeSegmentList(segmentList);
+
+    console.log("pre-filtered queried segments", {
+      queriedSnipeSegmentList,
+      values,
+    });
+
     setFiltering(true);
-    console.log("handleFilterOptionChange : values =", filterOptions);
+    setFilterOptions(values);
+    console.log("handleFilterOptionChange : values =", values);
 
     if (values.percentageFromLeader)
       await handlePercentageFromLeaderFilter.Handle(
         values.percentageFromLeader,
-        values.leaderTypeQom
+        values.leaderTypeQom,
+        segmentList
       );
 
     if (values.secondsFromLeader) {
       await handleSecondsFromLeaderFilter.Handle(
         values.secondsFromLeader,
-        values.leaderTypeQom
+        values.leaderTypeQom,
+        segmentList
       );
     }
 
-    if (values.headings) {
-      await handleHeadingsFilter.Handle(values.headings);
-    }
+    // if (values.headings) {
+    //   await handleHeadingsFilter.Handle(values.headings);
+    // }
 
     handleSorting.Sort(values.sortBy!);
+    console.log("updated queriedSegments", queriedSnipeSegmentList);
 
     setFiltering(false);
   }
+
+  useEffect(() => {
+    setQueriedSnipeSegmentList(
+      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
+    );
+  }, []);
 
   return (
     <>

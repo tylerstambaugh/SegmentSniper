@@ -21,7 +21,7 @@ const SnipeSegmentsCardList = ({
 
   return (
     <>
-      {!snipeListLoading ? (
+      {!snipeListLoading && segmentList ? (
         <Row className="pt-3">
           <Col className="d-flex justify-content-around">
             <h4>Segments: {segmentList.length}</h4>
