@@ -24,7 +24,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   const [leaderTypeQom, setLeaderTypeQom] = useState<boolean>(false);
   const [percentageFromLeader, setPercentageFromLeader] = useState<
     number | undefined
-  >();
+  >(100);
   const [secondsFromLeader, setSecondsFromLeader] = useState<
     number | undefined
   >();
@@ -52,7 +52,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
 
   const handleResetSnipeOptions = () => {
     setSelectedSortOption("Sort by");
-    setPercentageFromLeader(undefined);
+    setPercentageFromLeader(100);
     setSecondsFromLeader(undefined);
     setLeaderTypeQom(false);
     setHeadingsFilter([]);

@@ -3,12 +3,6 @@ import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 
 const useHandleSecondsFromLeaderChange = () => {
-  const [queriedSegmentsList, setQueriedSegmentsList] =
-    useSnipeSegmentsListStore((state) => [
-      state.queriedSnipeSegmentsList,
-      state.setQueriedSnipeSegmentsList,
-    ]);
-
   const convertTimeStringToNumeric = useConvertTimeStringToNumericValue();
 
   async function Handle(
@@ -16,8 +10,6 @@ const useHandleSecondsFromLeaderChange = () => {
     leaderTypeQom: boolean,
     segmentList: SnipeSegmentListItem[]
   ) {
-    console.log("doing percentage from leader filter:");
-
     const newFilteredList = segmentList.filter((s) => {
       let secondsFromQom = convertTimeStringToNumeric.timeStringToNumericValue(
         s.secondsFromQom!
@@ -26,17 +18,13 @@ const useHandleSecondsFromLeaderChange = () => {
         s.secondsFromKom!
       );
 
-      const secondsFilter =
-        (leaderTypeQom
-          ? secondsFromQom! <= secondsFromLeader
-          : secondsFromKom <= secondsFromLeader) ||
-        secondsFromLeader === undefined ||
-        secondsFromLeader === null ||
-        secondsFromLeader === 0;
+      const secondsFilter = leaderTypeQom
+        ? secondsFromQom! <= secondsFromLeader
+        : secondsFromKom <= secondsFromLeader;
 
       return secondsFilter;
     });
-    setQueriedSegmentsList(newFilteredList);
+    return newFilteredList;
   }
 
   return { Handle };

@@ -1,23 +1,23 @@
+import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 
 const useHandleHeadingsFilter = () => {
-  const [queriedSegmentsList, setQueriedSegmentsList] =
-    useSnipeSegmentsListStore((state) => [
-      state.queriedSnipeSegmentsList,
-      state.setQueriedSnipeSegmentsList,
-    ]);
+  async function Handle(
+    headings: string[],
+    segmentList: SnipeSegmentListItem[]
+  ) {
+    if (headings.length > 0) {
+      const newFilteredList = segmentList.filter((s) => {
+        const headingFilter =
+          headings && headings.length > 0 && headings.includes(s.heading!);
 
-  async function Handle(headings: string[]) {
-    console.log("doing percentage from leader filter:");
+        return headingFilter;
+      });
 
-    const newFilteredList = [...queriedSegmentsList].filter((s) => {
-      const headingFilter =
-        headings && headings.length > 0 && headings.includes(s.heading!);
-
-      return headingFilter;
-    });
-
-    setQueriedSegmentsList(newFilteredList);
+      return newFilteredList;
+    } else {
+      return segmentList;
+    }
   }
   return { Handle };
 };
