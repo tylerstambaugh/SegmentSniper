@@ -1,53 +1,45 @@
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import { useState } from "react";
+import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
+import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 
 const useHandleSortChange = () => {
-  const [queriedSegmentsList, setQueriedSegmentsList] =
-    useSnipeSegmentsListStore((state) => [
-      state.queriedSnipeSegmentsList,
-      state.setQueriedSnipeSegmentsList,
-    ]);
+  const [queriedSegmentsList, setQueriedSegmentsList] = useState<
+    SnipeSegmentListItem[]
+  >([]);
 
-  async function Sort(selectedSortOption: string) {
-    console.log("doing sorting by:", selectedSortOption);
+  async function Sort(
+    selectedSortOption: string,
+    listToSort: SnipeSegmentListItem[]
+  ) {
+    console.log("list to sort[0] heading:", listToSort[0].heading);
 
+    let returnList: SnipeSegmentListItem[] = [];
     if (selectedSortOption === "date") {
-      setQueriedSegmentsList(
-        [...queriedSegmentsList].sort(
-          (a, b) =>
-            +new Date(a.detailedSegmentEffort?.startDate!) -
-            +new Date(b.detailedSegmentEffort?.startDate!)
-        )
+      returnList = [...listToSort].sort(
+        (a, b) =>
+          +new Date(a.detailedSegmentEffort?.startDate!) -
+          +new Date(b.detailedSegmentEffort?.startDate!)
       );
-    }
-
-    if (selectedSortOption === "shortestDistance") {
-      setQueriedSegmentsList(
-        [...queriedSegmentsList].sort((a, b) => a.distance! - b.distance!)
+    } else if (selectedSortOption === "shortestDistance") {
+      returnList = [...listToSort].sort((a, b) => a.distance! - b.distance!);
+    } else if (selectedSortOption === "longestDistance") {
+      returnList = [...listToSort].sort((a, b) => b.distance! - a.distance!);
+    } else if (selectedSortOption === "shortestTime") {
+      returnList = [...listToSort].sort(
+        (a, b) =>
+          a.detailedSegmentEffort?.elapsedTime! -
+          b.detailedSegmentEffort?.elapsedTime!
       );
-    }
-    if (selectedSortOption === "longestDistance") {
-      setQueriedSegmentsList(
-        [...queriedSegmentsList].sort((a, b) => b.distance! - a.distance!)
+    } else if (selectedSortOption === "longestTime") {
+      returnList = [...listToSort].sort(
+        (a, b) =>
+          b.detailedSegmentEffort?.elapsedTime! -
+          a.detailedSegmentEffort?.elapsedTime!
       );
+    } else {
+      returnList = listToSort;
     }
-    if (selectedSortOption === "shortestTime") {
-      setQueriedSegmentsList(
-        [...queriedSegmentsList].sort(
-          (a, b) =>
-            a.detailedSegmentEffort?.elapsedTime! -
-            b.detailedSegmentEffort?.elapsedTime!
-        )
-      );
-    }
-    if (selectedSortOption === "longestTime") {
-      setQueriedSegmentsList(
-        [...queriedSegmentsList].sort(
-          (a, b) =>
-            b.detailedSegmentEffort?.elapsedTime! -
-            a.detailedSegmentEffort?.elapsedTime!
-        )
-      );
-    }
+    return returnList;
   }
 
   return { Sort };

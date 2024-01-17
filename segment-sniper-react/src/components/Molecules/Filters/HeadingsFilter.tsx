@@ -10,7 +10,6 @@ export interface HeadingsFilterProps {
 }
 
 const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
-  const [headingsFilter, setHeadingsFilter] = useState<string[]>([]);
   const headingsArray: { label: string; value: string }[] = Object.entries(
     Headings
   ).map(([key, value]) => ({ label: value, value: key }));
@@ -26,16 +25,17 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
-          value={headingsArray.filter((h) => headings.includes(h.value))}
+          value={headingsArray.filter((h) => headings.includes(h.label))}
           isMulti
           options={headingsArray}
           className="basic-multi-select"
           classNamePrefix="select"
           onChange={(selectedOptions) => {
             const selectedValues = selectedOptions.map(
-              (option) => option.value
+              (option) => option.label
             );
             onChange(selectedValues);
+            console.log("headings selected values:", selectedValues);
           }}
         />
       </Col>

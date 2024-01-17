@@ -15,6 +15,7 @@ import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
 import useHandlePercentageFromLeaderFilter from "../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter";
 import useHandleSecondsFromLeaderFilter from "../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter";
 import useHandleHeadingsFilter from "../../hooks/SegmentSniper/useHandleHeadingsFilter";
+import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
@@ -77,46 +78,55 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
-    handleSorting.Sort("date");
+    handleSorting.Sort("date", queriedSnipeSegmentList);
   }, [selectedActivityId]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
     let segmentList = snipeSegmentList.filter(
       (s) => s.activityId === selectedActivityId
     );
-
-    setQueriedSnipeSegmentList(segmentList);
-
-    console.log("pre-filtered queried segments", {
-      queriedSnipeSegmentList,
-      values,
-    });
+    console.log("activity detail segment list for filtering:", segmentList);
 
     setFiltering(true);
-    setFilterOptions(values);
-    console.log("handleFilterOptionChange : values =", values);
+    setFilterOptions({ ...filterOptions, ...values });
 
-    if (values.percentageFromLeader)
+    let percentageFilteredSegmentList: SnipeSegmentListItem[] = [];
+    let secondsFilteredSegmentList: SnipeSegmentListItem[] = [];
+    let headingsFilteredSegmentList: SnipeSegmentListItem[] = [];
+
+    percentageFilteredSegmentList =
       await handlePercentageFromLeaderFilter.Handle(
-        values.percentageFromLeader,
+        values.percentageFromLeader ?? 0,
         values.leaderTypeQom,
         segmentList
       );
 
-    if (values.secondsFromLeader) {
-      await handleSecondsFromLeaderFilter.Handle(
-        values.secondsFromLeader,
-        values.leaderTypeQom,
+    secondsFilteredSegmentList = await handleSecondsFromLeaderFilter.Handle(
+      values.secondsFromLeader ?? 0,
+      values.leaderTypeQom,
+      segmentList
+    );
+
+    if (values.headings) {
+      headingsFilteredSegmentList = await handleHeadingsFilter.Handle(
+        values.headings,
         segmentList
       );
     }
+    console.log("headingsFilteredList:", headingsFilteredSegmentList);
 
-    // if (values.headings) {
-    //   await handleHeadingsFilter.Handle(values.headings);
-    // }
+    let filteredSegmentList = [
+      ...new Set([
+        ...percentageFilteredSegmentList,
+        ...secondsFilteredSegmentList,
+      ]),
+    ].filter((item) => headingsFilteredSegmentList.includes(item));
 
-    handleSorting.Sort(values.sortBy!);
-    console.log("updated queriedSegments", queriedSnipeSegmentList);
+    filteredSegmentList = await handleSorting.Sort(
+      values.sortBy!,
+      filteredSegmentList
+    );
+    setQueriedSnipeSegmentList(filteredSegmentList);
 
     setFiltering(false);
   }
@@ -125,7 +135,12 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
+    console.log("activityDetail useEffect");
   }, []);
+
+  useEffect(() => {
+    handleSorting.Sort(filterOptions.sortBy!, queriedSnipeSegmentList);
+  }, [filterOptions.sortBy]);
 
   return (
     <>
