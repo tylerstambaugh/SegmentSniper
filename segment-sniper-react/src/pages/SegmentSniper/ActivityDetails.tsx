@@ -85,7 +85,6 @@ const ActivityDetails = () => {
     let segmentList = snipeSegmentList.filter(
       (s) => s.activityId === selectedActivityId
     );
-    console.log("activity detail segment list for filtering:", segmentList);
 
     setFiltering(true);
     setFilterOptions({ ...filterOptions, ...values });
@@ -113,7 +112,6 @@ const ActivityDetails = () => {
         segmentList
       );
     }
-    console.log("headingsFilteredList:", headingsFilteredSegmentList);
 
     let filteredSegmentList = [
       ...new Set([
@@ -135,7 +133,6 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
-    console.log("activityDetail useEffect");
   }, []);
 
   useEffect(() => {

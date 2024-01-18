@@ -11,8 +11,6 @@ const useHandleSortChange = () => {
     selectedSortOption: string,
     listToSort: SnipeSegmentListItem[]
   ) {
-    console.log("list to sort[0] heading:", listToSort[0].heading);
-
     let returnList: SnipeSegmentListItem[] = [];
     if (selectedSortOption === "date") {
       returnList = [...listToSort].sort(

@@ -29,10 +29,15 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
                   : snipedSegmentsList;
             }),
           setQueriedSnipeSegmentsList: (
-            queriedSnipeSegmentsList: SnipeSegmentListItem[]
+            queriedSnipeSegmentsList:
+              | SnipeSegmentListItem[]
+              | ((prevList: SnipeSegmentListItem[]) => SnipeSegmentListItem[])
           ) =>
             set((state) => {
-              state.queriedSnipeSegmentsList = queriedSnipeSegmentsList;
+              state.queriedSnipeSegmentsList =
+                typeof queriedSnipeSegmentsList === "function"
+                  ? queriedSnipeSegmentsList(state.queriedSnipeSegmentsList)
+                  : queriedSnipeSegmentsList;
             }),
           appendSnipeSegmentList: (snipeSegmentList: SnipeSegmentListItem[]) =>
             set((state) => {
@@ -80,7 +85,9 @@ interface SnipeSegmentsListStore {
   ) => void;
   appendSnipeSegmentList: (snipedSegmentList: SnipeSegmentListItem[]) => void;
   setQueriedSnipeSegmentsList: (
-    queriedSnipeSegmentsList: SnipeSegmentListItem[]
+    queriedSnipeSegmentsList:
+      | SnipeSegmentListItem[]
+      | ((prevList: SnipeSegmentListItem[]) => SnipeSegmentListItem[])
   ) => void;
   resetSnipedSegmentsList: () => void;
   resetQueriedSnipeSegmentsList: () => void;
