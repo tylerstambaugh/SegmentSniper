@@ -18,9 +18,17 @@ type SnipedSegmentCardProps = {
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const starSegment = usePostStarSegment();
   const convertTime = useConvertTimeStringToNumericValue();
-  const [snipeSegmentsList, setSnipedSegments] = useSnipeSegmentsListStore(
-    (state) => [state.snipeSegmentsList, state.setSnipeSegmentsList]
-  );
+  const [
+    snipeSegmentsList,
+    setSnipedSegments,
+    queriedSnipeSegmentList,
+    setQueriedSnipeSegmentsList,
+  ] = useSnipeSegmentsListStore((state) => [
+    state.snipeSegmentsList,
+    state.setSnipeSegmentsList,
+    state.queriedSnipeSegmentsList,
+    state.setQueriedSnipeSegmentsList,
+  ]);
 
   async function handleShowDetailsButtonClick() {
     props.setShowDetails(props.snipeSegment.segmentId!);
@@ -34,7 +42,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
     snipedSegmentEffortList: SnipeSegmentListItem[],
     segmentId: string,
     starred: boolean
-  ): SnipeSegmentListItem[] => {
+  ) => {
     return snipedSegmentEffortList.map((item) =>
       item.segmentId === segmentId ? { ...item, starred: starred } : item
     );
@@ -47,7 +55,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
     });
 
     if (!starSegment.isError && !starSegment.isLoading && response !== null) {
-      setSnipedSegments((prevList: SnipeSegmentListItem[]) =>
+      setQueriedSnipeSegmentsList((prevList: SnipeSegmentListItem[]) =>
         updateSegmentEffortStarred(
           prevList,
           response.detailedSegment.segmentId,

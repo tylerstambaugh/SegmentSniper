@@ -40,7 +40,6 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
       sortBy: selectedSortOption,
       leaderTypeQom: leaderTypeQom,
     };
-    console.log("snipe options filter values", newFilterOptions);
     onChange(newFilterOptions);
   }, [
     percentageFromLeader,

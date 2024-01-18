@@ -33,7 +33,7 @@ const SnipeSegmentsCardList = ({
       <Row>
         {snipeListLoading || filtering ? (
           <Col className="text-center pt-3">
-            <span>Hang tight, we're working on it</span>
+            <span>Hang tight, we're working on it</span> <br />
             <Spinner
               as="span"
               variant="secondary"

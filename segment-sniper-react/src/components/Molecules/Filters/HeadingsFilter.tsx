@@ -35,7 +35,6 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
               (option) => option.label
             );
             onChange(selectedValues);
-            console.log("headings selected values:", selectedValues);
           }}
         />
       </Col>
