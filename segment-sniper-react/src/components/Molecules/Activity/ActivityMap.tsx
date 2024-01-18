@@ -4,6 +4,7 @@ import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
 import Polyline from "../../Atoms/Polyline";
 import { StravaMap } from "../../../models/StravaMap";
+import MapMarker from "../../Atoms/MapMarker";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;
@@ -76,6 +77,18 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
             options={{ strokeColor: "#FF0000" }}
           />
         )}
+        <MapMarker
+          lat={props.startLatlng![0]}
+          lng={props.startLatlng![1]}
+          text="Start"
+          isStart={true}
+        />
+        <MapMarker
+          lat={props.endLatlng![0]}
+          lng={props.endLatlng![1]}
+          text="End"
+          isStart={false}
+        />
       </GoogleMapReact>
     </div>
   );

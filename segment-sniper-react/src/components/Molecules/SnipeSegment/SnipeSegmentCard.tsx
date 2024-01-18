@@ -7,6 +7,7 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../Activity/ActivityMap";
 import { useConvertTimeStringToNumericValue } from "../../../hooks/useConvertTimeStringToNumericValue";
+import toast from "react-hot-toast";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
@@ -18,15 +19,7 @@ type SnipedSegmentCardProps = {
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const starSegment = usePostStarSegment();
   const convertTime = useConvertTimeStringToNumericValue();
-  const [
-    snipeSegmentsList,
-    setSnipedSegments,
-    queriedSnipeSegmentList,
-    setQueriedSnipeSegmentsList,
-  ] = useSnipeSegmentsListStore((state) => [
-    state.snipeSegmentsList,
-    state.setSnipeSegmentsList,
-    state.queriedSnipeSegmentsList,
+  const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
     state.setQueriedSnipeSegmentsList,
   ]);
 
@@ -49,25 +42,34 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   };
 
   async function handleStarButtonClick() {
-    const response = await starSegment.mutateAsync({
-      segmentId: props.snipeSegment.segmentId!,
-      star: !props.snipeSegment.starred,
-    });
+    try {
+      const response = await starSegment.mutateAsync({
+        segmentId: props.snipeSegment.segmentId!,
+        star: !props.snipeSegment.starred,
+      });
 
-    if (!starSegment.isError && !starSegment.isLoading && response !== null) {
-      setQueriedSnipeSegmentsList((prevList: SnipeSegmentListItem[]) =>
-        updateSegmentEffortStarred(
-          prevList,
-          response.detailedSegment.segmentId,
-          response.detailedSegment.starred
-        )
-      );
+      if (!starSegment.isError && !starSegment.isLoading && response !== null) {
+        setQueriedSnipeSegmentsList((prevList: SnipeSegmentListItem[]) =>
+          updateSegmentEffortStarred(
+            prevList,
+            response.detailedSegment.segmentId,
+            response.detailedSegment.starred
+          )
+        );
+      }
+    } catch (error) {
+      if (starSegment.error instanceof Error) {
+        toast.error(starSegment.error.message);
+      } else {
+        toast.error("Something went wrong.");
+      }
     }
   }
 
   const myTime: string = convertTime.numericTimeToString(
     props.snipeSegment.detailedSegmentEffort?.elapsedTime!
   );
+
   return (
     <Container className="py-2">
       <Row>

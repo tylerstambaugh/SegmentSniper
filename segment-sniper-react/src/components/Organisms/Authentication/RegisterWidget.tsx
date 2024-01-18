@@ -17,7 +17,6 @@ import useTokenDataStore from "../../../stores/useTokenStore";
 import { RegisterUserRequest } from "../../../services/Api/Auth/postRegisterUser";
 import { LoginRequest } from "../../../services/Api/Auth/postLogin";
 import { usePostLogin } from "../../../hooks/Api/Auth/usePostLogin";
-import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 import { AppRoutes } from "../../../enums/AppRoutes";
 
 export default function RegisterWidget() {

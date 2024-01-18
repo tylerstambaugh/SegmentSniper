@@ -17,7 +17,6 @@ const Polyline: React.FC<PolylineProps> = ({ path, options, map }) => {
 
     polyline.setMap(map);
 
-    // Cleanup function to remove the polyline when the component unmounts
     return () => {
       if (polyline.getMap()) {
         polyline.setMap(null);
