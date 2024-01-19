@@ -75,81 +75,109 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
       <Row>
         <Col>
           <Card>
-            <Card.Title className="p-2 activity-card-heading">
+            <Card.Title className="mb-0 p-3 activity-card-heading">
               {props.snipeSegment.name}
             </Card.Title>
-            <Card.Body>
-              <Container>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">Distance:</span>{" "}
+            <Card.Body className="py-0">
+              <Col>
+                <Row>
+                  <Col className="p-3" sm={12} lg={4}>
+                    <Row className="justify-content-start text-start">
+                      {/* <Col lg={7}>
+                        <span className="activity-card-label">Distance:</span>{" "}
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {props.snipeSegment.distance} mi.
+                      </Col> */}
+                      <Col className="d-flex justify-content-between">
+                        <p className="mb-0">
+                          <span className="activity-card-label">Distance:</span>{" "}
+                        </p>
+                        <p className="mb-0">
+                          {props.snipeSegment.distance} mi.
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">My Time:</span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {myTime}
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">My PR Time:</span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {convertTime.numericTimeToString(
+                          props.snipeSegment.athleteSegmentStats
+                            ?.prElapsedTime ?? 0
+                        )}
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">
+                          {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
+                        </span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {!props.leaderTypeQom
+                          ? props.snipeSegment.komTime
+                          : props.snipeSegment.qomTime}
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">
+                          Time Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                        </span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {!props.leaderTypeQom
+                          ? props.snipeSegment.secondsFromKom
+                          : props.snipeSegment.secondsFromQom}
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">
+                          % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                        </span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        {!props.leaderTypeQom
+                          ? `${props.snipeSegment.percentageFromKom}%`
+                          : `${props.snipeSegment.percentageFromQom}%`}
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col lg={7}>
+                        <span className="activity-card-label">Heading:</span>
+                      </Col>
+                      <Col className="justify-content-end text-end">
+                        <>{props.snipeSegment.heading}</>
+                      </Col>
+                    </Row>
                   </Col>
-                  <Col className="justify-content-end text-end">
-                    {props.snipeSegment.distance} mi.
+                  <Col className="p-0" sm={12} lg={8}>
+                    <ActivityMap
+                      stravaMap={props.snipeSegment.map!}
+                      startLatlng={
+                        props.snipeSegment.detailedSegmentEffort?.summarySegment
+                          .startLatlng
+                      }
+                      endLatlng={
+                        props.snipeSegment.detailedSegmentEffort?.summarySegment
+                          .endLatlng
+                      }
+                    />
                   </Col>
                 </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">My Time:</span>
-                  </Col>
-                  <Col className="justify-content-end text-end">{myTime}</Col>
-                </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">My PR Time:</span>
-                  </Col>
-                  <Col className="justify-content-end text-end">
-                    {convertTime.numericTimeToString(
-                      props.snipeSegment.athleteSegmentStats?.prElapsedTime ?? 0
-                    )}
-                  </Col>
-                </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">
-                      {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
-                    </span>
-                  </Col>
-                  <Col className="justify-content-end text-end">
-                    {!props.leaderTypeQom
-                      ? props.snipeSegment.komTime
-                      : props.snipeSegment.qomTime}
-                  </Col>
-                </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">
-                      Time Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
-                    </span>
-                  </Col>
-                  <Col className="justify-content-end text-end">
-                    {!props.leaderTypeQom
-                      ? props.snipeSegment.secondsFromKom
-                      : props.snipeSegment.secondsFromQom}
-                  </Col>
-                </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">
-                      % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
-                    </span>
-                  </Col>
-                  <Col className="justify-content-end text-end">
-                    {!props.leaderTypeQom
-                      ? `${props.snipeSegment.percentageFromKom}%`
-                      : `${props.snipeSegment.percentageFromQom}%`}
-                  </Col>
-                </Row>
-                <Row className="justify-content-start text-start">
-                  <Col xs={7}>
-                    <span className="activity-card-label">Heading:</span>
-                  </Col>
-                  <Col className="justify-content-end text-end">
-                    <>{props.snipeSegment.heading}</>
-                  </Col>
-                </Row>
-              </Container>
-              <Row>
+              </Col>
+              {/* <Row>
                 {props.showDetails ? (
                   <>
                     <Row>
@@ -171,7 +199,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                 ) : (
                   <></>
                 )}
-              </Row>
+              </Row> */}
             </Card.Body>
             <Card.Footer className="d-flex justify-content-around">
               {!props.showDetails ? (

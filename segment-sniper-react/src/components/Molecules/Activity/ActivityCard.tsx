@@ -51,40 +51,45 @@ const ActivityCard = (props: ActivityCardProps) => {
               </Row>
             </Card.Title>
             <Card.Body>
-              <Row className="justify-content-start">
-                <Col sm={6} md={3}>
-                  <span className="activity-card-label">Date:</span>{" "}
-                  {props.activity.startDate}
-                </Col>
-                <Col sm={6} md={3}>
-                  <span className="activity-card-label">Distance:</span>{" "}
-                  {props.activity.distance} miles
-                </Col>
-                <Col sm={6} md={3}>
-                  <span className="activity-card-label">Elapsed Time:</span>{" "}
-                  {props.activity.elapsedTime}
-                </Col>
-                <Col sm={12} md={3}>
-                  <span className="activity-card-label">
-                    Achievement Count:
-                  </span>{" "}
-                  {props.activity.achievementCount}
-                </Col>
-              </Row>
-
-              {showMap ? (
-                <Row>
+              <Col>
+                <Row className="justify-content-start">
                   <Col>
-                    <ActivityMap
-                      stravaMap={props.activity.stravaMap!}
-                      startLatlng={props.activity.startLatlng!}
-                      endLatlng={props.activity.endLatlng}
-                    />
+                    <Row>
+                      <Col sm={6} md={3}>
+                        <span className="activity-card-label">Date:</span>{" "}
+                        {props.activity.startDate}
+                      </Col>
+                      <Col sm={6} md={3}>
+                        <span className="activity-card-label">Distance:</span>{" "}
+                        {props.activity.distance} miles
+                      </Col>
+                      <Col sm={6} md={3}>
+                        <span className="activity-card-label">
+                          Elapsed Time:
+                        </span>{" "}
+                        {props.activity.elapsedTime}
+                      </Col>
+                      <Col sm={12} md={3}>
+                        <span className="activity-card-label">
+                          Achievement Count:
+                        </span>{" "}
+                        {props.activity.achievementCount}
+                      </Col>
+                    </Row>
                   </Col>
+                  {showMap ? (
+                    <Col>
+                      <ActivityMap
+                        stravaMap={props.activity.stravaMap!}
+                        startLatlng={props.activity.startLatlng!}
+                        endLatlng={props.activity.endLatlng}
+                      />
+                    </Col>
+                  ) : (
+                    <></>
+                  )}
                 </Row>
-              ) : (
-                <></>
-              )}
+              </Col>
             </Card.Body>
             {selectedActivityId === "" ? (
               <Card.Footer className="d-flex justify-content-center">
