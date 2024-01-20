@@ -10,11 +10,9 @@ const LeaderTypeFilter = ({
   onChange,
 }: LeaderTypeFilterProps) => {
   return (
-    <Row>
-      <Col className="text-start snipe-option-label">
-        <p>Use QOM:</p>
-      </Col>
-      <Col className="text-end">
+    <Col className="d-flex justify-content-between">
+      <p className="snipe-option-label">Use QOM:</p>
+      <p className="mr-4 pr-4">
         <Form.Check
           type="switch"
           checked={leaderTypeQom}
@@ -23,8 +21,8 @@ const LeaderTypeFilter = ({
             onChange(e.target.checked);
           }}
         />
-      </Col>
-    </Row>
+      </p>
+    </Col>
   );
 };
 

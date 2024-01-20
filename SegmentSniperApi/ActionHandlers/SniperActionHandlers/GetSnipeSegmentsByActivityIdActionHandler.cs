@@ -94,6 +94,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 SecondsFromQom = ConvertTimeInSeconds(secondsOffQom),
                 ActivityType = detailedSegment.ActivityType,
                 Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
+                Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
                 CreatedAt = detailedSegment.CreatedAt,
                 Map = detailedSegment.Map,
                 EffortCount = detailedSegment.EffortCount,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useAppConfigStore from "../../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
@@ -12,55 +12,59 @@ type ActivityMapProps = {
   endLatlng?: number[];
 };
 
-const ActivityMap: React.FC<ActivityMapProps> = (props) => {
+const ActivityMap: React.FC<ActivityMapProps> = React.memo((props) => {
   const googleMapsApiKey = useAppConfigStore(
     (state) => state.appConfig?.googleMapsApiKey
   );
 
   const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
+  const [mapInitialized, setMapInitialized] = useState(false);
   const [polylinePath, setPolylinePath] = useState<
     { lat: number; lng: number }[]
   >([]);
 
-  const [center, setCenter] = useState({
-    lat: props.startLatlng![0],
-    lng: props.startLatlng![1],
-  });
+  const memoizedPolylinePath = useMemo(() => {
+    if (props.stravaMap.polyLine) {
+      return decode(props.stravaMap.polyLine).map((point) => ({
+        lat: point[0],
+        lng: point[1],
+      }));
+    }
+    return [];
+  }, [props.stravaMap.polyLine]);
+
+  const center = useMemo(() => {
+    return { lat: props.startLatlng![0], lng: props.startLatlng![1] };
+  }, [props.startLatlng]);
 
   async function configureMap(map: google.maps.Map) {
     setGoogleMap(map);
     if (!!props.startLatlng) {
-      setCenter({ lat: props.startLatlng[0], lng: props.startLatlng[1] });
-
-      if (props.stravaMap.polyLine) {
-        const decodedPath = decode(props.stravaMap.polyLine).map((point) => ({
-          lat: point[0],
-          lng: point[1],
-        }));
-        setPolylinePath(decodedPath);
-        await defineBounds();
-      }
+      setPolylinePath(memoizedPolylinePath);
+      setMapInitialized(true);
     }
   }
 
   async function defineBounds() {
-    const bounds = new window.google.maps.LatLngBounds();
-    for (let i = 0; i < polylinePath.length; i++) {
-      bounds.extend(
-        new google.maps.LatLng(polylinePath[i].lat, polylinePath[i].lng)
-      );
+    if (googleMap && polylinePath.length > 0) {
+      const bounds = new window.google.maps.LatLngBounds();
+      for (let i = 0; i < polylinePath.length; i++) {
+        bounds.extend(
+          new google.maps.LatLng(polylinePath[i].lat, polylinePath[i].lng)
+        );
+      }
+      googleMap?.fitBounds(bounds);
     }
-    googleMap?.fitBounds(bounds);
   }
 
   useEffect(() => {
-    if (polylinePath.length > 0) {
+    if (mapInitialized) {
       defineBounds();
     }
-  }, [polylinePath]);
+  }, [mapInitialized]);
 
   return (
-    <div style={{ minHeight: "300px", height: "100%", width: "100%" }}>
+    <div style={{ minHeight: "250px", height: "100%", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
         center={center}
@@ -92,6 +96,6 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
       </GoogleMapReact>
     </div>
   );
-};
+});
 
 export default ActivityMap;

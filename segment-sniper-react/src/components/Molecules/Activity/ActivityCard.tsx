@@ -50,30 +50,47 @@ const ActivityCard = (props: ActivityCardProps) => {
                 </Col>
               </Row>
             </Card.Title>
-            <Card.Body>
+            <Card.Body className="p-0">
               <Col>
-                <Row className="justify-content-start">
-                  <Col>
-                    <Row>
-                      <Col sm={6} md={3}>
-                        <span className="activity-card-label">Date:</span>{" "}
-                        {props.activity.startDate}
+                <Row>
+                  <Col className="p-3" sm={12} lg={4}>
+                    <Row className="justify-content-start text-start">
+                      <Col className="d-flex justify-content-between">
+                        <p className="mb-0">
+                          <span className="activity-card-label">Date:</span>{" "}
+                        </p>
+                        <p className="mb-0">{props.activity.startDate}</p>
                       </Col>
-                      <Col sm={6} md={3}>
-                        <span className="activity-card-label">Distance:</span>{" "}
-                        {props.activity.distance} miles
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col className="d-flex justify-content-between">
+                        <p className="mb-0">
+                          <span className="activity-card-label">Distance:</span>{" "}
+                        </p>
+                        <p className="mb-0">{props.activity.distance} miles</p>
                       </Col>
-                      <Col sm={6} md={3}>
-                        <span className="activity-card-label">
-                          Elapsed Time:
-                        </span>{" "}
-                        {props.activity.elapsedTime}
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col className="d-flex justify-content-between">
+                        <p className="mb-0">
+                          <span className="activity-card-label">
+                            {" "}
+                            Elapsed Time:
+                          </span>{" "}
+                        </p>
+                        <p className="mb-0">{props.activity.elapsedTime}</p>
                       </Col>
-                      <Col sm={12} md={3}>
-                        <span className="activity-card-label">
-                          Achievement Count:
-                        </span>{" "}
-                        {props.activity.achievementCount}
+                    </Row>
+                    <Row className="justify-content-start text-start">
+                      <Col className="d-flex justify-content-between">
+                        <p className="mb-0">
+                          <span className="activity-card-label">
+                            Achievement Count:
+                          </span>{" "}
+                        </p>
+                        <p className="mb-0">
+                          {props.activity.achievementCount}
+                        </p>
                       </Col>
                     </Row>
                   </Col>
