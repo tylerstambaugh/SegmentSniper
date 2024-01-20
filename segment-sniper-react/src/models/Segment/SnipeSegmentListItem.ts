@@ -16,6 +16,7 @@ export interface SnipeSegmentListItem {
   secondsFromQom?: string;
   activityType?: string;
   distance?: number;
+  elevation?: number;
   createdAt?: Date;
   map?: StravaMap;
   effortCount?: number;

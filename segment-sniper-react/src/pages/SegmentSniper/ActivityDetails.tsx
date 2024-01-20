@@ -29,12 +29,10 @@ const ActivityDetails = () => {
   const [
     snipeSegmentList,
     queriedSnipeSegmentList,
-    setSnipeSegmentList,
     setQueriedSnipeSegmentList,
   ] = useSnipeSegmentsListStore((state) => [
     state.snipeSegmentsList,
     state.queriedSnipeSegmentsList,
-    state.setSnipeSegmentsList,
     state.setQueriedSnipeSegmentsList,
   ]);
   const handleSorting = useHandleSortChange();

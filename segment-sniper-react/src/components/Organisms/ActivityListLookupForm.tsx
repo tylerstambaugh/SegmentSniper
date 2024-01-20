@@ -38,21 +38,12 @@ function ActivityListLookupForm() {
     (state) => state.setSelectedActivityId
   );
   interface ActivityListLookupForm {
-    activityId?: string | null;
     startDate?: DateTime | null;
     endDate?: DateTime | null;
     activityType?: string | null;
   }
 
   const validationSchema = yup.object({
-    activityId: yup
-      .number()
-      .nullable()
-      .when([], {
-        is: () => "startDate" === null,
-        then: (schema) =>
-          schema.required("Activity Id or start and end date are required"),
-      }),
     startDate: yup.date().when([], {
       is: () => "activityId" !== null,
       then: (schema) => schema.nullable(),
@@ -70,7 +61,6 @@ function ActivityListLookupForm() {
   });
 
   const initialValues = {
-    activityId: null,
     activityType: "Ride",
     startDate: null,
     endDate: null,
@@ -95,7 +85,6 @@ function ActivityListLookupForm() {
     onSubmit: (values: ActivityListLookupForm) => {
       setValidated(true);
       const searchProps: ActivitySearchRequest = {
-        activityId: values.activityId ?? "",
         startDate: values.startDate,
         endDate: values.endDate,
         activityType: values.activityType as unknown as ActivityTypes,
@@ -110,7 +99,6 @@ function ActivityListLookupForm() {
   const handleFormReset = () => {
     formik.resetForm({
       values: {
-        activityId: null,
         activityType: "Ride",
         startDate: null,
         endDate: null,
@@ -123,10 +111,7 @@ function ActivityListLookupForm() {
   };
 
   const disableSearch = (): boolean => {
-    return (
-      formik.values.activityId === null &&
-      (formik.values.endDate === null || formik.values.startDate === null)
-    );
+    return formik.values.endDate === null || formik.values.startDate === null;
   };
 
   return (
@@ -135,7 +120,6 @@ function ActivityListLookupForm() {
         <Row>
           <Col className="text-center">
             <h3>Activity List Lookup</h3>
-            <p className="mb-0">Look up an activity by ID:</p>
             <Form
               name="activityLookupForm"
               onSubmit={(event) => {
@@ -144,33 +128,7 @@ function ActivityListLookupForm() {
                 formik.handleSubmit(event);
               }}
             >
-              <Row className="d-flex justify-content-center">
-                <Col md={4} lg={3} className="p-1 ">
-                  <Form.Group className="p-2" controlId="activityId">
-                    <FloatingLabel
-                      label={`Activity Id`}
-                      controlId="activityIdLabel"
-                    >
-                      <Form.Control
-                        type="number"
-                        value={(formik.values.activityId as string) ?? ""}
-                        isInvalid={!!formik.errors.activityId}
-                        onChange={(e) => {
-                          formik.setFieldValue("activityId", e.target.value);
-                        }}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.activityId}
-                      </Form.Control.Feedback>
-                    </FloatingLabel>
-                  </Form.Group>
-                </Col>
-                <Col lg={5}>
-                  <p className="pt-0">Test Id = 9102798217</p>
-                </Col>
-              </Row>
-              <hr className="hr-75" />
-              <p>or by a date range:</p>
+              <p>Search by date range:</p>
               <Row className=" justify-content-center mb-3">
                 <Col md={4} className="mb-2">
                   <Form.Group className="" controlId="startDate">

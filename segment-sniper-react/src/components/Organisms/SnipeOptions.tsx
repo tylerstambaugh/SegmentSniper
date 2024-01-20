@@ -59,7 +59,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
 
   return (
     <>
-      <Container>
+      <Container className="py-1 p-4">
         <Card>
           <Card.Title className="p-2 activity-card-heading">
             <Row className="pb-2">
@@ -74,38 +74,40 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
             </Row>
           </Card.Title>
           <Card.Body>
-            <Row>
-              <LeaderTypeFilter
-                leaderTypeQom={leaderTypeQom}
-                onChange={setLeaderTypeQom}
-              />
-            </Row>
-            <Row>
-              <PercentageFromLeaderFilter
-                leaderTypeQom={leaderTypeQom}
-                percentageFromLeader={percentageFromLeader}
-                onChange={setPercentageFromLeader}
-              />
-            </Row>
-            <Row>
-              <SecondsFromLeaderFilter
-                leaderTypeQom={leaderTypeQom}
-                secondsFromLeader={secondsFromLeader}
-                onChange={setSecondsFromLeader}
-              />
-            </Row>
-            <Row>
-              <HeadingsFilter
-                headings={headingsFilter}
-                onChange={setHeadingsFilter}
-              />
-            </Row>
-            <Row>
-              <SortFilter
-                sortBy={selectedSortOption}
-                onChange={setSelectedSortOption}
-              />
-            </Row>
+            <Col>
+              <Row className="mr-1 pb-0">
+                <LeaderTypeFilter
+                  leaderTypeQom={leaderTypeQom}
+                  onChange={setLeaderTypeQom}
+                />
+              </Row>
+              <Row>
+                <PercentageFromLeaderFilter
+                  leaderTypeQom={leaderTypeQom}
+                  percentageFromLeader={percentageFromLeader}
+                  onChange={setPercentageFromLeader}
+                />
+              </Row>
+              <Row>
+                <SecondsFromLeaderFilter
+                  leaderTypeQom={leaderTypeQom}
+                  secondsFromLeader={secondsFromLeader}
+                  onChange={setSecondsFromLeader}
+                />
+              </Row>
+              <Row>
+                <HeadingsFilter
+                  headings={headingsFilter}
+                  onChange={setHeadingsFilter}
+                />
+              </Row>
+              <Row>
+                <SortFilter
+                  sortBy={selectedSortOption}
+                  onChange={setSelectedSortOption}
+                />
+              </Row>
+            </Col>
           </Card.Body>
         </Card>
       </Container>

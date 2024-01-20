@@ -17,6 +17,7 @@ namespace SegmentSniper.Models.UIModels.Segment
         public string SecondsFromQom { get; set; }
         public string ActivityType { get; set; }
         public double Distance { get; set; }
+        public double Elevation { get; set; }
         public DateTime CreatedAt { get; set; }
         public MapModel Map { get; set; }
         public int EffortCount { get; set; }
