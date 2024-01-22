@@ -16,12 +16,12 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
   const animatedComponents = makeAnimated();
 
   return (
-    <Row className="pb-2">
-      <Col xs={6} className="text-start snipe-option-label">
+    <>
+      <Col xs={8} className="text-start snipe-option-label">
         <p>Heading:</p>
       </Col>
 
-      <Col xs={6} className="text-end">
+      <Col xs={4} className="text-end">
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
@@ -38,7 +38,7 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
           }}
         />
       </Col>
-    </Row>
+    </>
   );
 };
 

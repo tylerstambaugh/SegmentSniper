@@ -10,9 +10,9 @@ const LeaderTypeFilter = ({
   onChange,
 }: LeaderTypeFilterProps) => {
   return (
-    <Col className="d-flex justify-content-between">
-      <p className="snipe-option-label">Use QOM:</p>
-      <p className="mr-4 pr-4">
+    <Col className="d-flex justify-content-between pb-0">
+      <p className="snipe-option-label pb-0 mb-0">Use QOM:</p>
+      <p className="text-end pb-0 mb-0">
         <Form.Check
           type="switch"
           checked={leaderTypeQom}
@@ -20,6 +20,7 @@ const LeaderTypeFilter = ({
           onChange={(e) => {
             onChange(e.target.checked);
           }}
+          style={{ zoom: 1.75 }}
         />
       </p>
     </Col>

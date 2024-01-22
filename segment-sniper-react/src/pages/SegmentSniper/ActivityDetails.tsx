@@ -131,7 +131,7 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
-  }, []);
+  }, [snipeSegmentList]);
 
   useEffect(() => {
     handleSorting.Sort(filterOptions.sortBy!, queriedSnipeSegmentList);

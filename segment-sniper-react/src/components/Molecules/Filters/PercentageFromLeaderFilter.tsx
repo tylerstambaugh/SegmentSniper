@@ -24,7 +24,7 @@ const PercentageFromLeaderFilter = ({
         </Col>
       </Row>
       <Row className="d-flex justify-content-between">
-        <Col xs={8} md={10}>
+        <Col xs={8} md={10} className="pt-1">
           <Slider
             onChange={onChange}
             value={percentageFromLeader || undefined}
@@ -33,22 +33,20 @@ const PercentageFromLeaderFilter = ({
             disabled={false}
           />
         </Col>
-        <Col>
+        <Col className="text-end">
           <Form.Control
             type="number"
             value={percentageFromLeader || ""}
             style={{
               width: "65%",
               display: "inline-block",
-              padding: "2px",
-              marginRight: "1px",
-              textAlign: "end",
+              padding: "0px 2px",
+              textAlign: "center",
             }}
             onBlur={(e) => onChange(Number(e.target.value))}
             onChange={(e) => onChange(Number(e.target.value))}
             pattern="[0-9]*"
           />
-          <span style={{ display: "inline-block" }}>%</span>
         </Col>
       </Row>
     </Col>

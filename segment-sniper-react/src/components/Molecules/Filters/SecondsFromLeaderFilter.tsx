@@ -15,12 +15,12 @@ const SecondsFromLeaderFilter = ({
   return (
     <FormGroup>
       <Row className="pb-2">
-        <Col xs={8} className="text-start">
+        <Col xs={8} md={10} className="text-start">
           <FormLabel className=" snipe-option-label">
             Seconds From {leaderTypeQom ? `QOM` : "KOM"}:
           </FormLabel>
         </Col>
-        <Col className="">
+        <Col className="text-end">
           <Form.Control
             type="number"
             value={secondsFromLeader || ""}
@@ -28,9 +28,10 @@ const SecondsFromLeaderFilter = ({
             onChange={(e) => onChange(Number(e.target.value))}
             pattern="[0-9]*"
             style={{
-              width: "80%",
+              width: "65%",
               display: "inline-block",
-              marginRight: "25px",
+              padding: "0px 2px",
+              textAlign: "center",
             }}
           />
         </Col>
