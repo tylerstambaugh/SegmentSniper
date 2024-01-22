@@ -1,3 +1,5 @@
+# Sanders Rules
+
 Segment Sniper
 =======
 
@@ -34,3 +36,4 @@ How to install and run the project
 
 How to use the app
 ------
+
