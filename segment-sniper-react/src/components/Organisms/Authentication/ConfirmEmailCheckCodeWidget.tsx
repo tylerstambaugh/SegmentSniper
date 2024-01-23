@@ -73,7 +73,7 @@ export default function ConfirmEmailCheckCodeWidget() {
         <Col md={6} lg={6} xs={10}>
           <Card>
             <Row>
-              <Col>
+              <Col className="m-1">
                 <h4>You're verified, time to start sniping</h4>
                 <Link to={`/${AppRoutes.Dashboard}`}>
                   <Button className="px-4">Snipe!</Button>
@@ -91,7 +91,7 @@ export default function ConfirmEmailCheckCodeWidget() {
           <Card>
             <Row>
               <Col>
-                <h4>Hmm, that didn't work. Please try again</h4>
+                <h4>Invalid or expired link. Please log in and try again</h4>
                 <Link to={`/${AppRoutes.Home}`}>
                   <Button className="px-4">Home</Button>
                 </Link>{" "}

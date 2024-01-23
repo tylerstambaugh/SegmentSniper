@@ -11,6 +11,7 @@ export default function ConfirmEmailSendCodeWidget() {
   const user = useUserStore((state) => state.user);
   const [clickedConfirmEmail, setClickedConfirmEmail] = useState(false);
   const [resentEmail, setResentEmail] = useState(false);
+  const [resendEmailCount, setResendEmailCount] = useState(0);
 
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const sendEmail = usePostSendEmailConfirmation();
@@ -95,7 +96,7 @@ export default function ConfirmEmailSendCodeWidget() {
                         <Button
                           type="submit"
                           variant="secondary"
-                          className={"pl-3 pr-3"}
+                          className={"px-4"}
                         >
                           <Spinner
                             as="span"
@@ -104,13 +105,15 @@ export default function ConfirmEmailSendCodeWidget() {
                             role="status"
                             aria-hidden="true"
                             animation="border"
-                            className={"pl-3 pr-3"}
                           />
                         </Button>
                       ) : (
                         <Button
                           className="px-4"
-                          onClick={() => handleClickConfirmEmail()}
+                          onClick={() => {
+                            handleClickConfirmEmail();
+                            setResentEmail(true);
+                          }}
                         >
                           Resend
                         </Button>

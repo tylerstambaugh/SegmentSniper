@@ -47,12 +47,9 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
                     Roles = userData.Roles,
                 };
 
-               // var newTokenData = await _refresh.Execute(new RefreshTokenContract(new RefreshTokenData(request.RefreshToken, request.AccessToken)));
-
                 return new ConfirmEmailRequest.Response
                 {
-                    Success = result.Success,
-                    //TokenData = newTokenData.RefreshedToken,
+                    Success = result.Success,                    
                     UserData = userDto
                 };
             }
@@ -73,7 +70,6 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             {
                 throw new ArgumentException(nameof(request.ConfirmationToken));
             }
-
 
             if (string.IsNullOrWhiteSpace(request.AccessToken))
             {

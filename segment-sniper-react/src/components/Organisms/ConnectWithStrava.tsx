@@ -20,7 +20,7 @@ export default function ConnectWithStrava() {
 
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center">
-      <Row sm={2} className="text-center ">
+      <Row sm={2} className="text-center pt-2">
         <Col className="mx-auto">
           <p>
             Before you can start sniping segments, we'll need you to authorize
@@ -37,7 +37,7 @@ export default function ConnectWithStrava() {
             variant="outline-secondary"
             onClick={() => handleConnectWithStrava()}
           >
-            <img src={connectWithStravaImage} />
+            <img src={connectWithStravaImage} width={250} />
           </Button>
         </Col>
       </Row>
