@@ -3,6 +3,7 @@ import SnipeSegmentCard from "./SnipeSegmentCard";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
+import SnipeSegmentCardCarousel from "./SnipeSegmentCardCarousel";
 
 interface SnipeSegmentCardListProps {
   snipeListLoading: boolean;
@@ -17,8 +18,6 @@ const SnipeSegmentsCardList = ({
   segmentList,
   leaderTypeQom,
 }: SnipeSegmentCardListProps) => {
-  const [showDetailsSegmentId, setShowDetailsSegmentId] = useState<string>("");
-
   return (
     <>
       {!snipeListLoading && segmentList ? (
@@ -58,15 +57,10 @@ const SnipeSegmentsCardList = ({
       ) : (
         <Row>
           <Col>
-            {segmentList.map((item) => (
-              <SnipeSegmentCard
-                key={uuidv4()}
-                snipeSegment={item}
-                leaderTypeQom={leaderTypeQom}
-                showDetails={showDetailsSegmentId === item.segmentId}
-                setShowDetails={setShowDetailsSegmentId}
-              />
-            ))}
+            <SnipeSegmentCardCarousel
+              snipeSegmentList={segmentList}
+              leaderTypeQom={leaderTypeQom}
+            />
           </Col>
         </Row>
       )}

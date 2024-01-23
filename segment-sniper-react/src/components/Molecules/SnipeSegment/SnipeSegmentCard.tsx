@@ -11,9 +11,7 @@ import toast from "react-hot-toast";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
-  showDetails: boolean;
   leaderTypeQom: boolean;
-  setShowDetails: (segmentId: string) => void;
 };
 
 const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
