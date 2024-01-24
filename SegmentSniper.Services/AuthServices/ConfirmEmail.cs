@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.AuthServices
 
             var user = await _userManager.FindByIdAsync(contract.UserId);
             if (user != null )
-            {
+            {                
                 var updateResult = await _userManager.ConfirmEmailAsync(user, contract.ConfirmationToken);
 
                 return new ConfirmEmailContract.Result(updateResult.Succeeded);
