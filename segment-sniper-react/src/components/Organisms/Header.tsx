@@ -5,7 +5,7 @@ import { Col, Navbar, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../../stores/useUserStore";
 import useTokenDataStore from "../../stores/useTokenStore";
-import logo from "../../assets/images/segment_sniper_logo.svg";
+import logo from "../../assets/images/segment_sniper_logo_v3.webp";
 import { useState } from "react";
 
 function Header() {
