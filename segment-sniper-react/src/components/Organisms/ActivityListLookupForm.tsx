@@ -116,128 +116,123 @@ function ActivityListLookupForm() {
 
   return (
     <>
-      <Container className="d-flex flex-column col-12 md-auto pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
-        <Row>
-          <Col className="text-center">
-            <h3>Activity List Lookup</h3>
-            <Form
-              name="activityLookupForm"
-              onSubmit={(event) => {
-                event.preventDefault();
-                setValidated(true);
-                formik.handleSubmit(event);
-              }}
-            >
-              <p>Search by date range:</p>
-              <Row className=" justify-content-center mb-3">
-                <Col md={4} className="mb-2">
-                  <Form.Group className="" controlId="startDate">
-                    <FloatingLabel
-                      label="Start Date"
-                      controlId="startDateLabel"
-                    >
-                      <Form.Control
-                        type="date"
-                        value={formik.values.startDate?.toString() ?? ""}
-                        onChange={(e) => {
-                          formik.setFieldValue("startDate", e.target.value);
-                        }}
-                        isInvalid={!!formik.errors.startDate}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.startDate}
-                      </Form.Control.Feedback>
-                    </FloatingLabel>
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group className="" controlId="endDate">
-                    <FloatingLabel label="End Date" controlId="endDateLabel">
-                      <Form.Control
-                        type="date"
-                        value={formik.values.endDate?.toString() ?? ""}
-                        onChange={(e) => {
-                          formik.setFieldValue("endDate", e.target.value);
-                        }}
-                        isInvalid={!!formik.errors.endDate}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.endDate}
-                      </Form.Control.Feedback>
-                    </FloatingLabel>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <hr className="hr-75" />
+      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
+        <Col className="text-center">
+          <h3>Activity List Lookup</h3>
+          <Form
+            name="activityLookupForm"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setValidated(true);
+              formik.handleSubmit(event);
+            }}
+          >
+            <p>Search by date range:</p>
+            <Row className=" justify-content-center mb-3">
+              <Col md={4} className="mb-2">
+                <Form.Group className="" controlId="startDate">
+                  <FloatingLabel label="Start Date" controlId="startDateLabel">
+                    <Form.Control
+                      type="date"
+                      value={formik.values.startDate?.toString() ?? ""}
+                      onChange={(e) => {
+                        formik.setFieldValue("startDate", e.target.value);
+                      }}
+                      isInvalid={!!formik.errors.startDate}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.startDate}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="" controlId="endDate">
+                  <FloatingLabel label="End Date" controlId="endDateLabel">
+                    <Form.Control
+                      type="date"
+                      value={formik.values.endDate?.toString() ?? ""}
+                      onChange={(e) => {
+                        formik.setFieldValue("endDate", e.target.value);
+                      }}
+                      isInvalid={!!formik.errors.endDate}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.endDate}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+                </Form.Group>
+              </Col>
+            </Row>
+            <hr className="hr-75" />
+            <Row>
+              <Col>
+                <Form.Group controlId="activityTypeRadios">
+                  <Form.Label id="activityTypeRadioButtons" className="p-2">
+                    Activity Type:
+                  </Form.Label>
+                  {Object.values(ActivityTypes).map((type) => (
+                    <Form.Check
+                      key={type}
+                      type="radio"
+                      inline
+                      value={type}
+                      name="activity-type-radio"
+                      label={type}
+                      id={`${type}-radio`}
+                      checked={formik.values.activityType === type}
+                      onChange={(e) => {
+                        formik.setFieldValue("activityType", e.target.value);
+                      }}
+                    />
+                  ))}
+                </Form.Group>
+              </Col>
+            </Row>
+            <div className="d-flex justify-content-end mb-2">
               <Row>
                 <Col>
-                  <Form.Group controlId="activityTypeRadios">
-                    <Form.Label id="activityTypeRadioButtons" className="p-2">
-                      Activity Type:
-                    </Form.Label>
-                    {Object.values(ActivityTypes).map((type) => (
-                      <Form.Check
-                        key={type}
-                        type="radio"
-                        inline
-                        value={type}
-                        name="activity-type-radio"
-                        label={type}
-                        id={`${type}-radio`}
-                        checked={formik.values.activityType === type}
-                        onChange={(e) => {
-                          formik.setFieldValue("activityType", e.target.value);
-                        }}
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      handleFormReset();
+                    }}
+                  >
+                    Reset
+                  </Button>
+                </Col>
+                <Col>
+                  {handleActivitySearch.isLoading ? (
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      style={{ width: "75px" }}
+                    >
+                      <Spinner
+                        as="span"
+                        variant="light"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        animation="border"
                       />
-                    ))}
-                  </Form.Group>
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      disabled={
+                        handleActivitySearch.isLoading || disableSearch()
+                      }
+                    >
+                      Search
+                    </Button>
+                  )}
                 </Col>
               </Row>
-              <div className="d-flex justify-content-end mb-2">
-                <Row>
-                  <Col>
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        handleFormReset();
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </Col>
-                  <Col>
-                    {handleActivitySearch.isLoading ? (
-                      <Button
-                        type="submit"
-                        variant="secondary"
-                        style={{ width: "75px" }}
-                      >
-                        <Spinner
-                          as="span"
-                          variant="light"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                          animation="border"
-                        />
-                      </Button>
-                    ) : (
-                      <Button
-                        type="submit"
-                        variant="primary"
-                        disabled={
-                          handleActivitySearch.isLoading || disableSearch()
-                        }
-                      >
-                        Search
-                      </Button>
-                    )}
-                  </Col>
-                </Row>
-              </div>
-            </Form>
-          </Col>
-        </Row>
+            </div>
+          </Form>
+        </Col>
       </Container>
     </>
   );
