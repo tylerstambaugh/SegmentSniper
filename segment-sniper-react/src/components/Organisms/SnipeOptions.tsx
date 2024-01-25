@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import useActivityListStore from "../../stores/useActivityListStore";
 import SecondsFromLeaderFilter from "../Molecules/Filters/SecondsFromLeaderFilter";
-import HeadingsFilter from "../Molecules/Filters/HeadingsFilter";
+import HeadingsFilter from "../Molecules/Filters/Heading/HeadingsFilter";
 import LeaderTypeFilter from "../Molecules/Filters/LeaderTypeFilter";
 import SortFilter from "../Molecules/Filters/SortFilter";
 
@@ -95,7 +95,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
                   onChange={setSecondsFromLeader}
                 />
               </Row>
-              <Row className="p-0 m-0">
+              <Row className="m-0 p-0">
                 <HeadingsFilter
                   headings={headingsFilter}
                   onChange={setHeadingsFilter}

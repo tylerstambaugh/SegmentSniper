@@ -116,7 +116,7 @@ function ActivityListLookupForm() {
 
   return (
     <>
-      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded">
+      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-50">
         <Col className="text-center">
           <h3>Activity List Lookup</h3>
           <Form
@@ -129,7 +129,7 @@ function ActivityListLookupForm() {
           >
             <p>Search by date range:</p>
             <Row className=" justify-content-center mb-3">
-              <Col md={4} className="mb-2">
+              <Col lg={4} className="mb-2">
                 <Form.Group className="" controlId="startDate">
                   <FloatingLabel label="Start Date" controlId="startDateLabel">
                     <Form.Control
@@ -146,7 +146,7 @@ function ActivityListLookupForm() {
                   </FloatingLabel>
                 </Form.Group>
               </Col>
-              <Col md={4}>
+              <Col lg={4}>
                 <Form.Group className="" controlId="endDate">
                   <FloatingLabel label="End Date" controlId="endDateLabel">
                     <Form.Control
@@ -189,7 +189,7 @@ function ActivityListLookupForm() {
                 </Form.Group>
               </Col>
             </Row>
-            <div className="d-flex justify-content-end mb-2">
+            <div className="d-flex justify-content-center mb-2">
               <Row>
                 <Col>
                   <Button
@@ -197,6 +197,7 @@ function ActivityListLookupForm() {
                     onClick={() => {
                       handleFormReset();
                     }}
+                    className="px-2"
                   >
                     Reset
                   </Button>

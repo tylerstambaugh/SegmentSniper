@@ -1,0 +1,25 @@
+.label {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-align: start;
+}
+
+.select {
+    padding: 0px 5px;
+    margin: 0px 5px;
+    text-align: end;
+    justify-content: end;
+    display: inline-block;
+}
+
+.menu {
+    position: absolute;     
+    padding: 0px; 
+    height: 15px;
+    width: 65%;
+}
+
+.input {
+    height: 20px;
+    width: 65%;
+}

@@ -1,9 +1,8 @@
 import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { Headings } from "../../../enums/Headings";
-import { useState } from "react";
-import "../../../App.css";
+import { Headings } from "../../../../enums/Headings";
+import styles from "./HeadingsFilter.module.scss";
 
 export interface HeadingsFilterProps {
   headings: string[];
@@ -17,12 +16,12 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
   const animatedComponents = makeAnimated();
 
   return (
-    <Row className="d-flex justify-content-between pb-0">
-      <Col xs={4} className="text-start snipe-option-label p-0">
+    <Row className="d-flex justify-content-between p-0">
+      <Col sm={5} className={styles.label}>
         <p>Heading:</p>
       </Col>
 
-      <Col xs={8} className="justify-content-end text-end">
+      <Col sm={7} className="text-end">
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
@@ -38,10 +37,15 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
           styles={{
             control: (baseStyles, state) => ({
               ...baseStyles,
-              
-              padding: "0px 2px",
-              margin: "0px",
-              textAlign: "start",
+              ...(styles.select as React.CSSProperties),
+            }),
+            menu: (baseStyles, state) => ({
+              ...baseStyles,
+              ...(styles.menu as React.CSSProperties),
+            }),
+            input: (baseStyles, state) => ({
+              ...baseStyles,
+              ...(styles.input as React.CSSProperties),
             }),
           }}
         />

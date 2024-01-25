@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import useUserStore from "../../stores/useUserStore";
 import useTokenDataStore from "../../stores/useTokenStore";
 import logo from "../../assets/images/segment_sniper_logo_v3.webp";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Header() {
   const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
@@ -14,22 +14,38 @@ function Header() {
     state.setIsAuthenticated,
   ]);
   const [user] = useUserStore((state) => [state.user]);
-
   const [isNavbarOpen, setNavbarOpen] = useState(false);
-
+  const navbarRef = useRef(null);
   const handleNavbarToggle = () => setNavbarOpen(!isNavbarOpen);
-
   const handleLinkClick = () => setNavbarOpen(false);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        navbarRef.current &&
+        isNavbarOpen &&
+        !(navbarRef.current as HTMLElement).contains(event.target as Node)
+      ) {
+        setNavbarOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [navbarRef, isNavbarOpen]);
+
   return (
-    <Navbar expand="lg">
+    <Navbar expand="md" ref={navbarRef} expanded={isNavbarOpen} bg="light">
       <Container fluid className={"py-2"}>
         <Navbar.Brand className={"ps-3"}>
           <Link
             to={
               !!isAuthenticated
-                ? `/${AppRoutes.Home}`
-                : `/${AppRoutes.Dashboard}`
+                ? `/${AppRoutes.Dashboard}`
+                : `/${AppRoutes.Home}`
             }
             className={"d-flex text-white text-decoration-none"}
           >
@@ -41,24 +57,28 @@ function Header() {
             />
           </Link>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={handleNavbarToggle}
+        />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto w-100 d-flex justify-content-end">
-            <div className={"border-top mt-3 mb-3 d-lg-none "}></div>
+          <Nav className="w-100 d-flex justify-content-end">
             {tokenData !== null &&
             tokenData!.accessToken &&
             user !== null &&
             user!.id ? (
               <>
-                <Nav.Item className={""}>
-                  <Navbar.Text>{`Signed in as: ${
-                    user!.firstName
-                  }`}</Navbar.Text>
+                <Nav.Item className={"text-end"}>
+                  <Navbar.Text>
+                    Signed in as:{" "}
+                    <Link to={`/${AppRoutes.Profile}`}>{user!.firstName}</Link>
+                    {}
+                  </Navbar.Text>
                 </Nav.Item>
-                <div className={"border-end mx-3 d-none d-lg-block"}></div>
-                <div className={"border-top mt-3 d-lg-none"}></div>
-                <Nav.Item className={"pe-4 fw-semibold"}>
-                  <Navbar.Text className="ps-5">
+                <div className={"border-end mx-3 d-none d-md-block"}></div>
+                <div className={"border-top mt-1 d-md-none"}></div>
+                <Nav.Item className={"fw-semibold text-end"}>
+                  <Navbar.Text className="">
                     <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
                       Logout
                     </Link>
@@ -67,8 +87,8 @@ function Header() {
               </>
             ) : (
               <>
-                <div className={"d-flex justify-content-end pt-3 pt-lg-0"}>
-                  <Nav.Item className={"pe-4 fw-semibold"}>
+                <div className={"d-flex justify-content-end pt-md-0"}>
+                  <Nav.Item className={"fw-semibold"}>
                     <Navbar.Text className="d-flex">
                       <Link
                         to={`/${AppRoutes.Login}`}
