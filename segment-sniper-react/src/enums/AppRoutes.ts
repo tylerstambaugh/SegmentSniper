@@ -11,6 +11,7 @@ export enum AppRoutes {
   ConnectWithStravaSuccess = "connect-with-strava-success",
   ConnectWithStravaError = "connect-with-strava-error",
   Snipe = "snipe",
+  Profile = "profile",
   Admin = "admin",
   ActivitySearchResults = "snipe/activity-search-results",
   ActivityDetails = "snipe/activity-details",
