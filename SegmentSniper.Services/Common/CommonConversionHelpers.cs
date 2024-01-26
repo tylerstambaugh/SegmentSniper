@@ -20,5 +20,11 @@ namespace SegmentSniper.Services.Common
         {
             return speed * MilesPerHourConversionFactor;
         }
+
+        public static int ConvertToEpochTime(DateTime date)
+        {
+            DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (int)(date - unixEpoch).TotalSeconds;
+        }
     }
 }
