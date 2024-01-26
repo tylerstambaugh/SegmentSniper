@@ -1,6 +1,6 @@
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "../BaseApiService";
+import { apiPost } from "../BaseApiService";
 import { ActivityListLookupResponse } from "./getActivityListByDateRange";
 
 export type ActivityListByNameLookupRequest = {
@@ -11,10 +11,10 @@ export default async function getActivityListByName(
   contract: ApiContract<ActivityListByNameLookupRequest>
 ) {
   try {
-    const response = await apiGet<ActivityListLookupResponse>(
-      `${contract.baseUrl}/sniper/getActivityListByName/${contract.request?.name}`,
-      contract
-    );
+    const response = await apiPost<
+      ActivityListByNameLookupRequest,
+      ActivityListLookupResponse
+    >(`${contract.baseUrl}/sniper/getActivityListByName`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

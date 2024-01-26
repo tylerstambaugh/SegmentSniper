@@ -1,6 +1,7 @@
 import { FormikErrors } from "formik";
 import { Form } from "react-bootstrap";
 import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm";
+import styles from "./ActivityNameSearchInput.module.scss";
 
 type Props = {
   activityName: string | null;
@@ -10,7 +11,10 @@ type Props = {
 
 const ActivityNameSearchInput = ({ errors, onChange, activityName }: Props) => {
   return (
-    <Form.Group className="mb-3" controlId="formNameSearch">
+    <Form.Group
+      className={`mb-3 ${styles.activityNameInput}`}
+      controlId="formNameSearch"
+    >
       <Form.Control
         type="text"
         placeholder="Name"

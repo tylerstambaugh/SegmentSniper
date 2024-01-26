@@ -48,24 +48,24 @@ function ActivityListLookupForm() {
   );
 
   const validationSchema = yup.object({
-    name: yup.string().when([], {
-      is: () => "startDate" === null,
-      then: (schema) => schema.required("Must provide name or dates"),
-    }),
-    startDate: yup.date().when([], {
-      is: () => "activityName" !== null,
-      then: (schema) => schema.nullable(),
-    }),
-    endDate: yup
-      .date()
-      .nullable()
-      .when("startDate", (startDate, schema) => {
-        return startDate !== null
-          ? schema
-              .min(startDate, "End date must be after start date")
-              .required("End date is required")
-          : schema;
-      }),
+    // name: yup.string().when([], {
+    //   is: () => "startDate" === null,
+    //   then: (schema) => schema.required("Must provide name or dates"),
+    // }),
+    // startDate: yup.date().when([], {
+    //   is: () => "activityName" === null,
+    //   then: (schema) => schema.required("Must provide name or dates"),
+    // }),
+    // endDate: yup
+    //   .date()
+    //   .nullable()
+    //   .when("startDate", (startDate, schema) => {
+    //     return startDate !== null
+    //       ? schema
+    //           .min(startDate, "End date must be after start date")
+    //           .required("End date is required")
+    //       : schema;
+    //   }),
   });
 
   const initialValues = {
@@ -80,7 +80,9 @@ function ActivityListLookupForm() {
     resetSnipedSegments();
     setSelectedActivityId("");
     await handleActivitySearch.mutateAsync(request);
-    navigate(`/${AppRoutes.ActivitySearchResults}`);
+    if (!handleActivitySearch.error) {
+      navigate(`/${AppRoutes.ActivitySearchResults}`);
+    }
   }
 
   useEffect(() => {
@@ -93,7 +95,10 @@ function ActivityListLookupForm() {
     enableReinitialize: true,
     onSubmit: (values: ActivityListSearchForm) => {
       setValidated(true);
+      console.log("values", values);
+
       const searchProps: ActivitySearchRequest = {
+        name: values.activityName,
         startDate: values.startDate,
         endDate: values.endDate,
         activityType: values.activityType as unknown as ActivityTypes,
@@ -130,7 +135,7 @@ function ActivityListLookupForm() {
 
   return (
     <>
-      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-50">
+      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-70">
         <Col className="text-center">
           <h3>Activity Lookup</h3>
           <Form

@@ -4,19 +4,19 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
     public interface IGetActivityListByNameActionHandler
     {
-        Task<GetActivityListByNameRequest.Response> Handle(GetActivityListByNameRequest request);
+        Task<GetActivityListByNameRequest.Response> HandleAsync(GetActivityListByNameRequest request);
     }
 
     public class GetActivityListByNameRequest
     {
-        public GetActivityListByNameRequest(string name, string userId, string? activityType)
+        public GetActivityListByNameRequest(string activityName, string userId, string? activityType)
         {
-            Name = name;
+            ActivityName = activityName;
             UserId = userId;
             ActivityType = activityType;
         }
 
-        public string Name { get; set; }
+        public string ActivityName { get; set; }
         public string UserId { get; set; }
         public string? ActivityType { get; }
         public class Response

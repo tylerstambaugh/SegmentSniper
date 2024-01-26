@@ -11,7 +11,7 @@ import getActivityListByDateRange, {
 import getActivityListByName from "../../../services/Api/Activity/getActivityListByName";
 
 export interface ActivitySearchRequest {
-  name?: string;
+  name?: string | null;
   startDate?: DateTime | null;
   endDate?: DateTime | null;
   activityType?: ActivityTypes | null;

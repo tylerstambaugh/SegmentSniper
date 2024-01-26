@@ -28,7 +28,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             _mapper = mapper;
         }
 
-        public async Task<GetActivityListByNameRequest.Response> Handle(GetActivityListByNameRequest request)
+        public async Task<GetActivityListByNameRequest.Response> HandleAsync(GetActivityListByNameRequest request)
         {
             ValidateRequest(request);
             var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
@@ -56,7 +56,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
                     }
 
-                    List<SummaryActivity> nameMatchedActivities = listOfSummaryActivities.Where(n => n.Name.Contains(request.Name)).ToList();  
+                    List<SummaryActivity> nameMatchedActivities = listOfSummaryActivities.Where(n => n.Name.Contains(request.ActivityName)).ToList();  
 
                     List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
 
@@ -95,9 +95,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (string.IsNullOrWhiteSpace(request.Name))
+            if (string.IsNullOrWhiteSpace(request.ActivityName))
             {
-                throw new ArgumentNullException(nameof(request.Name), "Name must be provided");
+                throw new ArgumentNullException(nameof(request.ActivityName), "Name must be provided");
             }
             if (string.IsNullOrWhiteSpace(request.UserId))
             {
