@@ -23,6 +23,15 @@ import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import useActivityListStore from "../../stores/useActivityListStore";
+import ActivityNameSearchInput from "../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput";
+import ActivityDateSearch from "../Molecules/Activity/ActivityDateSearch/ActivityDateSearch";
+
+export interface ActivityListSearchForm {
+  activityName?: string | null;
+  startDate?: DateTime | null;
+  endDate?: DateTime | null;
+  activityType?: string | null;
+}
 
 function ActivityListLookupForm() {
   const [validated, setValidated] = useState(false);
@@ -37,15 +46,14 @@ function ActivityListLookupForm() {
   const setSelectedActivityId = useActivityListStore(
     (state) => state.setSelectedActivityId
   );
-  interface ActivityListLookupForm {
-    startDate?: DateTime | null;
-    endDate?: DateTime | null;
-    activityType?: string | null;
-  }
 
   const validationSchema = yup.object({
+    name: yup.string().when([], {
+      is: () => "startDate" === null,
+      then: (schema) => schema.required("Must provide name or dates"),
+    }),
     startDate: yup.date().when([], {
-      is: () => "activityId" !== null,
+      is: () => "activityName" !== null,
       then: (schema) => schema.nullable(),
     }),
     endDate: yup
@@ -61,6 +69,7 @@ function ActivityListLookupForm() {
   });
 
   const initialValues = {
+    activityName: null,
     activityType: "Ride",
     startDate: null,
     endDate: null,
@@ -79,10 +88,10 @@ function ActivityListLookupForm() {
       toast.error(`Activity search error: ${handleActivitySearch.error}`);
   }, [handleActivitySearch.error]);
 
-  const formik = useFormik<ActivityListLookupForm>({
+  const formik = useFormik<ActivityListSearchForm>({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values: ActivityListLookupForm) => {
+    onSubmit: (values: ActivityListSearchForm) => {
       setValidated(true);
       const searchProps: ActivitySearchRequest = {
         startDate: values.startDate,
@@ -99,26 +108,31 @@ function ActivityListLookupForm() {
   const handleFormReset = () => {
     formik.resetForm({
       values: {
+        activityName: null,
         activityType: "Ride",
         startDate: null,
         endDate: null,
       },
     });
     formik.setErrors({});
+    formik.setFieldValue("activityName", null);
     formik.setFieldValue("startDate", null);
     formik.setFieldValue("endDate", null);
     setValidated(false);
   };
 
   const disableSearch = (): boolean => {
-    return formik.values.endDate === null || formik.values.startDate === null;
+    return (
+      !formik.values.activityName &&
+      (!formik.values.endDate || !formik.values.startDate)
+    );
   };
 
   return (
     <>
       <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-50">
         <Col className="text-center">
-          <h3>Activity List Lookup</h3>
+          <h3>Activity Lookup</h3>
           <Form
             name="activityLookupForm"
             onSubmit={(event) => {
@@ -127,43 +141,31 @@ function ActivityListLookupForm() {
               formik.handleSubmit(event);
             }}
           >
-            <p>Search by date range:</p>
-            <Row className=" justify-content-center mb-3">
-              <Col lg={4} className="mb-2">
-                <Form.Group className="" controlId="startDate">
-                  <FloatingLabel label="Start Date" controlId="startDateLabel">
-                    <Form.Control
-                      type="date"
-                      value={formik.values.startDate?.toString() ?? ""}
-                      onChange={(e) => {
-                        formik.setFieldValue("startDate", e.target.value);
-                      }}
-                      isInvalid={!!formik.errors.startDate}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.startDate}
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Form.Group>
-              </Col>
-              <Col lg={4}>
-                <Form.Group className="" controlId="endDate">
-                  <FloatingLabel label="End Date" controlId="endDateLabel">
-                    <Form.Control
-                      type="date"
-                      value={formik.values.endDate?.toString() ?? ""}
-                      onChange={(e) => {
-                        formik.setFieldValue("endDate", e.target.value);
-                      }}
-                      isInvalid={!!formik.errors.endDate}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.endDate}
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Form.Group>
+            <p>Search by name:</p>
+            <Row>
+              <Col>
+                <ActivityNameSearchInput
+                  activityName={formik.values.activityName ?? ""}
+                  onChange={(name: string) => {
+                    formik.setFieldValue("activityName", name);
+                  }}
+                  errors={formik.errors}
+                />
               </Col>
             </Row>
+            <p>Search by date range:</p>
+            <ActivityDateSearch
+              startDate={formik.values.startDate ?? null}
+              endDate={formik.values.endDate ?? null}
+              onChange={(dateRange: {
+                startDate: DateTime | null;
+                endDate: DateTime | null;
+              }) => {
+                formik.setFieldValue("startDate", dateRange.startDate);
+                formik.setFieldValue("endDate", dateRange.endDate);
+              }}
+              errors={formik.errors}
+            />
             <hr className="hr-75" />
             <Row>
               <Col>
