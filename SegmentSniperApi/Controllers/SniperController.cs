@@ -65,6 +65,21 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("getActivityListByName/$activityName")]
+        public async Task<IActionResult> GetActivityListByName(string activityName)
+        {
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var request = new GetActivityListByIdRequest(userId, activityName);
+            var returnList = await _getActivityListByIdActionHandler.HandleAsync(request);
+
+            if (returnList != null)
+                return Ok(returnList);
+            else
+                return StatusCode(421, $"Unable to fetch activity by name: {activityName}.");
+        }
+
 
         [HttpGet]
         [Authorize]

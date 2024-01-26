@@ -5,13 +5,13 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import getActivityListById from "../../../services/Api/Activity/getActivityListById";
 import getActivityListByDateRange, {
   ActivityListLookupResponse,
 } from "../../../services/Api/Activity/getActivityListByDateRange";
+import getActivityListByName from "../../../services/Api/Activity/getActivityListByName";
 
 export interface ActivitySearchRequest {
-  activityId?: string;
+  name?: string;
   startDate?: DateTime | null;
   endDate?: DateTime | null;
   activityType?: ActivityTypes | null;
@@ -35,8 +35,8 @@ export const useHandleActivitySearch = () => {
 
     let response: ActivityListLookupResponse = { activityList: [] };
 
-    if (request.activityId) {
-      response = await getActivityListById(contract);
+    if (request.name) {
+      response = await getActivityListByName(contract);
     } else if (request.startDate && request.endDate) {
       response = await getActivityListByDateRange(contract);
     }
