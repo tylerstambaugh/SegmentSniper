@@ -11,7 +11,7 @@ import getActivityListByDateRange, {
 import getActivityListByName from "../../../services/Api/Activity/getActivityListByName";
 
 export interface ActivitySearchRequest {
-  name?: string | null;
+  activityName?: string | null;
   startDate?: DateTime | null;
   endDate?: DateTime | null;
   activityType?: ActivityTypes | null;
@@ -35,7 +35,7 @@ export const useHandleActivitySearch = () => {
 
     let response: ActivityListLookupResponse = { activityList: [] };
 
-    if (request.name) {
+    if (request.activityName) {
       response = await getActivityListByName(contract);
     } else if (request.startDate && request.endDate) {
       response = await getActivityListByDateRange(contract);

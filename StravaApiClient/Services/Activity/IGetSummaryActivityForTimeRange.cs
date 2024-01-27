@@ -9,15 +9,17 @@ namespace StravaApiClient.Services.Activity
 
     public class GetSummaryActivityForTimeRangeContract
     {
-        public GetSummaryActivityForTimeRangeContract(int startDate, int endDate)
+        public GetSummaryActivityForTimeRangeContract(int startDate, int endDate, int page)
         {
             StartDate = startDate;
             EndDate = endDate;
+            Page = page;
         }
 
         public int StartDate { get; }
 
         public int EndDate { get; }
+        public int Page { get; }
 
         public class Result
         {

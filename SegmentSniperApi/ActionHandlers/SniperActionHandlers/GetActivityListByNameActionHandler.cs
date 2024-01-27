@@ -44,19 +44,31 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
 
                     var startDate = (int)DateTime.Now.AddYears(-1).ToEpochTime();
-                    var endDate = (int)DateTime.UtcNow.ToEpochTime();
+                    var endDate = (int)DateTime.UtcNow.ToEpochTime();                                      
 
-                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(startDate, endDate));
+                    List<SummaryActivity> nameMatchedActivities = new List<SummaryActivity>();
 
-                    List<SummaryActivity> listOfSummaryActivities = response.SummaryActivities;
-
-                    if (parsedActivity != ActivityTypeEnum.ActivityType.All)
+                    for (int i = 1; i < 6; i++)
                     {
-                        listOfSummaryActivities = listOfSummaryActivities
-                        .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
-                    }
+                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(startDate, endDate, i));
 
-                    List<SummaryActivity> nameMatchedActivities = listOfSummaryActivities.Where(n => n.Name.Contains(request.ActivityName)).ToList();  
+                        List<SummaryActivity> listOfSummaryActivities = response.SummaryActivities;
+
+                        if (parsedActivity != ActivityTypeEnum.ActivityType.All)
+                        {
+                            listOfSummaryActivities = listOfSummaryActivities
+                            .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
+                        }
+
+                        List<SummaryActivity> matchedActivities = listOfSummaryActivities.Where(n => n.Name.ToLower().Contains(request.ActivityName.ToLower())).ToList();
+                        foreach (SummaryActivity sa in matchedActivities)
+                        {
+                            if(!nameMatchedActivities.Contains(sa))
+                            {
+                            nameMatchedActivities.Add(sa);
+                            }
+                        }
+                    }
 
                     List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
 

@@ -22,7 +22,7 @@ const ActivityDateSearch = ({
 }: Props) => {
   return (
     <Row className=" justify-content-center mb-3">
-      <Col lg={4} className="mb-2">
+      <Col md={3} className="mb-2">
         <Form.Group className="" controlId="startDate">
           <FloatingLabel label="Start Date" controlId="startDateLabel">
             <Form.Control
@@ -46,7 +46,7 @@ const ActivityDateSearch = ({
           </FloatingLabel>
         </Form.Group>
       </Col>
-      <Col lg={4}>
+      <Col md={3}>
         <Form.Group className="" controlId="endDate">
           <FloatingLabel label="End Date" controlId="endDateLabel">
             <Form.Control

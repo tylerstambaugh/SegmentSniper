@@ -13,7 +13,7 @@ export type ActivityListLookupResponse = {
 };
 
 export default async function getActivityListByDateRange(
-  contract: ApiContract<ActivityListForDateRangeLookupRequest>
+  contract: ApiContract
 ) {
   try {
     const response = await apiPost<

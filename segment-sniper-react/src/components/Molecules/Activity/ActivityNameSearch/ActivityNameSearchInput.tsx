@@ -1,5 +1,5 @@
 import { FormikErrors } from "formik";
-import { Form } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm";
 import styles from "./ActivityNameSearchInput.module.scss";
 
@@ -11,24 +11,28 @@ type Props = {
 
 const ActivityNameSearchInput = ({ errors, onChange, activityName }: Props) => {
   return (
-    <Form.Group
-      className={`mb-3 ${styles.activityNameInput}`}
-      controlId="formNameSearch"
-    >
-      <Form.Control
-        type="text"
-        placeholder="Name"
-        value={activityName ?? ""}
-        name="activityName"
-        isInvalid={!!errors.activityName}
-        onChange={(e) => {
-          onChange(e.target.value);
-        }}
-      />
-      <Form.Control.Feedback type="invalid">
-        {errors.activityName as FormikErrors<string>}
-      </Form.Control.Feedback>
-    </Form.Group>
+    <Row className=" justify-content-center mb-3">
+      <Col className="mb-2">
+        <Form.Group
+          className={`${styles.activityNameInput}`}
+          controlId="formNameSearch"
+        >
+          <Form.Control
+            type="text"
+            placeholder="Name"
+            value={activityName ?? ""}
+            name="activityName"
+            isInvalid={!!errors.activityName}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.activityName as FormikErrors<string>}
+          </Form.Control.Feedback>
+        </Form.Group>
+      </Col>
+    </Row>
   );
 };
 

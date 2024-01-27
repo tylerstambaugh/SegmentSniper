@@ -87,7 +87,7 @@ function ActivityListLookupForm() {
 
   useEffect(() => {
     if (handleActivitySearch.error !== null)
-      toast.error(`Activity search error: ${handleActivitySearch.error}`);
+      toast.error(`${handleActivitySearch.error}`);
   }, [handleActivitySearch.error]);
 
   const formik = useFormik<ActivityListSearchForm>({
@@ -98,7 +98,7 @@ function ActivityListLookupForm() {
       console.log("values", values);
 
       const searchProps: ActivitySearchRequest = {
-        name: values.activityName,
+        activityName: values.activityName,
         startDate: values.startDate,
         endDate: values.endDate,
         activityType: values.activityType as unknown as ActivityTypes,
@@ -135,9 +135,11 @@ function ActivityListLookupForm() {
 
   return (
     <>
-      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-70">
+      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-60">
         <Col className="text-center">
-          <h3>Activity Lookup</h3>
+          <Row>
+            <h3>Activity Lookup</h3>
+          </Row>
           <Form
             name="activityLookupForm"
             onSubmit={(event) => {
@@ -146,9 +148,9 @@ function ActivityListLookupForm() {
               formik.handleSubmit(event);
             }}
           >
-            <p>Search by name:</p>
-            <Row>
-              <Col>
+            <Row className="justify-content-center">
+              <Col md={5}>
+                <p>Search by name:</p>
                 <ActivityNameSearchInput
                   activityName={formik.values.activityName ?? ""}
                   onChange={(name: string) => {
@@ -158,19 +160,21 @@ function ActivityListLookupForm() {
                 />
               </Col>
             </Row>
-            <p>Search by date range:</p>
-            <ActivityDateSearch
-              startDate={formik.values.startDate ?? null}
-              endDate={formik.values.endDate ?? null}
-              onChange={(dateRange: {
-                startDate: DateTime | null;
-                endDate: DateTime | null;
-              }) => {
-                formik.setFieldValue("startDate", dateRange.startDate);
-                formik.setFieldValue("endDate", dateRange.endDate);
-              }}
-              errors={formik.errors}
-            />
+            <Row>
+              <p>Search by date range:</p>
+              <ActivityDateSearch
+                startDate={formik.values.startDate ?? null}
+                endDate={formik.values.endDate ?? null}
+                onChange={(dateRange: {
+                  startDate: DateTime | null;
+                  endDate: DateTime | null;
+                }) => {
+                  formik.setFieldValue("startDate", dateRange.startDate);
+                  formik.setFieldValue("endDate", dateRange.endDate);
+                }}
+                errors={formik.errors}
+              />
+            </Row>
             <hr className="hr-75" />
             <Row>
               <Col>
