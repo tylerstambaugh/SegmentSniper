@@ -85,7 +85,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(421, $"Unable to fetch activity by name: \"{request.ActivityName}\" \n {ex.Message}");
+                return StatusCode(422, $"Unable to fetch activity by name: \"{request.ActivityName}\" \n {ex.Message}");
             }
         }
 

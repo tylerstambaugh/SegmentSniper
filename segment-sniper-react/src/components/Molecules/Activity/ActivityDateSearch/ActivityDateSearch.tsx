@@ -21,10 +21,14 @@ const ActivityDateSearch = ({
   errors,
 }: Props) => {
   return (
-    <Row className=" justify-content-center mb-3">
-      <Col md={3} className="mb-2">
+    <Row>
+      <Col md={6} className="mb-2">
         <Form.Group className="" controlId="startDate">
-          <FloatingLabel label="Start Date" controlId="startDateLabel">
+          <FloatingLabel
+            className="pt-1"
+            label="Start Date"
+            controlId="startDateLabel"
+          >
             <Form.Control
               type="date"
               value={startDate?.toISODate() ?? ""}
@@ -39,6 +43,7 @@ const ActivityDateSearch = ({
                 });
               }}
               isInvalid={!!errors.startDate}
+              className="pb-0"
             />
             <Form.Control.Feedback type="invalid">
               {errors.startDate}
@@ -46,9 +51,13 @@ const ActivityDateSearch = ({
           </FloatingLabel>
         </Form.Group>
       </Col>
-      <Col md={3}>
+      <Col md={6}>
         <Form.Group className="" controlId="endDate">
-          <FloatingLabel label="End Date" controlId="endDateLabel">
+          <FloatingLabel
+            className="pt-1"
+            label="End Date"
+            controlId="endDateLabel"
+          >
             <Form.Control
               type="date"
               value={endDate?.toISODate() ?? ""}

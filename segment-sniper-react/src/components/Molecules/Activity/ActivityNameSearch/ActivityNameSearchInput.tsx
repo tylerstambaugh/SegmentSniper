@@ -17,9 +17,10 @@ const ActivityNameSearchInput = ({ errors, onChange, activityName }: Props) => {
           className={`${styles.activityNameInput}`}
           controlId="formNameSearch"
         >
+          <Form.Label id="activityNameSearchLabel">Search by name:</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Name"
+            placeholder="Activity Name"
             value={activityName ?? ""}
             name="activityName"
             isInvalid={!!errors.activityName}

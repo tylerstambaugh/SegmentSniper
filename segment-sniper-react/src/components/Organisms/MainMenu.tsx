@@ -8,14 +8,12 @@ export default function MainMenu() {
 
   return (
     <>
-      <Row className="d-flex justify-content-center ">
-        <Col md={6} lg={6} xs={10}>
-          <div className="border "></div>
+      <Row className="d-flex justify-content-center pt-3 ">
+        <Col md={6} xs={10}>
           <Card className="shadow">
             <Card.Body>
               <div className="mb-2 text-center">
                 <h2 className="fw-bold mb-2 ">Main Menu</h2>
-
                 <Row>
                   <Col
                     md={12}
