@@ -7,9 +7,9 @@ import {
   Row,
   Col,
   Form,
-  FloatingLabel,
   Button,
   Spinner,
+  Card,
 } from "react-bootstrap";
 
 import { ActivityTypes } from "../../enums/ActivityTypes";
@@ -25,6 +25,7 @@ import { AppRoutes } from "../../enums/AppRoutes";
 import useActivityListStore from "../../stores/useActivityListStore";
 import ActivityNameSearchInput from "../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput";
 import ActivityDateSearch from "../Molecules/Activity/ActivityDateSearch/ActivityDateSearch";
+import ActivityTypeDropdown from "../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown";
 
 export interface ActivityListSearchForm {
   activityName?: string | null;
@@ -133,119 +134,115 @@ function ActivityListLookupForm() {
     );
   };
 
+  useEffect(() => {
+    console.log("formik values", formik.values);
+  }, [formik.values]);
+
   return (
     <>
-      <Container className="pt-2 mb-1 mt-2 shadow bg-light text-dark border rounded w-60">
-        <Col className="text-center">
-          <Row>
-            <h3>Activity Lookup</h3>
-          </Row>
-          <Form
-            name="activityLookupForm"
-            onSubmit={(event) => {
-              event.preventDefault();
-              setValidated(true);
-              formik.handleSubmit(event);
-            }}
-          >
-            <Row className="justify-content-center">
-              <Col md={5}>
-                <p>Search by name:</p>
-                <ActivityNameSearchInput
-                  activityName={formik.values.activityName ?? ""}
-                  onChange={(name: string) => {
-                    formik.setFieldValue("activityName", name);
-                  }}
-                  errors={formik.errors}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <p>Search by date range:</p>
-              <ActivityDateSearch
-                startDate={formik.values.startDate ?? null}
-                endDate={formik.values.endDate ?? null}
-                onChange={(dateRange: {
-                  startDate: DateTime | null;
-                  endDate: DateTime | null;
-                }) => {
-                  formik.setFieldValue("startDate", dateRange.startDate);
-                  formik.setFieldValue("endDate", dateRange.endDate);
-                }}
-                errors={formik.errors}
-              />
-            </Row>
-            <hr className="hr-75" />
-            <Row>
-              <Col>
-                <Form.Group controlId="activityTypeRadios">
-                  <Form.Label id="activityTypeRadioButtons" className="p-2">
-                    Activity Type:
-                  </Form.Label>
-                  {Object.values(ActivityTypes).map((type) => (
-                    <Form.Check
-                      key={type}
-                      type="radio"
-                      inline
-                      value={type}
-                      name="activity-type-radio"
-                      label={type}
-                      id={`${type}-radio`}
-                      checked={formik.values.activityType === type}
-                      onChange={(e) => {
-                        formik.setFieldValue("activityType", e.target.value);
-                      }}
-                    />
-                  ))}
-                </Form.Group>
-              </Col>
-            </Row>
-            <div className="d-flex justify-content-center mb-2">
-              <Row>
-                <Col>
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      handleFormReset();
-                    }}
-                    className="px-2"
-                  >
-                    Reset
-                  </Button>
-                </Col>
-                <Col>
-                  {handleActivitySearch.isLoading ? (
-                    <Button
-                      type="submit"
-                      variant="secondary"
-                      style={{ width: "75px" }}
-                    >
-                      <Spinner
-                        as="span"
-                        variant="light"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        animation="border"
-                      />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      disabled={
-                        handleActivitySearch.isLoading || disableSearch()
-                      }
-                    >
-                      Search
-                    </Button>
-                  )}
-                </Col>
+      <Row className="justify-content-center">
+        <Col md={6} xs={10} className="pt-2 text-center justify-content-center">
+          <Card className="shadow">
+            <Card.Body>
+              <Row className="text-center">
+                <h3>Activity Lookup</h3>
               </Row>
-            </div>
-          </Form>
+              <Form
+                name="activityLookupForm"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setValidated(true);
+                  formik.handleSubmit(event);
+                }}
+              >
+                <Row className="justify-content-center">
+                  <Col md={6}>
+                    <ActivityNameSearchInput
+                      activityName={formik.values.activityName ?? ""}
+                      onChange={(name: string) => {
+                        formik.setFieldValue("activityName", name);
+                      }}
+                      errors={formik.errors}
+                    />
+                  </Col>
+                </Row>
+                <Row className="justify-content-around">
+                  <p>Search by date range:</p>
+                  <ActivityDateSearch
+                    startDate={formik.values.startDate ?? null}
+                    endDate={formik.values.endDate ?? null}
+                    onChange={(dateRange: {
+                      startDate: DateTime | null;
+                      endDate: DateTime | null;
+                    }) => {
+                      formik.setFieldValue("startDate", dateRange.startDate);
+                      formik.setFieldValue("endDate", dateRange.endDate);
+                    }}
+                    errors={formik.errors}
+                  />
+                </Row>
+                <hr className="hr-75" />
+                <Row>
+                  <Col>
+                    <ActivityTypeDropdown
+                      onChange={(selection: string) => {
+                        formik.setFieldValue("activityType", selection);
+                      }}
+                      selection={
+                        formik.values.activityType ?? ActivityTypes.Ride
+                      }
+                      errors={formik.errors}
+                    />
+                  </Col>
+                </Row>
+                <div className="d-flex justify-content-center mb-2">
+                  <Row>
+                    <Col>
+                      <Button
+                        variant="secondary"
+                        onClick={() => {
+                          handleFormReset();
+                        }}
+                        className="px-2"
+                      >
+                        Reset
+                      </Button>
+                    </Col>
+                    <Col>
+                      {handleActivitySearch.isLoading ? (
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          style={{ width: "75px" }}
+                        >
+                          <Spinner
+                            as="span"
+                            variant="light"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            animation="border"
+                          />
+                        </Button>
+                      ) : (
+                        <Button
+                          type="submit"
+                          variant="primary"
+                          disabled={
+                            handleActivitySearch.isLoading || disableSearch()
+                          }
+                        >
+                          Search
+                        </Button>
+                      )}
+                    </Col>
+                  </Row>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
         </Col>
-      </Container>
+      </Row>
     </>
   );
 }
