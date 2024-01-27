@@ -9,15 +9,15 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
     public class GetActivityListByNameRequest
     {
-        public GetActivityListByNameRequest(string activityName, string userId, string? activityType)
+        public GetActivityListByNameRequest(string userId, string activityName, string? activityType)
         {
-            ActivityName = activityName;
             UserId = userId;
             ActivityType = activityType;
+            ActivityName = activityName;
         }
 
+        public string? UserId { get; set; }
         public string ActivityName { get; set; }
-        public string UserId { get; set; }
         public string? ActivityType { get; }
         public class Response
         {

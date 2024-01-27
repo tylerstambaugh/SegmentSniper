@@ -45,8 +45,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     var unixStartDate = ConvertToEpochTime(request.StartDate);
                     var unixEndDate = ConvertToEpochTime(endDate);
+                    int page = 1;
 
-                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate));
+                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate, page));
 
                     List<SummaryActivity> listOfSummaryActivities = response.SummaryActivities;
 
