@@ -1,5 +1,37 @@
+.form {
+    display: flex;
+}
+
 .label {
     text-decoration: underline;
     text-underline-offset: 3px;
     text-align: start;
+    width: 50%; 
 }
+
+.select {
+    position: relative;
+    width: 100%;
+}
+
+.select select {
+    text-align-last: right; /* Right-align the text in the select box */
+}
+
+.select select::-ms-expand {
+    display: none; /* Hide the default arrow in Internet Explorer */
+}
+
+.select::after {
+    content: "▼"; /* Unicode character for a down arrow, you can customize this */
+    position: absolute;
+    top: 50%;
+    right: 12px; /* Adjust the value based on your preference */
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.select select option {
+    text-align: start; /* Left-align the text in the dropdown options */
+}
+

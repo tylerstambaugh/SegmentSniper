@@ -51,7 +51,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
   ]);
 
   const handleResetSnipeOptions = () => {
-    setSelectedSortOption("Sort by");
+    setSelectedSortOption("Date");
     setPercentageFromLeader(100);
     setSecondsFromLeader(undefined);
     setLeaderTypeQom(false);

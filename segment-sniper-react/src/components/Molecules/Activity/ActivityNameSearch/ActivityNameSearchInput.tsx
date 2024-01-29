@@ -13,10 +13,7 @@ const ActivityNameSearchInput = ({ errors, onChange, activityName }: Props) => {
   return (
     <Row className=" justify-content-center mb-3">
       <Col className="mb-2">
-        <Form.Group
-          className={`${styles.activityNameInput}`}
-          controlId="formNameSearch"
-        >
+        <Form.Group controlId="formNameSearch">
           <Form.Label id="activityNameSearchLabel">Search by name:</Form.Label>
           <Form.Control
             type="text"
@@ -27,6 +24,7 @@ const ActivityNameSearchInput = ({ errors, onChange, activityName }: Props) => {
             onChange={(e) => {
               onChange(e.target.value);
             }}
+            className={`${styles.activityNameInput}`}
           />
           <Form.Control.Feedback type="invalid">
             {errors.activityName as FormikErrors<string>}
