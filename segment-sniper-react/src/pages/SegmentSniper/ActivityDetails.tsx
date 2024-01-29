@@ -10,7 +10,7 @@ import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/Snipe
 import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
 import SnipeOptions, {
   FilterOptions,
-} from "../../components/Organisms/SnipeOptions";
+} from "../../components/Organisms/SnipeOptions/SnipeOptions";
 import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
 import useHandlePercentageFromLeaderFilter from "../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter";
 import useHandleSecondsFromLeaderFilter from "../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter";

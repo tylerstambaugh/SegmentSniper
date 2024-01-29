@@ -11,7 +11,7 @@ function Home() {
         style={{ width: "100%" }}
       >
         <Row>
-          <Col sm={12} className="text-center my-2">
+          <Col sm={12} className="text-center pt-1">
             <h4>
               Welcome to the <br /> Segment Sniper!
             </h4>
@@ -20,7 +20,7 @@ function Home() {
         <Row>
           <Col sm={12} className="mb-3">
             <Card>
-              <Card.Body className="text-center home-text">
+              <Card.Body className="text-center home-text my-0 py-1">
                 Are you a Strava athlete that spends too much time looking for
                 segments to KOM? If so, this app is designed and built for you.
                 With proprietary analytics and data aggregations, the Strava

@@ -38,8 +38,14 @@ function Header() {
   }, [navbarRef, isNavbarOpen]);
 
   return (
-    <Navbar expand="md" ref={navbarRef} expanded={isNavbarOpen} bg="light">
-      <Container fluid className={"py-2"}>
+    <Navbar
+      expand="md"
+      ref={navbarRef}
+      expanded={isNavbarOpen}
+      bg="light"
+      className="pb-0"
+    >
+      <Container fluid className={""}>
         <Navbar.Brand className={"ps-3"}>
           <Link
             to={
