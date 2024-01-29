@@ -1,6 +1,5 @@
 .activityTypeFormGroup {
-    display: flex;
-    flex-direction: column;
+
     padding: 0.5rem 1.5rem;
   }
 
@@ -8,18 +7,14 @@
     padding-top: 0.5rem;
 }
 
-.activityTypeRow {
-    flex-direction: row;
-    justify-content: center;
-}
+// .activityTypeRow {
+//     display: flex;
+//     justify-content: center;
+// }
 
-.activityTypeLabelColumn {
-
-}
-
-@media (min-width: 768px) {
-    .activityTypeFormGroup {
-      flex-direction: row;
-      align-items: center;
-    }
-}
+// @media (min-width: 768px) {
+//     .activityTypeFormGroup {
+//       flex-direction: row;
+//       align-items: center;
+//     }
+// }
