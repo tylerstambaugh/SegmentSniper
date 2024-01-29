@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
-import useUserStore from "../../../stores/useUserStore";
+import useUserStore from "../../../../stores/useUserStore";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useEffect, useState } from "react";
-import { usePostSendEmailConfirmation } from "../../../hooks/Api/Auth/usePostSendEmailConfirmation";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { SendEmailConfirmationCodeRequest } from "../../../services/Api/Auth/postSendEmailConfirmationCode";
+import { usePostSendEmailConfirmation } from "../../../../hooks/Api/Auth/usePostSendEmailConfirmation";
+import useTokenDataStore from "../../../../stores/useTokenStore";
+import { SendEmailConfirmationCodeRequest } from "../../../../services/Api/Auth/postSendEmailConfirmationCode";
 
 export default function ConfirmEmailSendCodeWidget() {
   const user = useUserStore((state) => state.user);

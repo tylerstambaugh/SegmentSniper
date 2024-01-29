@@ -10,14 +10,14 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { usePostRegisterUser } from "../../../hooks/Api/Auth/usePostRegisterUser";
+import { usePostRegisterUser } from "../../../../hooks/Api/Auth/usePostRegisterUser";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { RegisterUserRequest } from "../../../services/Api/Auth/postRegisterUser";
-import { LoginRequest } from "../../../services/Api/Auth/postLogin";
-import { usePostLogin } from "../../../hooks/Api/Auth/usePostLogin";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import useTokenDataStore from "../../../../stores/useTokenStore";
+import { RegisterUserRequest } from "../../../../services/Api/Auth/postRegisterUser";
+import { LoginRequest } from "../../../../services/Api/Auth/postLogin";
+import { usePostLogin } from "../../../../hooks/Api/Auth/usePostLogin";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 
 export default function RegisterWidget() {
   const navigate = useNavigate();

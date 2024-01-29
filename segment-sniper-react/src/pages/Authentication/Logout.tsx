@@ -1,4 +1,4 @@
-import LogoutWidget from "../../components/Organisms/Authentication/LogoutWidget";
+import LogoutWidget from "../../components/Organisms/Authentication/LogoutWidget/LogoutWidget";
 
 function Logout() {
   return (

@@ -1,4 +1,4 @@
-import ForgotPasswordWidget from "../../components/Organisms/Authentication/ForgotPasswordWidget";
+import ForgotPasswordWidget from "../../components/Organisms/Authentication/ForgotPasswordWidget/ForgotPasswordWidget";
 
 function ForgotPassword() {
   return (

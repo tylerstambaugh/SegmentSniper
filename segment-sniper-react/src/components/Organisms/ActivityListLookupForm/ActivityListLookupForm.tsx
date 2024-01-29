@@ -26,7 +26,7 @@ import useActivityListStore from "../../../stores/useActivityListStore";
 import ActivityNameSearchInput from "../../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput";
 import ActivityDateSearch from "../../Molecules/Activity/ActivityDateSearch/ActivityDateSearch";
 import ActivityTypeDropdown from "../../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown";
-
+import styles from "./ActivityListLookupForm.module.scss";
 export interface ActivityListSearchForm {
   activityName?: string | null;
   startDate?: DateTime | null;
