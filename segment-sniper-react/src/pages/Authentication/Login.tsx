@@ -1,4 +1,4 @@
-import LoginWidget from "../../components/Organisms/Authentication/LoginWidget";
+import LoginWidget from "../../components/Organisms/Authentication/LoginWidget/LoginWidget";
 
 function Login() {
   return (

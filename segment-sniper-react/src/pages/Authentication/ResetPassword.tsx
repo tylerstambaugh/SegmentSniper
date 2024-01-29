@@ -1,4 +1,4 @@
-import ResetPasswordWidget from "../../components/Organisms/Authentication/ResetPasswordWidget";
+import ResetPasswordWidget from "../../components/Organisms/Authentication/ResetPasswordWidget/ResetPasswordWidget";
 
 function ResetPassword() {
   return (

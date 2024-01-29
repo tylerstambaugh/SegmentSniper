@@ -11,9 +11,9 @@ import {
   Spinner,
   Form,
 } from "react-bootstrap";
-import { usePostResetPassword } from "../../../hooks/Api/Auth/usePostResetPassword";
-import { ResetPasswordRequest } from "../../../services/Api/Auth/postResetPassword";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import { usePostResetPassword } from "../../../../hooks/Api/Auth/usePostResetPassword";
+import { ResetPasswordRequest } from "../../../../services/Api/Auth/postResetPassword";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 import toast from "react-hot-toast";
 
 export default function ResetPasswordWidget() {

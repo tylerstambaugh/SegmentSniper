@@ -1,11 +1,11 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import useUserStore from "../../../stores/useUserStore";
+import useUserStore from "../../../../stores/useUserStore";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useEffect } from "react";
-import { useResetAllStores } from "../../../hooks/resetAllStores";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { useGetLogout } from "../../../hooks/Api/Auth/useGetLogout";
+import { useResetAllStores } from "../../../../hooks/resetAllStores";
+import useTokenDataStore from "../../../../stores/useTokenStore";
+import { useGetLogout } from "../../../../hooks/Api/Auth/useGetLogout";
 import toast from "react-hot-toast";
 
 export default function LogoutWidget() {

@@ -1,15 +1,15 @@
 import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { LoginRequest } from "../../../services/Api/Auth/postLogin";
+import { LoginRequest } from "../../../../services/Api/Auth/postLogin";
 import toast from "react-hot-toast";
-import { usePostLogin } from "../../../hooks/Api/Auth/usePostLogin";
+import { usePostLogin } from "../../../../hooks/Api/Auth/usePostLogin";
 
-import useTokenDataStore from "../../../stores/useTokenStore";
-import useUserStore from "../../../stores/useUserStore";
+import useTokenDataStore from "../../../../stores/useTokenStore";
+import useUserStore from "../../../../stores/useUserStore";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
@@ -123,7 +123,7 @@ export default function LoginWidget() {
                       </Form.Control.Feedback>
                     </Form.Group>
                     <Row className="d-flex justify-content-center">
-                      <Col xs={12} md={12} lg={8} xl={8}>
+                      <Col xs={12}>
                         <div className="d-grid">
                           {loginUser.isLoading ? (
                             <Button

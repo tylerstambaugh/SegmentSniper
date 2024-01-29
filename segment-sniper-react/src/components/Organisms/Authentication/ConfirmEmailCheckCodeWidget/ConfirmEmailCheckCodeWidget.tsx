@@ -1,16 +1,16 @@
 import { Row, Col, Spinner, Container, Button, Card } from "react-bootstrap";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
-import useUserStore from "../../../stores/useUserStore";
+import { AppRoutes } from "../../../../enums/AppRoutes";
+import useUserStore from "../../../../stores/useUserStore";
 import { useEffect, useState } from "react";
-import useTokenDataStore, { TokenData } from "../../../stores/useTokenStore";
-import { usePostCheckEmailVerificationCode } from "../../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
+import useTokenDataStore, { TokenData } from "../../../../stores/useTokenStore";
+import { usePostCheckEmailVerificationCode } from "../../../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
 import {
   VerifyEmailConfirmationCodeRequest,
   VerifyEmailConfirmationCodeResponse,
-} from "../../../services/Api/Auth/postVerifyEmailConfirmationCode";
+} from "../../../../services/Api/Auth/postVerifyEmailConfirmationCode";
 import toast from "react-hot-toast";
-import useRefreshTokenQuery from "../../../hooks/Api/Auth/useRefreshTokenQuery";
+import useRefreshTokenQuery from "../../../../hooks/Api/Auth/useRefreshTokenQuery";
 
 export default function ConfirmEmailCheckCodeWidget() {
   const setUser = useUserStore((state) => state.setUser);

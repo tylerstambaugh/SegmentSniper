@@ -1,13 +1,13 @@
 import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { usePostSendPasswordResetEmail } from "../../../hooks/Api/Auth/usePostSendPasswordResetEmail";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { SendPasswordResetEmailRequest } from "../../../services/Api/Auth/postSendPasswordResetEmail";
+import { usePostSendPasswordResetEmail } from "../../../../hooks/Api/Auth/usePostSendPasswordResetEmail";
+import useTokenDataStore from "../../../../stores/useTokenStore";
+import { SendPasswordResetEmailRequest } from "../../../../services/Api/Auth/postSendPasswordResetEmail";
 import toast from "react-hot-toast";
 
 export default function ForgotPasswordWidget() {
