@@ -1,5 +1,5 @@
-import { Row, Col, FormGroup, FormSelect } from "react-bootstrap";
-import "../../../App.css";
+import { Row, Col, FormGroup, FormSelect, FormLabel } from "react-bootstrap";
+import styles from "./SortFilter.module.scss";
 
 export interface SortFilterProps {
   sortBy: string;
@@ -9,23 +9,16 @@ export interface SortFilterProps {
 const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
   return (
     <Row>
-      <Col className="text-start snipe-option-label">
-        <p>Sort By:</p>
-      </Col>
       <Col>
-        <FormGroup controlId="sortControl" className="text-end">
+        <FormGroup controlId="sortControl" className={styles.form}>
+          <FormLabel className={styles.label}>Sort By</FormLabel>
           <FormSelect
             value={sortBy}
             onChange={(e) => {
               onChange(e.target.value);
             }}
-            style={{
-              padding: "0px 2px",
-              textAlign: "start",
-            }}
-            className="text-end snipe-option-heading-select"
+            className={styles.select}
           >
-            <option>Sort By</option>
             <option value="date">Date</option>
             <option value="longestDistance">Longest Distance</option>
             <option value="shortestDistance">Shortest Distance</option>
