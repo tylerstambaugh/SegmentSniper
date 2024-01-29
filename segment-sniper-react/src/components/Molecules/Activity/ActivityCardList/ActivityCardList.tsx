@@ -1,5 +1,5 @@
-import useActivityListStore from "../../../stores/useActivityListStore";
-import ActivityCard from "./ActivityCard";
+import useActivityListStore from "../../../../stores/useActivityListStore";
+import ActivityCard from "../ActivityCard/ActivityCard";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 

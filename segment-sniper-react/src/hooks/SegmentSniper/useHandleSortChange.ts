@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList";
+import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList/SnipeSegmentCardList";
 import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 
 const useHandleSortChange = () => {

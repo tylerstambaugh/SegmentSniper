@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import useAppConfigStore from "../../../stores/useAppConfigStore";
+import useAppConfigStore from "../../../../stores/useAppConfigStore";
 import GoogleMapReact from "google-map-react";
 import { decode } from "@mapbox/polyline";
-import Polyline from "../../Atoms/Polyline";
-import { StravaMap } from "../../../models/StravaMap";
-import MapMarker from "../../Atoms/MapMarker";
+import Polyline from "../../../Atoms/Polyline";
+import { StravaMap } from "../../../../models/StravaMap";
+import MapMarker from "../../../Atoms/MapMarker";
 
 type ActivityMapProps = {
   stravaMap: StravaMap;

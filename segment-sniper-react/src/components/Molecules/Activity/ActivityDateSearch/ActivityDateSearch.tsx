@@ -2,7 +2,7 @@ import { FormikErrors } from "formik";
 import { DateTime } from "luxon";
 
 import { Row, Col, FloatingLabel, Form } from "react-bootstrap";
-import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm";
+import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm/ActivityListLookupForm";
 
 type Props = {
   startDate: DateTime | null;

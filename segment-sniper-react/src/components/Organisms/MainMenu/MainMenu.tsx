@@ -1,7 +1,7 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../../enums/AppRoutes";
-import useUserStore from "../../stores/useUserStore";
+import { AppRoutes } from "../../../enums/AppRoutes";
+import useUserStore from "../../../stores/useUserStore";
 
 export default function MainMenu() {
   const user = useUserStore((state) => state.user);

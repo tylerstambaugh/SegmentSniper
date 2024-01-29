@@ -1,9 +1,9 @@
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-import SnipeSegmentCard from "./SnipeSegmentCard";
+import SnipeSegmentCard from "../SnipeSegmentCard/SnipeSegmentCard";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
-import SnipeSegmentCardCarousel from "./SnipeSegmentCardCarousel";
+import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
+import SnipeSegmentCardCarousel from "../SnipeSegmentCardCarousel/SnipeSegmentCardCarousel";
 
 interface SnipeSegmentCardListProps {
   snipeListLoading: boolean;

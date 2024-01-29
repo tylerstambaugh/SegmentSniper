@@ -1,6 +1,6 @@
 import { FormikErrors } from "formik";
 import { Col, Form, Row } from "react-bootstrap";
-import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm";
+import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm/ActivityListLookupForm";
 import styles from "./ActivityNameSearchInput.module.scss";
 
 type Props = {

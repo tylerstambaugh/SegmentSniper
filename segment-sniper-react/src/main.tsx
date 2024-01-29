@@ -1,6 +1,6 @@
 import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
-import Header from "./components/Organisms/Header";
+import Header from "./components/Organisms/Header/Header";
 import Routes from "./SegmentSniper.routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
