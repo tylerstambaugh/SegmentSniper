@@ -182,18 +182,14 @@ function ActivityListLookupForm() {
                   />
                 </Row>
                 <hr className="hr-75" />
-                <Row>
-                  <Col>
-                    <ActivityTypeDropdown
-                      onChange={(selection: string) => {
-                        formik.setFieldValue("activityType", selection);
-                      }}
-                      selection={
-                        formik.values.activityType ?? ActivityTypes.Ride
-                      }
-                      errors={formik.errors}
-                    />
-                  </Col>
+                <Row className="justify-content-around">
+                  <ActivityTypeDropdown
+                    onChange={(selection: string) => {
+                      formik.setFieldValue("activityType", selection);
+                    }}
+                    selection={formik.values.activityType ?? ActivityTypes.Ride}
+                    errors={formik.errors}
+                  />
                 </Row>
                 <div className="d-flex justify-content-center mb-2">
                   <Row>
