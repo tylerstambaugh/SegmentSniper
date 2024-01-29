@@ -1,5 +1,5 @@
 import { Row, Col, Form } from "react-bootstrap";
-import Slider from "../../Atoms/Slider/Slider";
+import Slider from "../../../Atoms/Slider/Slider";
 import { useState } from "react";
 
 export interface PercentageFromLeaderProps {

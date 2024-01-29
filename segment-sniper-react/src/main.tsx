@@ -39,6 +39,5 @@ root.render(
         },
       }}
     />
-    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );

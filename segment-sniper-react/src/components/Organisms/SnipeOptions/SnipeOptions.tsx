@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import PercentageFromLeaderFilter from "../Molecules/Filters/PercentageFromLeaderFilter";
+import PercentageFromLeaderFilter from "../../Molecules/SnipeOptionsFilters/PercentageFromLeader/PercentageFromLeaderFilter";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
-import useActivityListStore from "../../stores/useActivityListStore";
-import SecondsFromLeaderFilter from "../Molecules/Filters/SecondsFromLeaderFilter";
-import HeadingsFilter from "../Molecules/Filters/Heading/HeadingsFilter";
-import LeaderTypeFilter from "../Molecules/Filters/LeaderTypeFilter";
-import SortFilter from "../Molecules/Filters/SortFilter";
+import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
+import useActivityListStore from "../../../stores/useActivityListStore";
+import SecondsFromLeaderFilter from "../../Molecules/SnipeOptionsFilters/SecondsFromLeader/SecondsFromLeaderFilter";
+import HeadingsFilter from "../../Molecules/SnipeOptionsFilters/Heading/HeadingsFilter";
+import LeaderTypeFilter from "../../Molecules/SnipeOptionsFilters/LeaderType/LeaderTypeFilter";
+import SortFilter from "../../Molecules/SnipeOptionsFilters/Sort/SortFilter";
+import styles from "./SnipeOptions.module.scss";
 
 export interface FilterOptions {
   percentageFromLeader?: number | null;
@@ -64,7 +65,9 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
           <Card.Title className="p-2 activity-card-heading">
             <Row className="pb-2">
               <Col>
-                <p className="mb-1 snipe-options-heading">Snipe Options</p>
+                <p className={`mb-2 ${styles.snipeOptionsHeading}`}>
+                  Snipe Options
+                </p>
               </Col>
               <Col className="text-end">
                 <Button variant="secondary" onClick={handleResetSnipeOptions}>
