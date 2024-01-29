@@ -1,11 +1,11 @@
 import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../../enums/AppRoutes";
+import { AppRoutes } from "../../../enums/AppRoutes";
 import { Col, Nav, Navbar, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import useUserStore from "../../stores/useUserStore";
-import useTokenDataStore from "../../stores/useTokenStore";
-import logo from "../../assets/images/segment_sniper_logo_v3.webp";
+import useUserStore from "../../../stores/useUserStore";
+import useTokenDataStore from "../../../stores/useTokenStore";
+import logo from "../../../assets/images/segment_sniper_logo_v3.webp";
 import { useEffect, useRef, useState } from "react";
 
 function Header() {

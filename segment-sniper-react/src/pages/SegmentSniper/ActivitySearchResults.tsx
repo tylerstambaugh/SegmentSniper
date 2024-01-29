@@ -3,7 +3,7 @@ import useActivityListStore from "../../stores/useActivityListStore";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
-import ActivityCardList from "../../components/Molecules/Activity/ActivityCardList";
+import ActivityCardList from "../../components/Molecules/Activity/ActivityCardList/ActivityCardList";
 import useSegmentEffortsListStore from "../../stores/useSegmentEffortsListStore";
 import { useSnipeSegments } from "../../hooks/Api/Segments/useSnipeSegments";
 import toast from "react-hot-toast";

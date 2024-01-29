@@ -2,8 +2,8 @@ import React from "react";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
-import SnipeSegmentCard from "./SnipeSegmentCard";
+import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
+import SnipeSegmentCard from "../SnipeSegmentCard/SnipeSegmentCard";
 import { v4 as uuidv4 } from "uuid";
 
 interface SnipeSegmentCardCarouselProps {

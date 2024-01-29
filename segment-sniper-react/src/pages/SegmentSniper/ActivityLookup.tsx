@@ -1,4 +1,4 @@
-import ActivityListLookupForm from "../../components/Organisms/ActivityListLookupForm";
+import ActivityListLookupForm from "../../components/Organisms/ActivityListLookupForm/ActivityListLookupForm";
 
 function SegmentSniper() {
   return (

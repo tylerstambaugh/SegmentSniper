@@ -1,5 +1,5 @@
 import { FormikErrors } from "formik";
-import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm";
+import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm/ActivityListLookupForm";
 import { Col, Form, Row } from "react-bootstrap";
 import { ActivityTypes } from "../../../../enums/ActivityTypes";
 
