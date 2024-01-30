@@ -36,6 +36,7 @@ namespace SegmentSniper.Api.Configuration
             //strava action handlers
             services.AddScoped<IGetActivityListByIdActionHandler, GetActivityListByIdActionHandler>();
             services.AddScoped<IGetActivityListByNameActionHandler, GetActivityListByNameActionHandler>();
+            services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetActivityListForTimeRangeActionHandler, GetActivityListForTimeRangeActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();

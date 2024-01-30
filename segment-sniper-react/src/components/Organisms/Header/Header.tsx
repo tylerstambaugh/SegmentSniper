@@ -49,9 +49,9 @@ function Header() {
         <Navbar.Brand className={"ps-3"}>
           <Link
             to={
-              !!isAuthenticated
-                ? `/${AppRoutes.Dashboard}`
-                : `/${AppRoutes.Home}`
+              !isAuthenticated
+                ? `/${AppRoutes.Home}`
+                : `/${AppRoutes.Dashboard}`
             }
             className={"d-flex text-white text-decoration-none"}
           >

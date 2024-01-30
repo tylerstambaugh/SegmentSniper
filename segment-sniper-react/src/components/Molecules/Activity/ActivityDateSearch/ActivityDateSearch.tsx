@@ -52,7 +52,7 @@ const ActivityDateSearch = ({
         </Form.Group>
       </Col>
       <Col md={6}>
-        <Form.Group className="" controlId="endDate">
+        <Form.Group className="pb-2" controlId="endDate">
           <FloatingLabel
             className="pt-1"
             label="End Date"

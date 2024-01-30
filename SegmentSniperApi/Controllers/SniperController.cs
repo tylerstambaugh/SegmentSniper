@@ -21,8 +21,9 @@ namespace SegmentSniper.Api.Controllers
         private readonly IStarSegmentActionHandler _starSegmentActionHandler;
         private readonly IGetSnipeSegmentsByActivityIdActionHandler _getSnipeSegmentsByActivityIdActionHandler;
         private readonly IGetActivityListByNameActionHandler _getActivityListByNameActionHandler;
+        private readonly IGetActivityListActionHandler _getActivityListActionHandler;
 
-        public SniperController(IGetActivityListForTimeRangeActionHandler getActivityListForTimeRangeActionHandler, IGetActivityListByIdActionHandler getActivityListByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler, IGetDetailedSegmentBySegmentIdActionHandler getDetailedSegmentBySegmentIdActionHandler, IStarSegmentActionHandler starSegmentActionHandler, IGetSnipeSegmentsByActivityIdActionHandler getSnipeSegmentsByActivityIdActionHandler, IGetActivityListByNameActionHandler getActivityListByNameActionHandler)
+        public SniperController(IGetActivityListForTimeRangeActionHandler getActivityListForTimeRangeActionHandler, IGetActivityListByIdActionHandler getActivityListByIdActionHandler, IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler, IGetDetailedSegmentBySegmentIdActionHandler getDetailedSegmentBySegmentIdActionHandler, IStarSegmentActionHandler starSegmentActionHandler, IGetSnipeSegmentsByActivityIdActionHandler getSnipeSegmentsByActivityIdActionHandler, IGetActivityListByNameActionHandler getActivityListByNameActionHandler, IGetActivityListActionHandler getActivityListActionHandler)
         {
             _getActivityListForTimeRangeActionHandler = getActivityListForTimeRangeActionHandler;
             _getActivityListByIdActionHandler = getActivityListByIdActionHandler;
@@ -32,6 +33,7 @@ namespace SegmentSniper.Api.Controllers
             _starSegmentActionHandler = starSegmentActionHandler;
             _getSnipeSegmentsByActivityIdActionHandler = getSnipeSegmentsByActivityIdActionHandler;
             _getActivityListByNameActionHandler = getActivityListByNameActionHandler;
+            _getActivityListActionHandler = getActivityListActionHandler;
         }
 
 
@@ -86,6 +88,28 @@ namespace SegmentSniper.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(422, $"Unable to fetch activity by name: \"{request.ActivityName}\" \n {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("getActvityList")]
+        public async Task<IActionResult> GetActivityList([FromBody] GetActivityListRequest request)
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var handlerRequest = new GetActivityListRequest(userId, request.StartDate, request.EndDate, request.ActivityType, request.ActivityName);
+                var returnList = await _getActivityListActionHandler.HandleAsync(handlerRequest);
+
+                if (returnList != null)
+                    return Ok(returnList);
+                else
+                    return StatusCode(421, $"Unable to fetch activity list.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to fetch activity by name. Error: \n {ex.Message}");
             }
         }
 
