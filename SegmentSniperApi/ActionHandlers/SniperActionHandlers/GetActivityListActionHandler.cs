@@ -35,17 +35,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 try
                 {
-
                     _stravaRequestService.UserId = request.UserId;
                     _stravaRequestService.RefreshToken = token.RefreshToken;
 
                     ActivityType parsedActivity;
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
 
-                    var endDate = request.EndDate.AddDays(1);
 
-                    var unixStartDate = (Int32)request.StartDate.ToEpochTime();
-                    var unixEndDate = (Int32)endDate.ToEpochTime();
+                    //determine days and pages to search:
+                    var endDate = request.EndDate?.AddDays(1);
+
+                    var unixStartDate = (Int32)request.StartDate?.ToEpochTime();
+                    var unixEndDate = (Int32)endDate?.ToEpochTime();
                     int page = 1;
 
                     var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate, page));
@@ -87,6 +88,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ApplicationException("Something went wrong 'handling' the request");
             }
+        }
+
+        private DaysAndPagesContract.Result GetDaysAndPages(DaysAndPagesContract contract)
+        {
+            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-30).ToEpochTime();
+            long endDateUnix = contract.EndDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-1).ToEpochTime();
+
+            return new DaysAndPagesContract.Result
+            {
+                StartDateUnix = startDateUnix,
+                EndDateUnix = endDateUnix,
+            };
         }
 
         private void ValidateRequest(GetActivityListRequest request)

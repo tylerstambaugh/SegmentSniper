@@ -48,7 +48,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     List<SummaryActivity> nameMatchedActivities = new List<SummaryActivity>();
 
-                    for (int i = 1; i < 6; i++)
+                    for (int i = 1; i < 3; i++)
                     {
                         var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(startDate, endDate, i));
 
