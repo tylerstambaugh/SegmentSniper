@@ -99,7 +99,7 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var handlerRequest = new GetActivityListRequest(userId, request.StartDate, request.EndDate, request.ActivityType, request.ActivityName);
+                var handlerRequest = new GetActivityListRequest(userId, request.StartDate.Value, request.EndDate.Value, request.ActivityType, request.ActivityName);
                 var returnList = await _getActivityListActionHandler.HandleAsync(handlerRequest);
 
                 if (returnList != null)

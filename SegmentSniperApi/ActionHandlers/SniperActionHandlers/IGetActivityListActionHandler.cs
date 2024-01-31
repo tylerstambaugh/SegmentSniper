@@ -56,8 +56,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         public class Result
         {
             public int NumberOfPages { get; set; }
-            public long StartDateUnix { get; set; }
-            public long EndDateUnix { get; set;}
+            public int StartDateUnix { get; set; }
+            public int EndDateUnix { get; set;}
         }
     }
 }

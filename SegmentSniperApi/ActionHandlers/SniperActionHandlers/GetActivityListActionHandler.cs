@@ -41,24 +41,27 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     ActivityType parsedActivity;
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
 
+                    var daysAndPages = GetDaysAndPages(new DaysAndPagesContract(request.StartDate.Value, request.EndDate.Value));
 
-                    //determine days and pages to search:
-                    var endDate = request.EndDate?.AddDays(1);
+                    List<SummaryActivity> listOfSummaryActivities = new List<SummaryActivity>();
 
-                    var unixStartDate = (Int32)request.StartDate?.ToEpochTime();
-                    var unixEndDate = (Int32)endDate?.ToEpochTime();
-                    int page = 1;
-
-                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(unixStartDate, unixEndDate, page));
-
-                    List<SummaryActivity> listOfSummaryActivities = response.SummaryActivities;
-
-                    if (parsedActivity != ActivityTypeEnum.ActivityType.All)
+                    for(int i = 1; i <= daysAndPages.NumberOfPages; i++ )
                     {
-                        listOfSummaryActivities = listOfSummaryActivities
-                        .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
-                    }
+                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysAndPages.StartDateUnix, daysAndPages.EndDateUnix, i));
 
+                        listOfSummaryActivities = response.SummaryActivities;
+
+                        if (parsedActivity != ActivityTypeEnum.ActivityType.All)
+                        {
+                            listOfSummaryActivities = listOfSummaryActivities
+                            .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
+                        }
+
+                        if (request.ActivityName != null)
+                        {
+                            listOfSummaryActivities = listOfSummaryActivities.Where(n => n.Name.ToLower().Contains(request.ActivityName.ToLower())).ToList();                 
+                        }
+                    }
                     List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
 
                     foreach (SummaryActivity activity in listOfSummaryActivities)
@@ -92,13 +95,24 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private DaysAndPagesContract.Result GetDaysAndPages(DaysAndPagesContract contract)
         {
+            int numPages = 1;
+            if(contract.StartDate != null && contract.EndDate != null) 
+            {
+                TimeSpan? days = contract.EndDate.Value.Subtract(contract.StartDate.Value);
+                if(days != null)
+                {
+                    numPages = (int)days.Value.TotalDays / 30;
+                }
+            }
+
             long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-30).ToEpochTime();
-            long endDateUnix = contract.EndDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-1).ToEpochTime();
+            long endDateUnix = contract.EndDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(1).ToEpochTime();
 
             return new DaysAndPagesContract.Result
             {
-                StartDateUnix = startDateUnix,
-                EndDateUnix = endDateUnix,
+                NumberOfPages = numPages,
+                StartDateUnix = (int)startDateUnix,
+                EndDateUnix = (int)endDateUnix,
             };
         }
 
