@@ -1,21 +1,24 @@
+import { DateTime } from "luxon";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "../BaseApiService";
 import { ActivityListLookupResponse } from "./getActivityListByDateRange";
 
-export type ActivityListByNameLookupRequest = {
-  name: string;
-  activityType: string;
+export type ActivityListLookupRequest = {
+  activityName: string;
+  startDate: DateTime;
+  endDate: DateTime;
+  activityTpe: string;
 };
 
-export default async function getActivityListByName(
-  contract: ApiContract<ActivityListByNameLookupRequest>
+export default async function getActivityList(
+  contract: ApiContract<ActivityListLookupRequest>
 ) {
   try {
     const response = await apiPost<
-      ActivityListByNameLookupRequest,
+      ActivityListLookupRequest,
       ActivityListLookupResponse
-    >(`${contract.baseUrl}/sniper/getActivityListByName`, contract);
+    >(`${contract.baseUrl}/sniper/getActivityList`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

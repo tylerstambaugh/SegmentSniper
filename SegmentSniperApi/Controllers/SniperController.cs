@@ -93,7 +93,7 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("getActvityList")]
+        [Route("getActivityList")]
         public async Task<IActionResult> GetActivityList([FromBody] GetActivityListRequest request)
         {
             try
