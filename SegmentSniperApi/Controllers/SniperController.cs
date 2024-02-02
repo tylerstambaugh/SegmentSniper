@@ -99,8 +99,8 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var handlerRequest = new GetActivityListRequest(userId, request.StartDate.Value, request.EndDate.Value, request.ActivityType, request.ActivityName);
-                var returnList = await _getActivityListActionHandler.HandleAsync(handlerRequest);
+                request.UserId = userId;
+                var returnList = await _getActivityListActionHandler.HandleAsync(request);
 
                 if (returnList != null)
                     return Ok(returnList);
@@ -109,7 +109,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to fetch activity by name. Error: \n {ex.Message}");
+                return StatusCode(422, $"Unable to fetch activities. Error: \n {ex.Message}");
             }
         }
 

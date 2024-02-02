@@ -9,14 +9,9 @@ import getActivityListByDateRange, {
   ActivityListLookupResponse,
 } from "../../../services/Api/Activity/getActivityListByDateRange";
 import getActivityListByName from "../../../services/Api/Activity/getActivityListByName";
-import getActivityList from "../../../services/Api/Activity/getActivityList";
-
-export interface ActivitySearchRequest {
-  activityName?: string | null;
-  startDate?: DateTime | null;
-  endDate?: DateTime | null;
-  activityType?: ActivityTypes | null;
-}
+import getActivityList, {
+  ActivityListLookupRequest,
+} from "../../../services/Api/Activity/getActivityList";
 
 export const useHandleActivitySearch = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -27,8 +22,8 @@ export const useHandleActivitySearch = () => {
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
-  async function trigger(request: ActivitySearchRequest) {
-    const contract: ApiContract = {
+  async function trigger(request: ActivityListLookupRequest) {
+    const contract: ApiContract<ActivityListLookupRequest> = {
       baseUrl: apiConfig!.baseUrl,
       token: tokenData?.accessToken!,
       request: request,
@@ -36,13 +31,7 @@ export const useHandleActivitySearch = () => {
 
     let response: ActivityListLookupResponse = { activityList: [] };
 
-    if (request.activityName && request.startDate && request.endDate) {
-      response = await getActivityList(contract);
-    } else if (request.activityName) {
-      response = await getActivityListByName(contract);
-    } else if (request.startDate && request.endDate) {
-      response = await getActivityListByDateRange(contract);
-    }
+    response = await getActivityList(contract);
 
     if (response.activityList.length > 0) {
       setActivityList(response!.activityList);

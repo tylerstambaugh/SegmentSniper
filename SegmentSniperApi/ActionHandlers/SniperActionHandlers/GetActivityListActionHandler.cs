@@ -18,6 +18,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
         private readonly IActivityAdapter _activityAdapter;
+        private readonly int maxActivityResults = 200;
 
         public GetActivityListActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper, IActivityAdapter activityAdapter)
         {
@@ -41,13 +42,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     ActivityType parsedActivity;
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);
 
-                    var daysAndPages = GetDaysAndPages(new DaysAndPagesContract(request.StartDate.Value, request.EndDate.Value));
+                    var daysRange = GetDaysRange(new DaysAndPagesContract(request.StartDate, request.EndDate));
 
                     List<SummaryActivity> listOfSummaryActivities = new List<SummaryActivity>();
 
-                    for(int i = 1; i <= daysAndPages.NumberOfPages; i++ )
-                    {
-                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysAndPages.StartDateUnix, daysAndPages.EndDateUnix, i));
+                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysRange.StartDateUnix, daysRange.EndDateUnix, maxActivityResults));
 
                         listOfSummaryActivities = response.SummaryActivities;
 
@@ -61,7 +60,6 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         {
                             listOfSummaryActivities = listOfSummaryActivities.Where(n => n.Name.ToLower().Contains(request.ActivityName.ToLower())).ToList();                 
                         }
-                    }
                     List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
 
                     foreach (SummaryActivity activity in listOfSummaryActivities)
@@ -89,28 +87,17 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
             else
             {
-                throw new ApplicationException("Something went wrong 'handling' the request");
+                throw new ApplicationException("Invalid or missing Strava Authorization");
             }
         }
 
-        private DaysAndPagesContract.Result GetDaysAndPages(DaysAndPagesContract contract)
+        private DaysAndPagesContract.Result GetDaysRange(DaysAndPagesContract contract)
         {
-            int numPages = 1;
-            if(contract.StartDate != null && contract.EndDate != null) 
-            {
-                TimeSpan? days = contract.EndDate.Value.Subtract(contract.StartDate.Value);
-                if(days != null)
-                {
-                    numPages = (int)days.Value.TotalDays / 30;
-                }
-            }
-
-            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-30).ToEpochTime();
+            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-365).ToEpochTime();
             long endDateUnix = contract.EndDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(1).ToEpochTime();
 
             return new DaysAndPagesContract.Result
             {
-                NumberOfPages = numPages,
                 StartDateUnix = (int)startDateUnix,
                 EndDateUnix = (int)endDateUnix,
             };
@@ -126,7 +113,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ArgumentNullException("User Id cannot be null");
             }
-            if ((request.EndDate == null && request.StartDate == null) || string.IsNullOrWhiteSpace(request.ActivityName))
+            if ((request.EndDate == null && request.StartDate == null) && string.IsNullOrWhiteSpace(request.ActivityName))
             {
                 throw new ArgumentNullException("Must supply start and end date, or activity name");
             }

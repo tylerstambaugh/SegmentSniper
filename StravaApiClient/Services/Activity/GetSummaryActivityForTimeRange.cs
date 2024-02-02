@@ -15,7 +15,7 @@ namespace StravaApiClient.Services.Activity
         {
             ValidateContract(contract);
 
-            var apiResponse = await _stravaRequestClient.GetAsync<List<SummaryActivity>>($"athlete/activities?after={contract.StartDate}&before={contract.EndDate}&page={contract.Page}");
+            var apiResponse = await _stravaRequestClient.GetAsync<List<SummaryActivity>>($"athlete/activities?after={contract.StartDate}&before={contract.EndDate}&per_page={contract.NumResults}");
 
             return new GetSummaryActivityForTimeRangeContract.Result(apiResponse);
         }
