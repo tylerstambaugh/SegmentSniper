@@ -13,10 +13,7 @@ import {
 } from "react-bootstrap";
 
 import { ActivityTypes } from "../../../enums/ActivityTypes";
-import {
-  ActivitySearchRequest,
-  useHandleActivitySearch,
-} from "../../../hooks/Api/Activity/useHandleActivitySearch";
+import { useHandleActivitySearch } from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
 import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
@@ -27,6 +24,7 @@ import ActivityNameSearchInput from "../../Molecules/Activity/ActivityNameSearch
 import ActivityDateSearch from "../../Molecules/Activity/ActivityDateSearch/ActivityDateSearch";
 import ActivityTypeDropdown from "../../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown";
 import styles from "./ActivityListLookupForm.module.scss";
+import { ActivityListLookupRequest } from "../../../services/Api/Activity/getActivityList";
 export interface ActivityListSearchForm {
   activityName?: string | null;
   startDate?: DateTime | null;
@@ -49,24 +47,42 @@ function ActivityListLookupForm() {
   );
 
   const validationSchema = yup.object({
-    // name: yup.string().when([], {
-    //   is: () => "startDate" === null,
-    //   then: (schema) => schema.required("Must provide name or dates"),
+    name: yup.string().when([], {
+      is: () => "startDate" === null,
+      then: (schema) => schema.required("Must provide name or dates"),
+    }),
+    startDate: yup
+      .mixed()
+      .test("is-date", "Must be a valid date", function (value) {
+        // Validate if the value is a valid Date or null
+        return value === null || value instanceof Date;
+      })
+      .nullable()
+      .when([], {
+        is: () => "activityName" === null,
+        then: (schema) => schema.required("Must provide name or dates"),
+      }),
+    endDate: yup
+      .mixed()
+      .nullable()
+      .test("is-date", "Must be a valid date", function (value) {
+        // Validate if the value is a valid Date or null
+        return value === null || value instanceof Date;
+      })
+      .test(
+        "min",
+        "End date must be after start date",
+        function (value, context) {
+          // Validate if endDate is after startDate
+          const startDate = context.parent.startDate;
+          return startDate === null || value === null;
+        }
+      ),
+    // .when("startDate", (startDate, schema) => {
+    //   return startDate !== null
+    //     ? schema.required("End date is required")
+    //     : schema;
     // }),
-    // startDate: yup.date().when([], {
-    //   is: () => "activityName" === null,
-    //   then: (schema) => schema.required("Must provide name or dates"),
-    // }),
-    // endDate: yup
-    //   .date()
-    //   .nullable()
-    //   .when("startDate", (startDate, schema) => {
-    //     return startDate !== null
-    //       ? schema
-    //           .min(startDate, "End date must be after start date")
-    //           .required("End date is required")
-    //       : schema;
-    //   }),
   });
 
   const initialValues = {
@@ -76,7 +92,7 @@ function ActivityListLookupForm() {
     endDate: null,
   };
 
-  async function handleSearch(request: ActivitySearchRequest) {
+  async function handleSearch(request: ActivityListLookupRequest) {
     resetSegmentsList();
     resetSnipedSegments();
     setSelectedActivityId("");
@@ -98,10 +114,10 @@ function ActivityListLookupForm() {
       setValidated(true);
       console.log("values", values);
 
-      const searchProps: ActivitySearchRequest = {
-        activityName: values.activityName,
-        startDate: values.startDate,
-        endDate: values.endDate,
+      const searchProps: ActivityListLookupRequest = {
+        activityName: values.activityName ?? null,
+        startDate: values.startDate ?? null,
+        endDate: values.endDate ?? null,
         activityType: values.activityType as unknown as ActivityTypes,
       };
       handleSearch(searchProps);

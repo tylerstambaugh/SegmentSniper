@@ -5,10 +5,10 @@ import { apiPost } from "../BaseApiService";
 import { ActivityListLookupResponse } from "./getActivityListByDateRange";
 
 export type ActivityListLookupRequest = {
-  activityName: string;
-  startDate: DateTime;
-  endDate: DateTime;
-  activityTpe: string;
+  activityName?: string | null;
+  startDate?: DateTime | null;
+  endDate?: DateTime | null;
+  activityType: string;
 };
 
 export default async function getActivityList(
