@@ -17,8 +17,8 @@ const ActivityCardList = (props: ActivityCardListProps) => {
   ) : (
     <Container>
       <Row>
-        <Col>
-          <h4>No activities to display</h4>
+        <Col className=" d-flex justify-content-center pt-4">
+          <h4>0 Results Found</h4>
         </Col>
       </Row>
     </Container>

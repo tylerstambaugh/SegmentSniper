@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
@@ -69,7 +70,9 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         Expiration = token.ValidTo
                     };
 
-                    var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken != null);
+                   var userStravaToken = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken;
+
+                    var hasStravaTokenData = userStravaToken != null && userStravaToken.ExpiresAt < DateTime.Now.ToEpochTime();
 
                     var userDto = new UserDto
                     {

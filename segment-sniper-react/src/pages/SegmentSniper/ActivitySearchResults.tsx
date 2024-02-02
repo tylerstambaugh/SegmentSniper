@@ -37,10 +37,11 @@ function ActivitySearchResults() {
               clearSearchResults();
               navigate(`/${AppRoutes.Snipe}`);
             }}
+            className="my-2 px-2"
           >
             Back
           </Button>
-          <h3>Search Results</h3>
+          <h3 className="pt-2">Search Results</h3>
         </Col>
       </Row>
       <Row>

@@ -109,7 +109,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to fetch activities. Error: \n {ex.Message}");
+                return StatusCode(422, $"Unable to fetch activities. \n {ex.Message}");
             }
         }
 

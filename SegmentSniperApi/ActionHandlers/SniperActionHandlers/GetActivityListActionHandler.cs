@@ -82,7 +82,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
-                    throw new ApplicationException("Something went wrong handling the request.", ex);
+                    throw new ApplicationException($"GetActivityListError \n Details: {ex.Message}");
                 }
             }
             else
@@ -93,7 +93,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private DaysAndPagesContract.Result GetDaysRange(DaysAndPagesContract contract)
         {
-            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-365).ToEpochTime();
+            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-180).ToEpochTime();
             long endDateUnix = contract.EndDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(1).ToEpochTime();
 
             return new DaysAndPagesContract.Result

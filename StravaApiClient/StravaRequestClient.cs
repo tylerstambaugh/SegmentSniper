@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using StravaApiClient.Configuration;
 using System.Net.Http.Headers;
@@ -140,8 +141,8 @@ namespace StravaApiClient
 
                 if (error.Contains("message"))
                 {
-                    var errorObject = JsonConvert.DeserializeAnonymousType(error, new { message = "" });
-                    throw new HttpRequestException($"{response.StatusCode}: {errorObject.message}");
+                    var errorObject = JsonConvert.DeserializeObject<StravaApiError>(error);
+                    throw new HttpRequestException($"{response.StatusCode}: Message: {errorObject.Message}, Resource: {errorObject.Errors[0].Resource}, Field: {errorObject.Errors[0].Field}, Code: {errorObject.Errors[0].Code}");
                 }
                 else if (!string.IsNullOrWhiteSpace(error))
                 {
@@ -200,6 +201,23 @@ namespace StravaApiClient
             public int ExpiresIn { get; set; }
             [JsonProperty("refresh_token")]
             public string RefreshToken { get; set; }
+        }
+
+
+        private class StravaApiError
+        {
+            [JsonProperty ("message")]
+            public string Message { get; set; }
+            public List<StravaApiErrorDetail> Errors { get; set; }
+        }
+        private class StravaApiErrorDetail
+        {
+            [JsonProperty("resource")]
+            public string Resource { get; set; }
+            [JsonProperty("Field")]
+            public string Field { get; set; }
+            [JsonProperty("code")]
+            public string Code { get; set; }
         }
     }
 }

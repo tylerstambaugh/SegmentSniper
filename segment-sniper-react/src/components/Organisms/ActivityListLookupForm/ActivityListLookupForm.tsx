@@ -47,43 +47,47 @@ function ActivityListLookupForm() {
   );
 
   const validationSchema = yup.object({
-    name: yup.string().when([], {
-      is: () => "startDate" === null,
-      then: (schema) => schema.required("Must provide name or dates"),
-    }),
-    startDate: yup
-      .mixed()
-      .test("is-date", "Must be a valid date", function (value) {
-        // Validate if the value is a valid Date or null
-        return value === null || value instanceof Date;
-      })
+    activityName: yup
+      .string()
       .nullable()
-      .when([], {
+      .when("startDate", {
+        is: () => "startDate" === null,
+        then: (schema) => schema.required("Must provide name or dates"),
+      }),
+    startDate: yup
+      .date()
+      .nullable()
+      .when("activityName", {
         is: () => "activityName" === null,
         then: (schema) => schema.required("Must provide name or dates"),
       }),
     endDate: yup
-      .mixed()
+      .date()
       .nullable()
-      .test("is-date", "Must be a valid date", function (value) {
-        // Validate if the value is a valid Date or null
-        return value === null || value instanceof Date;
+      .when("startDate", ([startDate], schema) => {
+        const luxonStartDate = DateTime.fromJSDate(startDate);
+        return startDate !== null && luxonStartDate.isValid
+          ? schema
+              .min(luxonStartDate.toISODate(), "End must be after start")
+              .required("End date required when start date specified")
+          : schema;
       })
-      .test(
-        "min",
-        "End date must be after start date",
-        function (value, context) {
-          // Validate if endDate is after startDate
-          const startDate = context.parent.startDate;
-          return startDate === null || value === null;
-        }
-      ),
-    // .when("startDate", (startDate, schema) => {
-    //   return startDate !== null
-    //     ? schema.required("End date is required")
-    //     : schema;
-    // }),
+      .typeError("Enter a valid date"),
   });
+
+  // dateOfReturn: date()
+  // .required('Please enter a date of return')
+  // .when('dateOfDeparture', ([dateOfDeparture], schema) => {
+  //   const luxonDepartureDate = DateTime.fromJSDate(dateOfDeparture);
+  //   return dateOfDeparture !== null && luxonDepartureDate.isValid
+  //     ? schema.min(
+  //         luxonDepartureDate.toISODate(),
+  //         `Return date cannot be before departure date`,
+  //       )
+  //     : schema;
+  // })
+  // .typeError('Please enter a valid date')
+  // .required('Please enter a date of return'),
 
   const initialValues = {
     activityName: null,
@@ -97,7 +101,7 @@ function ActivityListLookupForm() {
     resetSnipedSegments();
     setSelectedActivityId("");
     await handleActivitySearch.mutateAsync(request);
-    if (!handleActivitySearch.error) {
+    if (!handleActivitySearch.isError) {
       navigate(`/${AppRoutes.ActivitySearchResults}`);
     }
   }
@@ -240,9 +244,7 @@ function ActivityListLookupForm() {
                         <Button
                           type="submit"
                           variant="primary"
-                          disabled={
-                            handleActivitySearch.isLoading || disableSearch()
-                          }
+                          disabled={handleActivitySearch.isLoading}
                         >
                           Search
                         </Button>
