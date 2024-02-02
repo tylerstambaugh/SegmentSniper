@@ -50,11 +50,17 @@ function ActivityListLookupForm() {
     activityName: yup
       .string()
       .nullable()
-      .when(["startDate"], {
+      .when("startDate", {
         is: () => "startDate" === null,
         then: (schema) => schema.required("Must provide name or dates"),
       }),
-    startDate: yup.date().nullable(),
+    startDate: yup
+      .date()
+      .nullable()
+      .when("activityName", {
+        is: () => "activityName" === null,
+        then: (schema) => schema.required("Must provide name or dates"),
+      }),
     endDate: yup
       .date()
       .nullable()
