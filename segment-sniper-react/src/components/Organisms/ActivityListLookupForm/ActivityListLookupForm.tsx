@@ -46,48 +46,46 @@ function ActivityListLookupForm() {
     (state) => state.setSelectedActivityId
   );
 
-  const validationSchema = yup.object({
-    activityName: yup
-      .string()
-      .nullable()
-      .when("startDate", {
-        is: () => "startDate" === null,
-        then: (schema) => schema.required("Must provide name or dates"),
-      }),
-    startDate: yup
-      .date()
-      .nullable()
-      .when("activityName", {
-        is: () => "activityName" === null,
-        then: (schema) => schema.required("Must provide name or dates"),
-      }),
-    endDate: yup
-      .date()
-      .nullable()
-      .when("startDate", ([startDate], schema) => {
-        const luxonStartDate = DateTime.fromJSDate(startDate);
-        return startDate !== null && luxonStartDate.isValid
-          ? schema
-              .min(luxonStartDate.toISODate(), "End must be after start")
-              .required("End date required when start date specified")
-          : schema;
-      })
-      .typeError("Enter a valid date"),
-  });
-
-  // dateOfReturn: date()
-  // .required('Please enter a date of return')
-  // .when('dateOfDeparture', ([dateOfDeparture], schema) => {
-  //   const luxonDepartureDate = DateTime.fromJSDate(dateOfDeparture);
-  //   return dateOfDeparture !== null && luxonDepartureDate.isValid
-  //     ? schema.min(
-  //         luxonDepartureDate.toISODate(),
-  //         `Return date cannot be before departure date`,
-  //       )
-  //     : schema;
-  // })
-  // .typeError('Please enter a valid date')
-  // .required('Please enter a date of return'),
+  const validationSchema = yup
+    .object({
+      activityName: yup
+        .string()
+        .nullable()
+        .when(["startDate", "endDate"], ([startDate, endDate], schema) => {
+          return startDate === null && endDate === null
+            ? schema.required("Must provide name or dates")
+            : schema;
+        }),
+      startDate: yup
+        .date()
+        .nullable()
+        .max(new Date(), "Date must be in the past")
+        .when(["endDate"], {
+          is: (endDate: DateTime) => endDate !== null,
+          then: (schema) => schema.required("Start date required"),
+        })
+        .typeError("Enter a valid date"),
+      endDate: yup
+        .date()
+        .nullable()
+        .max(new Date(), "Date must be in the past")
+        .typeError("Enter a valid date"),
+    })
+    .test(
+      "endDateBeforeStartDate",
+      "End Date must be before Start Date",
+      function (values) {
+        if (
+          values.startDate &&
+          values.startDate !== undefined &&
+          values.endDate &&
+          values.endDate !== undefined
+        ) {
+          return values.endDate < values.startDate;
+        }
+        return true;
+      }
+    );
 
   const initialValues = {
     activityName: null,
@@ -117,6 +115,7 @@ function ActivityListLookupForm() {
     onSubmit: (values: ActivityListSearchForm) => {
       setValidated(true);
       console.log("values", values);
+      console.log("errors", formik.errors);
 
       const searchProps: ActivityListLookupRequest = {
         activityName: values.activityName ?? null,
