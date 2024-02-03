@@ -5,12 +5,9 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import useActivityListStore from "../../../stores/useActivityListStore";
-import getActivityListByDateRange, {
-  ActivityListLookupResponse,
-} from "../../../services/Api/Activity/getActivityListByDateRange";
-import getActivityListByName from "../../../services/Api/Activity/getActivityListByName";
 import getActivityList, {
   ActivityListLookupRequest,
+  ActivityListLookupResponse,
 } from "../../../services/Api/Activity/getActivityList";
 
 export const useHandleActivitySearch = () => {
