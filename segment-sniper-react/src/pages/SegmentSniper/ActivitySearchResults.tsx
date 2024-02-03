@@ -3,10 +3,9 @@ import useActivityListStore from "../../stores/useActivityListStore";
 import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
-import ActivityCardList from "../../components/Molecules/Activity/ActivityCardList/ActivityCardList";
 import useSegmentEffortsListStore from "../../stores/useSegmentEffortsListStore";
-import { useSnipeSegments } from "../../hooks/Api/Segments/useSnipeSegments";
-import toast from "react-hot-toast";
+
+import ActivityCardCarousel from "../../components/Molecules/Activity/ActivityCardCarousel/ActivityCardCarousel";
 
 function ActivitySearchResults() {
   const navigate = useNavigate();
@@ -46,7 +45,7 @@ function ActivitySearchResults() {
       </Row>
       <Row>
         <Col>
-          <ActivityCardList />
+          <ActivityCardCarousel />
         </Col>
       </Row>
       <Row className="justify-content-center">
