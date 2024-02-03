@@ -32,6 +32,9 @@ const ActivityDateSearch = ({
             <Form.Control
               type="date"
               value={startDate?.toISODate() ?? ""}
+              max={new Date(new Date().setDate(new Date().getDate() - 1))
+                .toISOString()
+                .slice(0, 10)}
               onChange={(e) => {
                 const newStartDate = DateTime.fromFormat(
                   e.target.value,
@@ -61,6 +64,9 @@ const ActivityDateSearch = ({
             <Form.Control
               type="date"
               value={endDate?.toISODate() ?? ""}
+              max={new Date(new Date().setDate(new Date().getDate() - 1))
+                .toISOString()
+                .slice(0, 10)}
               onChange={(e) => {
                 const newEndDate = DateTime.fromFormat(
                   e.target.value,
