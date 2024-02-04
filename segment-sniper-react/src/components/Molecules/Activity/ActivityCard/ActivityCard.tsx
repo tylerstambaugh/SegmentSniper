@@ -8,6 +8,7 @@ import { useState } from "react";
 import ActivityMap from "../ActivityMap/ActivityMap";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./ActivityCard.module.scss";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
@@ -30,7 +31,7 @@ const ActivityCard = (props: ActivityCardProps) => {
       <Row>
         <Col>
           <Card>
-            <Card.Title className="px-2 pt-2 activity-card-heading">
+            <Card.Title className={`px-2 pt-2 ${styles.title}`}>
               <Row>
                 <Col xs={9}>{props.activity.name} </Col>
                 <Col xs={3}>

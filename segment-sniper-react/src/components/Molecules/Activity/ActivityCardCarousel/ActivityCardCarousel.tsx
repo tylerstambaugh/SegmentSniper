@@ -24,16 +24,20 @@ const ActivityCardCarousel = () => {
     <>
       {activityList.length > 0 ? (
         <Col>
-          <Row className="text-center">
-            <p className="p-0 m-0">
-              {1 + activityIndex} of {activityList.length}
-            </p>
-            <p className="p-0 m-0">Swipe to see more</p>
-          </Row>
+          <div className="text-center pt-2">
+            <Row>
+              <h4 className="pb-0 mb-0">
+                {1 + activityIndex} of {activityList.length}
+              </h4>
+            </Row>
+            <Row>
+              <p className="small text-muted p-0 m-0">Swipe to see more</p>
+            </Row>
+          </div>
           <Row>
             <Slider
               {...settings}
-              afterChange={(index) => setActivityIndex(index)}
+              beforeChange={(oldIndex, newIndex) => setActivityIndex(newIndex)}
             >
               {activityList.map((activity, index) => (
                 <ActivityCard

@@ -74,11 +74,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
             int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
+            int prPercentageOffKom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
             int percentageOffQom = (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
-
+            int prPercentageOffQom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
 
             int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
+            int prSecondsOffKom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime;
             int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
+            int prSecondsOffQom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime;
 
             SnipeSegment snipeSegment = new SnipeSegment
             {
@@ -90,8 +93,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 QomTime = ConvertTimeInSeconds(xomsTime.QomTime),
                 PercentageFromKom = percentageOffKom,
                 PercentageFromQom = percentageOffQom,
+                PrPercentageFromKom = percentageOffKom,
+                PrPercentageFromQom = percentageOffQom,
                 SecondsFromKom = ConvertTimeInSeconds(secondsOffKom),
                 SecondsFromQom = ConvertTimeInSeconds(secondsOffQom),
+                PrSecondsFromKom = ConvertTimeInSeconds(prSecondsOffKom),
+                PrSecondsFromQom = ConvertTimeInSeconds(prSecondsOffQom),
                 ActivityType = detailedSegment.ActivityType,
                 Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                 Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),

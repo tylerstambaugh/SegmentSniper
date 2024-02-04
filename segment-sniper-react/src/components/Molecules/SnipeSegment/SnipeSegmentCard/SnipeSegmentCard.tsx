@@ -1,4 +1,12 @@
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Spinner,
+  Form,
+} from "react-bootstrap";
 import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
 import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
 import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
@@ -8,6 +16,8 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../Activity/ActivityMap/ActivityMap";
 import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import styles from "./SnipeSegmentCard.module.scss";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
@@ -20,6 +30,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
     state.setQueriedSnipeSegmentsList,
   ]);
+  const [comparePrTime, setComparePrTIme] = useState(true);
 
   const updateSegmentEffortStarred = (
     snipedSegmentEffortList: SnipeSegmentListItem[],
@@ -60,15 +71,31 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
     props.snipeSegment.detailedSegmentEffort?.elapsedTime!
   );
 
+  const myPrTime: string = convertTime.numericTimeToString(
+    props.snipeSegment.athleteSegmentStats?.prElapsedTime!
+  );
+
   return (
     <Container className="py-2">
       <Row>
         <Col>
           <Card>
-            <Card.Title className="mb-0 p-3 activity-card-heading">
+            <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
               <Col>
                 <Row className="justify-content-around">
                   <Col>{props.snipeSegment.name}</Col>
+                  <Col className="d-flex justify-content-end p-0">
+                    <p className={`pt-1 ${styles.switch_label}`}>Compare PR:</p>
+                    <Form.Check
+                      type="switch"
+                      checked={comparePrTime}
+                      id="comparePrSwitch"
+                      onChange={(e) => {
+                        setComparePrTIme(e.target.checked);
+                      }}
+                      className={styles.switch}
+                    />
+                  </Col>
                 </Row>
               </Col>
             </Card.Title>
@@ -89,26 +116,16 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                     <Row className="justify-content-start text-start">
                       <Col className="d-flex justify-content-between">
                         <p className="mb-0">
-                          <span className="activity-card-label">My Time:</span>
-                        </p>
-                        <p className="mb-0">{myTime}</p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
                           <span className="activity-card-label">
-                            My PR Time:
+                            {comparePrTime ? "My PR Time:" : "My Time"}
                           </span>
                         </p>
                         <p className="mb-0">
-                          {convertTime.numericTimeToString(
-                            props.snipeSegment.athleteSegmentStats
-                              ?.prElapsedTime ?? 0
-                          )}
+                          {comparePrTime ? myPrTime : myTime}
                         </p>
                       </Col>
                     </Row>
+
                     <Row className="justify-content-start text-start">
                       <Col className="d-flex justify-content-between">
                         <p className="mb-0">
@@ -133,7 +150,11 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                         <p className="mb-0">
                           -
                           {!props.leaderTypeQom
-                            ? props.snipeSegment.secondsFromKom
+                            ? comparePrTime
+                              ? props.snipeSegment.prSecondsFromKom
+                              : props.snipeSegment.secondsFromKom
+                            : comparePrTime
+                            ? props.snipeSegment.prSecondsFromQom
                             : props.snipeSegment.secondsFromQom}
                         </p>
                       </Col>
@@ -147,7 +168,11 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                         </p>
                         <p className="mb-0">
                           {!props.leaderTypeQom
-                            ? `${props.snipeSegment.percentageFromKom}%`
+                            ? comparePrTime
+                              ? `${props.snipeSegment.prPercentageFromKom}%`
+                              : `${props.snipeSegment.percentageFromKom}% `
+                            : comparePrTime
+                            ? `${props.snipeSegment.prPercentageFromQom}%`
                             : `${props.snipeSegment.percentageFromQom}%`}
                         </p>
                       </Col>
