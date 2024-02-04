@@ -18,7 +18,8 @@ export default function LogoutWidget() {
   useEffect(() => {
     const revokeTokenAsync = async () => {
       try {
-        await logout.mutateAsync().then(() => resetAllStores());
+        await logout.mutateAsync();
+        resetAllStores();
       } catch (error) {
         toast.error(`Error revoking user token:${error} `);
       }
@@ -27,11 +28,7 @@ export default function LogoutWidget() {
     revokeTokenAsync();
   }, []);
 
-  return logout.error ? (
-    <>
-      <h2>There was an issue logging out. Dangit.</h2>
-    </>
-  ) : (
+  return (
     <>
       {tokenData === null && user === null ? (
         <Row className="vh-100 d-flex justify-content-center mt-5">

@@ -20,15 +20,6 @@ const SnipeSegmentsCardList = ({
 }: SnipeSegmentCardListProps) => {
   return (
     <>
-      {!snipeListLoading && segmentList ? (
-        <Row className="pt-3">
-          <Col className="d-flex justify-content-around">
-            <h4>Segments: {segmentList.length}</h4>
-          </Col>
-        </Row>
-      ) : (
-        <></>
-      )}
       <Row>
         {snipeListLoading || filtering ? (
           <Col className="text-center pt-3">

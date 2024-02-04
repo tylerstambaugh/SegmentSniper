@@ -12,8 +12,12 @@ export interface SnipeSegmentListItem {
   qomTime?: string;
   percentageFromKom?: number;
   percentageFromQom?: number;
+  prPercentageFromKom?: number;
+  prPercentageFromQom?: number;
   secondsFromKom?: string;
   secondsFromQom?: string;
+  prSecondsFromKom?: string;
+  prSecondsFromQom?: string;
   activityType?: string;
   distance?: number;
   elevation?: number;

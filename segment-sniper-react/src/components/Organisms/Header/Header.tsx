@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 function Header() {
   const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
     state.tokenData,
-    state.setIsAuthenticated,
+    state.isAuthenticated,
   ]);
   const [user] = useUserStore((state) => [state.user]);
   const [isNavbarOpen, setNavbarOpen] = useState(false);
