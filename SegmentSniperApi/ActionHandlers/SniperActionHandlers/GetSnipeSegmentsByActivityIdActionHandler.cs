@@ -162,11 +162,15 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             var timeAsString = "";
             if(hours > 0)
             {
-                timeAsString = $"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}";
+                timeAsString = $"{hours:D2}:{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
             }
             if(hours == 0)
             {
-                timeAsString = $"{minutes:D2}:{remainingSeconds:D2}";
+                timeAsString = $"{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
+            }
+            if (remainingSeconds < 0)
+            {
+                timeAsString = $"-{timeAsString}";
             }
 
             return timeAsString;
