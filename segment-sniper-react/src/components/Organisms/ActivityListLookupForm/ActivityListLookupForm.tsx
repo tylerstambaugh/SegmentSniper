@@ -10,14 +10,16 @@ import {
   Button,
   Spinner,
   Card,
+  Modal,
 } from "react-bootstrap";
-
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActivityTypes } from "../../../enums/ActivityTypes";
 import { useHandleActivitySearch } from "../../../hooks/Api/Activity/useHandleActivitySearch";
 import toast from "react-hot-toast";
 import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import useActivityListStore from "../../../stores/useActivityListStore";
 import ActivityNameSearchInput from "../../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput";
@@ -33,6 +35,7 @@ export interface ActivityListSearchForm {
 }
 
 function ActivityListLookupForm() {
+  const [helpModalShow, setHelpModalShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const handleActivitySearch = useHandleActivitySearch();
   const navigate = useNavigate();
@@ -153,6 +156,9 @@ function ActivityListLookupForm() {
     );
   };
 
+  const handleHelpModalClose = () => setHelpModalShow(false);
+  const handleHelpModalShow = () => setHelpModalShow(true);
+
   useEffect(() => {
     console.log("formik values", formik.values);
   }, [formik.values]);
@@ -163,9 +169,16 @@ function ActivityListLookupForm() {
         <Col md={6} xs={10} className="pt-2 text-center justify-content-center">
           <Card className="shadow">
             <Card.Body>
-              <Row className="text-center">
+              <Col className="d-flex text-center justify-content-around">
                 <h3>Activity Lookup</h3>
-              </Row>
+
+                <Button
+                  onClick={handleHelpModalShow}
+                  className={styles.showHelpButton}
+                >
+                  <FontAwesomeIcon icon={faQuestionCircle} size="sm" />
+                </Button>
+              </Col>
               <Form
                 name="activityLookupForm"
                 onSubmit={(event) => {
@@ -185,8 +198,8 @@ function ActivityListLookupForm() {
                     />
                   </Col>
                 </Row>
-                <Row className="justify-content-around">
-                  <p>Search by date range:</p>
+                <Row className="justify-content-around mb-0">
+                  <p className="mb-0">Search by date range:</p>
                   <ActivityDateSearch
                     startDate={formik.values.startDate ?? null}
                     endDate={formik.values.endDate ?? null}
@@ -255,6 +268,51 @@ function ActivityListLookupForm() {
             </Card.Body>
           </Card>
         </Col>
+      </Row>
+      <Row>
+        <Modal
+          show={helpModalShow}
+          onHide={handleHelpModalClose}
+          className={styles.helpModal}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Activity Search</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className={styles.helpModalBody}>
+            <Col className="px-2">
+              <Row>
+                <p className={styles.helpModalSubTitle}>
+                  Searching can be performed by activity name, dates, or name
+                  and dates.
+                </p>
+                <ul>
+                  <li className="pb-1">
+                    Searching by name alone will query the last 6 months of
+                    activities for activities that contain the search key(s).
+                  </li>
+                  <li className="pb-1">
+                    Searching by dates alone will return the first 180
+                    activities within the date range provided.
+                  </li>
+                  <li className="pb-1">
+                    Searching by name and dates will return the first 180
+                    activities within the date range with titles that contain
+                    the search key(s)
+                  </li>
+                  <li>
+                    All matching activities will be filtered by the selection in
+                    the Activity Type dropdown.
+                  </li>
+                </ul>
+              </Row>
+            </Col>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleHelpModalClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Row>
     </>
   );
