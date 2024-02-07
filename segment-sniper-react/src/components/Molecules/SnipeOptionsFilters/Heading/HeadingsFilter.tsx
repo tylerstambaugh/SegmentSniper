@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { Headings } from "../../../../enums/Headings";
@@ -16,41 +16,46 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
   const animatedComponents = makeAnimated();
 
   return (
-    <Row className="d-flex justify-content-between p-0">
-      <Col sm={5} className={styles.label}>
-        <p>Heading:</p>
+    <div>
+      <Col className="d-flex justify-content-between">
+        <p className={styles.label}>Heading:</p>
+        <div style={{ flex: "1" }}>
+          <Select
+            closeMenuOnSelect={false}
+            className="ps-3"
+            placeholder={"Select"}
+            components={animatedComponents}
+            value={headingsArray.filter((h) => headings.includes(h.label))}
+            isMulti
+            options={headingsArray}
+            onChange={(selectedOptions) => {
+              const selectedValues = selectedOptions.map(
+                (option) => option.label
+              );
+              onChange(selectedValues);
+            }}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                ...(styles.select as React.CSSProperties),
+              }),
+              menu: (baseStyles, state) => ({
+                ...baseStyles,
+                ...(styles.menu as React.CSSProperties),
+              }),
+              input: (baseStyles, state) => ({
+                ...baseStyles,
+                ...(styles.input as React.CSSProperties),
+              }),
+              placeholder: (baseStyles, state) => ({
+                ...baseStyles,
+                ...(styles.input as React.CSSProperties),
+              }),
+            }}
+          />
+        </div>
       </Col>
-
-      <Col sm={7} className="text-end">
-        <Select
-          closeMenuOnSelect={false}
-          components={animatedComponents}
-          value={headingsArray.filter((h) => headings.includes(h.label))}
-          isMulti
-          options={headingsArray}
-          onChange={(selectedOptions) => {
-            const selectedValues = selectedOptions.map(
-              (option) => option.label
-            );
-            onChange(selectedValues);
-          }}
-          styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              ...(styles.select as React.CSSProperties),
-            }),
-            menu: (baseStyles, state) => ({
-              ...baseStyles,
-              ...(styles.menu as React.CSSProperties),
-            }),
-            input: (baseStyles, state) => ({
-              ...baseStyles,
-              ...(styles.input as React.CSSProperties),
-            }),
-          }}
-        />
-      </Col>
-    </Row>
+    </div>
   );
 };
 

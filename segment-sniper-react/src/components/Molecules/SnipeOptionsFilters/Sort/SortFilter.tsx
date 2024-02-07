@@ -1,5 +1,8 @@
-import { Row, Col, FormGroup, FormSelect, FormLabel } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import styles from "./SortFilter.module.scss";
+import Select, { GroupBase } from "react-select";
+import makeAnimated from "react-select/animated";
+import { SegmentSortOptions } from "../../../../enums/SegmentSortOptions";
 
 export interface SortFilterProps {
   sortBy: string;
@@ -7,27 +10,33 @@ export interface SortFilterProps {
 }
 
 const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
+  const animatedComponents = makeAnimated();
+  const sortOptionsArray: GroupBase<string>[] = [
+    {
+      label: "Sort Options",
+      options: Object.entries(SegmentSortOptions).map(([value]) => value),
+    },
+  ];
   return (
-    <Row>
-      <Col>
-        <FormGroup controlId="sortControl" className={styles.form}>
-          <FormLabel className={styles.label}>Sort By</FormLabel>
-          <FormSelect
+    <div>
+      <Col className="d-flex justify-content-between">
+        <p className={styles.label}>Sort By:</p>
+        <div style={{ flex: "1" }}>
+          <Select
+            closeMenuOnSelect={true}
+            className="ps-3"
+            placeholder={"Select"}
+            components={animatedComponents}
             value={sortBy}
-            onChange={(e) => {
-              onChange(e.target.value);
+            isMulti={false}
+            onChange={(selectedValue) => {
+              onChange(selectedValue ?? "Date");
             }}
-            className={styles.select}
-          >
-            <option value="date">Date</option>
-            <option value="longestDistance">Longest Distance</option>
-            <option value="shortestDistance">Shortest Distance</option>
-            <option value="shortestTime">Shortest Time</option>
-            <option value="longestTime">Longest Time</option>
-          </FormSelect>
-        </FormGroup>
+            options={sortOptionsArray}
+          />
+        </div>
       </Col>
-    </Row>
+    </div>
   );
 };
 

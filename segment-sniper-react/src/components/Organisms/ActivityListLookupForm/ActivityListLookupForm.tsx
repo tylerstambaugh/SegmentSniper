@@ -169,8 +169,8 @@ function ActivityListLookupForm() {
         <Col md={6} xs={10} className="pt-2 text-center justify-content-center">
           <Card className="shadow">
             <Card.Body>
-              <Col className="d-flex text-center justify-content-around">
-                <h3>Activity Lookup</h3>
+              <Col className="d-flex text-center justify-content-center">
+                <h3 className="pe-2">Activity Lookup</h3>
 
                 <Button
                   onClick={handleHelpModalShow}
