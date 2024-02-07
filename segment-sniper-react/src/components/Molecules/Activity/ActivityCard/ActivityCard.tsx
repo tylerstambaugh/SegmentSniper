@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import useActivityListStore from "../../../../stores/useActivityListStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActivityMap from "../ActivityMap/ActivityMap";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +25,10 @@ const ActivityCard = (props: ActivityCardProps) => {
     setSelectedActivityId(props.activity.activityId!);
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
+
+  useEffect(() => {
+    console.log("selectedActivityId:", selectedActivityId);
+  }, []);
 
   return (
     <Container className="py-2">
@@ -96,7 +100,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                     </Row>
                   </Col>
                   {showMap ? (
-                    <Col>
+                    <Col className="height-auto">
                       <ActivityMap
                         stravaMap={props.activity.stravaMap!}
                         startLatlng={props.activity.startLatlng!}

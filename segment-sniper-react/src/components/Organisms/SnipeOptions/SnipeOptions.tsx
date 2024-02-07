@@ -98,7 +98,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
                   onChange={setSecondsFromLeader}
                 />
               </Row>
-              <Row className="m-0 p-0">
+              <Row>
                 <HeadingsFilter
                   headings={headingsFilter}
                   onChange={setHeadingsFilter}
