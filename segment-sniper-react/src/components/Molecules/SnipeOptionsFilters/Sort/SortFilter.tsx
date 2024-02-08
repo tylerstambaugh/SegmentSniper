@@ -11,12 +11,8 @@ export interface SortFilterProps {
 
 const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
   const animatedComponents = makeAnimated();
-  const sortOptionsArray: GroupBase<string>[] = [
-    {
-      label: "Sort Options",
-      options: Object.entries(SegmentSortOptions).map(([value]) => value),
-    },
-  ];
+  const sortOptionsArray = Object.values(SegmentSortOptions);
+
   return (
     <div>
       <Col className="d-flex justify-content-between">
