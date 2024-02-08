@@ -172,12 +172,17 @@ function ActivityListLookupForm() {
               <Col className="d-flex text-center justify-content-center">
                 <h3 className="pe-2">Activity Lookup</h3>
 
-                <Button
-                  onClick={handleHelpModalShow}
-                  className={styles.showHelpButton}
-                >
-                  <FontAwesomeIcon icon={faQuestionCircle} size="sm" />
-                </Button>
+                <Link onClick={handleHelpModalShow} to="">
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    size="sm"
+                    style={{
+                      color: "#ffca14",
+                      paddingTop: ".6rem",
+                      font: "black",
+                    }}
+                  />
+                </Link>
               </Col>
               <Form
                 name="activityLookupForm"
