@@ -27,7 +27,7 @@ const ActivityCardCarousel = () => {
           <div className="text-center pt-2">
             <Row>
               <h4 className="pb-0 mb-0">
-                {1 + activityIndex} of {activityList.length}
+                {1 + activityIndex}\{activityList.length}
               </h4>
             </Row>
             <Row>
@@ -43,7 +43,8 @@ const ActivityCardCarousel = () => {
                 <ActivityCard
                   key={activity.activityId}
                   activity={activity}
-                  showMap={true}
+                  isActivitySearchResults={true}
+                  mapShown={true}
                 />
               ))}
             </Slider>

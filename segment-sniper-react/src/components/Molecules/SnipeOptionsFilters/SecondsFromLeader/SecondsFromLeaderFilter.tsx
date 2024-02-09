@@ -1,5 +1,6 @@
 import { FormGroup, Row, Col, FormLabel, Form } from "react-bootstrap";
 import {} from "react-router-dom";
+import styles from "./SecondsFromLeaderFilter.module.scss";
 
 export interface SecondsFromLeaderProps {
   leaderTypeQom: boolean;
@@ -16,7 +17,7 @@ const SecondsFromLeaderFilter = ({
     <FormGroup>
       <Row className="pb-2">
         <Col xs={8} md={10} className="text-start">
-          <FormLabel className=" snipe-option-label">
+          <FormLabel className={styles.label}>
             Seconds From {leaderTypeQom ? `QOM` : "KOM"}:
           </FormLabel>
         </Col>

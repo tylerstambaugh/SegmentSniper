@@ -44,6 +44,7 @@ const SnipeSegmentCardCarousel = ({
         <Slider
           {...settings}
           beforeChange={(oldIndex, newIndex) => setSegmentIndex(newIndex)}
+          className="p-0"
         >
           {snipeSegmentList.map((snipeSegment, index) => (
             <>
@@ -53,7 +54,7 @@ const SnipeSegmentCardCarousel = ({
                 leaderTypeQom={leaderTypeQom}
               />
               <p className="text-center">
-                {1 + index} of {snipeSegmentList.length}
+                {1 + index}/{snipeSegmentList.length}
               </p>
             </>
           ))}

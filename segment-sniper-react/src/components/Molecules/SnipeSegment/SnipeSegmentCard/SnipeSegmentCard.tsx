@@ -76,190 +76,178 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   );
 
   return (
-    <Container className="py-2">
-      <Row>
-        <Col>
-          <Card>
-            <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
-              <Col>
-                <Row className="justify-content-around">
-                  <Col>{props.snipeSegment.name}</Col>
-                  <Col className="d-flex justify-content-end p-0">
-                    <p className={`pt-1 ${styles.switch_label}`}>Compare PR:</p>
-                    <Form.Check
-                      type="switch"
-                      checked={comparePrTime}
-                      id="comparePrSwitch"
-                      onChange={(e) => {
-                        setComparePrTIme(e.target.checked);
-                      }}
-                      className={styles.switch}
-                    />
+    <Col className="py-2 ps-4">
+      <Card>
+        <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
+          <Col>
+            <Row className="justify-content-around">
+              <Col>{props.snipeSegment.name}</Col>
+              <Col className="d-flex justify-content-end p-0">
+                <p className={`pt-1 ${styles.switch_label}`}>Compare PR:</p>
+                <Form.Check
+                  type="switch"
+                  checked={comparePrTime}
+                  id="comparePrSwitch"
+                  onChange={(e) => {
+                    setComparePrTIme(e.target.checked);
+                  }}
+                  className={styles.switch}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Card.Title>
+        <Card.Body className="py-0">
+          <Col>
+            <Row>
+              <Col className="p-3" sm={12} lg={4}>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">Distance:</span>{" "}
+                    </p>
+                    <p className="mb-0">{props.snipeSegment.distance} mi.</p>
                   </Col>
                 </Row>
-              </Col>
-            </Card.Title>
-            <Card.Body className="py-0">
-              <Col>
-                <Row>
-                  <Col className="p-3" sm={12} lg={4}>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">Distance:</span>{" "}
-                        </p>
-                        <p className="mb-0">
-                          {props.snipeSegment.distance} mi.
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            {comparePrTime ? "My PR Time:" : "My Time"}
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          {comparePrTime ? myPrTime : myTime}
-                        </p>
-                      </Col>
-                    </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        {comparePrTime ? "My PR Time:" : "My Time"}
+                      </span>
+                    </p>
+                    <p className="mb-0">{comparePrTime ? myPrTime : myTime}</p>
+                  </Col>
+                </Row>
 
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          {!props.leaderTypeQom
-                            ? props.snipeSegment.komTime
-                            : props.snipeSegment.qomTime}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            Time Behind {!props.leaderTypeQom ? `KOM:` : `QOM:`}
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          -
-                          {!props.leaderTypeQom
-                            ? comparePrTime
-                              ? props.snipeSegment.prSecondsFromKom
-                              : props.snipeSegment.secondsFromKom
-                            : comparePrTime
-                            ? props.snipeSegment.prSecondsFromQom
-                            : props.snipeSegment.secondsFromQom}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          {!props.leaderTypeQom
-                            ? comparePrTime
-                              ? `${props.snipeSegment.prPercentageFromKom}%`
-                              : `${props.snipeSegment.percentageFromKom}% `
-                            : comparePrTime
-                            ? `${props.snipeSegment.prPercentageFromQom}%`
-                            : `${props.snipeSegment.percentageFromQom}%`}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            Athlete Count:
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          {props.snipeSegment.athleteCount}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">
-                            Elevation Gain:
-                          </span>
-                        </p>
-                        <p className="mb-0">
-                          {props.snipeSegment.elevation} ft.
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className="justify-content-start text-start">
-                      <Col className="d-flex justify-content-between">
-                        <p className="mb-0">
-                          <span className="activity-card-label">Heading:</span>
-                        </p>
-                        <p className="mb-0">{props.snipeSegment.heading}</p>
-                      </Col>
-                    </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
+                      </span>
+                    </p>
+                    <p className="mb-0">
+                      {!props.leaderTypeQom
+                        ? props.snipeSegment.komTime
+                        : props.snipeSegment.qomTime}
+                    </p>
                   </Col>
-                  <Col className="p-0" sm={12} lg={8}>
-                    <ActivityMap
-                      stravaMap={props.snipeSegment.map!}
-                      startLatlng={
-                        props.snipeSegment.detailedSegmentEffort?.summarySegment
-                          .startLatlng
-                      }
-                      endLatlng={
-                        props.snipeSegment.detailedSegmentEffort?.summarySegment
-                          .endLatlng
-                      }
-                    />
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        Time Behind {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                      </span>
+                    </p>
+                    <p className="mb-0">
+                      -
+                      {!props.leaderTypeQom
+                        ? comparePrTime
+                          ? props.snipeSegment.prSecondsFromKom
+                          : props.snipeSegment.secondsFromKom
+                        : comparePrTime
+                        ? props.snipeSegment.prSecondsFromQom
+                        : props.snipeSegment.secondsFromQom}
+                    </p>
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                      </span>
+                    </p>
+                    <p className="mb-0">
+                      {!props.leaderTypeQom
+                        ? comparePrTime
+                          ? `${props.snipeSegment.prPercentageFromKom}%`
+                          : `${props.snipeSegment.percentageFromKom}% `
+                        : comparePrTime
+                        ? `${props.snipeSegment.prPercentageFromQom}%`
+                        : `${props.snipeSegment.percentageFromQom}%`}
+                    </p>
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        Athlete Count:
+                      </span>
+                    </p>
+                    <p className="mb-0">{props.snipeSegment.athleteCount}</p>
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        Elevation Gain:
+                      </span>
+                    </p>
+                    <p className="mb-0">{props.snipeSegment.elevation} ft.</p>
+                  </Col>
+                </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">Heading:</span>
+                    </p>
+                    <p className="mb-0">{props.snipeSegment.heading}</p>
                   </Col>
                 </Row>
               </Col>
-            </Card.Body>
-            <Card.Footer className="d-flex justify-content-center align-items-center">
-              {starSegment.isLoading ? (
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  style={{ width: "175px" }}
-                >
-                  <Spinner
-                    as="span"
-                    variant="light"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    animation="border"
-                  />
-                </Button>
+              <Col className="p-0" sm={12} lg={8}>
+                <ActivityMap
+                  stravaMap={props.snipeSegment.map!}
+                  startLatlng={
+                    props.snipeSegment.detailedSegmentEffort?.summarySegment
+                      .startLatlng
+                  }
+                  endLatlng={
+                    props.snipeSegment.detailedSegmentEffort?.summarySegment
+                      .endLatlng
+                  }
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Card.Body>
+        <Card.Footer className="d-flex justify-content-center align-items-center">
+          {starSegment.isLoading ? (
+            <Button
+              type="submit"
+              variant="secondary"
+              style={{ width: "175px" }}
+            >
+              <Spinner
+                as="span"
+                variant="light"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                animation="border"
+              />
+            </Button>
+          ) : (
+            <Button
+              className="px-4"
+              onClick={() => handleStarButtonClick()}
+              style={{ width: "175px" }}
+            >
+              {props.snipeSegment.starred ? (
+                <FontAwesomeIcon icon={solidStar} />
               ) : (
-                <Button
-                  className="px-4"
-                  onClick={() => handleStarButtonClick()}
-                  style={{ width: "175px" }}
-                >
-                  {props.snipeSegment.starred ? (
-                    <FontAwesomeIcon icon={solidStar} />
-                  ) : (
-                    <FontAwesomeIcon icon={regularStar} />
-                  )}
-                </Button>
+                <FontAwesomeIcon icon={regularStar} />
               )}
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+            </Button>
+          )}
+        </Card.Footer>
+      </Card>
+    </Col>
   );
 };
 

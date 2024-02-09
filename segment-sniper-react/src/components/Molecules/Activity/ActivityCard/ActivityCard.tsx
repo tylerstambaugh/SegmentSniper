@@ -12,17 +12,22 @@ import styles from "./ActivityCard.module.scss";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
-  showMap: boolean;
+  isActivitySearchResults: boolean;
+  mapShown: boolean;
 };
 
-const ActivityCard = (props: ActivityCardProps) => {
+const ActivityCard = ({
+  activity,
+  isActivitySearchResults,
+  mapShown,
+}: ActivityCardProps) => {
   const navigate = useNavigate();
   const [selectedActivityId, setSelectedActivityId] = useActivityListStore(
     (state) => [state.selectedActivityId, state.setSelectedActivityId]
   );
-  const [showMap, setShowMap] = useState<boolean>(props.showMap);
+  const [showMap, setShowMap] = useState<boolean>(mapShown);
   const handleSnipeButtonClick = () => {
-    setSelectedActivityId(props.activity.activityId!);
+    setSelectedActivityId(activity.activityId!);
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
 
@@ -37,22 +42,19 @@ const ActivityCard = (props: ActivityCardProps) => {
           <Card>
             <Card.Title className={`px-2 pt-2 ${styles.title}`}>
               <Row>
-                <Col xs={9}>{props.activity.name} </Col>
-                <Col xs={3}>
-                  <Button onClick={() => setShowMap(!showMap)}>
-                    {showMap ? (
+                <Col xs={9}>{activity.name} </Col>
+                {!isActivitySearchResults ? (
+                  <Col xs={3}>
+                    <Button onClick={() => setShowMap(!showMap)}>
                       <>
                         <FontAwesomeIcon icon={faEyeSlash} />
                         Map
                       </>
-                    ) : (
-                      <>
-                        <FontAwesomeIcon icon={faEye} />
-                        Map
-                      </>
-                    )}
-                  </Button>
-                </Col>
+                    </Button>
+                  </Col>
+                ) : (
+                  <></>
+                )}
               </Row>
             </Card.Title>
             <Card.Body className="p-0">
@@ -64,7 +66,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                         <p className="mb-0">
                           <span className="activity-card-label">Date:</span>{" "}
                         </p>
-                        <p className="mb-0">{props.activity.startDate}</p>
+                        <p className="mb-0">{activity.startDate}</p>
                       </Col>
                     </Row>
                     <Row className="justify-content-start text-start">
@@ -72,7 +74,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                         <p className="mb-0">
                           <span className="activity-card-label">Distance:</span>{" "}
                         </p>
-                        <p className="mb-0">{props.activity.distance} miles</p>
+                        <p className="mb-0">{activity.distance} miles</p>
                       </Col>
                     </Row>
                     <Row className="justify-content-start text-start">
@@ -83,7 +85,7 @@ const ActivityCard = (props: ActivityCardProps) => {
                             Elapsed Time:
                           </span>{" "}
                         </p>
-                        <p className="mb-0">{props.activity.elapsedTime}</p>
+                        <p className="mb-0">{activity.elapsedTime}</p>
                       </Col>
                     </Row>
                     <Row className="justify-content-start text-start">
@@ -93,18 +95,16 @@ const ActivityCard = (props: ActivityCardProps) => {
                             Achievement Count:
                           </span>{" "}
                         </p>
-                        <p className="mb-0">
-                          {props.activity.achievementCount}
-                        </p>
+                        <p className="mb-0">{activity.achievementCount}</p>
                       </Col>
                     </Row>
                   </Col>
                   {showMap ? (
                     <Col className="height-auto">
                       <ActivityMap
-                        stravaMap={props.activity.stravaMap!}
-                        startLatlng={props.activity.startLatlng!}
-                        endLatlng={props.activity.endLatlng}
+                        stravaMap={activity.stravaMap!}
+                        startLatlng={activity.startLatlng!}
+                        endLatlng={activity.endLatlng}
                       />
                     </Col>
                   ) : (

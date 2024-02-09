@@ -1,6 +1,7 @@
 import { Row, Col, Form } from "react-bootstrap";
 import Slider from "../../../Atoms/Slider/Slider";
 import { useState } from "react";
+import styles from "./PercentageFromLeaderFilter.module.scss";
 
 export interface PercentageFromLeaderProps {
   leaderTypeQom: boolean;
@@ -20,7 +21,9 @@ const PercentageFromLeaderFilter = ({
           xs={12}
           className="d-flex justify-content-start snipe-option-label"
         >
-          <p className="mb-0">% From {leaderTypeQom ? `QOM` : "KOM"}:</p>
+          <p className={`${styles.label} mb-0`}>
+            % From {leaderTypeQom ? `QOM` : "KOM"}:
+          </p>
         </Col>
       </Row>
       <Row className="d-flex justify-content-between">

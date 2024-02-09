@@ -62,21 +62,21 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
     <>
       <Container className="py-1 p-4">
         <Card>
-          <Card.Title className="p-2 activity-card-heading">
+          <Card.Title className="px-2 mb-0 activity-card-heading">
             <Row className="pb-2">
               <Col>
                 <p className={`mb-2 ${styles.snipeOptionsHeading}`}>
                   Snipe Options
                 </p>
               </Col>
-              <Col className="text-end">
+              <Col className="text-end pt-2">
                 <Button variant="secondary" onClick={handleResetSnipeOptions}>
                   Reset
                 </Button>
               </Col>
             </Row>
           </Card.Title>
-          <Card.Body>
+          <Card.Body className="py-1">
             <Col>
               <Row className="mr-1 pb-0">
                 <LeaderTypeFilter
