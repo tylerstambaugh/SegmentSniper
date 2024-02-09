@@ -139,25 +139,27 @@ const ActivityDetails = () => {
 
   return (
     <>
-      <Container className="mb-4">
-        <Row className="pt-3">
+      <Col className="mb-2">
+        <Row className="pt-1">
           <Col className="d-flex justify-content-around">
             <Button
               name="backToSearch"
               onClick={() => {
                 backToActivitiesButtonClick();
               }}
+              className="mt-2 px-2"
             >
               Back
             </Button>
-            <h3>Activity Details</h3>
+            <h3 className="pt-2 mb-0 ms-4">Activity Details</h3>
           </Col>
         </Row>
         <ActivityCard
           activity={
             activityList.find((a) => a.activityId === selectedActivityId)!
           }
-          showMap={false}
+          isActivitySearchResults={false}
+          mapShown={true}
         />
         <Row>
           <SnipeOptions onChange={handleFilterOptionsChange} />
@@ -183,7 +185,7 @@ const ActivityDetails = () => {
             </Button>
           </Col>
         </Row>
-      </Container>
+      </Col>
     </>
   );
 };

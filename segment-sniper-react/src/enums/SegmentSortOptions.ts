@@ -1,4 +1,4 @@
-export enum SegmentSortOptions {
+export enum SegmentSortOption {
   Date = "Date",
   LongestDistance = "Longest Distance",
   ShortestDistance = "Shortest Distance",

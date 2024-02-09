@@ -1,8 +1,8 @@
 import { Col } from "react-bootstrap";
+import Select from "react-select";
+import OptionsType from "react-select";
+import { SegmentSortOption } from "../../../../enums/SegmentSortOptions";
 import styles from "./SortFilter.module.scss";
-import Select, { GroupBase } from "react-select";
-import makeAnimated from "react-select/animated";
-import { SegmentSortOptions } from "../../../../enums/SegmentSortOptions";
 
 export interface SortFilterProps {
   sortBy: string;
@@ -10,8 +10,9 @@ export interface SortFilterProps {
 }
 
 const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
-  const animatedComponents = makeAnimated();
-  const sortOptionsArray = Object.values(SegmentSortOptions);
+  const sortOptions: { label: string; value: string }[] = Object.entries(
+    SegmentSortOption
+  ).map(([key, value]) => ({ label: value, value: key }));
 
   return (
     <div>
@@ -22,13 +23,10 @@ const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
             closeMenuOnSelect={true}
             className="ps-3"
             placeholder={"Select"}
-            components={animatedComponents}
-            value={sortBy}
-            isMulti={false}
             onChange={(selectedValue) => {
-              onChange(selectedValue ?? "Date");
+              onChange(selectedValue?.label ?? "Date");
             }}
-            options={sortOptionsArray}
+            options={sortOptions}
           />
         </div>
       </Col>

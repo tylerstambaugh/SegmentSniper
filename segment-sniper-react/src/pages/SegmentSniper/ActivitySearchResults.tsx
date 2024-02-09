@@ -27,8 +27,8 @@ function ActivitySearchResults() {
   }, []);
 
   return (
-    <Container fluid>
-      <Row className="pt-3">
+    <Col>
+      <Row className="pt-1">
         <Col className="d-flex justify-content-around">
           <Button
             name="backToSearch"
@@ -36,15 +36,15 @@ function ActivitySearchResults() {
               clearSearchResults();
               navigate(`/${AppRoutes.Snipe}`);
             }}
-            className="my-2 px-2"
+            className="mt-2 px-2 me-3"
           >
             Back
           </Button>
-          <h3 className="pt-2">Search Results</h3>
+          <h3 className="pt-2 mb-0 ms-4 ">Search Results</h3>
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col className="pt-0 mt-0">
           <ActivityCardCarousel />
         </Col>
       </Row>
@@ -61,7 +61,7 @@ function ActivitySearchResults() {
           </Button>
         </Col>
       </Row>
-    </Container>
+    </Col>
   );
 }
 
