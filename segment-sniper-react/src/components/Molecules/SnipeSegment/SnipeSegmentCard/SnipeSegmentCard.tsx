@@ -113,17 +113,6 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        {comparePrTime ? "My PR Time:" : "My Time"}
-                      </span>
-                    </p>
-                    <p className="mb-0">{comparePrTime ? myPrTime : myTime}</p>
-                  </Col>
-                </Row>
-
-                <Row className="justify-content-start text-start">
-                  <Col className="d-flex justify-content-between">
-                    <p className="mb-0">
-                      <span className="activity-card-label">
                         {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
                       </span>
                     </p>
@@ -134,6 +123,17 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                     </p>
                   </Col>
                 </Row>
+                <Row className="justify-content-start text-start">
+                  <Col className="d-flex justify-content-between">
+                    <p className="mb-0">
+                      <span className="activity-card-label">
+                        {comparePrTime ? "My PR Time:" : "My Time"}
+                      </span>
+                    </p>
+                    <p className="mb-0">{comparePrTime ? myPrTime : myTime}</p>
+                  </Col>
+                </Row>
+
                 <Row className="justify-content-start text-start">
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">

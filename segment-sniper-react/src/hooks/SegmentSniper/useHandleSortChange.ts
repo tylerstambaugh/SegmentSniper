@@ -12,23 +12,23 @@ const useHandleSortChange = () => {
     listToSort: SnipeSegmentListItem[]
   ) {
     let returnList: SnipeSegmentListItem[] = [];
-    if (selectedSortOption === "date") {
+    if (selectedSortOption === "Date") {
       returnList = [...listToSort].sort(
         (a, b) =>
           +new Date(a.detailedSegmentEffort?.startDate!) -
           +new Date(b.detailedSegmentEffort?.startDate!)
       );
-    } else if (selectedSortOption === "shortestDistance") {
+    } else if (selectedSortOption === "ShortestDistance") {
       returnList = [...listToSort].sort((a, b) => a.distance! - b.distance!);
-    } else if (selectedSortOption === "longestDistance") {
+    } else if (selectedSortOption === "LongestDistance") {
       returnList = [...listToSort].sort((a, b) => b.distance! - a.distance!);
-    } else if (selectedSortOption === "shortestTime") {
+    } else if (selectedSortOption === "ShortestTime") {
       returnList = [...listToSort].sort(
         (a, b) =>
           a.detailedSegmentEffort?.elapsedTime! -
           b.detailedSegmentEffort?.elapsedTime!
       );
-    } else if (selectedSortOption === "longestTime") {
+    } else if (selectedSortOption === "LongestTime") {
       returnList = [...listToSort].sort(
         (a, b) =>
           b.detailedSegmentEffort?.elapsedTime! -

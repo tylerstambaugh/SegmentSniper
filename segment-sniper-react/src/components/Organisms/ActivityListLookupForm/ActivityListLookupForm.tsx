@@ -169,10 +169,6 @@ function ActivityListLookupForm() {
   const handleHelpModalClose = () => setHelpModalShow(false);
   const handleHelpModalShow = () => setHelpModalShow(true);
 
-  useEffect(() => {
-    console.log("formik values", formik.values);
-  }, [formik.values]);
-
   return (
     <>
       <Row className="justify-content-center">
