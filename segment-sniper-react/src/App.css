@@ -28,11 +28,13 @@ body {
 .btn-primary:disabled {
   background-color: #748883;
   transform: scale(1.05);
+  
 }
 
 .btn-primary:hover {
   background-color: #22b18f;
   transform: scale(1.05);
+  color: #292b2c;
 }
 
 .btn-secondary {  
@@ -44,15 +46,16 @@ body {
   text-align: center; 
 }
 .btn-secondary:hover {
-  background-color: #ffca14;
+  background-color: #ddaf17;
   transform: scale(1.05);
+  color: #292b2c;
 }
 
 
 .primary-rounded-button {  
   padding: 8px ;
   border-radius: 7px;
-  border: 1px, solid, #000;
+  border: .5px solid #007bff;
   background-color: #29dcb2;
   color: #292b2c;
   transition: background-color 0.4s ease;

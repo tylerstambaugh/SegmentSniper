@@ -72,7 +72,17 @@ function ActivityListLookupForm() {
         .date()
         .nullable()
         .max(new Date(), "Date must be in the past")
-        .typeError("Enter a valid date"),
+        .typeError("Enter a valid date")
+        .test(
+          "startDateAndEndDateRequired",
+          "End date required",
+          function (endDate, { parent }) {
+            if (parent.startDate && !endDate) {
+              return false;
+            }
+            return true;
+          }
+        ),
     })
     .test(
       "endDateBeforeStartDate",
