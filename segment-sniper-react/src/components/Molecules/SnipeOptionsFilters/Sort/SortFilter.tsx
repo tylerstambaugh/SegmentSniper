@@ -24,7 +24,7 @@ const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
             className="ps-3"
             placeholder={"Select"}
             onChange={(selectedValue) => {
-              onChange(selectedValue?.label ?? "Date");
+              onChange(selectedValue?.value ?? "Date");
             }}
             options={sortOptions}
           />
