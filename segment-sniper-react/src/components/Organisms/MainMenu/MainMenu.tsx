@@ -21,7 +21,7 @@ export default function MainMenu() {
                   >
                     <Link
                       to={`/${AppRoutes.Snipe}`}
-                      className="primary-rounded-button
+                      className="primary-rounded-button text0decoration-none
                       "
                       style={{ width: "155px" }}
                     >
