@@ -1,5 +1,4 @@
 import { ApplicationUser } from "../../../models/ApplicationUser";
-import { ActivityListLookupResponse } from "../Activity/getActivityListByDateRange";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "../BaseApiService";
