@@ -60,60 +60,58 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
 
   return (
     <>
-      <Container className="py-1 p-4">
-        <Card>
-          <Card.Title className="px-2 mb-0 activity-card-heading">
-            <Row className="pb-2">
-              <Col>
-                <p className={`mb-2 ${styles.snipeOptionsHeading}`}>
-                  Snipe Options
-                </p>
-              </Col>
-              <Col className="text-end pt-2">
-                <Button variant="secondary" onClick={handleResetSnipeOptions}>
-                  Reset
-                </Button>
-              </Col>
-            </Row>
-          </Card.Title>
-          <Card.Body className="py-1">
+      <Card className="ms-2 ps-1 mt-3 vh-85">
+        <Card.Title className="px-2 mb-0 activity-card-heading">
+          <Row className="pb-2">
             <Col>
-              <Row className="mr-1 pb-0">
-                <LeaderTypeFilter
-                  leaderTypeQom={leaderTypeQom}
-                  onChange={setLeaderTypeQom}
-                />
-              </Row>
-              <Row>
-                <PercentageFromLeaderFilter
-                  leaderTypeQom={leaderTypeQom}
-                  percentageFromLeader={percentageFromLeader}
-                  onChange={setPercentageFromLeader}
-                />
-              </Row>
-              <Row>
-                <SecondsFromLeaderFilter
-                  leaderTypeQom={leaderTypeQom}
-                  secondsFromLeader={secondsFromLeader}
-                  onChange={setSecondsFromLeader}
-                />
-              </Row>
-              <Row>
-                <HeadingsFilter
-                  headings={headingsFilter}
-                  onChange={setHeadingsFilter}
-                />
-              </Row>
-              <Row>
-                <SortFilter
-                  sortBy={selectedSortOption}
-                  onChange={setSelectedSortOption}
-                />
-              </Row>
+              <p className={`mb-2 ${styles.snipeOptionsHeading}`}>
+                Snipe Options
+              </p>
             </Col>
-          </Card.Body>
-        </Card>
-      </Container>
+            <Col className="text-end pt-2">
+              <Button variant="secondary" onClick={handleResetSnipeOptions}>
+                Reset
+              </Button>
+            </Col>
+          </Row>
+        </Card.Title>
+        <Card.Body className="py-1">
+          <Col>
+            <Row className="mr-1 pb-0">
+              <LeaderTypeFilter
+                leaderTypeQom={leaderTypeQom}
+                onChange={setLeaderTypeQom}
+              />
+            </Row>
+            <Row>
+              <PercentageFromLeaderFilter
+                leaderTypeQom={leaderTypeQom}
+                percentageFromLeader={percentageFromLeader}
+                onChange={setPercentageFromLeader}
+              />
+            </Row>
+            <Row>
+              <SecondsFromLeaderFilter
+                leaderTypeQom={leaderTypeQom}
+                secondsFromLeader={secondsFromLeader}
+                onChange={setSecondsFromLeader}
+              />
+            </Row>
+            <Row>
+              <HeadingsFilter
+                headings={headingsFilter}
+                onChange={setHeadingsFilter}
+              />
+            </Row>
+            <Row>
+              <SortFilter
+                sortBy={selectedSortOption}
+                onChange={setSelectedSortOption}
+              />
+            </Row>
+          </Col>
+        </Card.Body>
+      </Card>
     </>
   );
 };
