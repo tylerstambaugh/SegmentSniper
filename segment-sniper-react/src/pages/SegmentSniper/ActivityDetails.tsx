@@ -162,15 +162,17 @@ const ActivityDetails = () => {
           mapShown={true}
         />
         <Row>
-          <SnipeOptions onChange={handleFilterOptionsChange} />
-        </Row>
-        <Row>
-          <SnipeSegmentsCardList
-            snipeListLoading={snipeSegments.isLoading}
-            filtering={filtering}
-            segmentList={queriedSnipeSegmentList}
-            leaderTypeQom={filterOptions?.leaderTypeQom!}
-          />
+          <Col md={6}>
+            <SnipeOptions onChange={handleFilterOptionsChange} />
+          </Col>
+          <Col md={6}>
+            <SnipeSegmentsCardList
+              snipeListLoading={snipeSegments.isLoading}
+              filtering={filtering}
+              segmentList={queriedSnipeSegmentList}
+              leaderTypeQom={filterOptions?.leaderTypeQom!}
+            />
+          </Col>
         </Row>
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">

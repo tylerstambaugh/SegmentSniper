@@ -61,7 +61,7 @@ const ActivityCard = ({
               <Col>
                 <Row>
                   <Col className="p-3" sm={12} lg={4}>
-                    <Row className="justify-content-start text-start">
+                    <Row className="justify-content-start   ">
                       <Col className="d-flex justify-content-between">
                         <p className="mb-0">
                           <span className="activity-card-label">Date:</span>{" "}
