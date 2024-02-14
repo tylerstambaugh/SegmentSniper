@@ -10,6 +10,7 @@ import { usePostLogin } from "../../../../hooks/Api/Auth/usePostLogin";
 
 import useTokenDataStore from "../../../../stores/useTokenStore";
 import useUserStore from "../../../../stores/useUserStore";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
@@ -62,9 +63,8 @@ export default function LoginWidget() {
 
   useEffect(() => {
     if (loginUser.error !== null) {
-      toast.error(`login error: ${loginUser.error}`, {
-        position: "bottom-center",
-      });
+      let error = loginUser.error as Error;
+      CustomToast({ message: error.message, type: "error" });
     }
   }, [loginUser.error]);
 
