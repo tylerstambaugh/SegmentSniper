@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 
 export type CustomToastProps = {
   message: string;
-  type: string;
+  type: "error" | "loading" | "success" | "default";
 };
 
 export function CustomToast({ message, type }: CustomToastProps) {
