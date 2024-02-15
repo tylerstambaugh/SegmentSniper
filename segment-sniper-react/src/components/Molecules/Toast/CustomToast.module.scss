@@ -1,7 +1,20 @@
 .toastContainer {
     border-radius: 8px;
+    color: black;
+    padding: 15px 20px;
+    
+}
+
+.toastMessage {
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .toastButton {
     cursor: pointer;
+    width: 35px;
+    padding: 0px;
+    margin: 0px;
+    
 }

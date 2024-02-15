@@ -64,7 +64,11 @@ export default function LoginWidget() {
   useEffect(() => {
     if (loginUser.error !== null) {
       let error = loginUser.error as Error;
-      CustomToast({ message: error.message, type: "error" });
+      CustomToast({
+        message: "Login failed",
+        error: `Error: ${error.message}`,
+        type: "error",
+      });
     }
   }, [loginUser.error]);
 
