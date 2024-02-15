@@ -3,14 +3,15 @@ import { toast } from "react-hot-toast";
 import styles from "./CustomToast.module.scss";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 export type CustomToastProps = {
-  message: string;
+  message?: string | null;
+  error?: string | null;
   type: "error" | "loading" | "success" | "default";
 };
 
-export function CustomToast({ message, type }: CustomToastProps) {
+export function CustomToast({ message, type, error }: CustomToastProps) {
   let backgroundColor: string;
   if (type === "success") {
     backgroundColor = "green";
@@ -24,18 +25,25 @@ export function CustomToast({ message, type }: CustomToastProps) {
 
   toast.custom(
     (t) => (
-      <div style={{ color: "white", padding: "10px", backgroundColor }}>
-        <Row className="text-end">
-          <Button
-            onClick={() => toast.dismiss(t.id)}
-            className={styles.toastButton}
-            variant="secondary"
-          >
-            <FontAwesomeIcon icon={faClose} />
-          </Button>
+      <Col xs={4} className={styles.toastContainer} style={{ backgroundColor }}>
+        <Row className="justify-content-around">
+          <Col xs={10} className={styles.toastMessage}>
+            {message}
+          </Col>
+          <Col xs={2} className="text-end">
+            <Button
+              onClick={() => toast.dismiss(t.id)}
+              className={styles.toastButton}
+              variant="secondary"
+            >
+              <FontAwesomeIcon icon={faClose} className="p-0 m-0" />
+            </Button>
+          </Col>
         </Row>
-        <Row>{message}</Row>
-      </div>
+        <Row>
+          <Col xs={10}>{error}</Col>
+        </Row>
+      </Col>
     ),
     {
       duration: Infinity,
