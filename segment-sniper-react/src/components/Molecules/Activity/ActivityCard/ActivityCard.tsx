@@ -2,7 +2,6 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { ActivityListItem } from "../../../../models/Activity/ActivityListItem";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
-import useSegmentEffortsListStore from "../../../../stores/useSegmentEffortsListStore";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import { useEffect, useState } from "react";
 import ActivityMap from "../ActivityMap/ActivityMap";
