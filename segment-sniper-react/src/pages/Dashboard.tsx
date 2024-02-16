@@ -4,9 +4,8 @@ import MainMenu from "../components/Organisms/MainMenu/MainMenu";
 import ConnectWithStrava from "../components/Organisms/ConnectWithStrava/ConnectWithStrava";
 import { useGetUserHasStravaToken } from "../hooks/Api/Auth/useGetHasStravaToken";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
-import ConfirmEmail from "./Authentication/ConfirmEmail";
 import { useNavigate } from "react-router-dom";
+import { CustomToast } from "../components/Molecules/Toast/CustomToast";
 
 export default function Dashboard() {
   const user = useUserStore((state) => state.user);
@@ -22,7 +21,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (checkUserHasTokenData.error !== null) {
-      toast.error(`API Error: ${checkUserHasTokenData.error}`);
+      if (checkUserHasTokenData.error instanceof Error) {
+        CustomToast({
+          message: "Error checking Strava token",
+          error: `Error: ${checkUserHasTokenData.error.message}`,
+          type: "error",
+        });
+      }
     }
   }, [checkUserHasTokenData.error!]);
 

@@ -27,7 +27,7 @@ function ActivitySearchResults() {
   }, []);
 
   return (
-    <Col>
+    <Col xl={6} className="mx-auto">
       <Row className="pt-1">
         <Col className="d-flex justify-content-around">
           <Button

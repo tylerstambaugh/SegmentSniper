@@ -139,7 +139,7 @@ const ActivityDetails = () => {
 
   return (
     <>
-      <Col className="mb-2">
+      <Col xl={6} className="mb-2 mx-auto">
         <Row className="pt-1">
           <Col className="d-flex justify-content-around">
             <Button
@@ -162,17 +162,15 @@ const ActivityDetails = () => {
           mapShown={true}
         />
         <Row>
-          <Col md={6}>
-            <SnipeOptions onChange={handleFilterOptionsChange} />
-          </Col>
-          <Col md={6}>
-            <SnipeSegmentsCardList
-              snipeListLoading={snipeSegments.isLoading}
-              filtering={filtering}
-              segmentList={queriedSnipeSegmentList}
-              leaderTypeQom={filterOptions?.leaderTypeQom!}
-            />
-          </Col>
+          <SnipeOptions onChange={handleFilterOptionsChange} />
+        </Row>
+        <Row>
+          <SnipeSegmentsCardList
+            snipeListLoading={snipeSegments.isLoading}
+            filtering={filtering}
+            segmentList={queriedSnipeSegmentList}
+            leaderTypeQom={filterOptions?.leaderTypeQom!}
+          />
         </Row>
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">

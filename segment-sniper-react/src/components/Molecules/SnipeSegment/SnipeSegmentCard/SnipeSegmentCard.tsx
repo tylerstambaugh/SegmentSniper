@@ -18,13 +18,17 @@ import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvert
 import toast from "react-hot-toast";
 import { useState } from "react";
 import styles from "./SnipeSegmentCard.module.scss";
+import { CustomToast } from "../../Toast/CustomToast";
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
   leaderTypeQom: boolean;
 };
 
-const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
+const SnipeSegmentCard = ({
+  snipeSegment,
+  leaderTypeQom,
+}: SnipedSegmentCardProps) => {
   const starSegment = usePostStarSegment();
   const convertTime = useConvertTimeStringToNumericValue();
   const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
@@ -45,8 +49,8 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
   async function handleStarButtonClick() {
     try {
       const response = await starSegment.mutateAsync({
-        segmentId: props.snipeSegment.segmentId!,
-        star: !props.snipeSegment.starred,
+        segmentId: snipeSegment.segmentId!,
+        star: !snipeSegment.starred,
       });
 
       if (!starSegment.isError && !starSegment.isLoading && response !== null) {
@@ -60,19 +64,27 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
       }
     } catch (error) {
       if (starSegment.error instanceof Error) {
-        toast.error(starSegment.error.message);
+        CustomToast({
+          message: "Star failed",
+          error: `Error: ${starSegment.error.message}`,
+          type: "error",
+        });
       } else {
-        toast.error("Something went wrong.");
+        CustomToast({
+          message: "Star failed",
+          error: `Error: Unknown`,
+          type: "error",
+        });
       }
     }
   }
 
   const myTime: string = convertTime.numericTimeToString(
-    props.snipeSegment.detailedSegmentEffort?.elapsedTime!
+    snipeSegment.detailedSegmentEffort?.elapsedTime!
   );
 
   const myPrTime: string = convertTime.numericTimeToString(
-    props.snipeSegment.athleteSegmentStats?.prElapsedTime!
+    snipeSegment.athleteSegmentStats?.prElapsedTime!
   );
 
   return (
@@ -81,7 +93,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
         <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
           <Col>
             <Row className="justify-content-around">
-              <Col>{props.snipeSegment.name}</Col>
+              <Col>{snipeSegment.name}</Col>
               <Col className="d-flex justify-content-end p-0">
                 <p className={`pt-1 ${styles.switch_label}`}>Compare PR:</p>
                 <Form.Check
@@ -106,20 +118,20 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                     <p className="mb-0">
                       <span className="activity-card-label">Distance:</span>{" "}
                     </p>
-                    <p className="mb-0">{props.snipeSegment.distance} mi.</p>
+                    <p className="mb-0">{snipeSegment.distance} mi.</p>
                   </Col>
                 </Row>
                 <Row className="justify-content-start text-start">
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        {!props.leaderTypeQom ? `KOM Time:` : `QOM Time:`}
+                        {!leaderTypeQom ? `KOM Time:` : `QOM Time:`}
                       </span>
                     </p>
                     <p className="mb-0">
-                      {!props.leaderTypeQom
-                        ? props.snipeSegment.komTime
-                        : props.snipeSegment.qomTime}
+                      {!leaderTypeQom
+                        ? snipeSegment.komTime
+                        : snipeSegment.qomTime}
                     </p>
                   </Col>
                 </Row>
@@ -138,18 +150,18 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        Time Behind {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                        Time Behind {!leaderTypeQom ? `KOM:` : `QOM:`}
                       </span>
                     </p>
                     <p className="mb-0">
                       -
-                      {!props.leaderTypeQom
+                      {!leaderTypeQom
                         ? comparePrTime
-                          ? props.snipeSegment.prSecondsFromKom
-                          : props.snipeSegment.secondsFromKom
+                          ? snipeSegment.prSecondsFromKom
+                          : snipeSegment.secondsFromKom
                         : comparePrTime
-                        ? props.snipeSegment.prSecondsFromQom
-                        : props.snipeSegment.secondsFromQom}
+                        ? snipeSegment.prSecondsFromQom
+                        : snipeSegment.secondsFromQom}
                     </p>
                   </Col>
                 </Row>
@@ -157,17 +169,17 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        % Off {!props.leaderTypeQom ? `KOM:` : `QOM:`}
+                        % Off {!leaderTypeQom ? `KOM:` : `QOM:`}
                       </span>
                     </p>
                     <p className="mb-0">
-                      {!props.leaderTypeQom
+                      {!leaderTypeQom
                         ? comparePrTime
-                          ? `${props.snipeSegment.prPercentageFromKom}%`
-                          : `${props.snipeSegment.percentageFromKom}% `
+                          ? `${snipeSegment.prPercentageFromKom}%`
+                          : `${snipeSegment.percentageFromKom}% `
                         : comparePrTime
-                        ? `${props.snipeSegment.prPercentageFromQom}%`
-                        : `${props.snipeSegment.percentageFromQom}%`}
+                        ? `${snipeSegment.prPercentageFromQom}%`
+                        : `${snipeSegment.percentageFromQom}%`}
                     </p>
                   </Col>
                 </Row>
@@ -178,7 +190,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                         Athlete Count:
                       </span>
                     </p>
-                    <p className="mb-0">{props.snipeSegment.athleteCount}</p>
+                    <p className="mb-0">{snipeSegment.athleteCount}</p>
                   </Col>
                 </Row>
                 <Row className="justify-content-start text-start">
@@ -188,7 +200,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                         Elevation Gain:
                       </span>
                     </p>
-                    <p className="mb-0">{props.snipeSegment.elevation} ft.</p>
+                    <p className="mb-0">{snipeSegment.elevation} ft.</p>
                   </Col>
                 </Row>
                 <Row className="justify-content-start text-start">
@@ -196,20 +208,19 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
                     <p className="mb-0">
                       <span className="activity-card-label">Heading:</span>
                     </p>
-                    <p className="mb-0">{props.snipeSegment.heading}</p>
+                    <p className="mb-0">{snipeSegment.heading}</p>
                   </Col>
                 </Row>
               </Col>
               <Col className="p-0" sm={12} lg={8}>
                 <ActivityMap
-                  stravaMap={props.snipeSegment.map!}
+                  stravaMap={snipeSegment.map!}
                   startLatlng={
-                    props.snipeSegment.detailedSegmentEffort?.summarySegment
+                    snipeSegment.detailedSegmentEffort?.summarySegment
                       .startLatlng
                   }
                   endLatlng={
-                    props.snipeSegment.detailedSegmentEffort?.summarySegment
-                      .endLatlng
+                    snipeSegment.detailedSegmentEffort?.summarySegment.endLatlng
                   }
                 />
               </Col>
@@ -238,7 +249,7 @@ const SnipeSegmentCard = (props: SnipedSegmentCardProps) => {
               onClick={() => handleStarButtonClick()}
               style={{ width: "175px" }}
             >
-              {props.snipeSegment.starred ? (
+              {snipeSegment.starred ? (
                 <FontAwesomeIcon icon={solidStar} />
               ) : (
                 <FontAwesomeIcon icon={regularStar} />

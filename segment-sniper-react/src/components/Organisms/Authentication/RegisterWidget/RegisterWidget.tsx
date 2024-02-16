@@ -11,13 +11,13 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { usePostRegisterUser } from "../../../../hooks/Api/Auth/usePostRegisterUser";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useTokenDataStore from "../../../../stores/useTokenStore";
 import { RegisterUserRequest } from "../../../../services/Api/Auth/postRegisterUser";
 import { LoginRequest } from "../../../../services/Api/Auth/postLogin";
 import { usePostLogin } from "../../../../hooks/Api/Auth/usePostLogin";
 import { AppRoutes } from "../../../../enums/AppRoutes";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function RegisterWidget() {
   const navigate = useNavigate();
@@ -92,10 +92,13 @@ export default function RegisterWidget() {
     try {
       await registerUser.mutateAsync(registerUserRequest);
     } catch (error) {
-      toast.error(`${error}`, {
-        duration: 5000,
-        position: "bottom-center",
-      });
+      if (error instanceof Error) {
+        CustomToast({
+          message: "Error registering user",
+          error: `Error: ${error.message}`,
+          type: "error",
+        });
+      }
     }
   }
 
@@ -113,7 +116,13 @@ export default function RegisterWidget() {
           navigate(`/${AppRoutes.Dashboard}`);
         }
       } catch (error) {
-        toast.error(`login error: ${error}`);
+        if (loginUser.error instanceof Error) {
+          CustomToast({
+            message: "Login failed",
+            error: `Error: ${loginUser.error.message}`,
+            type: "error",
+          });
+        }
       }
     }
   }

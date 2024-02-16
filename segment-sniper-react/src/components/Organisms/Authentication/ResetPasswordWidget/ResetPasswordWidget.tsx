@@ -14,7 +14,7 @@ import {
 import { usePostResetPassword } from "../../../../hooks/Api/Auth/usePostResetPassword";
 import { ResetPasswordRequest } from "../../../../services/Api/Auth/postResetPassword";
 import { AppRoutes } from "../../../../enums/AppRoutes";
-import toast from "react-hot-toast";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function ResetPasswordWidget() {
   const resetPassword = usePostResetPassword();
@@ -82,9 +82,17 @@ export default function ResetPasswordWidget() {
       } else {
         let error = resetPassword.error;
         if (error instanceof Error) {
-          toast.error(error.message);
+          CustomToast({
+            message: "Reset password failed",
+            error: `Error: ${error.message}`,
+            type: "error",
+          });
         } else {
-          toast.error("Unable to reset password. Please try again");
+          CustomToast({
+            message: "Reset password failed",
+            error: `Error: Unknown`,
+            type: "error",
+          });
         }
       }
     },
