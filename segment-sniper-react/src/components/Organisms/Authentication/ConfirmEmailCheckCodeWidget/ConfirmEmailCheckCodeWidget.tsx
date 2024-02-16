@@ -5,12 +5,9 @@ import useUserStore from "../../../../stores/useUserStore";
 import { useEffect, useState } from "react";
 import useTokenDataStore, { TokenData } from "../../../../stores/useTokenStore";
 import { usePostCheckEmailVerificationCode } from "../../../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
-import {
-  VerifyEmailConfirmationCodeRequest,
-  VerifyEmailConfirmationCodeResponse,
-} from "../../../../services/Api/Auth/postVerifyEmailConfirmationCode";
-import toast from "react-hot-toast";
+import { VerifyEmailConfirmationCodeRequest } from "../../../../services/Api/Auth/postVerifyEmailConfirmationCode";
 import useRefreshTokenQuery from "../../../../hooks/Api/Auth/useRefreshTokenQuery";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function ConfirmEmailCheckCodeWidget() {
   const setUser = useUserStore((state) => state.setUser);
@@ -62,7 +59,13 @@ export default function ConfirmEmailCheckCodeWidget() {
 
         fetchData();
       } catch (error) {
-        toast.error(`Error confirming email: ${error}`);
+        if (error instanceof Error) {
+          CustomToast({
+            message: "Error confirming email.",
+            error: `Error: ${error.message}`,
+            type: "error",
+          });
+        }
       }
     }
   }, [location.search]);

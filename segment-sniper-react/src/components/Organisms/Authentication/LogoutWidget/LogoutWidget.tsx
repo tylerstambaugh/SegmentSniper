@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useResetAllStores } from "../../../../hooks/resetAllStores";
 import useTokenDataStore from "../../../../stores/useTokenStore";
 import { useGetLogout } from "../../../../hooks/Api/Auth/useGetLogout";
-import toast from "react-hot-toast";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function LogoutWidget() {
   const logout = useGetLogout();
@@ -21,7 +21,13 @@ export default function LogoutWidget() {
         await logout.mutateAsync();
         resetAllStores();
       } catch (error) {
-        toast.error(`Error revoking user token:${error} `);
+        if (logout.error instanceof Error) {
+          CustomToast({
+            message: "Error logging out",
+            error: `Error: ${logout.error.message}`,
+            type: "error",
+          });
+        }
       }
     };
 

@@ -1,14 +1,12 @@
 import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
-import logo from "../../assets/images/segment_sniper_pro_logo.svg";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { usePostSendPasswordResetEmail } from "../../../../hooks/Api/Auth/usePostSendPasswordResetEmail";
-import useTokenDataStore from "../../../../stores/useTokenStore";
 import { SendPasswordResetEmailRequest } from "../../../../services/Api/Auth/postSendPasswordResetEmail";
-import toast from "react-hot-toast";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 export default function ForgotPasswordWidget() {
   const [validated, setValidated] = useState(false);
@@ -48,7 +46,11 @@ export default function ForgotPasswordWidget() {
 
   useEffect(() => {
     if (sendPasswordResetEmail.error instanceof Error) {
-      toast.error(sendPasswordResetEmail.error.message);
+      CustomToast({
+        message: "Error resetting password",
+        error: `Error: ${sendPasswordResetEmail.error.message}`,
+        type: "error",
+      });
     }
   }, [sendPasswordResetEmail.error]);
 

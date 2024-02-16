@@ -2,21 +2,11 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { DateTime } from "luxon";
 import * as yup from "yup";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Spinner,
-  Card,
-  Modal,
-} from "react-bootstrap";
+import { Row, Col, Form, Button, Spinner, Card, Modal } from "react-bootstrap";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActivityTypes } from "../../../enums/ActivityTypes";
 import { useHandleActivitySearch } from "../../../hooks/Api/Activity/useHandleActivitySearch";
-import toast from "react-hot-toast";
 import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
 import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,6 +17,7 @@ import ActivityDateSearch from "../../Molecules/Activity/ActivityDateSearch/Acti
 import ActivityTypeDropdown from "../../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown";
 import styles from "./ActivityListLookupForm.module.scss";
 import { ActivityListLookupRequest } from "../../../services/Api/Activity/getActivityList";
+import { CustomToast } from "../../Molecules/Toast/CustomToast";
 export interface ActivityListSearchForm {
   activityName?: string | null;
   startDate?: DateTime | null;
@@ -118,8 +109,14 @@ function ActivityListLookupForm() {
   }
 
   useEffect(() => {
-    if (handleActivitySearch.error !== null)
-      toast.error(`${handleActivitySearch.error}`);
+    if (handleActivitySearch.error !== null) {
+      let error = handleActivitySearch.error as Error;
+      CustomToast({
+        message: "Search failed",
+        error: `Error: ${error.message}`,
+        type: "error",
+      });
+    }
   }, [handleActivitySearch.error]);
 
   const formik = useFormik<ActivityListSearchForm>({
