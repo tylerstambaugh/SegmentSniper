@@ -10,6 +10,7 @@ interface SnipeSegmentCardListProps {
   filtering: boolean;
   segmentList: SnipeSegmentListItem[];
   leaderTypeQom: boolean;
+  carouselIndex: number;
 }
 
 const SnipeSegmentsCardList = ({
@@ -17,6 +18,7 @@ const SnipeSegmentsCardList = ({
   filtering,
   segmentList,
   leaderTypeQom,
+  carouselIndex,
 }: SnipeSegmentCardListProps) => {
   return (
     <>
@@ -51,6 +53,7 @@ const SnipeSegmentsCardList = ({
             <SnipeSegmentCardCarousel
               snipeSegmentList={segmentList}
               leaderTypeQom={leaderTypeQom}
+              carouselIndex={carouselIndex}
             />
           </Col>
         </Row>

@@ -48,6 +48,7 @@ const ActivityDetails = () => {
     headings: [],
     sortBy: "SortBy",
   });
+  const [carouselIndex, setCarouselIndex] = useState<number>(0);
 
   function backToActivitiesButtonClick() {
     setSelectedActivityId("");
@@ -123,7 +124,7 @@ const ActivityDetails = () => {
       filteredSegmentList
     );
     setQueriedSnipeSegmentList(filteredSegmentList);
-
+    setCarouselIndex(0);
     setFiltering(false);
   }
 
@@ -170,6 +171,7 @@ const ActivityDetails = () => {
             filtering={filtering}
             segmentList={queriedSnipeSegmentList}
             leaderTypeQom={filterOptions?.leaderTypeQom!}
+            carouselIndex={carouselIndex}
           />
         </Row>
         <Row className="justify-content-center">
