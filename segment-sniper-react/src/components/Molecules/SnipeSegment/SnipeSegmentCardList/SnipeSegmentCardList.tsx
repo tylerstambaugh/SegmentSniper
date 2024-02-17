@@ -22,41 +22,36 @@ const SnipeSegmentsCardList = ({
 }: SnipeSegmentCardListProps) => {
   return (
     <>
-      <Row>
-        {snipeListLoading || filtering ? (
-          <Col className="text-center pt-3">
-            <span>Hang tight, we're working on it</span> <br />
-            <Spinner
-              as="span"
-              variant="secondary"
-              role="status"
-              aria-hidden="true"
-              animation="border"
-              className="custom=spinner"
-            />
-          </Col>
-        ) : (
-          <></>
-        )}
-      </Row>
+      {snipeListLoading || filtering ? (
+        <Col className="text-center pt-3">
+          <span>Hang tight, we're working on it</span> <br />
+          <Spinner
+            as="span"
+            variant="secondary"
+            role="status"
+            aria-hidden="true"
+            animation="border"
+            className="custom=spinner"
+          />
+        </Col>
+      ) : (
+        <></>
+      )}
       {segmentList.length === 0 && !snipeListLoading && !filtering ? (
         <Container fluid>
           <Row className="align-items-center justify-content-center">
-            <Col className="text-center">
+            <Col className="text-center pt-3">
               <h4>No Segments to Snipe</h4>
             </Col>
           </Row>
         </Container>
       ) : (
-        <Row>
-          <Col>
-            <SnipeSegmentCardCarousel
-              snipeSegmentList={segmentList}
-              leaderTypeQom={leaderTypeQom}
-              carouselIndex={carouselIndex}
-            />
-          </Col>
-        </Row>
+        <SnipeSegmentCardCarousel
+          snipeSegmentList={segmentList}
+          snipeSegmentIsLoading={snipeListLoading}
+          leaderTypeQom={leaderTypeQom}
+          carouselIndex={carouselIndex}
+        />
       )}
     </>
   );

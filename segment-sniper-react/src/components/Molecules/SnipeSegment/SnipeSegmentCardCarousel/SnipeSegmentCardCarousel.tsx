@@ -11,15 +11,20 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Col, Row } from "react-bootstrap";
+import PrevArrow from "../../../Atoms/Slider/PrevArrow";
+import NextArrow from "../../../Atoms/Slider/NextArrow";
+import { width } from "@fortawesome/free-regular-svg-icons/faAddressBook";
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
+  snipeSegmentIsLoading: boolean;
   leaderTypeQom: boolean;
   carouselIndex?: number | null;
 }
 
 const SnipeSegmentCardCarousel = ({
   snipeSegmentList,
+  snipeSegmentIsLoading,
   leaderTypeQom,
   carouselIndex,
 }: SnipeSegmentCardCarouselProps) => {
@@ -31,6 +36,9 @@ const SnipeSegmentCardCarousel = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [],
   };
 
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
@@ -48,45 +56,45 @@ const SnipeSegmentCardCarousel = ({
   };
 
   return (
-    <Col>
-      <div className="text-center pt-2">
-        <Row>
-          <h4 className="pb-0 mb-0">
-            Segment {1 + segmentIndex} of {snipeSegmentList.length}
-          </h4>
-        </Row>
-        <Row>
-          <p className="small text-muted p-0 m-0">Swipe to see more</p>
-        </Row>
-      </div>
-      <Row className="align-items-center">
-        <Col xs={1} className="text-end">
-          <Button onClick={goToPrevSlide}>
-            <FontAwesomeIcon icon={faChevronCircleLeft} />
-          </Button>
-        </Col>
-        <Col xs={10} className="p-0">
-          <Slider
-            {...settings}
-            beforeChange={(oldIndex, newIndex) => setSegmentIndex(newIndex)}
-            className="p-0"
-          >
-            {snipeSegmentList.map((snipeSegment, index) => (
-              <SnipeSegmentCard
-                key={uuidv4()}
-                snipeSegment={snipeSegment}
-                leaderTypeQom={leaderTypeQom}
-              />
-            ))}
-          </Slider>
-        </Col>
-        <Col xs={1} className="text-start">
-          <Button onClick={goToNextSlide}>
-            <FontAwesomeIcon icon={faChevronCircleRight} />
-          </Button>
-        </Col>
-      </Row>
-    </Col>
+    <>
+      {!snipeSegmentIsLoading ? (
+        <>
+          <Col>
+            <Row>
+              <h4 className=" text-center pt-3 pb-0 mb-0">
+                Segment {1 + segmentIndex} of {snipeSegmentList.length}
+              </h4>
+            </Row>
+            <Row>
+              <p className="text-center small text-muted p-0 m-0">
+                Swipe to see more
+              </p>
+            </Row>
+            <Row className="justify-content-around">
+              <Col className="d-flex justify-content-center">
+                <Slider
+                  {...settings}
+                  beforeChange={(oldIndex, newIndex) =>
+                    setSegmentIndex(newIndex)
+                  }
+                  className="p-0 m-0"
+                >
+                  {snipeSegmentList.map((snipeSegment, index) => (
+                    <SnipeSegmentCard
+                      key={uuidv4()}
+                      snipeSegment={snipeSegment}
+                      leaderTypeQom={leaderTypeQom}
+                    />
+                  ))}
+                </Slider>
+              </Col>
+            </Row>
+          </Col>
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

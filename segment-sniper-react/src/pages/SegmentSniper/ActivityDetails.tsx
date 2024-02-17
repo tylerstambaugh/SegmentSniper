@@ -140,7 +140,7 @@ const ActivityDetails = () => {
 
   return (
     <>
-      <Col xl={6} className="mb-2 mx-auto">
+      <Col xl={7} className="mb-2 mx-auto">
         <Row className="pt-1">
           <Col className="d-flex justify-content-around">
             <Button
@@ -155,13 +155,15 @@ const ActivityDetails = () => {
             <h3 className="pt-2 mb-0 ms-4">Activity Details</h3>
           </Col>
         </Row>
-        <ActivityCard
-          activity={
-            activityList.find((a) => a.activityId === selectedActivityId)!
-          }
-          isActivitySearchResults={false}
-          mapShown={true}
-        />
+        <Row>
+          <ActivityCard
+            activity={
+              activityList.find((a) => a.activityId === selectedActivityId)!
+            }
+            isActivitySearchResults={false}
+            mapShown={true}
+          />
+        </Row>
         <Row>
           <SnipeOptions onChange={handleFilterOptionsChange} />
         </Row>
