@@ -38,7 +38,6 @@ const SnipeSegmentCardCarousel = ({
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    responsive: [],
   };
 
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
@@ -61,7 +60,7 @@ const SnipeSegmentCardCarousel = ({
         <>
           <Col>
             <Row>
-              <h4 className=" text-center pt-3 pb-0 mb-0">
+              <h4 className="text-center pt-3 pb-0 mb-0">
                 Segment {1 + segmentIndex} of {snipeSegmentList.length}
               </h4>
             </Row>
@@ -70,14 +69,14 @@ const SnipeSegmentCardCarousel = ({
                 Swipe to see more
               </p>
             </Row>
-            <Row className="justify-content-around">
-              <Col className="d-flex justify-content-center">
+            <Row className="">
+              <Col className="p-0">
                 <Slider
                   {...settings}
                   beforeChange={(oldIndex, newIndex) =>
                     setSegmentIndex(newIndex)
                   }
-                  className="p-0 m-0"
+                  className="d-flex"
                 >
                   {snipeSegmentList.map((snipeSegment, index) => (
                     <SnipeSegmentCard

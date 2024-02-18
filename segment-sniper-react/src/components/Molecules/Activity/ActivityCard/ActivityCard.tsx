@@ -59,7 +59,7 @@ const ActivityCard = ({
             <Card.Body className="p-0">
               <Col>
                 <Row>
-                  <Col className="p-3" sm={12} lg={4}>
+                  <Col className="p-3" sm={12} lg={5}>
                     <Row className="justify-content-start   ">
                       <Col className="d-flex justify-content-between">
                         <p className="mb-0">
