@@ -88,7 +88,7 @@ const SnipeSegmentCard = ({
   );
 
   return (
-    <Col className="py-2 ps-4">
+    <Col className="py-2 px-2">
       <Card>
         <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
           <Col>
@@ -112,7 +112,7 @@ const SnipeSegmentCard = ({
         <Card.Body className="py-0">
           <Col>
             <Row>
-              <Col className="p-3" sm={12} lg={4}>
+              <Col className="p-3" md={12} lg={6}>
                 <Row className="justify-content-start text-start">
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
@@ -212,7 +212,7 @@ const SnipeSegmentCard = ({
                   </Col>
                 </Row>
               </Col>
-              <Col className="p-0" sm={12} lg={8}>
+              <Col className="p-0" md={12} lg={6}>
                 <ActivityMap
                   stravaMap={snipeSegment.map!}
                   startLatlng={

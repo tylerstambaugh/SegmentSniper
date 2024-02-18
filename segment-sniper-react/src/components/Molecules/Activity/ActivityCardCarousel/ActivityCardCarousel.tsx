@@ -4,8 +4,9 @@ import "slick-carousel/slick/slick-theme.css";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import ActivityCard from "../ActivityCard/ActivityCard";
 import { Col, Container, Row } from "react-bootstrap";
-import { v4 as uuidv4 } from "uuid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import NextArrow from "../../../Atoms/Slider/NextArrow";
+import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 
 const ActivityCardCarousel = () => {
   const settings: Settings = {
@@ -16,6 +17,8 @@ const ActivityCardCarousel = () => {
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   const [activityList] = useActivityListStore((state) => [state.activityList]);
   const [activityIndex, setActivityIndex] = useState<number>(0);
@@ -35,19 +38,24 @@ const ActivityCardCarousel = () => {
             </Row>
           </div>
           <Row>
-            <Slider
-              {...settings}
-              beforeChange={(oldIndex, newIndex) => setActivityIndex(newIndex)}
-            >
-              {activityList.map((activity, index) => (
-                <ActivityCard
-                  key={activity.activityId}
-                  activity={activity}
-                  isActivitySearchResults={true}
-                  mapShown={true}
-                />
-              ))}
-            </Slider>
+            <Col className="d-flex-inline">
+              <Slider
+                {...settings}
+                beforeChange={(oldIndex, newIndex) =>
+                  setActivityIndex(newIndex)
+                }
+                className="d-flex"
+              >
+                {activityList.map((activity, index) => (
+                  <ActivityCard
+                    key={activity.activityId}
+                    activity={activity}
+                    isActivitySearchResults={true}
+                    mapShown={true}
+                  />
+                ))}
+              </Slider>
+            </Col>
           </Row>
         </Col>
       ) : (

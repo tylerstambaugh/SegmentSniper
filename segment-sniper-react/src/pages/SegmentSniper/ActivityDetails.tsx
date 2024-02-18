@@ -140,7 +140,7 @@ const ActivityDetails = () => {
 
   return (
     <>
-      <Col xl={7} className="mb-2 mx-auto">
+      <Col md={7} className="mb-2 mx-auto">
         <Row className="pt-1">
           <Col className="d-flex justify-content-around">
             <Button
@@ -156,25 +156,31 @@ const ActivityDetails = () => {
           </Col>
         </Row>
         <Row>
-          <ActivityCard
-            activity={
-              activityList.find((a) => a.activityId === selectedActivityId)!
-            }
-            isActivitySearchResults={false}
-            mapShown={true}
-          />
+          <Col>
+            <ActivityCard
+              activity={
+                activityList.find((a) => a.activityId === selectedActivityId)!
+              }
+              isActivitySearchResults={false}
+              mapShown={true}
+            />
+          </Col>
         </Row>
         <Row>
-          <SnipeOptions onChange={handleFilterOptionsChange} />
+          <Col>
+            <SnipeOptions onChange={handleFilterOptionsChange} />
+          </Col>
         </Row>
         <Row>
-          <SnipeSegmentsCardList
-            snipeListLoading={snipeSegments.isLoading}
-            filtering={filtering}
-            segmentList={queriedSnipeSegmentList}
-            leaderTypeQom={filterOptions?.leaderTypeQom!}
-            carouselIndex={carouselIndex}
-          />
+          <Col>
+            <SnipeSegmentsCardList
+              snipeListLoading={snipeSegments.isLoading}
+              filtering={filtering}
+              segmentList={queriedSnipeSegmentList}
+              leaderTypeQom={filterOptions?.leaderTypeQom!}
+              carouselIndex={carouselIndex}
+            />
+          </Col>
         </Row>
         <Row className="justify-content-center">
           <Col className="text-center pt-3 pb-3">
