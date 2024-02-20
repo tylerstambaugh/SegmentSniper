@@ -4,11 +4,12 @@ import "slick-carousel/slick/slick-theme.css";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import ActivityCard from "../ActivityCard/ActivityCard";
 import { Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextArrow from "../../../Atoms/Slider/NextArrow";
 import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 
 const ActivityCardCarousel = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const settings: Settings = {
     dots: false,
     centerMode: false,
@@ -17,11 +18,26 @@ const ActivityCardCarousel = () => {
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: !isSmallScreen,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
   const [activityList] = useActivityListStore((state) => [state.activityList]);
   const [activityIndex, setActivityIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   return (
     <>
@@ -38,24 +54,20 @@ const ActivityCardCarousel = () => {
             </Row>
           </div>
           <Row>
-            <Col>
-              <Slider
-                {...settings}
-                beforeChange={(oldIndex, newIndex) =>
-                  setActivityIndex(newIndex)
-                }
-                className="d-flex"
-              >
-                {activityList.map((activity, index) => (
-                  <ActivityCard
-                    key={activity.activityId}
-                    activity={activity}
-                    isActivitySearchResults={true}
-                    mapShown={true}
-                  />
-                ))}
-              </Slider>
-            </Col>
+            <Slider
+              {...settings}
+              beforeChange={(oldIndex, newIndex) => setActivityIndex(newIndex)}
+              className="d-flex px-3"
+            >
+              {activityList.map((activity, index) => (
+                <ActivityCard
+                  key={activity.activityId}
+                  activity={activity}
+                  isActivitySearchResults={true}
+                  mapShown={true}
+                />
+              ))}
+            </Slider>
           </Row>
         </Col>
       ) : (
