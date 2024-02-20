@@ -43,10 +43,14 @@ const ActivityCard = ({
               <Row>
                 <Col xs={9}>{activity.name} </Col>
                 {!isActivitySearchResults ? (
-                  <Col xs={3}>
+                  <Col xs={3} className="text-end">
                     <Button onClick={() => setShowMap(!showMap)}>
                       <>
-                        <FontAwesomeIcon icon={faEyeSlash} />
+                        {showMap ? (
+                          <FontAwesomeIcon icon={faEyeSlash} />
+                        ) : (
+                          <FontAwesomeIcon icon={faEye} />
+                        )}
                         Map
                       </>
                     </Button>

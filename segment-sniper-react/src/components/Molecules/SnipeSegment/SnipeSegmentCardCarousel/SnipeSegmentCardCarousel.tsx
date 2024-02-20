@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -28,6 +28,7 @@ const SnipeSegmentCardCarousel = ({
   leaderTypeQom,
   carouselIndex,
 }: SnipeSegmentCardCarouselProps) => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const settings: Settings = {
     dots: false,
     centerMode: false,
@@ -36,6 +37,7 @@ const SnipeSegmentCardCarousel = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: !isSmallScreen,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
@@ -53,6 +55,20 @@ const SnipeSegmentCardCarousel = ({
       prevIndex < snipeSegmentList.length - 1 ? prevIndex + 1 : 0
     );
   };
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   return (
     <>
