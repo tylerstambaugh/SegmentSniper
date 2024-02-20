@@ -38,7 +38,7 @@ const ActivityCardCarousel = () => {
             </Row>
           </div>
           <Row>
-            <Col className="d-flex-inline">
+            <Col>
               <Slider
                 {...settings}
                 beforeChange={(oldIndex, newIndex) =>

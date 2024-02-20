@@ -80,7 +80,7 @@ export default function LoginWidget() {
   return (
     <>
       {!isAuthenticated || user?.id === null ? (
-        <Row className="vh-100 d-flex justify-content-center mt-5">
+        <Row className="d-flex justify-content-center mt-5">
           <Col xs={10} md={6} lg={6} xl={4}>
             <Card className="shadow">
               <Card.Body>
