@@ -24,6 +24,7 @@ import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
 import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
 import ResetPassword from "./pages/Authentication/ResetPassword";
+import About from "./pages/About";
 
 interface Props {
   defaultPage?: string;
@@ -66,6 +67,7 @@ export default function Routes({ defaultPage }: Props) {
             element={<ConnectWithStravaError />}
           />
           <Route path={AppRoutes.Logout} element={<Logout />} />
+          <Route path={AppRoutes.About} element={<About />} />
           <Route
             path={AppRoutes.Dashboard}
             element={
