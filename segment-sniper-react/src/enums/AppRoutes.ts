@@ -13,6 +13,7 @@ export enum AppRoutes {
   Snipe = "snipe",
   Profile = "profile",
   Admin = "admin",
+  About = "about",
   ActivitySearchResults = "snipe/activity-search-results",
   ActivityDetails = "snipe/activity-details",
   SnipedSegments = "snipe/sniped-segments",
