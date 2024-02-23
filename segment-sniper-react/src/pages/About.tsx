@@ -1,6 +1,10 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { faCrosshairs } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCrosshairs,
+  faListAlt,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import activityLookup from "../assets/images/about/activity_lookup_img.png";
 import snipeOptions from "../assets/images/about/snipe_options.png";
@@ -28,9 +32,10 @@ function About() {
             </Card.Title>
             <Card.Body className="pt-0 mt-0">
               <p>
-                The Segment Sniper was designed to be used after an activity, to
-                provide quick analysis and additional insights into the
-                performance on the segments of the route.
+                The Segment Sniper was designed to be used after an activity has
+                been uploaded to Strava, to provide quick analysis and
+                additional insights into the performance on the segments of the
+                route.
               </p>
             </Card.Body>
           </Card>
@@ -43,7 +48,10 @@ function About() {
               className="text-center pt-1 activity-card-heading"
               style={{ background: "azure" }}
             >
-              <p>It starts with a simple search</p>
+              <span className="d-flex justify-content-center align-items-center">
+                <p>It starts with a simple search </p>{" "}
+                <FontAwesomeIcon icon={faSearch} className="pb-2 ps-2" />
+              </span>
             </Card.Title>
             <Card.Body>
               <Row>
@@ -76,7 +84,10 @@ function About() {
               className="text-center pt-1 activity-card-heading"
               style={{ background: "azure" }}
             >
-              <p>Results matter</p>
+              <span className="d-flex justify-content-center align-items-center">
+                <p>Results matter </p>{" "}
+                <FontAwesomeIcon icon={faListAlt} className="pb-3 ps-2" />
+              </span>
             </Card.Title>
             <Card.Body>
               <Row>
@@ -110,9 +121,9 @@ function About() {
               className="text-center pt-1 activity-card-heading"
               style={{ background: "azure" }}
             >
-              <span className="inline">
-                <p>Put em in your sights </p>
-                <FontAwesomeIcon icon={faCrosshairs} />{" "}
+              <span className="d-flex justify-content-center align-items-center">
+                <p>Put em in your sights </p>{" "}
+                <FontAwesomeIcon icon={faCrosshairs} className="pb-3 ps-2" />
               </span>
             </Card.Title>
             <Card.Body>
