@@ -92,8 +92,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         }
 
         private DaysAndPagesContract.Result GetDaysRange(DaysAndPagesContract contract)
-        {
-            long startDateUnix = contract.StartDate?.ToEpochTime() ??  DateTime.UtcNow.AddDays(-180).ToEpochTime();
+        {            
+            long startDateUnix = contract.StartDate?.AddHours(-5).ToEpochTime() ??  DateTime.UtcNow.AddDays(-180).ToEpochTime();
             long endDateUnix = contract.EndDate?.AddDays(1).ToEpochTime() ??  DateTime.UtcNow.AddDays(1).ToEpochTime();
 
             return new DaysAndPagesContract.Result
