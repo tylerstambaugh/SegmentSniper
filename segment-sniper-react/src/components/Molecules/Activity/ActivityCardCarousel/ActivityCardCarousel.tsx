@@ -57,7 +57,7 @@ const ActivityCardCarousel = () => {
             <Slider
               {...settings}
               beforeChange={(oldIndex, newIndex) => setActivityIndex(newIndex)}
-              className=" px-3"
+              className="d-flex px-3"
             >
               {activityList.map((activity, index) => (
                 <ActivityCard

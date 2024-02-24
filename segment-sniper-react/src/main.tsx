@@ -18,9 +18,9 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={client}>
-    <AuthenticatedUserMonitor />
     <InitializeApp>
       <Router>
+        <AuthenticatedUserMonitor />
         <Header />
         <Routes />
       </Router>

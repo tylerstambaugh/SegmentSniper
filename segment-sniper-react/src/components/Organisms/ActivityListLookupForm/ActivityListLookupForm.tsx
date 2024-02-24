@@ -124,8 +124,6 @@ function ActivityListLookupForm() {
     enableReinitialize: true,
     onSubmit: (values: ActivityListSearchForm) => {
       setValidated(true);
-      console.log("values", values);
-      console.log("errors", formik.errors);
 
       const searchProps: ActivityListLookupRequest = {
         activityName: values.activityName ?? null,
