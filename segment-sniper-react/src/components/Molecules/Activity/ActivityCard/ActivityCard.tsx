@@ -30,10 +30,6 @@ const ActivityCard = ({
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
 
-  useEffect(() => {
-    console.log("selectedActivityId:", selectedActivityId);
-  }, []);
-
   return (
     <Container className="py-2">
       <Row>
