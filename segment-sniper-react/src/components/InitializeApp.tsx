@@ -31,7 +31,7 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
       }
     };
     initializeApp();
-  }, [setAppConfig]);
+  }, []);
 
   return <>{children}</>;
 };

@@ -19,8 +19,8 @@ const root = createRoot(container!);
 root.render(
   <QueryClientProvider client={client}>
     <InitializeApp>
+      <AuthenticatedUserMonitor />
       <Router>
-        <AuthenticatedUserMonitor />
         <Header />
         <Routes />
       </Router>
