@@ -11,12 +11,15 @@ export default function Dashboard() {
   const user = useUserStore((state) => state.user);
   const checkUserHasTokenData = useGetUserHasStravaToken();
   const navigate = useNavigate();
+
   async function checkUserHasTokenDataFunc() {
     await checkUserHasTokenData.mutateAsync();
   }
 
   useEffect(() => {
-    checkUserHasTokenDataFunc();
+    if (!user?.hasStravaTokenData) {
+      checkUserHasTokenDataFunc();
+    }
   }, []);
 
   useEffect(() => {

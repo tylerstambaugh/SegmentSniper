@@ -76,6 +76,15 @@ function Header() {
             user !== null &&
             user!.id ? (
               <>
+                <Nav.Item className={"fw-semibold text-end"}>
+                  <Navbar.Text>
+                    <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
+                      About
+                    </Link>
+                  </Navbar.Text>
+                </Nav.Item>
+                <div className={"border-end mx-3 d-none d-md-block"}></div>
+                <div className={"border-top mt-1 d-md-none"}></div>
                 <Nav.Item className={"text-end"}>
                   <Navbar.Text>
                     Signed in as:{" "}
@@ -94,15 +103,6 @@ function Header() {
                   <Navbar.Text className="">
                     <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
                       Logout
-                    </Link>
-                  </Navbar.Text>
-                </Nav.Item>
-                <div className={"border-end mx-3 d-none d-md-block"}></div>
-                <div className={"border-top mt-1 d-md-none"}></div>
-                <Nav.Item className={"fw-semibold text-end"}>
-                  <Navbar.Text>
-                    <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
-                      About
                     </Link>
                   </Navbar.Text>
                 </Nav.Item>

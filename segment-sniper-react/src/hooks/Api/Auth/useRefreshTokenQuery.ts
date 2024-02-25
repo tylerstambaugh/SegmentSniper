@@ -15,23 +15,26 @@ const useRefreshTokenQuery = () => {
   const query = useQuery({
     queryFn: refreshTokenQuery,
     queryKey: ["token"],
-    refetchInterval: 60 * 1000 * 29.5,
+    enabled: true,
+    //refetchInterval: 60 * 1000 * 29.5,
     refetchIntervalInBackground: true,
   });
 
   async function refreshTokenQuery() {
-    const tokenDataResponse = await postRefreshToken({
-      baseUrl: apiConfig!.baseUrl,
-      request: {
-        refreshToken: tokenData?.refreshToken!,
-        accessToken: tokenData?.accessToken!,
-      },
-      abortController,
-    });
+    if (tokenData?.refreshToken && tokenData?.accessToken) {
+      const tokenDataResponse = await postRefreshToken({
+        baseUrl: apiConfig!.baseUrl,
+        request: {
+          refreshToken: tokenData.refreshToken,
+          accessToken: tokenData.accessToken,
+        },
+        abortController,
+      });
 
-    setTokenData(tokenDataResponse);
+      setTokenData(tokenDataResponse);
 
-    return tokenDataResponse;
+      return tokenDataResponse;
+    }
   }
 
   useEffect(() => {

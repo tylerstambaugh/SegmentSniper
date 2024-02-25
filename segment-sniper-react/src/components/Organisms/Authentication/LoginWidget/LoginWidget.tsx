@@ -15,10 +15,12 @@ export default function LoginWidget() {
   const [validated, setValidated] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [isAuthenticated] = useTokenDataStore((state) => [
+  const [isAuthenticated, setIsAuthenticated] = useTokenDataStore((state) => [
     state.isAuthenticated,
+    state.setIsAuthenticated,
   ]);
-  const user = useUserStore((state) => state.user);
+  const userData = useUserStore((state) => state.user);
+  const tokenData = useTokenDataStore((state) => state.tokenData);
   const loginUser = usePostLogin();
   const navigate = useNavigate();
   interface LoginForm {
@@ -54,11 +56,21 @@ export default function LoginWidget() {
     };
 
     await loginUser.mutateAsync(loginRequest);
-
-    if (isAuthenticated) {
-      navigate(`/${AppRoutes.Dashboard}`);
-    }
   }
+
+  useEffect(() => {
+    if (tokenData) {
+      const expirationTime = new Date(tokenData.expiration || "").getTime();
+      const currentTime = new Date().getTime();
+      if (
+        tokenData.accessToken &&
+        expirationTime > currentTime &&
+        userData !== null
+      ) {
+        setIsAuthenticated(true);
+      }
+    }
+  }, [tokenData]);
 
   useEffect(() => {
     if (loginUser.error !== null) {
@@ -72,14 +84,14 @@ export default function LoginWidget() {
   }, [loginUser.error]);
 
   useEffect(() => {
-    if (isAuthenticated && user?.id !== null) {
+    if (isAuthenticated && userData?.id !== null) {
       navigate(`/${AppRoutes.Dashboard}`);
     }
   }, [isAuthenticated]);
 
   return (
     <>
-      {!isAuthenticated || user?.id === null ? (
+      {!isAuthenticated || userData?.id === null ? (
         <Row className="d-flex justify-content-center mt-5">
           <Col xs={10} md={6} lg={6} xl={4}>
             <Card className="shadow">
