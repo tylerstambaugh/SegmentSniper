@@ -16,7 +16,7 @@ const useRefreshTokenQuery = () => {
     queryFn: refreshTokenQuery,
     queryKey: ["token"],
     enabled: true,
-    //refetchInterval: 60 * 1000 * 29.5,
+    refetchInterval: 60 * 1000 * 29.5,
     refetchIntervalInBackground: true,
   });
 
