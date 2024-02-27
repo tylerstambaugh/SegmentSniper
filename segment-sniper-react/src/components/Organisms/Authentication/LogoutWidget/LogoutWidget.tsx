@@ -37,7 +37,7 @@ export default function LogoutWidget() {
   return (
     <>
       {tokenData === null && user === null ? (
-        <Row className="vh-100 d-flex justify-content-center mt-5">
+        <Row className="d-flex justify-content-center mt-5">
           <Col md={6} lg={5} xs={10}>
             <div className="border "></div>
             <Card className="shadow">
