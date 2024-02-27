@@ -31,6 +31,12 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
       setTimer(timeRemaining - 1000);
     }, 1000);
 
+    if (timeRemaining <= 0) {
+      clearInterval(intervalRef.current!);
+      navigate(`/${AppRoutes.Logout}`);
+      setShow(false);
+    }
+
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
