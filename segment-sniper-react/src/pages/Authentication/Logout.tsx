@@ -1,9 +1,9 @@
 import LogoutWidget from "../../components/Organisms/Authentication/LogoutWidget/LogoutWidget";
 
-function Logout() {
+function Logout({ inactive }: { inactive: boolean }) {
   return (
     <>
-      <LogoutWidget />
+      <LogoutWidget inactive={inactive} />
     </>
   );
 }

@@ -33,7 +33,7 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
 
     if (timeRemaining <= 0) {
       clearInterval(intervalRef.current!);
-      navigate(`/${AppRoutes.Logout}`);
+      navigate(`/${AppRoutes.InactiveLogout}`);
       setShow(false);
     }
 
@@ -47,6 +47,8 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
   const minutesRemaining = Math.floor(
     (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
   );
+  const formattedMinutes =
+    minutesRemaining < 10 ? `0${minutesRemaining}` : minutesRemaining;
   const secondsRemaining = Math.floor((timeRemaining % (1000 * 60)) / 1000);
   const formattedSeconds =
     secondsRemaining < 10 ? `0${secondsRemaining}` : secondsRemaining;
@@ -61,7 +63,7 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
         <Modal.Body>
           <p>
             {`You have been inactive for a while. For security reasons, you will
-            be logged out in ${minutesRemaining}:${formattedSeconds}`}
+            be logged out in ${formattedMinutes}:${formattedSeconds}`}
           </p>
         </Modal.Body>
 

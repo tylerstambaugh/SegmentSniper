@@ -53,7 +53,6 @@ export default function Routes({ defaultPage }: Props) {
           <Route path={AppRoutes.ResetPassword} element={<ResetPassword />} />
           <Route path={AppRoutes.Register} element={<Register />} />
           <Route path={AppRoutes.Login} element={<Login />} />
-          <Route path={AppRoutes.Logout} element={<Logout />} />
           <Route
             path={AppRoutes.ConfirmEmailCheckCode}
             element={<ConfirmEmailCheckCode />}
@@ -66,7 +65,14 @@ export default function Routes({ defaultPage }: Props) {
             path={AppRoutes.ConnectWithStravaError}
             element={<ConnectWithStravaError />}
           />
-          <Route path={AppRoutes.Logout} element={<Logout />} />
+          <Route
+            path={AppRoutes.Logout}
+            element={<Logout inactive={false} />}
+          />
+          <Route
+            path={AppRoutes.InactiveLogout}
+            element={<Logout inactive={true} />}
+          />
           <Route path={AppRoutes.About} element={<About />} />
           <Route
             path={AppRoutes.Dashboard}

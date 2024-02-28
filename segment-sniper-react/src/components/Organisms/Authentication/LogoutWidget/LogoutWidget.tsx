@@ -8,7 +8,7 @@ import useTokenDataStore from "../../../../stores/useTokenStore";
 import { useGetLogout } from "../../../../hooks/Api/Auth/useGetLogout";
 import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
-export default function LogoutWidget() {
+export default function LogoutWidget({ inactive }: { inactive: boolean }) {
   const logout = useGetLogout();
   const resetAllStores = useResetAllStores();
 
@@ -43,7 +43,11 @@ export default function LogoutWidget() {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">
-                  <h2>You have successfully logged out. </h2>
+                  {inactive ? (
+                    <h2>You have been logged out due to inactivity.</h2>
+                  ) : (
+                    <h2>You have successfully logged out. </h2>
+                  )}
                   <h3>
                     <Link to={`/${AppRoutes.Login}`}>
                       <Button className="px-4">Login</Button>
