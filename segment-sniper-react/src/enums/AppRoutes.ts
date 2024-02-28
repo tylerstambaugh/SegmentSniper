@@ -8,6 +8,7 @@ export enum AppRoutes {
   ResetPassword = "reset-password",
   Login = "login",
   Logout = "logout",
+  InactiveLogout = "inactive-logout",
   ConnectWithStravaSuccess = "connect-with-strava-success",
   ConnectWithStravaError = "connect-with-strava-error",
   Snipe = "snipe",

@@ -25,25 +25,27 @@ export function CustomToast({ message, type, error }: CustomToastProps) {
 
   toast.custom(
     (t) => (
-      <Col xs={4} className={styles.toastContainer} style={{ backgroundColor }}>
-        <Row className="justify-content-around">
-          <Col xs={10} className={styles.toastMessage}>
-            {message}
-          </Col>
-          <Col xs={2} className="text-end">
-            <Button
-              onClick={() => toast.dismiss(t.id)}
-              className={styles.toastButton}
-              variant="secondary"
-            >
-              <FontAwesomeIcon icon={faClose} className="p-0 m-0" />
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={10}>{error}</Col>
-        </Row>
-      </Col>
+      <div className={styles.toastContainer}>
+        <Col xs={8} sm={4} style={{ backgroundColor }}>
+          <Row className="justify-content-around">
+            <Col xs={10} className={styles.toastMessage}>
+              {message}
+            </Col>
+            <Col xs={2} className="text-end">
+              <Button
+                onClick={() => toast.dismiss(t.id)}
+                className={styles.toastButton}
+                variant="secondary"
+              >
+                <FontAwesomeIcon icon={faClose} className="p-0 m-0" />
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={9}>{error}</Col>
+          </Row>
+        </Col>
+      </div>
     ),
     {
       duration: Infinity,
