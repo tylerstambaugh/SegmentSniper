@@ -37,19 +37,45 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
-                ...(styles.select as React.CSSProperties),
+                minHeight: "30px",
+                height: "30px",
+                marginTop: "5px",
               }),
-              menu: (baseStyles, state) => ({
+              multiValue: (baseStyles, props) => ({
                 ...baseStyles,
-                ...(styles.menu as React.CSSProperties),
+                ...{
+                  backgroundColor: "#f0f0f0",
+                  borderRadius: "5px",
+                  height: "20px",
+                  marginBottom: "12px",
+                },
               }),
-              input: (baseStyles, state) => ({
+              multiValueLabel: (baseStyles, props) => ({
                 ...baseStyles,
-                ...(styles.input as React.CSSProperties),
+                ...{
+                  textAlign: "right",
+                },
               }),
               placeholder: (baseStyles, state) => ({
                 ...baseStyles,
-                ...(styles.input as React.CSSProperties),
+                ...{
+                  textAlign: "right",
+                  paddingBottom: "10px",
+                },
+              }),
+              dropdownIndicator: (baseStyles, state) => ({
+                ...baseStyles,
+                ...{
+                  textAlign: "right",
+                  paddingBottom: "10px",
+                },
+              }),
+              indicatorSeparator: (baseStyles, state) => ({
+                ...baseStyles,
+                ...{
+                  textAlign: "right",
+                  paddingBottom: "10px",
+                },
               }),
             }}
           />

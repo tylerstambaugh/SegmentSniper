@@ -18,7 +18,7 @@ export default function AuthenticatedUserMonitor() {
         const currentTime = new Date().getTime();
         const expirationTime = new Date(tokenData.expiration || "").getTime();
 
-        setShowAutoLogoutModal(expirationTime - currentTime < 30000);
+        setShowAutoLogoutModal(expirationTime - currentTime < 2 * 60 * 1000);
 
         if (
           tokenData.accessToken &&

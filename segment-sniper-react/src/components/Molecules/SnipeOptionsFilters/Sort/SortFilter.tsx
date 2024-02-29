@@ -27,6 +27,27 @@ const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
               onChange(selectedValue?.value ?? "Date");
             }}
             options={sortOptions}
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                minHeight: "30px",
+                height: "30px",
+                marginTop: "5px",
+              }),
+              singleValue: (baseStyles, state) => ({
+                ...baseStyles,
+                ...{
+                  textAlign: "right",
+                  paddingBottom: "10px",
+                },
+              }),
+              placeholder: (baseStyles, state) => ({
+                ...baseStyles,
+                ...{
+                  textAlign: "right",
+                },
+              }),
+            }}
           />
         </div>
       </Col>

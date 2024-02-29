@@ -3,6 +3,7 @@ import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
 import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
 import toast from "react-hot-toast";
+import { CustomToast } from "./Molecules/Toast/CustomToast";
 
 interface InitializeComponentProps {
   children: ReactNode;
@@ -27,7 +28,13 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
           googleMapsApiKey: appConfigData?.googleMapsApiKey ?? "",
         });
       } catch (error) {
-        toast.error(`Error fetching app config: ${error}`);
+        if (error instanceof Error) {
+          CustomToast({
+            message: "Error fetching app config",
+            error: `Error: ${error.message}`,
+            type: "error",
+          });
+        }
       }
     };
     initializeApp();
