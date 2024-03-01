@@ -5,7 +5,7 @@ import { AppRoutes } from "../enums/AppRoutes";
 function Home() {
   const navigate = useNavigate();
   return (
-    <Col className="px-2">
+    <Col className="px-3">
       <Row>
         <Col className="text-center pt-1">
           <h4>
@@ -14,7 +14,7 @@ function Home() {
         </Col>
       </Row>
       <Row className=" justify-content-center text-center pt-1">
-        <Col sm={12} xl={5} className="mb-3">
+        <Col sm={12} md={7} sl={5} className="mb-3">
           <Card>
             <Card.Body className="  py-1">
               <div className="text-center" style={{ fontWeight: "600" }}>

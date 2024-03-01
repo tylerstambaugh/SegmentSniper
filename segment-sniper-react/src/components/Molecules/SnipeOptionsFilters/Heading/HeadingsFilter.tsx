@@ -22,7 +22,7 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
         <div style={{ flex: "1" }}>
           <Select
             closeMenuOnSelect={false}
-            className="ps-3"
+            className="ps-3 mb-2"
             placeholder={"Select"}
             components={animatedComponents}
             value={headingsArray.filter((h) => headings.includes(h.label))}
@@ -35,19 +35,17 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
               onChange(selectedValues);
             }}
             styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                minHeight: "30px",
-                height: "30px",
-                marginTop: "5px",
-              }),
+              // control: (baseStyles, state) => ({
+              //   ...baseStyles,
+              //   minHeight: "30px",
+              //   height: !!state.selectProps.value ? "auto" : "30px",
+              //   marginTop: "5px",
+              // }),
               multiValue: (baseStyles, props) => ({
                 ...baseStyles,
                 ...{
                   backgroundColor: "#f0f0f0",
                   borderRadius: "5px",
-                  height: "20px",
-                  marginBottom: "12px",
                 },
               }),
               multiValueLabel: (baseStyles, props) => ({
@@ -60,7 +58,6 @@ const HeadingsFilter = ({ headings, onChange }: HeadingsFilterProps) => {
                 ...baseStyles,
                 ...{
                   textAlign: "right",
-                  paddingBottom: "10px",
                 },
               }),
               dropdownIndicator: (baseStyles, state) => ({

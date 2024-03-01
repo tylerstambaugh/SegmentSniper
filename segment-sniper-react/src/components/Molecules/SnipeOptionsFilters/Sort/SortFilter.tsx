@@ -21,24 +21,23 @@ const SortFilter = ({ sortBy, onChange }: SortFilterProps) => {
         <div style={{ flex: "1" }}>
           <Select
             closeMenuOnSelect={true}
-            className="ps-3"
+            className="ps-3 pb-1 mt-1"
             placeholder={"Select"}
             onChange={(selectedValue) => {
               onChange(selectedValue?.value ?? "Date");
             }}
             options={sortOptions}
             styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                minHeight: "30px",
-                height: "30px",
-                marginTop: "5px",
-              }),
+              // control: (baseStyles, state) => ({
+              //   ...baseStyles,
+              //   minHeight: "30px",
+              //   height: "30px",
+              //   marginTop: "5px",
+              // }),
               singleValue: (baseStyles, state) => ({
                 ...baseStyles,
                 ...{
                   textAlign: "right",
-                  paddingBottom: "10px",
                 },
               }),
               placeholder: (baseStyles, state) => ({
