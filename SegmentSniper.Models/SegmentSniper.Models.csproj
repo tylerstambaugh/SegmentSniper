@@ -14,4 +14,8 @@
     <Folder Include="Models\Admin\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
+  </ItemGroup>
+
 </Project>
