@@ -10,11 +10,11 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 
     public class GetProfileRequest
     {
-        public string userId { get; set; }
+        public required string UserId { get; set; }
 
         public class Response
         {
-            public UserProfileUiModel Profile { get; set; }
+            public UserProfileUiModel? UserProfile { get; set; }
         }
     }
 
