@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using System.Security.Claims;
@@ -9,15 +10,17 @@ namespace SegmentSniper.Api.Controllers
     [EnableCors("AllowReactApp")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ManageProfileController : ControllerBase
+    public class ProfileController : ControllerBase
     {
         private readonly IGetProfileActionHandler _getProfileActionHandler;
 
-        public ManageProfileController(IGetProfileActionHandler getProfileActionHandler)
+        public ProfileController(IGetProfileActionHandler getProfileActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
         }
 
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProfile()
         {
             try

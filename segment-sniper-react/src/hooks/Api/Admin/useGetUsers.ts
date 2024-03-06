@@ -14,7 +14,7 @@ const useGetUsersQuery = () => {
 
   const query = useQuery({
     queryFn: getUsersQuery,
-    queryKey: ["token"],
+    queryKey: ["users"],
   });
 
   async function getUsersQuery() {
