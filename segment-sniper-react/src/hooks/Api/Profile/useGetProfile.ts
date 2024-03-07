@@ -5,11 +5,12 @@ import useApiConfigStore from "../../../stores/useApiConfigStore";
 import getProfile, {
   ProfileResponse,
 } from "../../../services/Api/Profile/getPRofile";
+import { useNeuron } from "../../../stores/NeuronStore";
 
-export const useGetClientConfiguration = () => {
+export const useGetProfile = () => {
   const setProfileData = useProfileStore((state) => state.setProfileData);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-
+  const [, setProfile] = useNeuron((state) => state.profileData);
   const { mutateAsync, data, isLoading, isError, error } = useMutation(trigger);
 
   async function trigger() {
@@ -20,7 +21,8 @@ export const useGetClientConfiguration = () => {
     const response: ProfileResponse = await getProfile(contract);
 
     if (!response.profileData) throw new Error("No profile data found");
-    setProfileData(response.profileData);
+    setProfile(response.profileData);
+    //    setProfileData(response.profileData);
   }
 
   return { mutateAsync, data, isLoading, isError, error };

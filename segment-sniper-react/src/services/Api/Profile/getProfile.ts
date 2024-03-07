@@ -1,6 +1,4 @@
 import { ProfileData } from "../../../models/Profile/ProfileData";
-import { TokenData } from "../../../stores/useTokenStore";
-import { User } from "../../../stores/useUserStore";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet, apiPost } from "../BaseApiService";

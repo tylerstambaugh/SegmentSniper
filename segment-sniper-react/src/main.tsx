@@ -11,33 +11,37 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthenticatedUserMonitor from "./components/Organisms/Authentication/AuthenticatedUserMonitor";
 import "./App.css";
 import InitializeApp from "./components/InitializeApp";
+import { NeuronStore } from "./stores/NeuronStore";
 
 const client = new QueryClient();
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <QueryClientProvider client={client}>
-    <InitializeApp>
-      <Router>
-        <AuthenticatedUserMonitor />
-        <Header />
-        <Routes />
-      </Router>
-    </InitializeApp>
-    <Toaster
-      toastOptions={{
-        success: {
-          style: {
-            background: "green",
+  <>
+    <NeuronStore />
+    <QueryClientProvider client={client}>
+      <InitializeApp>
+        <Router>
+          <AuthenticatedUserMonitor />
+          <Header />
+          <Routes />
+        </Router>
+      </InitializeApp>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "green",
+            },
           },
-        },
-        error: {
-          style: {
-            background: "#fd2c60",
+          error: {
+            style: {
+              background: "#fd2c60",
+            },
           },
-        },
-      }}
-    />
-  </QueryClientProvider>
+        }}
+      />
+    </QueryClientProvider>
+  </>
 );
