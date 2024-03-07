@@ -1,10 +1,7 @@
-import Neuron from "@sandstack/neuron";
 import { ProfileData } from "../models/Profile/ProfileData";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools } from "zustand/middleware";
-
-//export const ProfileStore = Neuron.Store();
 
 const devtoolOptions = {
   name: "User Profile Store",

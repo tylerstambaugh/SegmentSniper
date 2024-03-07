@@ -13,6 +13,9 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
 
         public CheckForStravaTokenRequest.Response Handle(CheckForStravaTokenRequest request)
         {
+
+            ValidateRequest(request);
+
             var result = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
 
             if (result.StravaToken != null && result.StravaToken.RefreshToken != null)
@@ -31,6 +34,19 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
                 };
             }
 
+        }
+
+        private void ValidateRequest(CheckForStravaTokenRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentException("UserId is required");
+            }
         }
     }
 }

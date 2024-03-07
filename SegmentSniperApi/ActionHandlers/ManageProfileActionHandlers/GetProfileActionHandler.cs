@@ -53,7 +53,12 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         }
 
         public void ValidateRequest(GetProfileRequest request)
-        {
+        {            
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             if (string.IsNullOrEmpty(request.UserId))
             {
                 throw new ArgumentException("UserId is required");
