@@ -4,7 +4,7 @@ import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
 import getProfile, {
   ProfileResponse,
-} from "../../../services/Api/Profile/getPRofile";
+} from "../../../services/Api/Profile/getProfile";
 import { useNeuron } from "../../../stores/NeuronStore";
 
 export const useGetProfile = () => {
