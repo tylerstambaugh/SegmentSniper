@@ -39,19 +39,19 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        public async Task<IActionResult> UpdatePassword()
-        {
-            return Ok();
-        }
+        //public async Task<IActionResult> UpdatePassword()
+        //{
+        //    return Ok();
+        //}
 
-        public async Task<IActionResult> UpdateEmail()
-        {
-            return Ok();
-        }
+        //public async Task<IActionResult> UpdateEmail()
+        //{
+        //    return Ok();
+        //}
 
-        public async Task<IActionResult> DeleteAccount()
-        {
-            return Ok();
-        }
+        //public async Task<IActionResult> DeleteAccount()
+        //{
+        //    return Ok();
+        //}
     }
 }
