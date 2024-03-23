@@ -9,6 +9,8 @@ import NextArrow from "../../../Atoms/Slider/NextArrow";
 import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 
 const ActivityCardCarousel = () => {
+  const [activityList] = useActivityListStore((state) => [state.activityList]);
+  const [activityIndex, setActivityIndex] = useState<number>(0);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const settings: Settings = {
     dots: false,
@@ -21,9 +23,8 @@ const ActivityCardCarousel = () => {
     arrows: !isSmallScreen,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    className: "slider-container",
   };
-  const [activityList] = useActivityListStore((state) => [state.activityList]);
-  const [activityIndex, setActivityIndex] = useState<number>(0);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -54,20 +55,26 @@ const ActivityCardCarousel = () => {
             </Row>
           </div>
           <Row>
-            <Slider
-              {...settings}
-              beforeChange={(oldIndex, newIndex) => setActivityIndex(newIndex)}
-              className="d-flex px-3"
-            >
-              {activityList.map((activity, index) => (
-                <ActivityCard
-                  key={activity.activityId}
-                  activity={activity}
-                  isActivitySearchResults={true}
-                  mapShown={true}
-                />
-              ))}
-            </Slider>
+            <Col>
+              <Slider
+                {...settings}
+                beforeChange={(oldIndex, newIndex) =>
+                  setActivityIndex(newIndex)
+                }
+                className={
+                  activityList.length > 1 ? "d-flex px-3" : "d-inline px-3"
+                }
+              >
+                {activityList.map((activity, index) => (
+                  <ActivityCard
+                    key={activity.activityId}
+                    activity={activity}
+                    isActivitySearchResults={true}
+                    mapShown={true}
+                  />
+                ))}
+              </Slider>
+            </Col>
           </Row>
         </Col>
       ) : (
