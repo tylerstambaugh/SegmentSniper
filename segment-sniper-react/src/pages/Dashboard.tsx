@@ -43,7 +43,7 @@ export default function Dashboard() {
   return (
     <>
       <Container
-        className="d-flex flex-column justify-content-center  "
+        className="d-flex flex-column justify-content-center"
         style={{ width: "auto" }}
       >
         {user?.hasStravaTokenData ? (

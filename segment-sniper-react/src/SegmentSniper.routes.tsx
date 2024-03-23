@@ -25,6 +25,7 @@ import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import About from "./pages/About";
+import ProfileMain from "./components/Organisms/Profile/ProfileMain";
 
 interface Props {
   defaultPage?: string;
@@ -119,6 +120,14 @@ export default function Routes({ defaultPage }: Props) {
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
                 <ActivityDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.Profile}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <ProfileMain />
               </PrivateRoute>
             }
           />

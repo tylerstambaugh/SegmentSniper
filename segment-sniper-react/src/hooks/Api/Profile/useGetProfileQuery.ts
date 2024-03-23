@@ -6,24 +6,37 @@ import getProfile, {
   ProfileResponse,
 } from "../../../services/Api/Profile/getProfile";
 import { useNeuron } from "../../../stores/NeuronStore";
+import useTokenDataStore from "../../../stores/useTokenStore";
 
-export const useGetProfile = () => {
+export const useGetProfileQuery = () => {
   const setProfileData = useProfileStore((state) => state.setProfileData);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const [, setProfile] = useNeuron((state) => state.profileData);
-  const { mutateAsync, data, isLoading, isError, error } = useMutation(trigger);
+  const tokenData = useTokenDataStore((state) => state.tokenData);
+  //const [, setProfile] = useNeuron((state) => state.profileData);
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: triggerQuery,
+    queryKey: ["profile"],
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
 
-  async function trigger() {
+  const abortController = new AbortController();
+
+  async function triggerQuery() {
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseUrl,
+      token: tokenData?.accessToken!,
+      abortController,
     };
 
     const response: ProfileResponse = await getProfile(contract);
 
     if (!response.profileData) throw new Error("No profile data found");
-    setProfile(response.profileData);
-    //    setProfileData(response.profileData);
+    // setProfile(response.profileData);
+    setProfileData(response.profileData);
+    return response.profileData;
   }
 
-  return { mutateAsync, data, isLoading, isError, error };
+  return { data, isLoading, isError, error };
 };
