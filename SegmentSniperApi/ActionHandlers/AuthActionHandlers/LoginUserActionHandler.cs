@@ -60,6 +60,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                     // set the refresh token on the user in the db:
                     authenticatedUser.RefreshToken = refreshToken;
                     authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
+                    authenticatedUser.LastLogin = DateTime.Now;
 
                     await _userManager.UpdateAsync(authenticatedUser);
 

@@ -20,7 +20,7 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize]       
         public async Task<IActionResult> GetProfile()
         {
             try
