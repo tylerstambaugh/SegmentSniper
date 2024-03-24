@@ -13,6 +13,7 @@ const useProfileStore = create<ProfileStore>()(
       (set) => ({
         profileData: {
           email: "",
+          userId: "",
           userName: "",
           firstName: "",
           hasStravaToken: false,

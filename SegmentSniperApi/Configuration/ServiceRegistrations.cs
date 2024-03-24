@@ -1,12 +1,14 @@
 ﻿using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
+using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Services.Admin;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common.Adapters;
+using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient;
@@ -34,7 +36,6 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IResetPasswordActionHandler, ResetPasswordActionHandler>();
 
             //strava action handlers
-
             services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
@@ -43,6 +44,11 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
             services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
             
+
+            //profile action handlers
+            services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
+
+
             ////admin action handlers
             services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
             services.AddScoped<IRemoveUserActionHandler, RemoveUserActionHandler>();
@@ -62,6 +68,9 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISendPasswordWasResetEmail, SendPasswordWasResetEmail>();
             services.AddScoped<IResetPassword,  ResetPassword>();
             services.AddScoped<IGetAuthenticatedUser, GetAuthenticatedUser>();
+
+            //profile services
+            services.AddScoped<IGetProfile, GetProfile>();
 
             //admin services
             services.AddScoped<IRemoveUser, RemoveUser>();

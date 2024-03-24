@@ -1,16 +1,16 @@
 import { ProfileData } from "../../../models/Profile/ProfileData";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet, apiPost } from "../BaseApiService";
+import { apiGet } from "../BaseApiService";
 
 export type ProfileResponse = {
-  profileData: ProfileData;
+  userProfile: ProfileData;
 };
 
 export default async function getProfile(contract: ApiContract) {
   try {
     const response = apiGet<ProfileResponse>(
-      `${contract.baseUrl}/profile`,
+      `${contract.baseUrl}/Profile`,
       contract
     );
     return response;
