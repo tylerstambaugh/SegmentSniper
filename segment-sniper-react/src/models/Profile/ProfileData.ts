@@ -4,5 +4,6 @@ export interface ProfileData {
   userId: string;
   firstName: string;
   hasStravaToken: boolean;
-  stravaTokenExpiresAt?: Date;
+  stravaTokenExpiresAt?: Date | null;
+  lastLogin?: Date | null;
 }
