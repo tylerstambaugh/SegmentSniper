@@ -1,9 +1,12 @@
+import { DateTime } from "luxon";
+
 export interface ProfileData {
   email: string;
   userName: string;
   userId: string;
   firstName: string;
   hasStravaToken: boolean;
-  stravaTokenExpiresAt?: Date | null;
-  lastLogin?: Date | null;
+  stravaRefreshToken?: string | null;
+  stravaTokenExpiresAt?: DateTime | null;
+  lastLogin?: DateTime | null;
 }

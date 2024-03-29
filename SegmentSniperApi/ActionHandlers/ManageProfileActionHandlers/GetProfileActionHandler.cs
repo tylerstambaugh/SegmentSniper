@@ -35,6 +35,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             UserId = user.Id,
                             FirstName = user.FirstName,
                             HasStravaToken = stravaToken != null,
+                            StravaRefreshToken = stravaToken?.RefreshToken,
                             StravaTokenExpiresAt = stravaTokenExpirationDateTimeoffset.DateTime,
                             LastLogin = user.LastLogin,
                         }
