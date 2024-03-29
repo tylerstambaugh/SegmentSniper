@@ -7,6 +7,7 @@
         public string Email { get; set; }
         public string UserName { get; set; }
         public bool HasStravaToken { get; set; }
+        public string? StravaRefreshToken { get; set; }
         public DateTime? StravaTokenExpiresAt { get; set; }
         public DateTime LastLogin { get; set; }
     }
