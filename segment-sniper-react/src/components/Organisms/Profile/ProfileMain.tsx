@@ -2,7 +2,11 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import styles from "./ProfileMain.module.scss";
 import useProfileStore from "../../../stores/useProfileStore";
 import { useGetProfileQuery } from "../../../hooks/Api/Profile/useGetProfileQuery";
-import { faCameraAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCameraAlt,
+  faUserCircle,
+  faEdit,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../App.css";
 
@@ -29,6 +33,7 @@ export default function ProfileMain() {
           >
             <FontAwesomeIcon icon={faUserCircle} className="fa-8x py-3" />
             <Button
+              variant="secondary"
               className={styles.cameraButton}
               style={{ position: "absolute", bottom: "10px", right: "10px" }}
             >
@@ -41,7 +46,15 @@ export default function ProfileMain() {
         <Col className="p-0">
           <div>
             <p className={styles.profileLabel}>Username</p>
-            <p className={styles.profileValue}>{profile.userName}</p>
+            <span className="d-flex my-0">
+              <p className={styles.profileValue}>{profile.userName}</p>{" "}
+              <Button
+                variant="secondary"
+                className={`px-1 py-0 my-0 ${styles.editButton}`}
+              >
+                <FontAwesomeIcon icon={faEdit} className="fa-md" />
+              </Button>
+            </span>
             <hr className={styles.hrCentered} />
           </div>
         </Col>
