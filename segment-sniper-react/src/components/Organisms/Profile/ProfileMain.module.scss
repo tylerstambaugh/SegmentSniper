@@ -32,12 +32,18 @@
   word-wrap: break-word;
 }
 
+.editProfileValue {
+  padding:0 0 0 1rem;
+  margin: 0 0 1rem 1rem;
+}
+
 .hrCentered {
   width: 97%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.editButton {
+.editProfileFaButton {
   height: 30px;
+  width: 30px;
 }
