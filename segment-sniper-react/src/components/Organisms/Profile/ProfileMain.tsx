@@ -6,13 +6,19 @@ import {
   faCameraAlt,
   faUserCircle,
   faEdit,
+  faCheck,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../App.css";
+import { useState } from "react";
 
 export default function ProfileMain() {
   const getProfile = useGetProfileQuery();
   const [profile] = useProfileStore((state) => [state.profileData]);
+  const [editEmailAddress, setEditEmailAddress] = useState<boolean>(false);
+  const [editPassword, setEditPassword] = useState<boolean>(false);
+  const [editFirstName, setEditFirstName] = useState<boolean>(false);
 
   return (
     <Container
@@ -45,12 +51,15 @@ export default function ProfileMain() {
       <Row>
         <Col className="p-0">
           <div>
-            <p className={styles.profileLabel}>Username</p>
+            <p className={styles.profileLabel}>Email address</p>
             <span className="d-flex my-0">
               <p className={styles.profileValue}>{profile.userName}</p>{" "}
               <Button
                 variant="secondary"
                 className={`px-1 py-0 my-0 ${styles.editButton}`}
+                onClick={() => {
+                  setEditEmailAddress(true);
+                }}
               >
                 <FontAwesomeIcon icon={faEdit} className="fa-md" />
               </Button>
@@ -63,7 +72,46 @@ export default function ProfileMain() {
         <Col className="p-0">
           <div>
             <p className={styles.profileLabel}>First name</p>
-            <p className={styles.profileValue}>{profile.firstName}</p>
+            {editFirstName ? (
+              <span className="d-flex my-0">
+                <input
+                  type="text"
+                  className={styles.editProfileValue}
+                  defaultValue={profile.firstName}
+                />
+                <Button
+                  variant="primary"
+                  className={`mx-2 ${styles.editProfileFaButton}`}
+                  onClick={() => {
+                    setEditFirstName(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                </Button>
+                <Button
+                  variant="third"
+                  className={` ${styles.editProfileFaButton} mx-2`}
+                  onClick={() => {
+                    setEditFirstName(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faX} className="fa-md" />
+                </Button>
+              </span>
+            ) : (
+              <span className="d-flex my-0">
+                <p className={styles.profileValue}>{profile.firstName}</p>{" "}
+                <Button
+                  variant="secondary"
+                  className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
+                  onClick={() => {
+                    setEditFirstName(true);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEdit} className="fa-md" />
+                </Button>
+              </span>
+            )}
             <hr className={styles.hrCentered} />
           </div>
         </Col>
