@@ -22,7 +22,7 @@ export default function ProfileMain() {
 
   return (
     <Container
-      className="d-flex flex-column justify-content-center border border-dark rounded"
+      className="d-flex flex-column justify-content-center border border-dark rounded mx-auto"
       style={{ width: "auto" }}
     >
       <Row
@@ -52,18 +52,22 @@ export default function ProfileMain() {
         <Col className="p-0">
           <div>
             <p className={styles.profileLabel}>Email address</p>
-            <span className="d-flex my-0">
-              <p className={styles.profileValue}>{profile.userName}</p>{" "}
-              <Button
-                variant="secondary"
-                className={`px-1 py-0 my-0 ${styles.editButton}`}
-                onClick={() => {
-                  setEditEmailAddress(true);
-                }}
-              >
-                <FontAwesomeIcon icon={faEdit} className="fa-md" />
-              </Button>
-            </span>
+            <Row>
+              <Col>
+                <p className={styles.profileValue}>{profile.userName}</p>{" "}
+              </Col>
+              <Col>
+                <Button
+                  variant="secondary"
+                  className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
+                  onClick={() => {
+                    setEditEmailAddress(true);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEdit} className="fa-md" />
+                </Button>
+              </Col>
+            </Row>
             <hr className={styles.hrCentered} />
           </div>
         </Col>
@@ -72,46 +76,56 @@ export default function ProfileMain() {
         <Col className="p-0">
           <div>
             <p className={styles.profileLabel}>First name</p>
-            {editFirstName ? (
-              <span className="d-flex my-0">
-                <input
-                  type="text"
-                  className={styles.editProfileValue}
-                  defaultValue={profile.firstName}
-                />
-                <Button
-                  variant="primary"
-                  className={`mx-2 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    setEditFirstName(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
-                </Button>
-                <Button
-                  variant="third"
-                  className={` ${styles.editProfileFaButton} mx-2`}
-                  onClick={() => {
-                    setEditFirstName(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faX} className="fa-md" />
-                </Button>
-              </span>
-            ) : (
-              <span className="d-flex my-0">
-                <p className={styles.profileValue}>{profile.firstName}</p>{" "}
-                <Button
-                  variant="secondary"
-                  className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    setEditFirstName(true);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faEdit} className="fa-md" />
-                </Button>
-              </span>
-            )}
+            <Row>
+              {editFirstName ? (
+                <>
+                  <Col>
+                    <input
+                      type="text"
+                      className={styles.editProfileValue}
+                      defaultValue={profile.firstName}
+                    />
+                  </Col>
+                  <Col className="d-flex justify-content-end">
+                    <Button
+                      variant="primary"
+                      className={`mx-2 ${styles.editProfileFaButton}`}
+                      onClick={() => {
+                        setEditFirstName(false);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                    </Button>
+                    <Button
+                      variant="third"
+                      className={` ${styles.editProfileFaButton} mx-2`}
+                      onClick={() => {
+                        setEditFirstName(false);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faX} className="fa-md" />
+                    </Button>
+                  </Col>
+                </>
+              ) : (
+                <>
+                  <Col>
+                    <p className={styles.profileValue}>{profile.firstName}</p>{" "}
+                  </Col>
+                  <Col className="d-flex justify-content-end me-3">
+                    <Button
+                      variant="secondary"
+                      className={`px-1 py-0 my-0  ${styles.editProfileFaButton}`}
+                      onClick={() => {
+                        setEditFirstName(true);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faEdit} className="fa-md" />
+                    </Button>
+                  </Col>
+                </>
+              )}
+            </Row>
             <hr className={styles.hrCentered} />
           </div>
         </Col>
