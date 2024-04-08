@@ -1,6 +1,7 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import styles from "./ProfileMain.module.scss";
 import useProfileStore from "../../../stores/useProfileStore";
+
 import { useGetProfileQuery } from "../../../hooks/Api/Profile/useGetProfileQuery";
 import {
   faCameraAlt,
@@ -12,6 +13,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../App.css";
 import { useState } from "react";
+import { CustomToast } from "../../Molecules/Toast/CustomToast";
+import useHandleUpdateFirstName from "../../../hooks/Api/Profile/Handlers/useHandleUpdateFirstName";
 
 export default function ProfileMain() {
   const getProfile = useGetProfileQuery();
@@ -19,6 +22,8 @@ export default function ProfileMain() {
   const [editEmailAddress, setEditEmailAddress] = useState<boolean>(false);
   const [editPassword, setEditPassword] = useState<boolean>(false);
   const [editFirstName, setEditFirstName] = useState<boolean>(false);
+  const [updatedFirstName, setUpdatedFirstName] = useState<string>("");
+  const updateFirstName = useHandleUpdateFirstName();
 
   return (
     <Container
@@ -52,18 +57,48 @@ export default function ProfileMain() {
         <Col className="p-0">
           <div>
             <p className={styles.profileLabel}>Email address</p>
-            <span className="d-flex my-0">
-              <p className={styles.profileValue}>{profile.userName}</p>{" "}
-              <Button
-                variant="secondary"
-                className={`px-1 py-0 my-0 ${styles.editButton}`}
-                onClick={() => {
-                  setEditEmailAddress(true);
-                }}
-              >
-                <FontAwesomeIcon icon={faEdit} className="fa-md" />
-              </Button>
-            </span>
+            {editEmailAddress ? (
+              <span className="d-flex my-0">
+                <input
+                  type="text"
+                  className={styles.editProfileValue}
+                  defaultValue={profile.email}
+                />
+                <Button
+                  variant="primary"
+                  className={`mx-2 ${styles.editProfileFaButton}`}
+                  onClick={() => {
+                    setEditEmailAddress(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                </Button>
+                <Button
+                  variant="third"
+                  className={` ${styles.editProfileFaButton} mx-2`}
+                  onClick={() => {
+                    setEditEmailAddress(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faX} className="fa-md" />
+                </Button>
+              </span>
+            ) : (
+              <span className="d-flex my-0">
+                <p className={styles.profileValue}>{profile.email}</p>{" "}
+                <Button
+                  variant="secondary"
+                  className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
+                  onClick={() => {
+                    setEditEmailAddress(true);
+                    setEditFirstName(false);
+                    setEditPassword(false);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEdit} className="fa-md" />
+                </Button>
+              </span>
+            )}
             <hr className={styles.hrCentered} />
           </div>
         </Col>
@@ -78,16 +113,37 @@ export default function ProfileMain() {
                   type="text"
                   className={styles.editProfileValue}
                   defaultValue={profile.firstName}
-                />
-                <Button
-                  variant="primary"
-                  className={`mx-2 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    setEditFirstName(false);
+                  onChange={(e) => {
+                    setUpdatedFirstName(e.target.value);
                   }}
-                >
-                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
-                </Button>
+                />
+                {updateFirstName.isLoading ? (
+                  <>
+                    <Button
+                      variant="secondary"
+                      className={`me-1 ${styles.editProfileFaButton} `}
+                    >
+                      <Spinner
+                        as="span"
+                        variant="light"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        animation="border"
+                      />
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="primary"
+                    className={`mx-2 ${styles.editProfileFaButton}`}
+                    onClick={(e) => {
+                      updateFirstName.handle(updatedFirstName);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                  </Button>
+                )}
                 <Button
                   variant="third"
                   className={` ${styles.editProfileFaButton} mx-2`}
@@ -105,7 +161,9 @@ export default function ProfileMain() {
                   variant="secondary"
                   className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
                   onClick={() => {
+                    setEditEmailAddress(false);
                     setEditFirstName(true);
+                    setEditPassword(false);
                   }}
                 >
                   <FontAwesomeIcon icon={faEdit} className="fa-md" />
@@ -120,7 +178,7 @@ export default function ProfileMain() {
         <Col className="p-0 m-0">
           <div>
             <p className={styles.profileLabel}>Password</p>
-            <span className="d-flex align-items-start justify-content-between">
+            <span className="d-flex align-items-start">
               <p className={`${styles.profileValue} m-0`}>**********</p>
               <Button className={`btn-third p-0 me-4`}>Update</Button>
             </span>

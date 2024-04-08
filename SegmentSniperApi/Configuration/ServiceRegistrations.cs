@@ -47,6 +47,7 @@ namespace SegmentSniper.Api.Configuration
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
+            services.AddScoped<IUpdateUserFirstNameAsyncActionHandler, UpdateUserFirstNameAsyncActionHandler>();
 
 
             ////admin action handlers
@@ -71,6 +72,7 @@ namespace SegmentSniper.Api.Configuration
 
             //profile services
             services.AddScoped<IGetProfile, GetProfile>();
+            services.AddScoped<IUpdateUserFirstNameAsync, UpdateUserFirstNameAsync>();
 
             //admin services
             services.AddScoped<IRemoveUser, RemoveUser>();

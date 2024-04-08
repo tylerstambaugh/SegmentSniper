@@ -2,6 +2,7 @@ import { ProfileData } from "../models/Profile/ProfileData";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools } from "zustand/middleware";
+import { DateTime } from "luxon";
 
 const devtoolOptions = {
   name: "User Profile Store",
@@ -17,7 +18,7 @@ const useProfileStore = create<ProfileStore>()(
           userName: "",
           firstName: "",
           hasStravaToken: false,
-          stravaTokenExpiresAt: new Date(),
+          stravaTokenExpiresAt: null,
         },
         setProfileData: (profileData: ProfileData) => {
           set((state) => {
