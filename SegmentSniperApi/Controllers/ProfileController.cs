@@ -13,10 +13,12 @@ namespace SegmentSniper.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IGetProfileActionHandler _getProfileActionHandler;
+        private readonly IUpdateUserFirstNameAsyncActionHandler _updateUserFirstNameActionHandler;
 
-        public ProfileController(IGetProfileActionHandler getProfileActionHandler)
+        public ProfileController(IGetProfileActionHandler getProfileActionHandler, IUpdateUserFirstNameAsyncActionHandler updateUserFirstNameActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
+            _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
         }
 
         [HttpGet]
@@ -36,6 +38,28 @@ namespace SegmentSniper.Api.Controllers
             catch (Exception ex)
             {
                 return StatusCode(422, $"Unable to fetch profile. \n {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("UpdateUserFirstName")]
+        public async Task<IActionResult> UpdatUserFirstName([FromBody] string firstName)
+        {
+            try
+            {
+              var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+              var result = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateUserFirstNameRequest 
+                {
+                    UserId = userId,
+                    FirstName = firstName 
+                });
+                
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to update first name. \n {ex.Message}");
             }
         }
 
