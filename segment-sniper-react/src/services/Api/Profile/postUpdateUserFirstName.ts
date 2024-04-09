@@ -1,7 +1,6 @@
-import { ProfileData } from "../../../models/Profile/ProfileData";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet, apiPost } from "../BaseApiService";
+import { apiPatch } from "../BaseApiService";
 import { ProfileResponse } from "./getProfile";
 
 export type UpdateUserFirstNameRequest = {
@@ -10,7 +9,7 @@ export type UpdateUserFirstNameRequest = {
 
 export default async function postUpdateUserFistName(contract: ApiContract) {
   try {
-    const response = apiPost<UpdateUserFirstNameRequest, ProfileResponse>(
+    const response = apiPatch<UpdateUserFirstNameRequest, ProfileResponse>(
       `${contract.baseUrl}/Profile/UpdateUserFirstName`,
       contract
     );

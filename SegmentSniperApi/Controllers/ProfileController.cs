@@ -41,10 +41,10 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Authorize]
         [Route("UpdateUserFirstName")]
-        public async Task<IActionResult> UpdatUserFirstName([FromBody] string firstName)
+        public async Task<IActionResult> UpdatUserFirstName([FromBody] UpdateUserFirstNameRequest request)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace SegmentSniper.Api.Controllers
               var result = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateUserFirstNameRequest 
                 {
                     UserId = userId,
-                    FirstName = firstName 
+                    FirstName = request.FirstName 
                 });
                 
                 return Ok(result);
