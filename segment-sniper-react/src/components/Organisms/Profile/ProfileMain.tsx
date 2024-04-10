@@ -101,6 +101,7 @@ export default function ProfileMain() {
         </Col>
       </Row>
       <ProfileName editMode={editFirstName} changeEditMode={setEditFirstName} />
+      {/* I got hit by a car. Taking the night off. */}
       <Row>
         <Col className="p-0 m-0">
           <div>
