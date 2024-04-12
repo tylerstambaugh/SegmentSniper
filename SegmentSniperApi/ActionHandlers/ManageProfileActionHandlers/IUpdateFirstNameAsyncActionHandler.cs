@@ -4,23 +4,23 @@ using System.Runtime.CompilerServices;
 
 namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
-    public interface IUpdateUserFirstNameAsyncActionHandler
+    public interface IUpdateFirstNameAsyncActionHandler
     {
-        Task<UpdateUserFirstNameRequest.Response> HandleAsync(UpdateUserFirstNameRequest request);
+        Task<UpdateFirstNameRequest.Response> HandleAsync(UpdateFirstNameRequest request);
     }
 
-    public class UpdateUserFirstNameRequest
+    public class UpdateFirstNameRequest
     {
-        public UpdateUserFirstNameRequest()
+        public UpdateFirstNameRequest()
         {
             
         }
 
-        public UpdateUserFirstNameRequest(string firstName)
+        public UpdateFirstNameRequest(string firstName)
         {
             FirstName = firstName;
         }
-        public UpdateUserFirstNameRequest(string userId, string firstName)
+        public UpdateFirstNameRequest(string userId, string firstName)
         {
             UserId = userId;
             FirstName = firstName;

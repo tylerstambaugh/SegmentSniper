@@ -3,16 +3,16 @@ using SegmentSniper.Models.Models.ManageProfile;
 
 namespace SegmentSniper.Services.ManageProfile
 {
-    public class UpdateUserFirstNameAsync : IUpdateUserFirstNameAsync
+    public class UpdateFirstNameAsync : IUpdateFirstNameAsync
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public UpdateUserFirstNameAsync(ISegmentSniperDbContext segmentSniperDbContext)
+        public UpdateFirstNameAsync(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<UpdateUserFirstNameContract.Result> ExecuteAsync(UpdateUserFirstNameContract contract)
+        public async Task<UpdateFirstNameContract.Result> ExecuteAsync(UpdateFirstNameContract contract)
         {
             ValidateContract(contract);
 
@@ -34,7 +34,7 @@ namespace SegmentSniper.Services.ManageProfile
                     StravaApiToken = stravaToken,
                 };
 
-                return new UpdateUserFirstNameContract.Result
+                return new UpdateFirstNameContract.Result
                 {
                    UpdatedUser = userProfile,
                 };
@@ -45,7 +45,7 @@ namespace SegmentSniper.Services.ManageProfile
             }
         }
 
-        private void ValidateContract(UpdateUserFirstNameContract contract)
+        private void ValidateContract(UpdateFirstNameContract contract)
         {
             if (contract == null)
             {

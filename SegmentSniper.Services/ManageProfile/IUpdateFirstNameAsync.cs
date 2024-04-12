@@ -3,19 +3,19 @@ using SegmentSniper.Models.Models.ManageProfile;
 
 namespace SegmentSniper.Services.ManageProfile
 {
-    public interface IUpdateUserFirstNameAsync
+    public interface IUpdateFirstNameAsync
     {
-        Task<UpdateUserFirstNameContract.Result> ExecuteAsync(UpdateUserFirstNameContract contract);
+        Task<UpdateFirstNameContract.Result> ExecuteAsync(UpdateFirstNameContract contract);
     }
 
-    public class UpdateUserFirstNameContract
+    public class UpdateFirstNameContract
     {
-        public UpdateUserFirstNameContract()
+        public UpdateFirstNameContract()
         {
             
         }
 
-        public UpdateUserFirstNameContract(string userId, string updatedName)
+        public UpdateFirstNameContract(string userId, string updatedName)
         {
             UserId = userId;
             UpdatedName = updatedName;

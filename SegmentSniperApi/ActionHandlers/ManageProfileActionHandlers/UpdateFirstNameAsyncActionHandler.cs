@@ -3,28 +3,28 @@ using SegmentSniper.Services.ManageProfile;
 
 namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
-    public class UpdateUserFirstNameAsyncActionHandler : IUpdateUserFirstNameAsyncActionHandler
+    public class UpdateFirstNameAsyncActionHandler : IUpdateFirstNameAsyncActionHandler
     {
-        private readonly IUpdateUserFirstNameAsync _updateFirstName;
+        private readonly IUpdateFirstNameAsync _updateFirstName;
 
-        public UpdateUserFirstNameAsyncActionHandler(IUpdateUserFirstNameAsync updateFirstName)
+        public UpdateFirstNameAsyncActionHandler(IUpdateFirstNameAsync updateFirstName)
         {
             _updateFirstName = updateFirstName;
         }
-        public async Task<UpdateUserFirstNameRequest.Response> HandleAsync(UpdateUserFirstNameRequest request)
+        public async Task<UpdateFirstNameRequest.Response> HandleAsync(UpdateFirstNameRequest request)
         {
             ValidateRequest(request);
 
             try
             {
-                var contract = new UpdateUserFirstNameContract(request.UserId, request.FirstName);
+                var contract = new UpdateFirstNameContract(request.UserId, request.FirstName);
                 var result = await _updateFirstName.ExecuteAsync(contract);
 
                 if (result != null)
                 {
                     var applicationUser = result.UpdatedUser.ApplicationUser;
                     var stravaToken = result.UpdatedUser.StravaApiToken;
-                    return new UpdateUserFirstNameRequest.Response
+                    return new UpdateFirstNameRequest.Response
                     {
                         UpdatedUser = new UserProfileUiModel
                         {
@@ -41,7 +41,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                 }
                 else
                 {
-                    return new UpdateUserFirstNameRequest.Response
+                    return new UpdateFirstNameRequest.Response
                     {
                         UpdatedUser = null
                     };
@@ -53,20 +53,20 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
             }
         }
 
-        private void ValidateRequest(UpdateUserFirstNameRequest request)
+        private void ValidateRequest(UpdateFirstNameRequest request)
         {
            if(request == null)
-            {
+           {
                throw new ArgumentNullException(nameof(request));
            }
            if(string.IsNullOrWhiteSpace(request.UserId))
-            {
+           {
                throw new ArgumentNullException(nameof(request.UserId));
            }
            if(string.IsNullOrWhiteSpace(request.FirstName))
-            {
+           {
                 throw new ArgumentNullException(nameof(request.FirstName));
-              }
+           }
         }
     }
 }

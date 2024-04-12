@@ -17,7 +17,6 @@ const ProfileName: React.FC<ProfileNameProps> = ({
   changeEditMode,
 }) => {
   const [profile] = useProfileStore((state) => [state.profileData]);
-  const [editFirstName, setEditFirstName] = useState<boolean>(editMode);
 
   const [updatedFirstName, setUpdatedFirstName] = useState<string>("");
   const { handle: handleUpdateFirstName, isLoading: updateFirstNameIsLoading } =
