@@ -13,9 +13,9 @@ namespace SegmentSniper.Api.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IGetProfileActionHandler _getProfileActionHandler;
-        private readonly IUpdateUserFirstNameAsyncActionHandler _updateUserFirstNameActionHandler;
+        private readonly IUpdateFirstNameAsyncActionHandler _updateUserFirstNameActionHandler;
 
-        public ProfileController(IGetProfileActionHandler getProfileActionHandler, IUpdateUserFirstNameAsyncActionHandler updateUserFirstNameActionHandler)
+        public ProfileController(IGetProfileActionHandler getProfileActionHandler, IUpdateFirstNameAsyncActionHandler updateUserFirstNameActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
             _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
@@ -44,12 +44,12 @@ namespace SegmentSniper.Api.Controllers
         [HttpPatch]
         [Authorize]
         [Route("UpdateUserFirstName")]
-        public async Task<IActionResult> UpdatUserFirstName([FromBody] UpdateUserFirstNameRequest request)
+        public async Task<IActionResult> UpdatUserFirstName([FromBody] UpdateFirstNameRequest request)
         {
             try
             {
               var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-              var result = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateUserFirstNameRequest 
+              var result = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateFirstNameRequest 
                 {
                     UserId = userId,
                     FirstName = request.FirstName 
