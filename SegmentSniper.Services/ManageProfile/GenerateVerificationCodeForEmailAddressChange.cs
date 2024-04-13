@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Models.Models.ManageProfile;
 using System;
 
@@ -16,7 +17,7 @@ namespace SegmentSniper.Services.ManageProfile
         public async Task<GenerateVerificationCodeForEmailAddressChangeContract.Result> ExecuteAsync(GenerateVerificationCodeForEmailAddressChangeContract contract)
         {
             ValidateContract(contract);
-
+            ChangeEmailVerificationCode code = new ChangeEmailVerificationCode();
             try
             {
                 var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
@@ -26,19 +27,34 @@ namespace SegmentSniper.Services.ManageProfile
                     Random random = new Random();
                     var verificationCode = random.Next(100000, 999999);
 
-                    user.EmailChangeVerificationCode = verificationCode;
+                   code.VerificationCode = verificationCode;
+                   code.ExpirationDate = DateTime.UtcNow.AddMinutes(60);
+                   code.UserId = contract.UserId;
                 }
 
-                _segmentSniperDbContext.Users.Update(user);
+                //send email w/ code
 
-                return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                _segmentSniperDbContext.ChangeEmailVerificationCode.Add(code);
+                var saveResult = _segmentSniperDbContext.SaveChanges();
+
+                if(saveResult == 1)
                 {
-                    CodeSaved = true,
-                };
+                    return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                    {
+                        CodeSaved = true,
+                    };
+                }
+                else
+                {
+                    return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                    {
+                        CodeSaved = false,
+                    };
+                }
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Error updating email address", ex);
+                throw new ApplicationException("Error generating change email verification code", ex);
             }
         }
 

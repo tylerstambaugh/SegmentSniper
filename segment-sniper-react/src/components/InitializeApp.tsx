@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect } from "react";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
 import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
-import toast from "react-hot-toast";
 import { CustomToast } from "./Molecules/Toast/CustomToast";
 
 interface InitializeComponentProps {

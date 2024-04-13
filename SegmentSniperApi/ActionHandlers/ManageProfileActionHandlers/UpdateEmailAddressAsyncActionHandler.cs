@@ -6,10 +6,12 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
     public class UpdateEmailAddressAsyncActionHandler : IUpdateEmailAddressAsyncActionHandler
     {
+        private readonly IVerifyCodeForEmailAddressChange _verifyCodeForEmailAddressChange;
         private readonly IUpdateEmailAddressAsync _updateEmailAddressAsync;
 
-        public UpdateEmailAddressAsyncActionHandler(IUpdateEmailAddressAsync updateEmailAddressAsync)
+        public UpdateEmailAddressAsyncActionHandler(IVerifyCodeForEmailAddressChange verifyCodeForEmailAddressChange, IUpdateEmailAddressAsync updateEmailAddressAsync)
         {
+            _verifyCodeForEmailAddressChange = verifyCodeForEmailAddressChange;
             _updateEmailAddressAsync = updateEmailAddressAsync;
         }
 
@@ -17,15 +19,15 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         {
             ValidatedRequest(request);
 
-            //need to send email with code.
-
-            //need to have user reply with code
-
-            //need to verify code
+            var verifiedCode = _verifyCodeForEmailAddressChange.Execute(new VerifyCodeForEmailAddressChangeContract(request.UserId, request.VerificationCode)).CorrectCode;
+            if(!verifiedCode)
+            {
+                throw new ArgumentException("Incorrect verification code. Please try again");
+            }
+           
 
             try
             {
-
 
                 var contract = new UpdateEmailAddressAsyncContract(request.UserId, request.EmailAddress);
                 var result = await _updateEmailAddressAsync.ExecuteAsync(contract);

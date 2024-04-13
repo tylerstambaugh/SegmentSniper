@@ -63,15 +63,31 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        //public async Task<IActionResult> UpdatePassword()
-        //{
-        //    return Ok();
-        //}
+        public async Task<IActionResult> RequestChangeEmailVerificationCode()
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();               
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to update first name. \n {ex.Message}");
+            }
+        }
 
         //public async Task<IActionResult> UpdateEmail()
         //{
         //    return Ok();
         //}
+
+        //public async Task<IActionResult> UpdatePassword()
+        //{
+        //    return Ok();
+        //}
+
+
 
         //public async Task<IActionResult> DeleteAccount()
         //{
