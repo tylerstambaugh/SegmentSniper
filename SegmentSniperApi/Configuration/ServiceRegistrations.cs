@@ -7,6 +7,7 @@ using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Services.Admin;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
+using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
@@ -23,7 +24,6 @@ namespace SegmentSniper.Api.Configuration
     {
         public static void RegisterServices(IServiceCollection services)
         {
-
             // auth action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
@@ -42,12 +42,13 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IExchangeAuthCodeForTokenHandler, ExchangeAuthCodeForTokenHandler>();
             services.AddScoped<IGetDetailedSegmentBySegmentIdActionHandler, GetDetailedSegmentBySegmentIdActionHandler>();
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
-            services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
-            
+            services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();            
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
             services.AddScoped<IUpdateFirstNameAsyncActionHandler, UpdateFirstNameAsyncActionHandler>();
+            services.AddScoped<IUpdateEmailAddressAsyncActionHandler , UpdateEmailAddressAsyncActionHandler>();
+            services.AddScoped<IRequestChangeEmailVerificationCodeAsyncActionHandler, RequestChangeEmailVerificationCodeAsyncActionHandler>();
 
 
             ////admin action handlers
@@ -80,6 +81,9 @@ namespace SegmentSniper.Api.Configuration
             //admin services
             services.AddScoped<IRemoveUser, RemoveUser>();
             services.AddScoped<IGetUsers, GetUsers>();
+
+            //common & helper services
+            services.AddScoped<ISendEmail, SendEmail>();
 
             //strava API service
             services.AddScoped<IStravaRequestClient, StravaRequestClient>();
