@@ -32,8 +32,6 @@ namespace SegmentSniper.Services.ManageProfile
                    code.UserId = contract.UserId;
                 }
 
-                //send email w/ code
-
                 _segmentSniperDbContext.ChangeEmailVerificationCode.Add(code);
                 var saveResult = _segmentSniperDbContext.SaveChanges();
 

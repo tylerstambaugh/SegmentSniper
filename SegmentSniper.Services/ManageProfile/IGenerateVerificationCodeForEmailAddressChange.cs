@@ -18,6 +18,7 @@ namespace SegmentSniper.Services.ManageProfile
         public string UserId { get; } 
         public class Result
         {
+            public int Code { get; set; }
             public bool CodeSaved {  get; set; }
         }
     }
