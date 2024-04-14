@@ -14,11 +14,15 @@ namespace SegmentSniper.Api.Controllers
     {
         private readonly IGetProfileActionHandler _getProfileActionHandler;
         private readonly IUpdateFirstNameAsyncActionHandler _updateUserFirstNameActionHandler;
+        private readonly IUpdateEmailAddressAsyncActionHandler _updateEmailAddressAsyncActionHandler;
+        private readonly IRequestChangeEmailVerificationCodeAsyncActionHandler _requestChangeEmailVerificationCodeAsyncActionHandler;
 
-        public ProfileController(IGetProfileActionHandler getProfileActionHandler, IUpdateFirstNameAsyncActionHandler updateUserFirstNameActionHandler)
+        public ProfileController(IGetProfileActionHandler getProfileActionHandler, IUpdateFirstNameAsyncActionHandler updateUserFirstNameActionHandler, IUpdateEmailAddressAsyncActionHandler updateEmailAddressAsyncActionHandler, IRequestChangeEmailVerificationCodeAsyncActionHandler requestChangeEmailVerificationCodeAsyncActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
             _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
+            _updateEmailAddressAsyncActionHandler = updateEmailAddressAsyncActionHandler;
+            _requestChangeEmailVerificationCodeAsyncActionHandler = requestChangeEmailVerificationCodeAsyncActionHandler;
         }
 
         [HttpGet]
@@ -44,18 +48,18 @@ namespace SegmentSniper.Api.Controllers
         [HttpPatch]
         [Authorize]
         [Route("UpdateUserFirstName")]
-        public async Task<IActionResult> UpdatUserFirstName([FromBody] UpdateFirstNameRequest request)
+        public async Task<IActionResult> UpdateUserFirstName([FromBody] UpdateFirstNameRequest request)
         {
             try
             {
               var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-              var result = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateFirstNameRequest 
+              var response = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateFirstNameRequest 
                 {
                     UserId = userId,
                     FirstName = request.FirstName 
                 });
                 
-                return Ok(result);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -68,12 +72,12 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();               
-
-                return Ok();
+                var response = _requestChangeEmailVerificationCodeAsyncActionHandler.HandleAsync(new RequestChangeEmailVerificationCodeActionHandlerRequest(userId));
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to update first name. \n {ex.Message}");
+                return StatusCode(422, $"Unable to send verification code. \n {ex.Message}");
             }
         }
 

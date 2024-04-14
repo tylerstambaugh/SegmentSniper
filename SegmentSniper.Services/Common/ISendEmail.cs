@@ -1,6 +1,8 @@
-﻿namespace SegmentSniper.Services.Common
+﻿using SegmentSniper.Services.Interface;
+
+namespace SegmentSniper.Services.Common
 {
-    public interface ISendEmail
+    public interface ISendEmail : IExecutableServiceAsync<SendEmailContract,  SendEmailContract.Result>
     {
         Task<SendEmailContract.Result> ExecuteAsync(SendEmailContract contract);
     }
