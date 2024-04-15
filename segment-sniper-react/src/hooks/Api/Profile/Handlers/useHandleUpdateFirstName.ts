@@ -9,7 +9,7 @@ const useHandleUpdateFirstName = () => {
     } catch (error) {
       if (error instanceof Error) {
         CustomToast({
-          message: "Error update first name",
+          message: "Error updating first name",
           error: `Error: ${error.message}`,
           type: "error",
         });
