@@ -31,8 +31,25 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 
                 if (verificationCode.CodeSaved)
                 {
-                    var emailSubject = "Segment Sniper Email Verification Code";
-                    var emailBody = @"
+                    await SendVerificationCode(user, verificationCode);
+                }
+
+                return new RequestChangeEmailVerificationCodeActionHandlerRequest.Response
+                {
+                    Success = verificationCode.CodeSaved,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to send verification code", ex);
+            }
+            
+        }
+
+        private async Task SendVerificationCode(ApplicationUser? user, GenerateVerificationCodeForEmailAddressChangeContract.Result verificationCode)
+        {
+            var emailSubject = "Segment Sniper Email Verification Code";
+            var emailBody = @"
                         <!DOCTYPE html>
                         <html lang=""en"">
                         <head>
@@ -42,7 +59,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                         </head>
                         <body>
                             <p>Dear " + user.FirstName + @",</p>
-                            <p>We received a request to change the email address for your Segment Sniper Pro account. If you initiated this request, please follow the instructions below to complete the password change process.</p>
+                            <p>We received a request to change the email address for your Segment Sniper Pro account. If you initiated this request, please use the code below to complete the email change process.</p>
                             
                             <Your email change verification code is <span>" + verificationCode.Code + @"</span>
                             <p>For security reasons, we recommend that you do not share this code with others.</p>
@@ -52,20 +69,12 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                         </body>
                         </html>";
 
-                    await _sendEmail.ExecuteAsync(new SendEmailContract
-                    {
-                        EmailSubject = emailSubject,
-                        EmailBody = emailBody,
-                        EmailAddress = user.Email,
-                    });
-                }
-
-            }
-            catch (Exception ex)
+            await _sendEmail.ExecuteAsync(new SendEmailContract
             {
-                throw new ApplicationException("Unable to send verification code", ex);
-            }
-            
+                EmailSubject = emailSubject,
+                EmailBody = emailBody,
+                EmailAddress = user.Email,
+            });
         }
 
         private void ValidatedRequest(RequestChangeEmailVerificationCodeActionHandlerRequest request)
