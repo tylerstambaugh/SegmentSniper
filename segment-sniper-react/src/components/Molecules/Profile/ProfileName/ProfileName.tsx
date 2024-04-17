@@ -1,6 +1,5 @@
 import { faCheck, faX, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { profile } from "console";
 import { Row, Col, Button, Spinner } from "react-bootstrap";
 import styles from "../ProfileName/ProfileName.module.scss";
 import useProfileStore from "../../../../stores/useProfileStore";

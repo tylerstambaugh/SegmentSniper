@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useApiConfigStore from "../../../stores/useApiConfigStore";
-import postUpdateUserFistName, {
+import patchUpdateUserFistName, {
   UpdateUserFirstNameRequest,
-} from "../../../services/Api/Profile/postUpdateUserFirstName";
+} from "../../../services/Api/Profile/patchUpdateUserFirstName";
 import useProfileStore from "../../../stores/useProfileStore";
 
-export const usePostUpdateUserFirstName = () => {
+export const usePatchUpdateUserFirstName = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const [setProfileData] = useProfileStore((state) => [state.setProfileData]);
 
@@ -18,7 +18,7 @@ export const usePostUpdateUserFirstName = () => {
       request: request,
     };
 
-    await postUpdateUserFistName(contract).then((res) => {
+    await patchUpdateUserFistName(contract).then((res) => {
       setProfileData(res.userProfile);
     });
   }

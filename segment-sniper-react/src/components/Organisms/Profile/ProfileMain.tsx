@@ -12,8 +12,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileName from "../../Molecules/Profile/ProfileName/ProfileName";
+import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
 
 export default function ProfileMain() {
   const getProfile = useGetProfileQuery();
@@ -21,6 +22,12 @@ export default function ProfileMain() {
   const [editEmailAddress, setEditEmailAddress] = useState<boolean>(false);
   const [editPassword, setEditPassword] = useState<boolean>(false);
   const [editFirstName, setEditFirstName] = useState<boolean>(false);
+
+  const [editMode, setEditMode] = useState<string | null>(null);
+
+  const handleEditModeChange = (componentName: string) => {
+    setEditMode((prev) => (prev === componentName ? null : componentName));
+  };
 
   return (
     <Container
@@ -50,57 +57,14 @@ export default function ProfileMain() {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col className="p-0">
-          <div>
-            <p className={styles.profileLabel}>Email address</p>
-            {editEmailAddress ? (
-              <span className="d-flex my-0">
-                <input
-                  type="text"
-                  className={styles.editProfileValue}
-                  defaultValue={profile.email}
-                />
-                <Button
-                  variant="primary"
-                  className={`mx-2 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    setEditEmailAddress(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
-                </Button>
-                <Button
-                  variant="third"
-                  className={` ${styles.editProfileFaButton} mx-2`}
-                  onClick={() => {
-                    setEditEmailAddress(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faX} className="fa-md" />
-                </Button>
-              </span>
-            ) : (
-              <span className="d-flex my-0">
-                <p className={styles.profileValue}>{profile.email}</p>{" "}
-                <Button
-                  variant="secondary"
-                  className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    setEditEmailAddress(true);
-                    setEditFirstName(false);
-                    setEditPassword(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faEdit} className="fa-md" />
-                </Button>
-              </span>
-            )}
-            <hr className={styles.hrCentered} />
-          </div>
-        </Col>
-      </Row>
-      <ProfileName editMode={editFirstName} changeEditMode={setEditFirstName} />
+      <EmailAddress
+        editMode={editMode === "EmailAddress"}
+        changeEditMode={() => handleEditModeChange("EmailAddress")}
+      />
+      <ProfileName
+        editMode={editMode === "ProfileName"}
+        changeEditMode={() => handleEditModeChange("ProfileName")}
+      />
       {/* I got hit by a car. Taking the night off. */}
       <Row>
         <Col className="p-0 m-0">

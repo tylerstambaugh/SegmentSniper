@@ -7,7 +7,7 @@ export type UpdateUserFirstNameRequest = {
   firstName: string;
 };
 
-export default async function postUpdateUserFistName(contract: ApiContract) {
+export default async function patchUpdateUserFistName(contract: ApiContract) {
   try {
     const response = apiPatch<UpdateUserFirstNameRequest, ProfileResponse>(
       `${contract.baseUrl}/Profile/UpdateUserFirstName`,

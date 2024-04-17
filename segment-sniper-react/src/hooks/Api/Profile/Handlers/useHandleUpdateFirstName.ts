@@ -1,8 +1,8 @@
 import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast";
-import { usePostUpdateUserFirstName } from "../usePostUpdateUserFirstName";
+import { usePatchUpdateUserFirstName } from "../usePostUpdateUserFirstName";
 
 const useHandleUpdateFirstName = () => {
-  const { mutateAsync, isLoading } = usePostUpdateUserFirstName();
+  const { mutateAsync, isLoading } = usePatchUpdateUserFirstName();
   async function handle(firstName: string) {
     try {
       await mutateAsync({ firstName });

@@ -67,6 +67,9 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("SendChangeEmailAddressVerificationCode")]
         public async Task<IActionResult> RequestChangeEmailVerificationCode()
         {
             try
