@@ -62,6 +62,7 @@ export default function ProfileMain() {
         changeEditMode={() => handleEditModeChange("EmailAddress")}
       />
       <ProfileName
+        firstName={profile.firstName}
         editMode={editMode === "ProfileName"}
         changeEditMode={() => handleEditModeChange("ProfileName")}
       />
