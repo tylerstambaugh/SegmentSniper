@@ -27,6 +27,7 @@ namespace SegmentSniper.Services.ManageProfile
                 }
 
                 _segmentSniperDbContext.Users.Update(user);
+                _segmentSniperDbContext.SaveChanges();
 
                 var userProfile = new UserProfile
                 {

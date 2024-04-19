@@ -2,7 +2,7 @@ import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast"
 import { usePatchUpdateUserFirstName } from "../usePostUpdateUserFirstName";
 
 const useHandleUpdateFirstName = () => {
-  const { mutateAsync, isLoading } = usePatchUpdateUserFirstName();
+  const { mutateAsync, isLoading, error } = usePatchUpdateUserFirstName();
   async function handle(firstName: string) {
     try {
       await mutateAsync({ firstName });
@@ -16,7 +16,7 @@ const useHandleUpdateFirstName = () => {
       }
     }
   }
-  return { handle, isLoading };
+  return { handle, isLoading, error };
 };
 
 export default useHandleUpdateFirstName;
