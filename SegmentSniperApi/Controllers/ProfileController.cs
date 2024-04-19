@@ -70,12 +70,12 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost]
         [Authorize]
         [Route("SendChangeEmailAddressVerificationCode")]
-        public async Task<IActionResult> RequestChangeEmailVerificationCode()
+        public async Task<IActionResult> RequestChangeEmailVerificationCode([FromBody] string emailAddress)
         {
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();               
-                var response = _requestChangeEmailVerificationCodeAsyncActionHandler.HandleAsync(new RequestChangeEmailVerificationCodeActionHandlerRequest(userId));
+                var response = _requestChangeEmailVerificationCodeAsyncActionHandler.HandleAsync(new RequestChangeEmailVerificationCodeActionHandlerRequest(userId, emailAddress));
                 return Ok(response);
             }
             catch (Exception ex)

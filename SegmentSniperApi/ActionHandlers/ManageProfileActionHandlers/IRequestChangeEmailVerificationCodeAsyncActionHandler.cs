@@ -7,11 +7,14 @@
 
     public class RequestChangeEmailVerificationCodeActionHandlerRequest
     {
-        public RequestChangeEmailVerificationCodeActionHandlerRequest(string userId)
+        public RequestChangeEmailVerificationCodeActionHandlerRequest(string userId, string emailAddress)
         {
+            
             UserId = userId;
+            EmailAddress = emailAddress;
         }
 
+        public string EmailAddress { get; }
         public string UserId { get;  }
         
         public class Response
