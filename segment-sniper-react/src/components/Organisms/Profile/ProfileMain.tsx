@@ -19,9 +19,6 @@ import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
 export default function ProfileMain() {
   const getProfile = useGetProfileQuery();
   const [profile] = useProfileStore((state) => [state.profileData]);
-  const [editEmailAddress, setEditEmailAddress] = useState<boolean>(false);
-  const [editPassword, setEditPassword] = useState<boolean>(false);
-  const [editFirstName, setEditFirstName] = useState<boolean>(false);
 
   const [editMode, setEditMode] = useState<string | null>(null);
 
@@ -62,7 +59,6 @@ export default function ProfileMain() {
         changeEditMode={() => handleEditModeChange("EmailAddress")}
       />
       <ProfileName
-        firstName={profile.firstName}
         editMode={editMode === "ProfileName"}
         changeEditMode={() => handleEditModeChange("ProfileName")}
       />
@@ -84,8 +80,8 @@ export default function ProfileMain() {
           <div>
             <p className={`${styles.profileLabel}`}>Strava API Refresh Token</p>
             <p className={`${styles.profileValue} mb-0 pb-0`}>
-              {profile.hasStravaToken
-                ? profile.stravaRefreshToken
+              {profile?.hasStravaToken
+                ? profile?.stravaRefreshToken
                 : "No Refresh Token Set"}
             </p>
             <p className="ps-3 py-0 small text-muted">

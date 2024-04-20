@@ -9,7 +9,6 @@ import { useState } from "react";
 import useHandleUpdateFirstName from "../../../../hooks/Api/Profile/Handlers/useHandleUpdateFirstName";
 
 export type ProfileNameProps = {
-  firstName: string;
   editMode: boolean;
   changeEditMode: (isEditMode: boolean) => void;
 };
@@ -19,20 +18,18 @@ interface EditNameForm {
 }
 
 const ProfileName: React.FC<ProfileNameProps> = ({
-  firstName,
   editMode,
   changeEditMode,
 }) => {
   const [profile] = useProfileStore((state) => [state.profileData]);
-
   const [updatedFirstName, setUpdatedFirstName] = useState<string>("");
   const {
     handle: handleUpdateFirstName,
     isLoading: updateFirstNameIsLoading,
     error: updateFirstNameError,
   } = useHandleUpdateFirstName();
-
   const [validated, setValidated] = useState(false);
+
   const validationSchema = yup.object({
     firstName: yup
       .string()
@@ -40,17 +37,18 @@ const ProfileName: React.FC<ProfileNameProps> = ({
       .nonNullable()
       .typeError("First name must be a string"),
   });
+
   const initialValues = {
-    firstName: firstName,
+    firstName: profile?.firstName,
   };
+
   const formik = useFormik<EditNameForm>({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values: EditNameForm) => {
+    onSubmit: async (values: EditNameForm) => {
       setValidated(true);
-      handleUpdateFirstName(values.firstName);
-
-      //handleVerifyCode(verificationCode);
+      await handleUpdateFirstName(values.firstName!);
+      changeEditMode(false);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -65,7 +63,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
           {editMode ? (
             <span className="d-flex my-0">
               <Form
-                name="verificationCodeForm"
+                name="editFirstNameForm"
                 onSubmit={(event) => {
                   event.preventDefault();
                   setValidated(true);
@@ -76,7 +74,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
                   <Form.Control
                     type="text"
                     placeholder=""
-                    value={firstName ?? ""}
+                    value={formik.values.firstName ?? ""}
                     name="firstName"
                     isInvalid={!!formik.errors.firstName}
                     onChange={(e) => {
@@ -129,7 +127,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
             </span>
           ) : (
             <span className="d-flex my-0">
-              <p className={styles.profileValue}>{profile.firstName}</p>{" "}
+              <p className={styles.profileValue}>{profile?.firstName}</p>{" "}
               <Button
                 variant="secondary"
                 className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
