@@ -17,7 +17,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
   const [profile] = useProfileStore((state) => [state.profileData]);
 
   const [updatedEmailAddress, setUpdatedEmailAddress] = useState<string>(
-    profile.email
+    profile?.email
   );
   const [showVerificationCodeModal, setShowVerificationCodeModal] =
     useState<boolean>(false);
@@ -99,7 +99,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
               </span>
             ) : (
               <span className="d-flex my-0">
-                <p className={styles.profileValue}>{profile.email}</p>{" "}
+                <p className={styles.profileValue}>{profile?.email}</p>{" "}
                 <Button
                   variant="secondary"
                   className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}

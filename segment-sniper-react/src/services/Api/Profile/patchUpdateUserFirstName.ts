@@ -9,10 +9,10 @@ export type UpdateUserFirstNameRequest = {
 
 export default async function patchUpdateUserFistName(contract: ApiContract) {
   try {
-    const response = apiPatch<UpdateUserFirstNameRequest, ProfileResponse>(
-      `${contract.baseUrl}/Profile/UpdateUserFirstName`,
-      contract
-    );
+    const response = await apiPatch<
+      UpdateUserFirstNameRequest,
+      ProfileResponse
+    >(`${contract.baseUrl}/Profile/UpdateUserFirstName`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

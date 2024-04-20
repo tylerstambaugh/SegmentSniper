@@ -6,11 +6,16 @@ import patchUpdateUserFistName, {
 } from "../../../services/Api/Profile/patchUpdateUserFirstName";
 import useProfileStore from "../../../stores/useProfileStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
+import { useState } from "react";
 
 export const usePatchUpdateUserFirstName = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const token = useTokenDataStore((state) => state.tokenData?.accessToken);
-  const [setProfileData] = useProfileStore((state) => [state.setProfileData]);
+  const [profileData, setProfileData] = useProfileStore((state) => [
+    state.profileData,
+    state.setProfileData,
+  ]);
+  const [result, setResult] = useState<any>();
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
@@ -22,8 +27,11 @@ export const usePatchUpdateUserFirstName = () => {
     };
 
     await patchUpdateUserFistName(contract).then((res) => {
-      setProfileData(res.userProfile);
+      setProfileData(res.updatedUser);
+      setResult(res);
     });
+
+    return result;
   }
 
   return { mutateAsync, isLoading, isError, error, data };
