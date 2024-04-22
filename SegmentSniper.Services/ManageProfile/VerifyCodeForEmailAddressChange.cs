@@ -21,7 +21,7 @@ namespace SegmentSniper.Services.ManageProfile
 
             try
             {
-                var codeToCompare = _segmentSniperDbContext.ChangeEmailVerificationCode.Where(c => c.UserId == contract.UserId).FirstOrDefault();
+                var codeToCompare = _segmentSniperDbContext.ChangeEmailVerificationCodes.Where(c => c.UserId == contract.UserId).FirstOrDefault();
                 if (codeToCompare?.ExpirationDate > DateTime.UtcNow)
                 {
                     throw new ArgumentException("Verification code expired. Please try again");

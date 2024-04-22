@@ -1,7 +1,5 @@
 ﻿using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.ManageProfile;
-using SegmentSniper.Models.Models.ManageProfile;
-using System;
 
 namespace SegmentSniper.Services.ManageProfile
 {
@@ -22,33 +20,50 @@ namespace SegmentSniper.Services.ManageProfile
             {
                 var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
 
+
+
                 if (user != null)
                 {
+                    var existingCodes = _segmentSniperDbContext.ChangeEmailVerificationCodes
+                        .Where(c => c.UserId == contract.UserId)
+                        .ToList();
+
+                    _segmentSniperDbContext.ChangeEmailVerificationCodes.RemoveRange(existingCodes);
+
+                    _segmentSniperDbContext.SaveChanges();
+
                     Random random = new Random();
                     var verificationCode = random.Next(100000, 999999);
 
-                   code.VerificationCode = verificationCode;
-                   code.ExpirationDate = DateTime.UtcNow.AddMinutes(60);
-                   code.UserId = contract.UserId;
-                }
+                    code.VerificationCode = verificationCode;
+                    code.ExpirationDate = DateTime.UtcNow.AddMinutes(60);
+                    code.UserId = contract.UserId;
 
-                _segmentSniperDbContext.ChangeEmailVerificationCode.Add(code);
-                var saveResult = _segmentSniperDbContext.SaveChanges();
+                    _segmentSniperDbContext.ChangeEmailVerificationCodes.Add(code);
+                    var saveResult = _segmentSniperDbContext.SaveChanges();
 
-                if(saveResult == 1)
-                {
-                    return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                    if (saveResult == 1)
                     {
-                        CodeSaved = true,
-                    };
+                        return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                        {
+                            CodeSaved = true,
+                            Code = code.VerificationCode,
+                        };
+                    }
+                    else
+                    {
+                        return new GenerateVerificationCodeForEmailAddressChangeContract.Result
+                        {
+                            CodeSaved = false,
+                        };
+                    }
                 }
                 else
                 {
-                    return new GenerateVerificationCodeForEmailAddressChangeContract.Result
-                    {
-                        CodeSaved = false,
-                    };
+                    throw new ApplicationException($"User not found. User ID: {contract.UserId}");
                 }
+
+
             }
             catch (Exception ex)
             {

@@ -22,7 +22,7 @@ export const usePostSendChangeEmailVerificationCode = () => {
     };
 
     await postSendChangeEmailVerificationCode(contract).then((res) => {
-      setProfileData(res.userProfile);
+      setProfileData(res.updatedUser);
     });
   }
 

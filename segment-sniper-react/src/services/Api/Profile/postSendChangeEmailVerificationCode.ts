@@ -14,10 +14,7 @@ export default async function postSendChangeEmailAddressVerificationCode(
     const response = apiPost<
       sendChangeEmailVerificationCodeRequest,
       ProfileResponse
-    >(
-      `${contract.baseUrl}/Profile/SendChangeEmailAddressVerificationCode`,
-      contract
-    );
+    >(`${contract.baseUrl}/Profile/SendChangeEmailVerificationCode`, contract);
     return response;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {

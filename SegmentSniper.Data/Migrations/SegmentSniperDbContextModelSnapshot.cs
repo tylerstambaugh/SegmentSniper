@@ -399,7 +399,7 @@ namespace SegmentSniper.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChangeEmailVerificationCode");
+                    b.ToTable("ChangeEmailVerificationCodes");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.StravaToken.StravaApiToken", b =>
@@ -427,7 +427,7 @@ namespace SegmentSniper.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StravaToken");
+                    b.ToTable("StravaTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

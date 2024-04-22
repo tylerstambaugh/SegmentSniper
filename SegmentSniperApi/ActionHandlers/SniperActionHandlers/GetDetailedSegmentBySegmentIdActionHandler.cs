@@ -25,7 +25,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         public async Task<GetDetailedSegmentBySegmentIdRequest.Response> HandleAsync(GetDetailedSegmentBySegmentIdRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaToken.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try

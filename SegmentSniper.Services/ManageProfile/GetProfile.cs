@@ -15,7 +15,7 @@ namespace SegmentSniper.Services.ManageProfile
         public async Task<GetProfileContract.Result> ExecuteAsync(GetProfileContract contract)
         {
             var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
-            var stravaToken = _segmentSniperDbContext.StravaToken.Where(t => t.UserId == contract.UserId).FirstOrDefault();
+            var stravaToken = _segmentSniperDbContext.StravaTokens.Where(t => t.UserId == contract.UserId).FirstOrDefault();
 
             var userProfile = new UserProfile
             {
