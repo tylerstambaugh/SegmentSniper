@@ -10,14 +10,12 @@ interface VerificationCodeForm {
 
 export type VerificationCodeModalProps = {
   emailAddress: string;
-  onVerificationCodeChange: (verificationCode: number) => void;
   showVerificationCodeModal: boolean;
   handleVerificationCodeModalClose: () => void;
 };
 
 const VerificationCodeModal = ({
   emailAddress,
-  onVerificationCodeChange,
   showVerificationCodeModal,
   handleVerificationCodeModalClose,
 }: VerificationCodeModalProps) => {
@@ -38,7 +36,6 @@ const VerificationCodeModal = ({
     enableReinitialize: true,
     onSubmit: (verificationCode: VerificationCodeForm) => {
       setValidated(true);
-      onVerificationCodeChange(verificationCode.verificationCode!);
       //handleVerifyCode(verificationCode);
     },
     validationSchema: validationSchema,

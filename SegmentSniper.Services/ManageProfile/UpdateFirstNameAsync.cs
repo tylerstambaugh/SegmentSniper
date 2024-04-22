@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.ManageProfile
             try
             {
                 var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
-                var stravaToken = _segmentSniperDbContext.StravaToken.Where(t => t.UserId == contract.UserId).FirstOrDefault();
+                var stravaToken = _segmentSniperDbContext.StravaTokens.Where(t => t.UserId == contract.UserId).FirstOrDefault();
 
                 if (user != null)
                 {

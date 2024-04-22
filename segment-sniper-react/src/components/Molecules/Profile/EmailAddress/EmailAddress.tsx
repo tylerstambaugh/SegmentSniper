@@ -20,17 +20,14 @@ interface EditEmailAddressForm {
 }
 
 const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
-  const [profile] = useProfileStore((state) => [state.profileData]);
-  const [verificationCode, setVerificationCode] = useState<number | null>(null);
-  const [updatedEmailAddress, setUpdatedEmailAddress] = useState<string>(
-    profile?.email
-  );
+  const [emailAddress] = useProfileStore((state) => [state.profileData.email]);
   const [showVerificationCodeModal, setShowVerificationCodeModal] =
     useState<boolean>(false);
 
   const {
     handle: handleSendChangeEmailVerificationCode,
     isLoading: handleSendEmailVerificationCodeIsLoading,
+    error: handleSendEmailVerificationCodeError,
   } = useHandleSendChangeEmailVerificationCode();
 
   function handleVerificationCodeModalClose() {
@@ -40,15 +37,13 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
   const [validated, setValidated] = useState(false);
 
   const validationSchema = yup.object({
-    firstName: yup
+    emailAddress: yup
       .string()
       .email("Please enter a valid email address")
-      .required("Email address is required")
-      .nonNullable()
-      .typeError("Email address must be a string"),
+      .required("Email address is required"),
   });
   const initialValues = {
-    emailAddress: profile.email,
+    emailAddress: emailAddress,
   };
 
   const formik = useFormik<EditEmailAddressForm>({
@@ -56,9 +51,16 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
     enableReinitialize: true,
     onSubmit: async (values: EditEmailAddressForm) => {
       setValidated(true);
-      handleSendChangeEmailVerificationCode(updatedEmailAddress);
-      setShowVerificationCodeModal(true);
-      changeEditMode(false);
+      console.log("calling handleSendChangeEmailVerificationCode");
+
+      await handleSendChangeEmailVerificationCode(values.emailAddress);
+      if (
+        !handleSendEmailVerificationCodeIsLoading &&
+        !handleSendEmailVerificationCodeError
+      ) {
+        setShowVerificationCodeModal(true);
+        changeEditMode(false);
+      }
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -68,8 +70,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
   return (
     <>
       <VerificationCodeModal
-        emailAddress={updatedEmailAddress}
-        onVerificationCodeChange={setVerificationCode}
+        emailAddress={formik.values.emailAddress}
         showVerificationCodeModal={showVerificationCodeModal}
         handleVerificationCodeModalClose={handleVerificationCodeModalClose}
       />
@@ -78,56 +79,58 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
           <div>
             <p className={styles.profileLabel}>Email address</p>
             {editMode ? (
-              <span className="d-flex my-0">
+              <span className="d-flex  my-0">
                 <Form
                   name="editEmailAddressForm"
                   onSubmit={(event) => {
                     event.preventDefault();
                     setValidated(true);
-                    formik.handleSubmit(event);
+                    formik.handleSubmit();
                   }}
+                  className="d-flex"
                 >
-                  <Form.Group controlId="formEditName">
+                  <Form.Group
+                    controlId="formEditEmail"
+                    className="flex-grow-1 mr-2"
+                  >
                     <Form.Control
-                      type="text"
+                      type="email"
                       placeholder=""
                       value={formik.values.emailAddress ?? ""}
-                      name="firstName"
+                      name="emailAddress"
                       isInvalid={!!formik.errors.emailAddress}
                       onChange={(e) => {
-                        formik.setFieldValue("firstName", e.target.value);
+                        formik.setFieldValue("emailAddress", e.target.value);
                       }}
-                      className={`${styles.firstNameInput} ${styles.profileValue}`}
+                      className={`${styles.emailAddressInput} ${styles.profileValue}`}
                     />
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.emailAddress as FormikErrors<string>}
                     </Form.Control.Feedback>
                   </Form.Group>
+
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className={`mx-2 ${styles.editProfileFaButton}`}
+                  >
+                    <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                  </Button>
+
+                  <Button
+                    variant="third"
+                    className={` ${styles.editProfileFaButton} mx-2`}
+                    onClick={() => {
+                      changeEditMode(false);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faX} className="fa-md" />
+                  </Button>
                 </Form>
-
-                <Button
-                  variant="primary"
-                  className={`mx-2 ${styles.editProfileFaButton}`}
-                  onClick={() => {
-                    formik.handleSubmit();
-                  }}
-                >
-                  <FontAwesomeIcon icon={faCheck} className="fa-md" />
-                </Button>
-
-                <Button
-                  variant="third"
-                  className={` ${styles.editProfileFaButton} mx-2`}
-                  onClick={() => {
-                    changeEditMode(false);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faX} className="fa-md" />
-                </Button>
               </span>
             ) : (
               <span className="d-flex my-0">
-                <p className={styles.profileValue}>{profile?.email}</p>{" "}
+                <p className={styles.profileValue}>{emailAddress}</p>{" "}
                 <Button
                   type="submit"
                   variant="secondary"

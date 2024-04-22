@@ -51,7 +51,7 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> UpdateUserFirstName([FromBody] UpdateFirstNameRequest request)
         {
             try
-            {
+              {
               var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
               var response = await _updateUserFirstNameActionHandler.HandleAsync(new UpdateFirstNameRequest 
                 {
@@ -69,13 +69,13 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("SendChangeEmailAddressVerificationCode")]
-        public async Task<IActionResult> RequestChangeEmailVerificationCode([FromBody] string emailAddress)
+        [Route("SendChangeEmailVerificationCode")]
+        public async Task<IActionResult>SendChangeEmailVerificationCode([FromBody] SendChangeEmailVerificationCodeRequest request)
         {
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();               
-                var response = _requestChangeEmailVerificationCodeAsyncActionHandler.HandleAsync(new RequestChangeEmailVerificationCodeActionHandlerRequest(userId, emailAddress));
+                var response = _requestChangeEmailVerificationCodeAsyncActionHandler.HandleAsync(new RequestChangeEmailVerificationCodeActionHandlerRequest(userId, request.EmailAddress));
                 return Ok(response);
             }
             catch (Exception ex)

@@ -23,7 +23,7 @@ namespace SegmentSniper.Services.StravaTokenServices
                 RefreshToken = contract.Token.RefreshToken,
             };
 
-            _context.StravaToken.Add(tokenToAdd);
+            _context.StravaTokens.Add(tokenToAdd);
             bool wasSuccess = _context.SaveChanges() == 1;
             return new AddStravaTokenContract.Result(wasSuccess);
         }
@@ -39,7 +39,7 @@ namespace SegmentSniper.Services.StravaTokenServices
             {
                 throw new ArgumentNullException(nameof(contract.Token));
             }
-            if (_context.StravaToken.Where(t => t.UserId == contract.UserId).FirstOrDefault() != null)
+            if (_context.StravaTokens.Where(t => t.UserId == contract.UserId).FirstOrDefault() != null)
             {
                 throw new ApplicationException("Token already exists");
             }

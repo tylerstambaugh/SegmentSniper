@@ -22,4 +22,14 @@
             public bool Success { get; set; }
         }
     }
+
+    public class SendChangeEmailVerificationCodeRequest
+    {
+        public SendChangeEmailVerificationCodeRequest(string emailAddress)
+        {
+            EmailAddress = emailAddress;
+        }
+
+        public string EmailAddress { get; }
+    }
 }

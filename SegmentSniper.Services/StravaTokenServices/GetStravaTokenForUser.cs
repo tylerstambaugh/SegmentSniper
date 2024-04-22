@@ -20,7 +20,7 @@ namespace SegmentSniper.Services.StravaToken
         {
             ValidateContract(contract);
 
-            var stravaToken = _context.StravaToken.Where(x => x.UserId == contract.UserId).FirstOrDefault();
+            var stravaToken = _context.StravaTokens.Where(x => x.UserId == contract.UserId).FirstOrDefault();
 
             return new GetStravaTokenForUserContract.Result
             {

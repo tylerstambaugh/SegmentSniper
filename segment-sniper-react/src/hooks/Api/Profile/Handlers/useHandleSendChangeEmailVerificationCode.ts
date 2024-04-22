@@ -2,7 +2,8 @@ import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast"
 import { usePostSendChangeEmailVerificationCode } from "../usePostSendChangeEmailVerificationCode";
 
 const useHandleSendChangeEmailVerificationCode = () => {
-  const { mutateAsync, isLoading } = usePostSendChangeEmailVerificationCode();
+  const { mutateAsync, isLoading, error } =
+    usePostSendChangeEmailVerificationCode();
   async function handle(emailAddress: string) {
     try {
       await mutateAsync({ emailAddress });
@@ -16,7 +17,7 @@ const useHandleSendChangeEmailVerificationCode = () => {
       }
     }
   }
-  return { handle, isLoading };
+  return { handle, isLoading, error };
 };
 
 export default useHandleSendChangeEmailVerificationCode;
