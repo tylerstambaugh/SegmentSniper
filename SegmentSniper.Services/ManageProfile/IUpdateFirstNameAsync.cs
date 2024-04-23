@@ -25,7 +25,7 @@ namespace SegmentSniper.Services.ManageProfile
         public string UpdatedName { get; set; }
         public class Result
         {
-            public UserProfile UpdatedUser { get; set; }
+            public UserProfile ProfileData { get; set; }
         }
     }
 }

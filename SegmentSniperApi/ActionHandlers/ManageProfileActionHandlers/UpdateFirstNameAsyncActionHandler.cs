@@ -22,11 +22,11 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 
                 if (result != null)
                 {
-                    var applicationUser = result.UpdatedUser.ApplicationUser;
-                    var stravaToken = result.UpdatedUser.StravaApiToken;
+                    var applicationUser = result.ProfileData.ApplicationUser;
+                    var stravaToken = result.ProfileData.StravaApiToken;
                     return new UpdateFirstNameRequest.Response
                     {
-                        UpdatedUser = new UserProfileUiModel
+                        ProfileData = new UserProfileUiModel
                         {
                             Email = applicationUser.Email,
                             UserName = applicationUser.UserName,
@@ -34,7 +34,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             FirstName = applicationUser.FirstName,
                             HasStravaToken = stravaToken != null,
                             StravaRefreshToken = stravaToken?.RefreshToken,
-                            StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.UpdatedUser.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
+                            StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.ProfileData.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
                             LastLogin = applicationUser.LastLogin,
                         }
                     };
@@ -43,7 +43,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                 {
                     return new UpdateFirstNameRequest.Response
                     {
-                        UpdatedUser = null
+                        ProfileData = null
                     };
                 }
             }

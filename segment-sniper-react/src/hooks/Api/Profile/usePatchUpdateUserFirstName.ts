@@ -27,7 +27,7 @@ export const usePatchUpdateUserFirstName = () => {
     };
 
     await patchUpdateUserFistName(contract).then((res) => {
-      setProfileData(res.updatedUser);
+      setProfileData(res.profileData);
       setResult(res);
     });
 

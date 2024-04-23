@@ -4,7 +4,7 @@ import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponse
 import { apiGet } from "../BaseApiService";
 
 export type ProfileResponse = {
-  updatedUser: ProfileData;
+  profileData: ProfileData;
 };
 
 export default async function getProfile(contract: ApiContract) {

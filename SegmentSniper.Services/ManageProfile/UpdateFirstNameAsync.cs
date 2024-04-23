@@ -37,7 +37,7 @@ namespace SegmentSniper.Services.ManageProfile
 
                 return new UpdateFirstNameContract.Result
                 {
-                   UpdatedUser = userProfile,
+                   ProfileData = userProfile,
                 };
             }
             catch (Exception ex)

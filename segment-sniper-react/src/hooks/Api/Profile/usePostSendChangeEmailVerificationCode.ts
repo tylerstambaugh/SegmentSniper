@@ -21,9 +21,7 @@ export const usePostSendChangeEmailVerificationCode = () => {
       token: tokenData?.accessToken!,
     };
 
-    await postSendChangeEmailVerificationCode(contract).then((res) => {
-      setProfileData(res.updatedUser);
-    });
+    await postSendChangeEmailVerificationCode(contract);
   }
 
   return { mutateAsync, isLoading, isError, error, data };

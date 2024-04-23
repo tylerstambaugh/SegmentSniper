@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Models.Models.ManageProfile;
+﻿using SegmentSniper.Models.Models.Auth.User;
+using SegmentSniper.Models.Models.ManageProfile;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.ManageProfile
@@ -25,7 +26,8 @@ namespace SegmentSniper.Services.ManageProfile
         public string UpdatedEmailAddress { get; set; }
         public class Result
         {
-            public UserProfile UpdatedUser { get; set; }
+            public UserProfile ProfileData { get; set; }
+            public UserDto UserDto { get; set; }
         }
     }
 }
