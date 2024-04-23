@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Configuration;
 using System.Net;
+using System.Reflection;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
+    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
     .AddEnvironmentVariables()
     .Build();
 
@@ -37,8 +39,6 @@ app.UseSwaggerUI();
 
 app.MapControllers();
 
-await SeedData.Initialize(app.Services, configuration);
-
 if (app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler(
@@ -60,4 +60,6 @@ if (app.Environment.IsDevelopment())
     );
 }
 
+await SeedData.Initialize(app.Services, configuration);
 app.Run();
+
