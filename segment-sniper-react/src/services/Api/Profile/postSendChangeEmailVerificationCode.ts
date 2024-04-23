@@ -1,6 +1,6 @@
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiPatch, apiPost } from "../BaseApiService";
+import { apiPost } from "../BaseApiService";
 import { ProfileResponse } from "./getProfile";
 
 export type sendChangeEmailVerificationCodeRequest = {

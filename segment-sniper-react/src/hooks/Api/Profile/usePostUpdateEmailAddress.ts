@@ -19,7 +19,7 @@ export const usePostUpdateEmailAddress = () => {
     };
 
     await postUpdateEmailAddress(contract).then((res) => {
-      setProfileData(res.userProfile);
+      setProfileData(res.profileData);
     });
   }
 

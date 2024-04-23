@@ -4,15 +4,14 @@ using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.Options;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -20,7 +19,7 @@ namespace SegmentSniper.Api.Configuration
     {
         public async static Task<WebApplicationBuilder> ConfigureBuilder(IConfiguration configuration)
         {
-           // var thumbPrint = configuration["CertificateThumbprint"];
+            // var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
@@ -28,8 +27,9 @@ namespace SegmentSniper.Api.Configuration
 
             if (builder.Environment.IsDevelopment())
             {
-                var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "Secrets.json");
+                var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
                 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
+                builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);                
                 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
@@ -41,7 +41,7 @@ namespace SegmentSniper.Api.Configuration
                 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
                 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-                
+
                 connectionString = builder.Configuration["SegmentSniperConnectionString"];
             }
 

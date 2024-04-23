@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>1b80279b-4e95-470b-a29a-f5bb4eecff6e</UserSecretsId>
 	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 	<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
 	<IsPackable>false</IsPackable>
@@ -13,6 +12,7 @@
 	<SpaProxyServerUrl>https://localhost:6767</SpaProxyServerUrl>
 	<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
 	<ApplicationInsightsResourceId>/subscriptions/83edbc45-837e-4ff5-9735-a2e2a57d2387/resourceGroups/rg-segmentsniper-eastus-dev/providers/microsoft.insights/components/appInsights-segmentsniper-eastus-dev</ApplicationInsightsResourceId> 
+    <UserSecretsId>09bd8ae1-f273-4c6e-aa51-85553b95f188</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +40,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
