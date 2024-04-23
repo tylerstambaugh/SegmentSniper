@@ -60,6 +60,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
       ) {
         setShowVerificationCodeModal(true);
         changeEditMode(false);
+        formik.setFieldValue("emailAddress", emailAddress);
       }
     },
     validationSchema: validationSchema,
@@ -108,15 +109,33 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
                       {formik.errors.emailAddress as FormikErrors<string>}
                     </Form.Control.Feedback>
                   </Form.Group>
-
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    className={`mx-2 ${styles.editProfileFaButton}`}
-                  >
-                    <FontAwesomeIcon icon={faCheck} className="fa-md" />
-                  </Button>
-
+                  {handleSendEmailVerificationCodeIsLoading ? (
+                    <>
+                      <Button
+                        variant="secondary"
+                        className={`me-1 ${styles.editProfileFaButton} `}
+                      >
+                        <Spinner
+                          as="span"
+                          variant="light"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          animation="border"
+                        />
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        className={`mx-2 ${styles.editProfileFaButton}`}
+                      >
+                        <FontAwesomeIcon icon={faCheck} className="fa-md" />
+                      </Button>
+                    </>
+                  )}
                   <Button
                     variant="third"
                     className={` ${styles.editProfileFaButton} mx-2`}

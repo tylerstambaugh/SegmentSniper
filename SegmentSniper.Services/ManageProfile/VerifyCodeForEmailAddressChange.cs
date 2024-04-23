@@ -22,7 +22,7 @@ namespace SegmentSniper.Services.ManageProfile
             try
             {
                 var codeToCompare = _segmentSniperDbContext.ChangeEmailVerificationCodes.Where(c => c.UserId == contract.UserId).FirstOrDefault();
-                if (codeToCompare?.ExpirationDate > DateTime.UtcNow)
+                if (codeToCompare?.ExpirationDate < DateTime.UtcNow)
                 {
                     throw new ArgumentException("Verification code expired. Please try again");
                 }
@@ -42,7 +42,18 @@ namespace SegmentSniper.Services.ManageProfile
 
         private void ValidateContract(VerifyCodeForEmailAddressChangeContract contract)
         {
-            throw new NotImplementedException();
+            if (contract == null)
+            {
+                throw new ArgumentNullException(nameof(contract));
+            }
+            if (string.IsNullOrWhiteSpace(contract.UserId))
+            {
+                throw new ArgumentNullException(nameof(contract.UserId));
+            }
+            if (contract.VerificationCode == null)
+            {
+                throw new ArgumentNullException(nameof(contract.VerificationCode));
+            }
         }
     }
 }

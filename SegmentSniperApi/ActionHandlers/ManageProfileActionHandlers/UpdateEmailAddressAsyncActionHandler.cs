@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Validation;
+using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Models.UIModels.ManageProfile;
 using SegmentSniper.Services.ManageProfile;
 
@@ -25,10 +26,8 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                 throw new ArgumentException("Incorrect verification code. Please try again");
             }
            
-
             try
             {
-
                 var contract = new UpdateEmailAddressAsyncContract(request.UserId, request.EmailAddress);
                 var result = await _updateEmailAddressAsync.ExecuteAsync(contract);
 
@@ -38,7 +37,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                     var stravaToken = result.ProfileData.StravaApiToken;
                     return new UpdateEmailAddressAsyncRequest.Response
                     {
-                        UpdatedUser = new UserProfileUiModel
+                        ProfileData = new UserProfileUiModel
                         {
                             Email = applicationUser.Email,
                             UserName = applicationUser.UserName,
@@ -48,19 +47,14 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             StravaRefreshToken = stravaToken?.RefreshToken,
                             StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.ProfileData.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
                             LastLogin = applicationUser.LastLogin,
-                        },
-                        //UserDto = new Models.Models.Auth.User.UserDto
-                        //{
-                        //    E
-                        //}
-                        
+                        },                      
                     };
                 }
                 else
                 {
                     return new UpdateEmailAddressAsyncRequest.Response
                     {
-                        UpdatedUser = null
+                        ProfileData = null
                     };
                 }
             }
@@ -83,6 +77,10 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
             if (string.IsNullOrWhiteSpace(request.EmailAddress))
             {
                 throw new ArgumentNullException(nameof(request.EmailAddress));
+            }
+            if (request.VerificationCode == null)
+            {
+                throw new ArgumentNullException(nameof(request.VerificationCode));
             }
         }
     }

@@ -84,6 +84,23 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("UpdateEmailAddress")]
+        public async Task<IActionResult> UpdateEmailAddress([FromBody] UpdateEmailAddressAsyncRequest request)
+        {
+            try
+            {
+                request.UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var response = _updateEmailAddressAsyncActionHandler.HandleAsync(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to send verification code. \n {ex.Message}");
+            }
+        }
+
         //public async Task<IActionResult> UpdateEmail()
         //{
         //    return Ok();

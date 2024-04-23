@@ -3,6 +3,7 @@ import styles from "./VerificationCodeModal.module.scss";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
 import { useState } from "react";
+import useHandleUpdateEmailAddress from "../../../../hooks/Api/Profile/Handlers/useHandleUpdateEmailAddress";
 
 interface VerificationCodeForm {
   verificationCode: number | null;
@@ -20,23 +21,32 @@ const VerificationCodeModal = ({
   handleVerificationCodeModalClose,
 }: VerificationCodeModalProps) => {
   const [validated, setValidated] = useState(false);
-  //const [useHand]
-  const [verificationCode, setVerificationCode] = useState<number | null>(null);
+  const {
+    handle: handleUpdateEmailAddress,
+    isLoading: updateEmailAddressIsLoading,
+    error: updateEmailAddressError,
+  } = useHandleUpdateEmailAddress();
+
   const validationSchema = yup.object({
     verificationCode: yup
       .number()
       .required("Verification code is required")
       .typeError("Verification code must be a number"),
   });
+
   const initialValues = {
     verificationCode: null,
   };
+
   const formik = useFormik<VerificationCodeForm>({
     initialValues,
     enableReinitialize: true,
     onSubmit: (verificationCode: VerificationCodeForm) => {
       setValidated(true);
-      //handleVerifyCode(verificationCode);
+      handleUpdateEmailAddress(
+        emailAddress,
+        verificationCode.verificationCode!
+      );
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -72,12 +82,13 @@ const VerificationCodeModal = ({
                     <Form.Control
                       type="number"
                       placeholder=""
-                      value={verificationCode ?? ""}
+                      value={formik.values.verificationCode ?? ""}
                       name="verificationCode"
                       isInvalid={!!formik.errors.verificationCode}
                       onChange={(e) => {
-                        setVerificationCode(
-                          e.target.value as unknown as number
+                        formik.setFieldValue(
+                          "verificationCode",
+                          e.target.value
                         );
                       }}
                       className={`${styles.verificationCodeInput}`}
@@ -102,7 +113,10 @@ const VerificationCodeModal = ({
           <Col className="col-auto">
             <Button
               variant="secondary"
-              onClick={handleVerificationCodeModalClose}
+              onClick={() => {
+                handleVerificationCodeModalClose();
+                formik.setFieldValue("verificationCode", null);
+              }}
             >
               Close
             </Button>

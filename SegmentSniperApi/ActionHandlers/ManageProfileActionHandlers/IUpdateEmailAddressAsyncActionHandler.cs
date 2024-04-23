@@ -23,7 +23,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         public int VerificationCode { get;  }   
         public class Response
         {
-            public UserProfileUiModel UpdatedUser { get; set; }
+            public UserProfileUiModel ProfileData { get; set; }
             public UserDto UserDto { get; set; }
         }
     }

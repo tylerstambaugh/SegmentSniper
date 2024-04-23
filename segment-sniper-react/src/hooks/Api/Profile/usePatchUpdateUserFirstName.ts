@@ -7,6 +7,7 @@ import patchUpdateUserFistName, {
 import useProfileStore from "../../../stores/useProfileStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import { useState } from "react";
+import useUserStore from "../../../stores/useUserStore";
 
 export const usePatchUpdateUserFirstName = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -14,6 +15,10 @@ export const usePatchUpdateUserFirstName = () => {
   const [profileData, setProfileData] = useProfileStore((state) => [
     state.profileData,
     state.setProfileData,
+  ]);
+  const [currentUser, setCurrentUser] = useUserStore((state) => [
+    state.user,
+    state.setUser,
   ]);
   const [result, setResult] = useState<any>();
 
@@ -28,6 +33,7 @@ export const usePatchUpdateUserFirstName = () => {
 
     await patchUpdateUserFistName(contract).then((res) => {
       setProfileData(res.profileData);
+      setCurrentUser({ ...currentUser, firstName: res.profileData.firstName });
       setResult(res);
     });
 
