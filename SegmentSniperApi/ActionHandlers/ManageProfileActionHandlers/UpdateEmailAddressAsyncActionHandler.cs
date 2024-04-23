@@ -34,8 +34,8 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 
                 if (result != null)
                 {
-                    var applicationUser = result.UpdatedUser.ApplicationUser;
-                    var stravaToken = result.UpdatedUser.StravaApiToken;
+                    var applicationUser = result.ProfileData.ApplicationUser;
+                    var stravaToken = result.ProfileData.StravaApiToken;
                     return new UpdateEmailAddressAsyncRequest.Response
                     {
                         UpdatedUser = new UserProfileUiModel
@@ -46,9 +46,14 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             FirstName = applicationUser.FirstName,
                             HasStravaToken = stravaToken != null,
                             StravaRefreshToken = stravaToken?.RefreshToken,
-                            StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.UpdatedUser.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
+                            StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.ProfileData.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
                             LastLogin = applicationUser.LastLogin,
-                        }
+                        },
+                        //UserDto = new Models.Models.Auth.User.UserDto
+                        //{
+                        //    E
+                        //}
+                        
                     };
                 }
                 else

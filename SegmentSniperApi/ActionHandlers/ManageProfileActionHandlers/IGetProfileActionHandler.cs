@@ -14,7 +14,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 
         public class Response
         {
-            public UserProfileUiModel? UserProfile { get; set; }
+            public UserProfileUiModel? ProfileData { get; set; }
         }
     }
 

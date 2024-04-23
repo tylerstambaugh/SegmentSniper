@@ -25,7 +25,8 @@ namespace SegmentSniper.Services.ManageProfile
                 if (user != null)
                 {
                     user.Email = contract.UpdatedEmailAddress;
-                    user.EmailConfirmed = false;
+                    user.UserName = contract.UpdatedEmailAddress.ToString();
+                    user.EmailConfirmed = true;
                 }
 
                 _segmentSniperDbContext.Users.Update(user);
@@ -38,7 +39,7 @@ namespace SegmentSniper.Services.ManageProfile
 
                 return new UpdateEmailAddressAsyncContract.Result
                 {
-                    UpdatedUser = userProfile,
+                    ProfileData = userProfile,
                 };
             }
             catch (Exception ex)

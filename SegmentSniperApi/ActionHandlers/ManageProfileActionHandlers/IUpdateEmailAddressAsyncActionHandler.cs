@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Models.UIModels.ManageProfile;
+﻿using SegmentSniper.Models.Models.Auth.User;
+using SegmentSniper.Models.UIModels.ManageProfile;
 
 namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
@@ -23,6 +24,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         public class Response
         {
             public UserProfileUiModel UpdatedUser { get; set; }
+            public UserDto UserDto { get; set; }
         }
     }
 }

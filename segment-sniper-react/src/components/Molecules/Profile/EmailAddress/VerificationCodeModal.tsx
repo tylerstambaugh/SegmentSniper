@@ -44,69 +44,72 @@ const VerificationCodeModal = ({
   });
 
   return (
-    <Row>
-      <Modal show={showVerificationCodeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Activity Search</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className={styles.modalBody}>
-          <Col className="px-2">
-            <Row>
-              <p className={styles.helpModalSubTitle}>
-                We've sent a verification code to {emailAddress}. Please check
-                your email and enter the code.
-              </p>
-              <Form
-                name="verificationCodeForm"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  setValidated(true);
-                  formik.handleSubmit(event);
-                }}
-              >
-                <Row className=" justify-content-center mb-3">
-                  <Col className="mb-2">
-                    <Form.Group controlId="formVerificationCode">
-                      <Form.Label id="verificationCodeLabel">
-                        Verification code:
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder=""
-                        value={verificationCode ?? ""}
-                        name="verificationCode"
-                        isInvalid={!!formik.errors.verificationCode}
-                        onChange={(e) => {
-                          setVerificationCode(
-                            e.target.value as unknown as number
-                          );
-                        }}
-                        className={`${styles.verificationCodeInput}`}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {formik.errors.verificationCode as FormikErrors<string>}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Form>
-            </Row>
+    <Modal show={showVerificationCodeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>Email Verification</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className={styles.modalBody}>
+        <Col className="px-2">
+          <Row>
+            <p className={styles.helpModalSubTitle}>
+              We've sent a verification code to {emailAddress}. Please check
+              your email and enter the code.
+            </p>
+            <Form
+              name="verificationCodeForm"
+              onSubmit={(event) => {
+                event.preventDefault();
+                setValidated(true);
+                formik.handleSubmit(event);
+              }}
+            >
+              <Row className=" justify-content-center mb-3">
+                <Col className="mb-2">
+                  <Form.Group controlId="formVerificationCode">
+                    <Form.Label id="verificationCodeLabel">
+                      Verification code:
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder=""
+                      value={verificationCode ?? ""}
+                      name="verificationCode"
+                      isInvalid={!!formik.errors.verificationCode}
+                      onChange={(e) => {
+                        setVerificationCode(
+                          e.target.value as unknown as number
+                        );
+                      }}
+                      className={`${styles.verificationCodeInput}`}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.verificationCode as FormikErrors<string>}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          </Row>
+        </Col>
+      </Modal.Body>
+      <Modal.Footer>
+        <Row className="justify-content-end">
+          <Col className="col-auto ml-auto">
+            <Button variant="primary" onClick={() => formik.handleSubmit()}>
+              Submit
+            </Button>
           </Col>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={() => formik.handleSubmit}
-          ></Button>
-          <Button
-            variant="secondary"
-            onClick={handleVerificationCodeModalClose}
-          >
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Row>
+          <Col className="col-auto">
+            <Button
+              variant="secondary"
+              onClick={handleVerificationCodeModalClose}
+            >
+              Close
+            </Button>
+          </Col>
+        </Row>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
