@@ -2,7 +2,7 @@ import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast"
 import { usePostUpdateEmailAddress } from "../usePostUpdateEmailAddress";
 
 const useHandleUpdateEmailAddress = () => {
-  const { mutateAsync, isLoading } = usePostUpdateEmailAddress();
+  const { mutateAsync, isLoading, error } = usePostUpdateEmailAddress();
   async function handle(emailAddress: string, verificationCode: number) {
     try {
       await mutateAsync({ emailAddress, verificationCode });
@@ -16,7 +16,7 @@ const useHandleUpdateEmailAddress = () => {
       }
     }
   }
-  return { handle, isLoading };
+  return { handle, isLoading, error };
 };
 
 export default useHandleUpdateEmailAddress;

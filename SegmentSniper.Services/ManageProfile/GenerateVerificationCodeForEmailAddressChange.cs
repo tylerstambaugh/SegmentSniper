@@ -20,8 +20,6 @@ namespace SegmentSniper.Services.ManageProfile
             {
                 var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
 
-
-
                 if (user != null)
                 {
                     var existingCodes = _segmentSniperDbContext.ChangeEmailVerificationCodes
