@@ -61,7 +61,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             <p>Dear " + user.FirstName + @",</p>
                             <p>We received a request to change the email address for your Segment Sniper Pro account. If you initiated this request, please use the code below to complete the email change process.</p>
                             
-                            <p>Your email change verification code is <span>" + verificationCode.Code + @"</span> and will expire in 60 minutes.</p>
+                            <p>Your email change verification code is <span style=""font-weight: bold; font-size: larger;"">" + verificationCode.Code + @"</span> and will expire in 60 minutes.</p>
                             <p>For security reasons, we recommend that you do not share this code with others.</p>
                             <p>If you encounter any issues or have further questions, please contact our support team at segmentsniperpro@gmail.com.</p>
                             <p>Thank you for using Segment Sniper Pro.</p>

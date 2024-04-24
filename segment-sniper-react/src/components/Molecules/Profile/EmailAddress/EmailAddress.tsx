@@ -20,7 +20,9 @@ interface EditEmailAddressForm {
 }
 
 const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
-  const [emailAddress] = useProfileStore((state) => [state.profileData.email]);
+  const [emailAddress] = useProfileStore((state) => [
+    state.profileData?.email ?? "",
+  ]);
   const [showVerificationCodeModal, setShowVerificationCodeModal] =
     useState<boolean>(false);
 
@@ -33,7 +35,9 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
   function handleVerificationCodeModalClose() {
     setShowVerificationCodeModal(false);
   }
-
+  const [newEmailAddress, setNewEmailAddress] = useState<string | null>(
+    emailAddress
+  );
   const [validated, setValidated] = useState(false);
 
   const validationSchema = yup.object({
@@ -51,7 +55,6 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
     enableReinitialize: true,
     onSubmit: async (values: EditEmailAddressForm) => {
       setValidated(true);
-      console.log("calling handleSendChangeEmailVerificationCode");
 
       await handleSendChangeEmailVerificationCode(values.emailAddress);
       if (
@@ -71,7 +74,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
   return (
     <>
       <VerificationCodeModal
-        emailAddress={formik.values.emailAddress}
+        emailAddress={newEmailAddress ?? ""}
         showVerificationCodeModal={showVerificationCodeModal}
         handleVerificationCodeModalClose={handleVerificationCodeModalClose}
       />
@@ -102,6 +105,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
                       isInvalid={!!formik.errors.emailAddress}
                       onChange={(e) => {
                         formik.setFieldValue("emailAddress", e.target.value);
+                        setNewEmailAddress(e.target.value);
                       }}
                       className={`${styles.emailAddressInput} ${styles.profileValue}`}
                     />

@@ -1,4 +1,5 @@
 import useActivityListStore from "../stores/useActivityListStore";
+import useProfileStore from "../stores/useProfileStore";
 import useSegmentEffortsListStore from "../stores/useSegmentEffortsListStore";
 import useSnipeSegmentsListStore from "../stores/useSnipeSegmentsListStore";
 import useTokenDataStore from "../stores/useTokenStore";
@@ -19,12 +20,17 @@ export const useResetAllStores = () => {
   );
   const resetUserStore = useUserStore((state) => state.resetUserStore);
 
+  const resetProfileDataStore = useProfileStore(
+    (state) => state.resetProfileData
+  );
+
   function reset() {
     resetTokenDataStore();
     resetUserStore();
     resetActivityListStore();
     resetSegmentsListStore();
     resetSnipedSegmentsListStore();
+    resetProfileDataStore();
   }
 
   return reset;

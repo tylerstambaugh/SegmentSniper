@@ -92,12 +92,12 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 request.UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var response = _updateEmailAddressAsyncActionHandler.HandleAsync(request);
+                var response = await _updateEmailAddressAsyncActionHandler.HandleAsync(request);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to send verification code. \n {ex.Message}");
+                return StatusCode(422, $"Unable to update email address. \n {ex.Message}");
             }
         }
 

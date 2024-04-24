@@ -1,4 +1,4 @@
-import { Row, Modal, Col, Button, Form } from "react-bootstrap";
+import { Row, Modal, Col, Button, Form, Spinner } from "react-bootstrap";
 import styles from "./VerificationCodeModal.module.scss";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
@@ -41,12 +41,13 @@ const VerificationCodeModal = ({
   const formik = useFormik<VerificationCodeForm>({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (verificationCode: VerificationCodeForm) => {
+    onSubmit: async (verificationCode: VerificationCodeForm) => {
       setValidated(true);
-      handleUpdateEmailAddress(
+      await handleUpdateEmailAddress(
         emailAddress,
         verificationCode.verificationCode!
       );
+      handleVerificationCodeModalClose();
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -106,15 +107,34 @@ const VerificationCodeModal = ({
       <Modal.Footer>
         <Row className="justify-content-end">
           <Col className="col-auto ml-auto">
-            <Button variant="primary" onClick={() => formik.handleSubmit()}>
-              Submit
-            </Button>
+            {updateEmailAddressIsLoading ? (
+              <>
+                <Button
+                  variant="secondary"
+                  className={`me-1 ${styles.editProfileFaButton} `}
+                >
+                  <Spinner
+                    as="span"
+                    variant="light"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    animation="border"
+                  />
+                </Button>
+              </>
+            ) : (
+              <Button variant="primary" onClick={() => formik.handleSubmit()}>
+                Submit
+              </Button>
+            )}
           </Col>
           <Col className="col-auto">
             <Button
               variant="secondary"
               onClick={() => {
                 handleVerificationCodeModalClose();
+                setValidated(false);
                 formik.setFieldValue("verificationCode", null);
               }}
             >

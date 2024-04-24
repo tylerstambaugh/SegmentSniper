@@ -16,7 +16,6 @@ namespace SegmentSniper.Services.ManageProfile
         {
             ValidateContract(contract);
 
-
             try
             {
                 var user = _segmentSniperDbContext.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
@@ -30,6 +29,7 @@ namespace SegmentSniper.Services.ManageProfile
                 }
 
                 _segmentSniperDbContext.Users.Update(user);
+                _segmentSniperDbContext.SaveChanges();
 
                 var userProfile = new UserProfile
                 {
