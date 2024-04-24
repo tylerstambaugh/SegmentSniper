@@ -27,7 +27,7 @@ namespace SegmentSniper.Services.ManageProfile
                     throw new ArgumentException("Verification code expired. Please try again");
                 }
 
-                if (codeToCompare?.VerificationCode == contract.VerificationCode && codeToCompare.ExpirationDate < DateTime.UtcNow)
+                if (codeToCompare?.VerificationCode == contract.VerificationCode && codeToCompare.ExpirationDate > DateTime.UtcNow)
                 {
                     result.CorrectCode = true;
                 }

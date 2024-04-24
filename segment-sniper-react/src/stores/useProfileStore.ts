@@ -25,6 +25,11 @@ const useProfileStore = create<ProfileStore>()(
             state.profileData = profileData;
           });
         },
+        resetProfileData: () => {
+          set((state) => {
+            state.profileData = null;
+          });
+        },
       }),
       devtoolOptions
     )
@@ -34,6 +39,7 @@ const useProfileStore = create<ProfileStore>()(
 export default useProfileStore;
 
 interface ProfileStore {
-  profileData: ProfileData;
+  profileData: ProfileData | null;
   setProfileData: (profileData: ProfileData) => void;
+  resetProfileData: () => void;
 }

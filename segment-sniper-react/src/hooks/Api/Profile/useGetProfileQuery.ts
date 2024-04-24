@@ -12,11 +12,10 @@ export const useGetProfileQuery = () => {
   const setProfileData = useProfileStore((state) => state.setProfileData);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  //const [, setProfile] = useNeuron((state) => state.profileData);
   const { data, isLoading, isError, error } = useQuery({
     queryFn: triggerQuery,
     queryKey: ["profile"],
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   });

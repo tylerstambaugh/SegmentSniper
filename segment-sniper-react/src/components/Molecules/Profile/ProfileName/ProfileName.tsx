@@ -38,7 +38,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
   });
 
   const initialValues = {
-    firstName: profile?.firstName,
+    firstName: profile?.firstName ?? "",
   };
 
   const formik = useFormik<EditNameForm>({
