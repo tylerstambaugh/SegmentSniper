@@ -101,15 +101,22 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        //public async Task<IActionResult> UpdateEmail()
-        //{
-        //    return Ok();
-        //}
-
-        //public async Task<IActionResult> UpdatePassword()
-        //{
-        //    return Ok();
-        //}
+        [HttpPost]
+        [Authorize]
+        [Route("UpdateEmailAddress")]
+        public async Task<IActionResult> UpdatePassword([FromBody] string password)
+        {
+            try
+            {
+               var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to update password. \n {ex.Message}");
+            }
+        }
 
 
 
