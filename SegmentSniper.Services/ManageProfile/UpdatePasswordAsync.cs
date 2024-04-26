@@ -27,26 +27,7 @@ namespace SegmentSniper.Services.ManageProfile
 
                 var updateResult = await _userManager.ChangePasswordAsync(user, contract.CurrentPassword, contract.NewPassword);
 
-                if(updateResult.Succeeded)
-                {
-                    var userProfile = new UserProfile
-                    {
-                        ApplicationUser = user,
-                        StravaApiToken = stravaToken,
-                    };
-
-                    return new UpdatePasswordAsyncContract.Result
-                    {
-                        ProfileData = userProfile
-                    };
-                }
-                else
-                {
-                    return new UpdatePasswordAsyncContract.Result
-                    {
-                        ProfileData = null
-                    };
-                }
+                return new UpdatePasswordAsyncContract.Result(updateResult.Succeeded);                
             }                
 
             catch (Exception ex)
