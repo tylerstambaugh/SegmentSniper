@@ -10,8 +10,9 @@ namespace SegmentSniper.Services.ManageProfile
 
     public class UpdatePasswordAsyncContract
     {
-        public UpdatePasswordAsyncContract(string currentPassword, string newPassword)
+        public UpdatePasswordAsyncContract(string currentPassword, string newPassword, string userId)
         {
+            UserId = userId;
             CurrentPassword = currentPassword;
             NewPassword = newPassword;
 
@@ -23,9 +24,12 @@ namespace SegmentSniper.Services.ManageProfile
 
         public class Result
         {
-            
+            public Result(bool success)
+            {
+                Success = success;
+            }
 
-            public UserProfile ProfileData { get; set; }
+            public bool Success { get;  }
         }
     }
 }
