@@ -103,7 +103,7 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("UpdateEmailAddress")]
+        [Route("UpdatePassword")]
         public async Task<IActionResult> UpdatePassword([FromBody] string password)
         {
             try
