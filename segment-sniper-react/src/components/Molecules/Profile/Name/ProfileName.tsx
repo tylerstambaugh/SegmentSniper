@@ -1,6 +1,6 @@
 import { faCheck, faX, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Row, Modal, Col, Button, Form, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
 import styles from "../ProfileName/ProfileName.module.scss";
@@ -22,11 +22,8 @@ const ProfileName: React.FC<ProfileNameProps> = ({
   changeEditMode,
 }) => {
   const [profile] = useProfileStore((state) => [state.profileData]);
-  const {
-    handle: handleUpdateFirstName,
-    isLoading: updateFirstNameIsLoading,
-    error: updateFirstNameError,
-  } = useHandleUpdateFirstName();
+  const { handle: handleUpdateFirstName, isLoading: updateFirstNameIsLoading } =
+    useHandleUpdateFirstName();
   const [validated, setValidated] = useState(false);
 
   const validationSchema = yup.object({
@@ -107,7 +104,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
                   type="submit"
                   variant="primary"
                   className={`mx-2 ${styles.editProfileFaButton}`}
-                  onClick={(e) => {
+                  onClick={() => {
                     formik.handleSubmit();
                   }}
                 >

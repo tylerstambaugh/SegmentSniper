@@ -1,22 +1,17 @@
-import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import styles from "./ProfileMain.module.scss";
 import useProfileStore from "../../../stores/useProfileStore";
 
 import { useGetProfileQuery } from "../../../hooks/Api/Profile/useGetProfileQuery";
-import {
-  faCameraAlt,
-  faUserCircle,
-  faEdit,
-  faCheck,
-  faX,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCameraAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../App.css";
-import { useEffect, useState } from "react";
-import ProfileName from "../../Molecules/Profile/ProfileName/ProfileName";
+import { useState } from "react";
+import ProfileName from "../../Molecules/Profile/Name/ProfileName";
 import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
 
 export default function ProfileMain() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getProfile = useGetProfileQuery();
   const [profile] = useProfileStore((state) => [state.profileData]);
 
