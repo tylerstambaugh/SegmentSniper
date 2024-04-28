@@ -46,11 +46,20 @@ const UpdatePasswordModal = ({
     newPassword: yup
       .string()
       .required("New password is required")
-      .typeError("New password must be a string"),
+      .typeError("New password must be a string")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{7,99}$/,
+        "Must contain at least 7 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number"
+      ),
     confirmNewPassword: yup
       .string()
       .required("New password is required")
-      .typeError("New password must be a stirng"),
+      .typeError("New password must be a stirng")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{7,99}$/,
+        "Must contain at least 7 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number"
+      )
+      .oneOf([yup.ref("password")], "Passwords must match"),
   });
 
   const initialValues = {
