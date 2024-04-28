@@ -2,8 +2,9 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Button } from "react-bootstrap";
 import styles from "../Password/UpdatePassword.module.scss";
-import { useState } from "react";
+
 import UpdatePasswordModal from "./UpdatePasswordModal";
+import { useEffect } from "react";
 
 export type UpdatePasswordProps = {
   editMode: boolean;
@@ -11,13 +12,19 @@ export type UpdatePasswordProps = {
 };
 
 const UpdatePassword = ({ editMode, changeEditMode }: UpdatePasswordProps) => {
-  const [showUpdatePasswordModal, setShowUpdatePasswordModal] =
-    useState<boolean>(editMode);
+  function handleShowUpdatePasswordModalClose() {
+    changeEditMode(false);
+  }
+
+  useEffect(() => {
+    console.log("edit mode is:", editMode);
+  }, [editMode]);
+
   return (
     <>
       <UpdatePasswordModal
-        showUpdatePasswordModal={showUpdatePasswordModal}
-        handleUpdatePasswordModalClose={() => setShowUpdatePasswordModal(false)}
+        showUpdatePasswordModal={editMode}
+        handleUpdatePasswordModalClose={handleShowUpdatePasswordModalClose}
       />
       <Row>
         <Col className="p-0 m-0">
@@ -29,8 +36,7 @@ const UpdatePassword = ({ editMode, changeEditMode }: UpdatePasswordProps) => {
                 variant="secondary"
                 className={`px-1 py-0 my-0 ${styles.editProfileFaButton}`}
                 onClick={() => {
-                  setShowUpdatePasswordModal(true);
-                  changeEditMode(false);
+                  changeEditMode(true);
                 }}
               >
                 <FontAwesomeIcon icon={faEdit} className="fa-md" />

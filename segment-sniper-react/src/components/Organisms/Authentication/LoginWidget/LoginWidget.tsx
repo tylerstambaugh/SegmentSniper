@@ -50,7 +50,7 @@ export default function LoginWidget() {
   });
 
   async function handleLoginUser() {
-    let loginRequest: LoginRequest = {
+    const loginRequest: LoginRequest = {
       userName: emailAddress ?? "",
       password: password ?? "",
     };
@@ -74,7 +74,7 @@ export default function LoginWidget() {
 
   useEffect(() => {
     if (loginUser.error !== null) {
-      let error = loginUser.error as Error;
+      const error = loginUser.error as Error;
       CustomToast({
         message: "Login failed",
         error: `Error: ${error.message}`,

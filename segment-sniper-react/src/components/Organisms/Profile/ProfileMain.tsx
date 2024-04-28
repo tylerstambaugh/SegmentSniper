@@ -13,7 +13,7 @@ import UpdatePassword from "../../Molecules/Profile/Password/UpdatePassword";
 
 export default function ProfileMain() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getProfile = useGetProfileQuery();
+  useGetProfileQuery();
   const [profile] = useProfileStore((state) => [state.profileData]);
 
   const [editMode, setEditMode] = useState<string | null>(null);
