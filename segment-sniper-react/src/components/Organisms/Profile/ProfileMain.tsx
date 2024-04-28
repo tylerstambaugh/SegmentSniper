@@ -9,6 +9,7 @@ import "../../../App.css";
 import { useState } from "react";
 import ProfileName from "../../Molecules/Profile/Name/ProfileName";
 import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
+import UpdatePassword from "../../Molecules/Profile/Password/UpdatePassword";
 
 export default function ProfileMain() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -58,18 +59,10 @@ export default function ProfileMain() {
         changeEditMode={() => handleEditModeChange("ProfileName")}
       />
       {/* I got hit by a car. Taking the night off. */}
-      <Row>
-        <Col className="p-0 m-0">
-          <div>
-            <p className={styles.profileLabel}>Password</p>
-            <span className="d-flex align-items-start">
-              <p className={`${styles.profileValue} m-0`}>**********</p>
-              <Button className={`btn-third p-0 me-4`}>Update</Button>
-            </span>
-            <hr className={styles.hrCentered} />
-          </div>
-        </Col>
-      </Row>
+      <UpdatePassword
+        editMode={editMode === "UpdatePassword"}
+        changeEditMode={() => handleEditModeChange("UpdatePassword")}
+      />
       <Row>
         <Col className="p-0">
           <div>

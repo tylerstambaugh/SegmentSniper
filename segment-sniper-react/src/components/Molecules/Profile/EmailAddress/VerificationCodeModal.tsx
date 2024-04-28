@@ -24,7 +24,6 @@ const VerificationCodeModal = ({
   const {
     handle: handleUpdateEmailAddress,
     isLoading: updateEmailAddressIsLoading,
-    error: updateEmailAddressError,
   } = useHandleUpdateEmailAddress();
 
   const validationSchema = yup.object({

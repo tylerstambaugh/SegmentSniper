@@ -7,7 +7,6 @@ import * as yup from "yup";
 import styles from "./EmailAddress.module.scss";
 import useProfileStore from "../../../../stores/useProfileStore";
 import useHandleSendChangeEmailVerificationCode from "../../../../hooks/Api/Profile/Handlers/useHandleSendChangeEmailVerificationCode";
-import useHandleUpdateEmailAddress from "../../../../hooks/Api/Profile/Handlers/useHandleUpdateEmailAddress";
 import VerificationCodeModal from "./VerificationCodeModal";
 
 export type EmailAddressProps = {
