@@ -104,7 +104,7 @@ export default function RegisterWidget() {
 
   async function handleLoginUser() {
     if (!registerUser.isError && !registerUser.isLoading) {
-      let loginRequest: LoginRequest = {
+      const loginRequest: LoginRequest = {
         userName: emailAddress ?? "",
         password: password ?? "",
       };

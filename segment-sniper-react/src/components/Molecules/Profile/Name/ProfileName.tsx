@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
-import styles from "../ProfileName/ProfileName.module.scss";
+import styles from "../Name/ProfileName.module.scss";
 import useProfileStore from "../../../../stores/useProfileStore";
 import { useState } from "react";
 import useHandleUpdateFirstName from "../../../../hooks/Api/Profile/Handlers/useHandleUpdateFirstName";
