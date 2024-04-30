@@ -10,14 +10,12 @@ import { useState } from "react";
 import ProfileName from "../../Molecules/Profile/Name/ProfileName";
 import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
 import UpdatePassword from "../../Molecules/Profile/Password/UpdatePassword";
+import RevokeStravaToken from "../../Molecules/Profile/StravaToken/RevokeStravaToken";
 
 export default function ProfileMain() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useGetProfileQuery();
   const [profile] = useProfileStore((state) => [state.profileData]);
-
   const [editMode, setEditMode] = useState<string | null>(null);
-
   const handleEditModeChange = (componentName: string) => {
     setEditMode((prev) => (prev === componentName ? null : componentName));
   };
@@ -63,25 +61,7 @@ export default function ProfileMain() {
         editMode={editMode === "UpdatePassword"}
         changeEditMode={() => handleEditModeChange("UpdatePassword")}
       />
-      <Row>
-        <Col className="p-0">
-          <div>
-            <p className={`${styles.profileLabel}`}>Strava API Refresh Token</p>
-            <p className={`${styles.profileValue} mb-0 pb-0`}>
-              {profile?.hasStravaToken
-                ? profile?.stravaRefreshToken
-                : "No Refresh Token Set"}
-            </p>
-            <p className="ps-3 py-0 small text-muted">
-              Expires at{" "}
-              {/* {!!profile.stravaTokenExpiresAt
-                ? profile.stravaTokenExpiresAt.toFormat("yyyy-MM-dd HH:mm:ss")
-                : ""} */}
-            </p>
-            <hr className={styles.hrCentered} />
-          </div>
-        </Col>
-      </Row>
+      <RevokeStravaToken />
     </Container>
   );
 }

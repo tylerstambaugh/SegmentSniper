@@ -2,9 +2,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Button } from "react-bootstrap";
 import styles from "../Password/UpdatePassword.module.scss";
-
 import UpdatePasswordModal from "./UpdatePasswordModal";
-import { useEffect } from "react";
 
 export type UpdatePasswordProps = {
   editMode: boolean;
