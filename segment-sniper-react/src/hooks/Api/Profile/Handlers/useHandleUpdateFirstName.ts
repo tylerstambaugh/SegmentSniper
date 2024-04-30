@@ -5,7 +5,12 @@ const useHandleUpdateFirstName = () => {
   const { mutateAsync, isLoading, error, data } = usePatchUpdateUserFirstName();
   async function handle(firstName: string) {
     try {
-      await mutateAsync({ firstName });
+      const response = await mutateAsync({ firstName });
+      if (response && response.profileData.firstName)
+        CustomToast({
+          message: "First name succesfully updated",
+          type: "success",
+        });
       return data;
     } catch (error) {
       if (error instanceof Error) {

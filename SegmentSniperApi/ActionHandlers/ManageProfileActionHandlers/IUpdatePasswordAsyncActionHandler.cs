@@ -13,7 +13,7 @@
             NewPassword = newPassword;
         }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public string CurrentPassword { get;}
         public string NewPassword { get; }
 

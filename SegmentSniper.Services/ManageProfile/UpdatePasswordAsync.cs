@@ -23,7 +23,7 @@ namespace SegmentSniper.Services.ManageProfile
             try
             {
                 var user = await _userManager.FindByIdAsync(contract.UserId);
-                var stravaToken = _segmentSniperDbContext.StravaTokens.Where(t => t.UserId == contract.UserId).FirstOrDefault();
+               
 
                 var updateResult = await _userManager.ChangePasswordAsync(user, contract.CurrentPassword, contract.NewPassword);
 

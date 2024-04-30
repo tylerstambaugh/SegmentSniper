@@ -10,12 +10,11 @@ import {
 
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import styles from "../Password/UpdatePasswordModal.module.scss";
-import { usePostUpdatePassword } from "../../../../hooks/Api/Profile/usePostUpdatePassword";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NonceProvider } from "react-select";
+import useHandleUpdatePassword from "../../../../hooks/Api/Profile/Handlers/useHandleUpdatePassword";
 
 interface UpdatePasswordForm {
   currentPassword: string | null;
@@ -36,7 +35,7 @@ const UpdatePasswordModal = ({
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [validated, setValidated] = useState(false);
 
-  const { mutateAsync: updatePassword, isLoading } = usePostUpdatePassword();
+  const { handle: updatePassword, isLoading } = useHandleUpdatePassword();
 
   const validationSchema = yup.object({
     currentPassword: yup
@@ -59,7 +58,7 @@ const UpdatePasswordModal = ({
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{7,99}$/,
         "Must contain at least 7 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number"
       )
-      .oneOf([yup.ref("password")], "Passwords must match"),
+      .oneOf([yup.ref("newPassword")], "Passwords must match"),
   });
 
   const initialValues = {
@@ -73,10 +72,7 @@ const UpdatePasswordModal = ({
     enableReinitialize: true,
     onSubmit: async (values: UpdatePasswordForm) => {
       setValidated(true);
-      await updatePassword({
-        currentPassword: values.currentPassword!,
-        newPassword: values.newPassword!,
-      });
+      await updatePassword(values.currentPassword!, values.newPassword!);
       handleUpdatePasswordModalClose();
     },
     validationSchema: validationSchema,
@@ -151,17 +147,26 @@ const UpdatePasswordModal = ({
                 <Col className="mb-2">
                   <Form.Group controlId="formUpdatePassword">
                     <Form.Label id="newPasswordLabel">New password:</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder=""
-                      value={formik.values.newPassword ?? ""}
-                      name="newPassword"
-                      isInvalid={!!formik.errors.newPassword}
-                      onChange={(e) => {
-                        formik.setFieldValue("newPassword", e.target.value);
-                      }}
-                      className={`${styles.newPasswordInput}`}
-                    />
+                    <InputGroup>
+                      <Form.Control
+                        type={newPasswordVisible ? "text" : "password"}
+                        placeholder=""
+                        value={formik.values.newPassword ?? ""}
+                        name="newPassword"
+                        isInvalid={!!formik.errors.newPassword}
+                        onChange={(e) => {
+                          formik.setFieldValue("newPassword", e.target.value);
+                        }}
+                        className={`${styles.newPasswordInput}`}
+                      />
+                      <Button variant="third">
+                        <FontAwesomeIcon
+                          icon={newPasswordVisible ? faEyeSlash : faEye}
+                          onClick={toggleNewPasswordVisibility}
+                          className="password-toggle"
+                        />
+                      </Button>
+                    </InputGroup>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.newPassword as FormikErrors<string>}
                     </Form.Control.Feedback>
@@ -174,20 +179,29 @@ const UpdatePasswordModal = ({
                     <Form.Label id="confirmNewPasswordLabel">
                       Confirm New password:
                     </Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder=""
-                      value={formik.values.confirmNewPassword ?? ""}
-                      name="confirmNewPassword"
-                      isInvalid={!!formik.errors.confirmNewPassword}
-                      onChange={(e) => {
-                        formik.setFieldValue(
-                          "confirmNewPassword",
-                          e.target.value
-                        );
-                      }}
-                      className={`${styles.confirmNewPasswordInput}`}
-                    />
+                    <InputGroup>
+                      <Form.Control
+                        type={confirmPasswordVisible ? "text" : "password"}
+                        placeholder=""
+                        value={formik.values.confirmNewPassword ?? ""}
+                        name="confirmNewPassword"
+                        isInvalid={!!formik.errors.confirmNewPassword}
+                        onChange={(e) => {
+                          formik.setFieldValue(
+                            "confirmNewPassword",
+                            e.target.value
+                          );
+                        }}
+                        className={`${styles.confirmNewPasswordInput}`}
+                      />
+                      <Button variant="third">
+                        <FontAwesomeIcon
+                          icon={confirmPasswordVisible ? faEyeSlash : faEye}
+                          onClick={toggleConfirmPasswordVisibility}
+                          className="password-toggle"
+                        />
+                      </Button>
+                    </InputGroup>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.confirmNewPassword as FormikErrors<string>}
                     </Form.Control.Feedback>
