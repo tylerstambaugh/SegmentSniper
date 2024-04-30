@@ -19,7 +19,8 @@ export const usePostUpdatePassword = () => {
       token: accessToken!,
     };
 
-    await postUpdatePassword(contract);
+    const response = await postUpdatePassword(contract);
+    return response;
   }
 
   return { mutateAsync, isLoading, isError, error, data };

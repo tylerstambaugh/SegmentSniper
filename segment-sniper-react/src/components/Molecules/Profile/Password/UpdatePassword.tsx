@@ -16,10 +16,6 @@ const UpdatePassword = ({ editMode, changeEditMode }: UpdatePasswordProps) => {
     changeEditMode(false);
   }
 
-  useEffect(() => {
-    console.log("edit mode is:", editMode);
-  }, [editMode]);
-
   return (
     <>
       <UpdatePasswordModal

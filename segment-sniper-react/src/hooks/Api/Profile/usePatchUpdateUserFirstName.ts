@@ -8,6 +8,7 @@ import useProfileStore from "../../../stores/useProfileStore";
 import useTokenDataStore from "../../../stores/useTokenStore";
 import { useState } from "react";
 import useUserStore from "../../../stores/useUserStore";
+import { ProfileResponse } from "../../../services/Api/Profile/getProfile";
 
 export const usePatchUpdateUserFirstName = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -20,7 +21,7 @@ export const usePatchUpdateUserFirstName = () => {
     state.user,
     state.setUser,
   ]);
-  const [result, setResult] = useState<any>();
+  const [result, setResult] = useState<ProfileResponse>();
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 

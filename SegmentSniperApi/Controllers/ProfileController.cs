@@ -119,7 +119,7 @@ namespace SegmentSniper.Api.Controllers
                 var response = await _updatePasswordAsyncActionHandler.HandleAsync(request);
                 if(response.Success)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
