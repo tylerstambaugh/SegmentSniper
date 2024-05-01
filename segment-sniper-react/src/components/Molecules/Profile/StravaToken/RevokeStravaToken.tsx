@@ -16,23 +16,19 @@ const RevokeStravaToken = () => {
               ? profile?.stravaRefreshToken
               : "No Refresh Token Set"}
           </p>
-          <div className="d-flex">
-            <Col>
-              <p className="ps-3 py-0 small text-muted">
-                Expires at{" "}
-                {profile?.stravaTokenExpiresAt !== null &&
-                profile?.stravaTokenExpiresAt !== undefined
-                  ? profile?.stravaTokenExpiresAt.toLocaleString(
-                      DateTime.DATETIME_FULL
-                    )
-                  : ""}
-              </p>
-            </Col>
-            <Col>
-              <Button variant="third" className={`${styles.revokeButton}`}>
-                Revoke
-              </Button>
-            </Col>
+          <div className="d-flex pt-2">
+            <p className="ps-3 pt-2 small text-muted">
+              Expires at{" "}
+              {profile?.stravaTokenExpiresAt !== null &&
+              profile?.stravaTokenExpiresAt !== undefined
+                ? profile?.stravaTokenExpiresAt.toLocaleString(
+                    DateTime.DATETIME_FULL
+                  )
+                : ""}
+            </p>
+            <Button variant="third" className={`${styles.revokeButton} ms-2`}>
+              Revoke
+            </Button>
           </div>
           <hr className={styles.hrCentered} />
         </div>

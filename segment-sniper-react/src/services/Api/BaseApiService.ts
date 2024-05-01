@@ -84,3 +84,24 @@ export async function apiPatch<TRequest, TResponse>(
 
   return toCamel(await response.json()) as TResponse;
 }
+
+export async function apiDelete<TRequest, TResponse>(
+  url: string,
+  contract: BaseApiRequestContract<TRequest>
+): Promise<TResponse> {
+  const response = await window.fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${contract.token}`,
+    },
+    body: JSON.stringify(contract.request),
+    signal: contract.abortController?.signal,
+  });
+
+  if (!response.ok) {
+    throw await UnsuccessfulHttpResponseError.fromResponse(response);
+  }
+
+  return toCamel(await response.json()) as TResponse;
+}
