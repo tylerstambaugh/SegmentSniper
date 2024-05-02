@@ -17,19 +17,22 @@ namespace SegmentSniper.Api.Controllers
         private readonly IUpdateEmailAddressAsyncActionHandler _updateEmailAddressAsyncActionHandler;
         private readonly IRequestChangeEmailVerificationCodeAsyncActionHandler _requestChangeEmailVerificationCodeAsyncActionHandler;
         private readonly IUpdatePasswordAsyncActionHandler _updatePasswordAsyncActionHandler;
+        private readonly IRevokeStravaTokenAsyncActionHandler _revokeStravaTokenAsyncActionHandler;
 
         public ProfileController(
             IGetProfileActionHandler getProfileActionHandler,
             IUpdateFirstNameAsyncActionHandler updateUserFirstNameActionHandler,
             IUpdateEmailAddressAsyncActionHandler updateEmailAddressAsyncActionHandler,
             IRequestChangeEmailVerificationCodeAsyncActionHandler requestChangeEmailVerificationCodeAsyncActionHandler,
-            IUpdatePasswordAsyncActionHandler updatePasswordAsyncActionHandler)
+            IUpdatePasswordAsyncActionHandler updatePasswordAsyncActionHandler,
+            IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
             _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
             _updateEmailAddressAsyncActionHandler = updateEmailAddressAsyncActionHandler;
             _requestChangeEmailVerificationCodeAsyncActionHandler = requestChangeEmailVerificationCodeAsyncActionHandler;
             _updatePasswordAsyncActionHandler = updatePasswordAsyncActionHandler;
+            _revokeStravaTokenAsyncActionHandler = revokeStravaTokenAsyncActionHandler;
         }
 
         [HttpGet]
@@ -137,7 +140,23 @@ namespace SegmentSniper.Api.Controllers
         [Route("RevokeStravaToken")]
         public async Task<IActionResult> RevokeStravaToken()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var response = await _revokeStravaTokenAsyncActionHandler.HandleAsync(new RevokeStravaTokenAsyncActionHandlerRequest(userId));
+                if (response.Success)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to update password. \n {ex.Message}");
+            }
         }
 
         //public async Task<IActionResult> DeleteAccount()
