@@ -135,7 +135,7 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Authorize]
         [Route("RevokeStravaToken")]
         public async Task<IActionResult> RevokeStravaToken()

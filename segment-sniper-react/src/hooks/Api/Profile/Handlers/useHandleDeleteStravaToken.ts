@@ -2,11 +2,11 @@ import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast"
 import { useDeleteStravaToken } from "../useDeleteStravaToken";
 import { usePostSendChangeEmailVerificationCode } from "../usePostSendChangeEmailVerificationCode";
 
-const useHandleDeleteStravaTokene = () => {
+const useHandleDeleteStravaToken = () => {
   const { mutateAsync, isLoading, error, data } = useDeleteStravaToken();
-  async function handle(stravaToken: string) {
+  async function handle() {
     try {
-      const response = await mutateAsync({ stravaToken });
+      const response = await mutateAsync();
       if (response && response.success)
         CustomToast({
           message: "Strava token successfully revoked",
@@ -26,4 +26,4 @@ const useHandleDeleteStravaTokene = () => {
   return { handle, isLoading, error };
 };
 
-export default useHandleDeleteStravaTokene;
+export default useHandleDeleteStravaToken;

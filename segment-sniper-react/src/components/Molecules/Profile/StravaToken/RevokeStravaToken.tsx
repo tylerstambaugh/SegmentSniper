@@ -2,9 +2,11 @@ import { Row, Col, Button } from "react-bootstrap";
 import useProfileStore from "../../../../stores/useProfileStore";
 import styles from "./RevokeStravaToken.module.scss";
 import { DateTime } from "luxon";
+import useHandleDeleteStravaToken from "../../../../hooks/Api/Profile/Handlers/useHandleDeleteStravaToken";
 
 const RevokeStravaToken = () => {
   const [profile] = useProfileStore((state) => [state.profileData]);
+  const { handle: revokeStravaToken, isLoading } = useHandleDeleteStravaToken();
 
   return (
     <Row>
@@ -26,7 +28,11 @@ const RevokeStravaToken = () => {
                   )
                 : ""}
             </p>
-            <Button variant="third" className={`${styles.revokeButton} ms-2`}>
+            <Button
+              variant="third"
+              className={`${styles.revokeButton} ms-2`}
+              onClick={revokeStravaToken}
+            >
               Revoke
             </Button>
           </div>
