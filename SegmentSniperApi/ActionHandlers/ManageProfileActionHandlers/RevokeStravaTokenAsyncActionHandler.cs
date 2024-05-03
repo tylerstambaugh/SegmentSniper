@@ -38,10 +38,6 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
             {
                 throw new ArgumentNullException(nameof(request.UserId));
             }
-            if (string.IsNullOrWhiteSpace(request.FirstName))
-            {
-                throw new ArgumentNullException(nameof(request.FirstName));
-            }
         }
     }
 }

@@ -1,4 +1,4 @@
-export interface ApiContract<TRequest = any>
+export interface ApiContract<TRequest = unknown>
   extends BaseApiRequestContract<TRequest> {
   baseUrl: string;
 }
