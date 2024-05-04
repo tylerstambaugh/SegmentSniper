@@ -1,6 +1,5 @@
 import { CustomToast } from "../../../../components/Molecules/Toast/CustomToast";
 import { useDeleteStravaToken } from "../useDeleteStravaToken";
-import { usePostSendChangeEmailVerificationCode } from "../usePostSendChangeEmailVerificationCode";
 
 const useHandleDeleteStravaToken = () => {
   const { mutateAsync, isLoading, error, data } = useDeleteStravaToken();
