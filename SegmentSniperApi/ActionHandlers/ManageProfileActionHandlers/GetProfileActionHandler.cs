@@ -25,7 +25,11 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                 {
                     var user = result.Profile.ApplicationUser;
                     var stravaToken = result.Profile.StravaApiToken;
-                    DateTimeOffset stravaTokenExpirationDateTimeoffset = DateTimeOffset.FromUnixTimeSeconds(stravaToken.ExpiresAt);
+                    DateTimeOffset stravaTokenExpirationDateTimeoffset = new DateTimeOffset();
+                    if (stravaToken != null)
+                    {
+                        stravaTokenExpirationDateTimeoffset = DateTimeOffset.FromUnixTimeSeconds(stravaToken.ExpiresAt);
+                    }
                     return new GetProfileRequest.Response
                     {
                         ProfileData = new UserProfileUiModel
