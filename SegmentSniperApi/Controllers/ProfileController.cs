@@ -159,9 +159,9 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        //public async Task<IActionResult> DeleteAccount()
-        //{
-        //    return Ok();
-        //}
+        public async Task<IActionResult> DeleteAccount()
+        {
+            return Ok();
+        }
     }
 }

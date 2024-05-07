@@ -80,6 +80,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGenerateVerificationCodeForEmailAddressChange, GenerateVerificationCodeForEmailAddressChange>();
             services.AddScoped<IVerifyCodeForEmailAddressChange, VerifyCodeForEmailAddressChange>();
             services.AddScoped<IDeleteStravaTokenAsync, DeleteStravaTokenAsync>();
+            services.AddScoped<IDeleteAccountAsync, DeleteAccountAsync>();
 
             //admin services
             services.AddScoped<IRemoveUser, RemoveUser>();
