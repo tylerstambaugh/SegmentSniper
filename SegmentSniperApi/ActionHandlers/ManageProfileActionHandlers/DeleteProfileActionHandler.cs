@@ -15,7 +15,9 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         public async Task<DeleteProfileRequest.Response> HandleAsync(DeleteProfileRequest request)
         {
             ValidateRequest(request);
-            throw new NotImplementedException();
+            var result = await _removeUser.ExecuteAsync(new RemoveUserContract(request.UserId));
+
+            return new DeleteProfileRequest.Response(result.Success);
         }
 
         private void ValidateRequest(DeleteProfileRequest request)

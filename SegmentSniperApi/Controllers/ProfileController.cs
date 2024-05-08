@@ -18,6 +18,7 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRequestChangeEmailVerificationCodeAsyncActionHandler _requestChangeEmailVerificationCodeAsyncActionHandler;
         private readonly IUpdatePasswordAsyncActionHandler _updatePasswordAsyncActionHandler;
         private readonly IRevokeStravaTokenAsyncActionHandler _revokeStravaTokenAsyncActionHandler;
+        private readonly IDeleteProfileActionHandler _deleteProfileActionHandler;
 
         public ProfileController(
             IGetProfileActionHandler getProfileActionHandler,
@@ -25,7 +26,8 @@ namespace SegmentSniper.Api.Controllers
             IUpdateEmailAddressAsyncActionHandler updateEmailAddressAsyncActionHandler,
             IRequestChangeEmailVerificationCodeAsyncActionHandler requestChangeEmailVerificationCodeAsyncActionHandler,
             IUpdatePasswordAsyncActionHandler updatePasswordAsyncActionHandler,
-            IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
+            IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler,
+            IDeleteProfileActionHandler deleteProfileActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
             _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
@@ -33,6 +35,7 @@ namespace SegmentSniper.Api.Controllers
             _requestChangeEmailVerificationCodeAsyncActionHandler = requestChangeEmailVerificationCodeAsyncActionHandler;
             _updatePasswordAsyncActionHandler = updatePasswordAsyncActionHandler;
             _revokeStravaTokenAsyncActionHandler = revokeStravaTokenAsyncActionHandler;
+            _deleteProfileActionHandler = deleteProfileActionHandler;
         }
 
         [HttpGet]
@@ -161,7 +164,23 @@ namespace SegmentSniper.Api.Controllers
 
         public async Task<IActionResult> DeleteAccount()
         {
-            return Ok();
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var response = await _deleteProfileActionHandler.HandleAsync(new DeleteProfileRequest(userId));
+                if (response.Success)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to update password. \n {ex.Message}");
+            }
         }
     }
 }
