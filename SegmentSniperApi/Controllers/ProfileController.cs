@@ -18,7 +18,7 @@ namespace SegmentSniper.Api.Controllers
         private readonly IRequestChangeEmailVerificationCodeAsyncActionHandler _requestChangeEmailVerificationCodeAsyncActionHandler;
         private readonly IUpdatePasswordAsyncActionHandler _updatePasswordAsyncActionHandler;
         private readonly IRevokeStravaTokenAsyncActionHandler _revokeStravaTokenAsyncActionHandler;
-        private readonly IDeleteProfileActionHandler _deleteProfileActionHandler;
+        private readonly IDeleteProfileActionHandlerAsync _deleteProfileActionHandler;
 
         public ProfileController(
             IGetProfileActionHandler getProfileActionHandler,
@@ -27,7 +27,7 @@ namespace SegmentSniper.Api.Controllers
             IRequestChangeEmailVerificationCodeAsyncActionHandler requestChangeEmailVerificationCodeAsyncActionHandler,
             IUpdatePasswordAsyncActionHandler updatePasswordAsyncActionHandler,
             IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler,
-            IDeleteProfileActionHandler deleteProfileActionHandler)
+            IDeleteProfileActionHandlerAsync deleteProfileActionHandler)
         {
             _getProfileActionHandler = getProfileActionHandler;
             _updateUserFirstNameActionHandler = updateUserFirstNameActionHandler;
@@ -167,7 +167,7 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var response = await _deleteProfileActionHandler.HandleAsync(new DeleteProfileRequest(userId));
+                var response = await _deleteProfileActionHandler.HandleAsync(new DeleteProfileAsyncRequest(userId));
                 if (response.Success)
                 {
                     return Ok(response);

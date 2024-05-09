@@ -51,7 +51,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IUpdateEmailAddressAsyncActionHandler , UpdateEmailAddressAsyncActionHandler>();
             services.AddScoped<IRequestChangeEmailVerificationCodeAsyncActionHandler, RequestChangeEmailVerificationCodeAsyncActionHandler>();
             services.AddScoped<IRevokeStravaTokenAsyncActionHandler, RevokeStravaTokenAsyncActionHandler>();
-            services.AddScoped<IDeleteProfileActionHandler, DeleteProfileActionHandler>();
+            services.AddScoped<IDeleteProfileActionHandlerAsync, DeleteProfileActionHandlerAsync>();
 
             ////admin action handlers
             services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();

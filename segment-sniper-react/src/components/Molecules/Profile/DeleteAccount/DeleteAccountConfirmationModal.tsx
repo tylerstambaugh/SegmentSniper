@@ -10,10 +10,10 @@ import {
 import useHandleDeleteStravaToken from "../../../../hooks/Api/Profile/Handlers/useHandleDeleteStravaToken";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
-import styles from "./DeleteAccountConfirmationModalmodule.scss";
+import styles from "./DeleteAccountConfirmationModal.module.scss";
 import { useState } from "react";
-import deleteAccount from "../../../../services/Api/Profile/deleteAccount";
 import { useDeleteAccount } from "../../../../hooks/Api/Profile/useDeleteAccount";
+import useProfileStore from "../../../../stores/useProfileStore";
 
 interface DeleteAccountForm {
   confirmationText: string | null;
@@ -28,24 +28,29 @@ const DeleteAccountConfirmationModal = ({
   showDeleteAccountModal,
   handleCloseModal,
 }: DeleteAccountModalProps) => {
-  const { handle: revokeStravaToken, isLoading } = useHandleDeleteStravaToken();
   const [validated, setValidated] = useState(false);
-  const deleteAccount = useDeleteAccount();
-  function handleConfirmClick() {
-    revokeStravaToken().then(() => handleCloseModal);
-  }
+  const emailAddress = useProfileStore((state) => state.profileData?.email);
+  const { mutateAsync: deleteAccount, isLoading } = useDeleteAccount();
 
   const validationSchema = yup.object({
     confirmationText: yup
       .string()
+      .email("Please enter a valid email address")
       .required("Confirmation is required")
-      .typeError("Confirmation must be a string"),
+      .typeError("Confirmation must be a string")
+      .test(
+        "email-match",
+        "Confirmation must match email address",
+        function (value) {
+          return value === emailAddress;
+        }
+      ),
   });
 
   const formik = useFormik<DeleteAccountForm>({
     initialValues: { confirmationText: null },
     enableReinitialize: true,
-    onSubmit: async (values: DeleteAccountForm) => {
+    onSubmit: async () => {
       setValidated(true);
       await deleteAccount.mutateAsync();
       handleCloseModal();
@@ -58,7 +63,7 @@ const DeleteAccountConfirmationModal = ({
   return (
     <Modal show={showDeleteAccountModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm Token Revocation</Modal.Title>
+        <Modal.Title>Confirm Account Delete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Col className="px-2">
@@ -92,7 +97,7 @@ const DeleteAccountConfirmationModal = ({
                     type={"text"}
                     placeholder=""
                     value={formik.values.confirmationText ?? ""}
-                    name="currentPassword"
+                    name="confirmationText"
                     isInvalid={!!formik.errors.confirmationText}
                     onChange={(e) => {
                       formik.setFieldValue("currentPassword", e.target.value);
@@ -124,7 +129,11 @@ const DeleteAccountConfirmationModal = ({
                 </Button>
               </>
             ) : (
-              <Button variant="third" onClick={() => handleConfirmClick()}>
+              <Button
+                variant="third"
+                onClick={() => formik.handleSubmit()}
+                className={`${styles.deleteAccountButton}`}
+              >
                 DELETE
               </Button>
             )}
