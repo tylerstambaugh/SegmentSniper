@@ -11,6 +11,7 @@ import ProfileName from "../../Molecules/Profile/Name/ProfileName";
 import EmailAddress from "../../Molecules/Profile/EmailAddress/EmailAddress";
 import UpdatePassword from "../../Molecules/Profile/Password/UpdatePassword";
 import RevokeStravaToken from "../../Molecules/Profile/StravaToken/RevokeStravaToken";
+import DeleteAccountConfirmationModal from "../../Molecules/Profile/DeleteAccount/DeleteAccountConfirmationModal";
 
 export default function ProfileMain() {
   useGetProfileQuery();
@@ -62,6 +63,21 @@ export default function ProfileMain() {
         changeEditMode={() => handleEditModeChange("UpdatePassword")}
       />
       <RevokeStravaToken />
+      <Row>
+        <Col>
+          <DeleteAccountConfirmationModal
+            showDeleteAccountModal={editMode === "DeleteAccount"}
+            handleCloseModal={() => handleEditModeChange("")}
+          />
+          <Button
+            variant="third"
+            className={styles.deleteAccountButton}
+            onClick={() => handleEditModeChange("DeleteAccount")}
+          >
+            DELETE ACCOUNT
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 }
