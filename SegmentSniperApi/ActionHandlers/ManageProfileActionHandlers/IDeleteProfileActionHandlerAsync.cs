@@ -1,13 +1,13 @@
 ﻿namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
-    public interface IDeleteProfileActionHandler
+    public interface IDeleteProfileActionHandlerAsync
     {
-        Task<DeleteProfileRequest.Response> HandleAsync(DeleteProfileRequest request);
+        Task<DeleteProfileAsyncRequest.Response> HandleAsync(DeleteProfileAsyncRequest request);
     }
 
-    public class DeleteProfileRequest
+    public class DeleteProfileAsyncRequest
     {
-        public DeleteProfileRequest(string userId)
+        public DeleteProfileAsyncRequest(string userId)
         {
             UserId = userId;
         }

@@ -64,14 +64,14 @@ export default function ProfileMain() {
       />
       <RevokeStravaToken />
       <Row>
-        <Col>
+        <Col className="d-flex justify-content-center">
           <DeleteAccountConfirmationModal
             showDeleteAccountModal={editMode === "DeleteAccount"}
             handleCloseModal={() => handleEditModeChange("")}
           />
           <Button
             variant="third"
-            className={styles.deleteAccountButton}
+            className={`${styles.deleteAccountButton}`}
             onClick={() => handleEditModeChange("DeleteAccount")}
           >
             DELETE ACCOUNT
