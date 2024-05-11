@@ -35,8 +35,8 @@ const DeleteAccountConfirmationModal = ({
   const validationSchema = yup.object({
     confirmationText: yup
       .string()
-      .email("Please enter a valid email address")
       .required("Confirmation is required")
+      //.email("Please enter a valid email address")
       .typeError("Confirmation must be a string")
       .test(
         "email-match",
@@ -52,7 +52,7 @@ const DeleteAccountConfirmationModal = ({
     enableReinitialize: true,
     onSubmit: async () => {
       setValidated(true);
-      await deleteAccount.mutateAsync();
+      await deleteAccount();
       handleCloseModal();
     },
     validationSchema: validationSchema,
@@ -66,7 +66,7 @@ const DeleteAccountConfirmationModal = ({
         <Modal.Title>Confirm Account Delete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Col className="px-2">
+        <Col className="px-2 py-2">
           <Row>
             <p>
               Are you sure you would like to delete you Segment Sniper Pro
@@ -100,7 +100,7 @@ const DeleteAccountConfirmationModal = ({
                     name="confirmationText"
                     isInvalid={!!formik.errors.confirmationText}
                     onChange={(e) => {
-                      formik.setFieldValue("currentPassword", e.target.value);
+                      formik.setFieldValue("confirmationText", e.target.value);
                     }}
                   />
                 </InputGroup>

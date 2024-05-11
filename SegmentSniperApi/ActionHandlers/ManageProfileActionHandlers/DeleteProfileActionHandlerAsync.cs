@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Services.Admin;
 using SegmentSniper.Services.ManageProfile;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
 {
@@ -19,11 +20,17 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         public async Task<DeleteProfileAsyncRequest.Response> HandleAsync(DeleteProfileAsyncRequest request)
         {
             ValidateRequest(request);
-            var result = false;
-            var stravaTokenWasDeleted = await _deleteStravaToken.ExecuteAsync(new DeleteStravaTokenContract(request.UserId));
+            
+            try
+            {
+                var stravaTokenWasDeleted = await _deleteStravaToken.ExecuteAsync(new DeleteStravaTokenContract(request.UserId));
+            }
+            catch (Exception ex) { }
+
+
             var userWasDeleted = await _removeUser.ExecuteAsync(new RemoveUserContract(request.UserId));
 
-            return new DeleteProfileAsyncRequest.Response(stravaTokenWasDeleted.Success && userWasDeleted.Success);
+            return new DeleteProfileAsyncRequest.Response( userWasDeleted.Success);
         }
 
         private void ValidateRequest(DeleteProfileAsyncRequest request)

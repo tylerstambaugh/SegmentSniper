@@ -7,6 +7,13 @@
   height: 100%;
 }
 
+
+.deleteAccountButton {
+  background-color: red;
+  margin: 1em;
+  border: 1px solid black;
+}
+
 .imageBackground {
   position: relative;
   
@@ -46,10 +53,4 @@
 .editProfileFaButton {
   height: 30px;
   width: 30px;
-}
-
-.deleteAccountButton {
-  background-color: red;
-  margin: 1em;
-  ;
 }

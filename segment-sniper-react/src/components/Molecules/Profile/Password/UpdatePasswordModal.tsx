@@ -10,10 +10,8 @@ import {
 
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
-import {  useState } from "react";
+import { useState } from "react";
 import styles from "../Password/UpdatePasswordModal.module.scss";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useHandleUpdatePassword from "../../../../hooks/Api/Profile/Handlers/useHandleUpdatePassword";
 
 interface UpdatePasswordForm {
@@ -129,13 +127,18 @@ const UpdatePasswordModal = ({
                         }}
                         className={`${styles.currentPasswordInput}`}
                       />
-                      <Button variant="third">
-                        <FontAwesomeIcon
-                          icon={currentPasswordVisible ? faEyeSlash : faEye}
+                      <div className="input-group-append">
+                        <div
+                          className="password-toggle-icon input-group-text"
                           onClick={toggleCurrentPasswordVisibility}
-                          className="password-toggle"
-                        />
-                      </Button>
+                        >
+                          <i
+                            className={`bi bi-eye${
+                              currentPasswordVisible ? "" : "-slash"
+                            }`}
+                          />
+                        </div>
+                      </div>
                     </InputGroup>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.currentPassword as FormikErrors<string>}
@@ -159,13 +162,18 @@ const UpdatePasswordModal = ({
                         }}
                         className={`${styles.newPasswordInput}`}
                       />
-                      <Button variant="third">
-                        <FontAwesomeIcon
-                          icon={newPasswordVisible ? faEyeSlash : faEye}
+                      <div className="input-group-append">
+                        <div
+                          className="password-toggle-icon input-group-text"
                           onClick={toggleNewPasswordVisibility}
-                          className="password-toggle"
-                        />
-                      </Button>
+                        >
+                          <i
+                            className={`bi bi-eye${
+                              newPasswordVisible ? "" : "-slash"
+                            }`}
+                          />
+                        </div>
+                      </div>
                     </InputGroup>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.newPassword as FormikErrors<string>}
@@ -194,13 +202,18 @@ const UpdatePasswordModal = ({
                         }}
                         className={`${styles.confirmNewPasswordInput}`}
                       />
-                      <Button variant="third">
-                        <FontAwesomeIcon
-                          icon={confirmPasswordVisible ? faEyeSlash : faEye}
+                      <div className="input-group-append">
+                        <div
+                          className="password-toggle-icon input-group-text"
                           onClick={toggleConfirmPasswordVisibility}
-                          className="password-toggle"
-                        />
-                      </Button>
+                        >
+                          <i
+                            className={`bi bi-eye${
+                              confirmPasswordVisible ? "" : "-slash"
+                            }`}
+                          />
+                        </div>
+                      </div>
                     </InputGroup>
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.confirmNewPassword as FormikErrors<string>}
