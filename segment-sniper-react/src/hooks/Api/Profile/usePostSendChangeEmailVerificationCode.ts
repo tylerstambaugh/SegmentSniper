@@ -9,16 +9,17 @@ import useTokenDataStore from "../../../stores/useTokenStore";
 
 export const usePostSendChangeEmailVerificationCode = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
-  const [setProfileData] = useProfileStore((state) => [state.setProfileData]);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: sendChangeEmailVerificationCodeRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<sendChangeEmailVerificationCodeRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
     };
 
     await postSendChangeEmailVerificationCode(contract);

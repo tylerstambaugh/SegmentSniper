@@ -162,6 +162,9 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
+        [HttpDelete]
+        [Authorize]
+        [Route("DeleteAccount")]
         public async Task<IActionResult> DeleteAccount()
         {
             try

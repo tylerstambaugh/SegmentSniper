@@ -26,7 +26,7 @@ export const usePatchUpdateUserFirstName = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: UpdateUserFirstNameRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<UpdateUserFirstNameRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
       token: token!,

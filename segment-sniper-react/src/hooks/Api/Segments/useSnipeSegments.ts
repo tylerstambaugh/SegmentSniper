@@ -21,14 +21,16 @@ export const useSnipeSegments = () => {
     state.setSnipeSegment,
     state.setSnipeSegmentsList,
   ]);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: SnipeSegmentsRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<SnipeSegmentsRequest> = {
       baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
       request: request,
     };
 

@@ -16,7 +16,7 @@ export const usePostLogin = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: LoginRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<LoginRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
     };

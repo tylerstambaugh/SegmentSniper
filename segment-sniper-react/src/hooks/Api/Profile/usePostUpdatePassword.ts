@@ -13,7 +13,7 @@ export const usePostUpdatePassword = () => {
     (state) => state.tokenData?.accessToken
   );
   async function trigger(request: UpdatePasswordRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<UpdatePasswordRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
       token: accessToken!,

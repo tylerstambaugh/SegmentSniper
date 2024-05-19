@@ -8,18 +8,19 @@ import postVerifyEmailConfirmationCode, {
   VerifyEmailConfirmationCodeRequest,
   VerifyEmailConfirmationCodeResponse,
 } from "../../../services/Api/Auth/postVerifyEmailConfirmationCode";
-import useUserStore from "../../../stores/useUserStore";
 
 export const usePostCheckEmailVerificationCode = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
   const abortController = new AbortController();
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: VerifyEmailConfirmationCodeRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<VerifyEmailConfirmationCodeRequest> = {
       baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
       abortController: abortController,
       request: request,
     };

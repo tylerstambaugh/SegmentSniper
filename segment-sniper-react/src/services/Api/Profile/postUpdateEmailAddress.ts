@@ -9,7 +9,9 @@ export type UpdateEmailAddressRequest = {
   verificationCode: number;
 };
 
-export default async function postUpdateEmailAddress(contract: ApiContract) {
+export default async function postUpdateEmailAddress(
+  contract: ApiContract<UpdateEmailAddressRequest>
+) {
   try {
     const response = apiPost<UpdateEmailAddressRequest, ProfileResponse>(
       `${contract.baseUrl}/Profile/UpdateEmailAddress`,
