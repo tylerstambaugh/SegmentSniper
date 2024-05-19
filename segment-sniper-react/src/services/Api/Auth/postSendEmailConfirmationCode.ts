@@ -11,7 +11,9 @@ export type SendEmailConfirmationCodeResponse = {
   success: boolean;
 };
 
-export default async function postSendEmailConfirmation(contract: ApiContract) {
+export default async function postSendEmailConfirmation(
+  contract: ApiContract<SendEmailConfirmationCodeRequest>
+) {
   try {
     const response = apiPost<
       SendEmailConfirmationCodeRequest,

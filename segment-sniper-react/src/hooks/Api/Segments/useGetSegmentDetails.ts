@@ -10,7 +10,9 @@ import useSegmentDetailsStore from "../../../stores/useSegmentDetailsStore";
 
 export const useGetSegmentDetails = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
   const addSegmentDetails = useSegmentDetailsStore(
     (state) => state.addSegmentDetails
   );
@@ -18,9 +20,9 @@ export const useGetSegmentDetails = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: SegmentDetailsRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<SegmentDetailsRequest> = {
       baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
       request: request,
     };
 

@@ -8,14 +8,16 @@ import postStarSegment, {
 
 export const usePostStarSegment = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
 
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: StarSegmentRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<StarSegmentRequest> = {
       baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
       request: request,
     };
 

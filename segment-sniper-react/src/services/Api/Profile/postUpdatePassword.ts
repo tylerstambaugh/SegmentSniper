@@ -11,7 +11,9 @@ export type UpdatePasswordResponse = {
   success: boolean;
 };
 
-export default async function postUpdatePassword(contract: ApiContract) {
+export default async function postUpdatePassword(
+  contract: ApiContract<UpdatePasswordRequest>
+) {
   try {
     const response = apiPost<UpdatePasswordRequest, UpdatePasswordResponse>(
       `${contract.baseUrl}/Profile/UpdatePassword`,

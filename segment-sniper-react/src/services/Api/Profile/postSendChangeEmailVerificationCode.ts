@@ -8,7 +8,7 @@ export type sendChangeEmailVerificationCodeRequest = {
 };
 
 export default async function postSendChangeEmailAddressVerificationCode(
-  contract: ApiContract
+  contract: ApiContract<sendChangeEmailVerificationCodeRequest>
 ) {
   try {
     const response = apiPost<

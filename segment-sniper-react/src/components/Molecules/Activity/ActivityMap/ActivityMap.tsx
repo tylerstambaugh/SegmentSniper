@@ -39,7 +39,7 @@ const ActivityMap: React.FC<ActivityMapProps> = React.memo((props) => {
 
   async function configureMap(map: google.maps.Map) {
     setGoogleMap(map);
-    if (!!props.startLatlng) {
+    if (props.startLatlng) {
       setPolylinePath(memoizedPolylinePath);
       setMapInitialized(true);
     }

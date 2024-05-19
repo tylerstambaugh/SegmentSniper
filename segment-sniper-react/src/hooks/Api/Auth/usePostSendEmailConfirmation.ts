@@ -10,14 +10,16 @@ import { useEffect } from "react";
 
 export const usePostSendEmailConfirmation = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const accessToken = useTokenDataStore(
+    (state) => state.tokenData?.accessToken
+  );
   const abortController = new AbortController();
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: SendEmailConfirmationCodeRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<SendEmailConfirmationCodeRequest> = {
       baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken!,
+      token: accessToken!,
       abortController: abortController,
       request: request,
     };

@@ -22,7 +22,7 @@ export const usePostUpdateEmailAddress = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
 
   async function trigger(request: UpdateEmailAddressRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<UpdateEmailAddressRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
       token: accessToken!,

@@ -7,7 +7,9 @@ export type UpdateUserFirstNameRequest = {
   firstName: string;
 };
 
-export default async function patchUpdateUserFistName(contract: ApiContract) {
+export default async function patchUpdateUserFistName(
+  contract: ApiContract<UpdateUserFirstNameRequest>
+) {
   try {
     const response = await apiPatch<
       UpdateUserFirstNameRequest,

@@ -15,14 +15,14 @@ export const usePostRegisterUser = () => {
   const [setUser] = useUserStore((state) => [state.setUser]);
 
   async function trigger(request: RegisterUserRequest) {
-    const contract: ApiContract = {
+    const contract: ApiContract<RegisterUserRequest> = {
       baseUrl: apiConfig!.baseUrl,
       request: request,
     };
 
     const response: RegisterUserResponse = await postRegisterUser(contract);
 
-    let registeredUser: User = {
+    const registeredUser: User = {
       id: response.id,
       firstName: response.firstName,
       emailAddress: response.emailAddress,
