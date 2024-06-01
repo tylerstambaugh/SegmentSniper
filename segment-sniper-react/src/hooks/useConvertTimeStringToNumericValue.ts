@@ -24,7 +24,7 @@ export const useConvertTimeStringToNumericValue = () => {
 
     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
-    let returnString =
+    const returnString =
       hours > 0
         ? `${hours}:${minutes}:${formattedSeconds}`
         : `${minutes}:${formattedSeconds}`;

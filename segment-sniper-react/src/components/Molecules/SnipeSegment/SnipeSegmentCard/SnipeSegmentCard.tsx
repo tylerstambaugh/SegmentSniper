@@ -80,11 +80,11 @@ const SnipeSegmentCard = ({
   }
 
   const myTime: string = convertTime.numericTimeToString(
-    snipeSegment.detailedSegmentEffort?.elapsedTime!
+    snipeSegment.detailedSegmentEffort?.elapsedTime ?? 9999
   );
 
   const myPrTime: string = convertTime.numericTimeToString(
-    snipeSegment.athleteSegmentStats?.prElapsedTime!
+    snipeSegment.athleteSegmentStats?.prElapsedTime ?? 9999
   );
 
   return (
