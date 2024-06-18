@@ -110,7 +110,7 @@ function ActivityListLookupForm() {
 
   useEffect(() => {
     if (handleActivitySearch.error !== null) {
-      let error = handleActivitySearch.error as Error;
+      const error = handleActivitySearch.error as Error;
       CustomToast({
         message: "Search failed",
         error: `Error: ${error.message}`,
@@ -154,12 +154,12 @@ function ActivityListLookupForm() {
     setValidated(false);
   };
 
-  const disableSearch = (): boolean => {
-    return (
-      !formik.values.activityName &&
-      (!formik.values.endDate || !formik.values.startDate)
-    );
-  };
+  // const disableSearch = (): boolean => {
+  //   return (
+  //     !formik.values.activityName &&
+  //     (!formik.values.endDate || !formik.values.startDate)
+  //   );
+  // };
 
   const handleHelpModalClose = () => setHelpModalShow(false);
   const handleHelpModalShow = () => setHelpModalShow(true);
