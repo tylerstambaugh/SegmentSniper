@@ -64,9 +64,7 @@ const ActivityDateSearch = ({
             <Form.Control
               type="date"
               value={endDate?.toISODate() ?? ""}
-              max={new Date(new Date().setDate(new Date().getDate() - 1))
-                .toISOString()
-                .slice(0, 10)}
+              max={new Date().toLocaleDateString('en-CA')}
               onChange={(e) => {
                 const newEndDate = DateTime.fromFormat(
                   e.target.value,

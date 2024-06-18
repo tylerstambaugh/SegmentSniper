@@ -1,5 +1,4 @@
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -15,7 +14,6 @@ import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../Activity/ActivityMap/ActivityMap";
 import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import styles from "./SnipeSegmentCard.module.scss";
 import { CustomToast } from "../../Toast/CustomToast";

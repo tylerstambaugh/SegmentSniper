@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import postLogin, {
   LoginRequest,
-  LoginResponse,
 } from "../../../services/Api/Auth/postLogin";
 import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
 import useTokenDataStore from "../../../stores/useTokenStore";
