@@ -10,7 +10,7 @@ import {
 
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../Password/UpdatePasswordModal.module.scss";
 import useHandleUpdatePassword from "../../../../hooks/Api/Profile/Handlers/useHandleUpdatePassword";
 
@@ -50,8 +50,8 @@ const UpdatePasswordModal = ({
       ),
     confirmNewPassword: yup
       .string()
-      .required("New password is required")
-      .typeError("New password must be a stirng")
+      .required("Password confirmation is required")
+      .typeError("Password confirmation must be a string")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{7,99}$/,
         "Must contain at least 7 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number"
@@ -89,6 +89,12 @@ const UpdatePasswordModal = ({
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible((prevVisible) => !prevVisible);
   };
+
+useEffect(() => {
+ console.log('error', formik.errors);
+ 
+}, [formik.errors])
+
 
   return (
     <Modal show={showUpdatePasswordModal}>
@@ -140,8 +146,8 @@ const UpdatePasswordModal = ({
                         </div>
                       </div>
                     </InputGroup>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.currentPassword as FormikErrors<string>}
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {formik.errors.currentPassword}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -175,8 +181,8 @@ const UpdatePasswordModal = ({
                         </div>
                       </div>
                     </InputGroup>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.newPassword as FormikErrors<string>}
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {formik.errors.newPassword}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -215,8 +221,8 @@ const UpdatePasswordModal = ({
                         </div>
                       </div>
                     </InputGroup>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.confirmNewPassword as FormikErrors<string>}
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {formik.errors.confirmNewPassword}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
