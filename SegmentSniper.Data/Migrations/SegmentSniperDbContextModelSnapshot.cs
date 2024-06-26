@@ -402,6 +402,83 @@ namespace SegmentSniper.Data.Migrations
                     b.ToTable("ChangeEmailVerificationCodes");
                 });
 
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentEffort", b =>
+                {
+                    b.Property<int>("SegmentEffortId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SegmentEffortId"));
+
+                    b.Property<int?>("AthleteCount")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("AverageGrade")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("AverageHeartRate")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("AverageSpeed")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("EffortCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ElapsedTime")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("ElevationGain")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("KomTime")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("MaximumGrade")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("MaximumSpeed")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PrRank")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QomTime")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Rank")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SegmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SegmentPrTime")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StarCount")
+                        .HasColumnType("int");
+
+                    b.Property<long>("StravaSegmentEffortId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StravaSegmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SegmentEffortId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ML_SegmentEfforts");
+                });
+
             modelBuilder.Entity("SegmentSniper.Data.Entities.StravaToken.StravaApiToken", b =>
                 {
                     b.Property<int>("Id")
@@ -482,6 +559,17 @@ namespace SegmentSniper.Data.Migrations
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.ManageProfile.ChangeEmailVerificationCode", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentEffort", b =>
                 {
                     b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
                         .WithMany()

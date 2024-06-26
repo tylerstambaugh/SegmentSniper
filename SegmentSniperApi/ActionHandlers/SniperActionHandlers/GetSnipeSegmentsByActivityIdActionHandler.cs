@@ -52,9 +52,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         DetailedSegment detailedSegment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(detailedSegmentResponse.DetailedSegmentApiModel);
 
                         var snipeSegment = CreateSnipeSegmentFromDetails(dse, detailedSegment);
+                    //call to write segments to ML_SegmentEfforts
                         snipeSegment.ActivityId = activity.ActivityId;
                         snipeSegments.Add(snipeSegment);
                     }
+
 
                     return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(200, new GetSnipeSegmentsByActivityIdRequest.Response(snipeSegments));
                 }
@@ -116,6 +118,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             return snipeSegment;
         }
+
 
         private XomsTimes GetXomTimeFromStrings(Xoms xoms)
         {

@@ -36,7 +36,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     //get detailed activity by Id
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 
-                    //build list of each detailed segment efforts from detailed activity
+                    //build list of each detailed segment effort from detailed activity
                     List<DetailedSegmentEffort> segmentEfforts = new List<DetailedSegmentEffort>();
                     foreach (DetailedSegmentEffortApiModel dse in response.DetailedActivity.SegmentEfforts)
                     {
