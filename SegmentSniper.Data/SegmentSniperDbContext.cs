@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Data.Entities.ManageProfile;
+using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
 
 namespace SegmentSniper.Data
@@ -18,6 +19,7 @@ namespace SegmentSniper.Data
         public virtual DbSet<ApplicationUser> Users { get; set; }
         public virtual DbSet<StravaApiToken> StravaTokens { get; set; }
         public virtual DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
+        public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
