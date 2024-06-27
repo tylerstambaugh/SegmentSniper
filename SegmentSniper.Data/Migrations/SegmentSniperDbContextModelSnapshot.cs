@@ -462,11 +462,13 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<int?>("StarCount")
                         .HasColumnType("int");
 
-                    b.Property<long>("StravaSegmentEffortId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("StravaSegmentEffortId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("StravaSegmentId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("StravaSegmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

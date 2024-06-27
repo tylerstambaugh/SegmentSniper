@@ -17,5 +17,7 @@ namespace SegmentSniper.Data
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
 
         int SaveChanges();
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
