@@ -11,8 +11,8 @@ namespace SegmentSniper.Data.Entities.Segments
         [ForeignKey("Users")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public long StravaSegmentEffortId { get; set; }
-        public long StravaSegmentId { get; set; }
+        public string StravaSegmentEffortId { get; set; }
+        public string StravaSegmentId { get; set; }
         public string SegmentName { get; set; }
         public int ElapsedTime { get; set; }
         public int SegmentPrTime { get; set; }        

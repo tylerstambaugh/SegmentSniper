@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
@@ -20,6 +22,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
+        private string _userId;
 
 
         public GetSnipeSegmentsByActivityIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
@@ -32,8 +35,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         public async Task<ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>> HandleAsync(GetSnipeSegmentsByActivityIdRequest request)
         {
             ValidateRequest(request);
+            _userId = request.UserId;
 
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.StravaTokens.Where(t => t.UserId == _userId).FirstOrDefault();
             if (token != null)
             {
                 try
@@ -45,6 +49,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(activityResponse.DetailedActivity);
 
                     List<SnipeSegment> snipeSegments = new List<SnipeSegment>();
+                    List<ML_SegmentEffort> MlSegmentEfforts = new List<ML_SegmentEffort>();
 
                     foreach (DetailedSegmentEffort dse in activity.SegmentEfforts)
                     {
@@ -52,9 +57,12 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         DetailedSegment detailedSegment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(detailedSegmentResponse.DetailedSegmentApiModel);
 
                         var snipeSegment = CreateSnipeSegmentFromDetails(dse, detailedSegment);
-                    //call to write segments to ML_SegmentEfforts
                         snipeSegment.ActivityId = activity.ActivityId;
                         snipeSegments.Add(snipeSegment);
+                        
+                        MlSegmentEfforts.Add(CreateMlSegmentEffort(dse, detailedSegment));
+
+                       await SaveMlSegmentEfforts(MlSegmentEfforts);
                     }
 
 
@@ -69,6 +77,49 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(500, null);
             }
+        }      
+
+        private ML_SegmentEffort CreateMlSegmentEffort(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
+        {
+            return new ML_SegmentEffort
+            {
+                UserId = _userId,
+                StravaSegmentEffortId = dse.SegmentEffortId,
+                StravaSegmentId = detailedSegment.SegmentId,
+                SegmentName = detailedSegment.Name,
+                ElapsedTime = dse.ElapsedTime,
+                SegmentPrTime = detailedSegment.AthleteSegmentStats.PrElapsedTime,
+                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
+                AverageSpeed = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2) /( dse.ElapsedTime * 60 * 60),
+                ElevationGain = detailedSegment.TotalElevationGain,
+                AverageGrade = detailedSegment.AverageGrade,
+                MaximumGrade = detailedSegment.MaximumGrade,
+                AverageHeartRate = dse.AverageHeartrate,
+                KomTime = GetTimeFromString(detailedSegment.Xoms.Kom),
+                QomTime = GetTimeFromString(detailedSegment.Xoms.Qom),
+                AthleteCount = detailedSegment.AthleteCount,
+                EffortCount = detailedSegment.EffortCount,
+                StarCount = detailedSegment.StarCount,
+                PrRank = dse.PrRank,                
+            };
+        }
+
+
+        private async Task SaveMlSegmentEfforts(List<ML_SegmentEffort> mlSegmentEfforts)
+        {
+                var existingIds = await _context.ML_SegmentEfforts
+                                               .Select(e => e.StravaSegmentEffortId)
+                                               .ToListAsync();
+
+                // Step 2: Filter the list to exclude existing entities
+                var newEntities = mlSegmentEfforts.Where(e => !existingIds.Contains(e.StravaSegmentEffortId)).ToList();
+
+                if (newEntities.Any())
+                {
+                _context.ML_SegmentEfforts.AddRange(newEntities);
+                    await _context.SaveChangesAsync();
+                }
+            
         }
 
         private SnipeSegment CreateSnipeSegmentFromDetails(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
