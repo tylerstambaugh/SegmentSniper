@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card } from "react-bootstrap";
+import {  Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import useUserStore from "../../../stores/useUserStore";
@@ -26,6 +26,21 @@ export default function MainMenu() {
                       style={{ width: "155px" }}
                     >
                       Segment Sniper
+                    </Link>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    md={12}
+                    className="d-flex p-2 mb-2 justify-content-center"
+                  >
+                    <Link
+                      to={`/${AppRoutes.SegmentML}`}
+                      className="primary-rounded-button text0decoration-none
+                      "
+                      style={{ width: "155px" }}
+                    >
+                      VooDoo Segment Analyzer
                     </Link>
                   </Col>
                 </Row>

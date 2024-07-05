@@ -12,6 +12,7 @@ export enum AppRoutes {
   ConnectWithStravaSuccess = "connect-with-strava-success",
   ConnectWithStravaError = "connect-with-strava-error",
   Snipe = "snipe",
+  SegmentML = "segmentML",
   Profile = "profile",
   Admin = "admin",
   About = "about",
