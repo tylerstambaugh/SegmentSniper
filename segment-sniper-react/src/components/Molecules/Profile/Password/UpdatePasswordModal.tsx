@@ -8,7 +8,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
-import { FormikErrors, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import styles from "../Password/UpdatePasswordModal.module.scss";
