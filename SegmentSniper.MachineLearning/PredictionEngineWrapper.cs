@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.MachineLearning
 {
-    public class Class1
+    public class PredictionEngineWrapper
     {
 
     }
