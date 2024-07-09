@@ -2,6 +2,7 @@
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
+using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Services.Admin;
@@ -52,6 +53,10 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IRequestChangeEmailVerificationCodeAsyncActionHandler, RequestChangeEmailVerificationCodeAsyncActionHandler>();
             services.AddScoped<IRevokeStravaTokenAsyncActionHandler, RevokeStravaTokenAsyncActionHandler>();
             services.AddScoped<IDeleteProfileActionHandlerAsync, DeleteProfileActionHandlerAsync>();
+
+            //segment prediction action handlers
+            services.AddScoped<ISegmentPredictionActionHandler, SegmentPredictionActionHandler>();
+
 
             ////admin action handlers
             services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
