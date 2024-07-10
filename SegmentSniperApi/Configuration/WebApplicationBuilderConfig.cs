@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SegmentSniper.Api.Logging;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using System.Net;
@@ -62,6 +63,13 @@ namespace SegmentSniper.Api.Configuration
 
                 // Automatic token cleanup (default is true)
                 options.EnableTokenCleanup = true;
+            });
+
+
+            //configure logging
+            builder.Services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddLog4Net("log4net.config");
             });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();

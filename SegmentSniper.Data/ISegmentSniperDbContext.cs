@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data.Entities;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
@@ -15,6 +16,7 @@ namespace SegmentSniper.Data
         DbSet<StravaApiToken> StravaTokens { get; set; }
         DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
+        DbSet<LogEntry> LogEntries { get; set; }
 
         int SaveChanges();
 
