@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Configuration;
+using SegmentSniper.Data;
 using System.Net;
 using System.Reflection;
 
@@ -14,52 +15,66 @@ var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-
-app.UseRouting();
-app.UseCors("AllowReactApp");
-
-app.UseIdentityServer();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseSwagger();
-
-app.UseSwaggerUI();
-
-app.MapControllers();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler(
-     options =>
-     {
-         options.Run(
-         async context =>
-         {
-             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-             context.Response.ContentType = "text/html";
-             var ex = context.Features.Get<IExceptionHandlerFeature>();
-             if (ex != null)
-             {
-                 var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
-                 await context.Response.WriteAsync(err).ConfigureAwait(false);
-             }
-         });
-     }
-    );
-}
+// Configure the application
+Configure(app);
 
 await SeedData.Initialize(app.Services, configuration);
 app.Run();
 
+void Configure(WebApplication app)
+{
+    var env = app.Environment;
+    // Create a scope to resolve the SegmentSniperDbContext
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+
+        // Ensure database is created
+        context.Database.EnsureCreated();
+    }
+
+
+    // Configure the HTTP request pipeline
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+    app.UseRouting();
+    app.UseCors("AllowReactApp");
+
+    app.UseIdentityServer();
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    if (env.IsDevelopment())
+    {
+        app.UseExceptionHandler(
+            options =>
+            {
+                options.Run(async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "text/html";
+                    var ex = context.Features.Get<IExceptionHandlerFeature>();
+                    if (ex != null)
+                    {
+                        var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
+                        await context.Response.WriteAsync(err).ConfigureAwait(false);
+                    }
+                });
+            }
+        );
+    }
+}

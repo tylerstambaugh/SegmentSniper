@@ -5,6 +5,7 @@ using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
+using SegmentSniper.Api.Logging;
 using SegmentSniper.Services.Admin;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
@@ -25,6 +26,11 @@ namespace SegmentSniper.Api.Configuration
     {
         public static void RegisterServices(IServiceCollection services)
         {
+
+            //logging 
+
+            services.AddScoped<EfCoreAppender>();
+
             // auth action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
