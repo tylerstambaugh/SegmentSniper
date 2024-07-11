@@ -29,7 +29,7 @@ namespace SegmentSniper.Api.Configuration
 
             //logging 
 
-            services.AddScoped<EfCoreAppender>();
+           // services.AddScoped<EfCoreAppender>();
 
             // auth action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
