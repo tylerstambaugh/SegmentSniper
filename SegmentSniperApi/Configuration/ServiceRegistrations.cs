@@ -26,11 +26,6 @@ namespace SegmentSniper.Api.Configuration
     {
         public static void RegisterServices(IServiceCollection services)
         {
-
-            //logging 
-
-           // services.AddScoped<EfCoreAppender>();
-
             // auth action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();

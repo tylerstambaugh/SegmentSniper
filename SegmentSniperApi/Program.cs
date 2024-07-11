@@ -1,10 +1,7 @@
-using log4net;
-using log4net.Config;
-using log4net.Repository;
-using log4net.Repository.Hierarchy;
+
+using log4net.Util;
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Configuration;
-using SegmentSniper.Api.Logging;
 using SegmentSniper.Data;
 using System.Net;
 using System.Reflection;
@@ -19,24 +16,6 @@ var configuration = new ConfigurationBuilder()
 var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
-
-// Enable log4net internal debugging
-log4net.Util.LogLog.InternalDebugging = true;
-
-// Configure log4net
-var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-
-// Create a scope to resolve the EfCoreAppender
-using (var scope = app.Services.CreateScope())
-{
-    var efCoreAppender = scope.ServiceProvider.GetRequiredService<EfCoreAppender>();
-
-    // Add the EfCoreAppender to the logger repository
-    var hierarchy = (Hierarchy)logRepository;
-    hierarchy.Root.AddAppender(efCoreAppender);
-    hierarchy.Configured = true;
-}
 
 // Configure the application
 Configure(app, app.Environment, app.Services.GetRequiredService<Microsoft.Extensions.Logging.ILoggerFactory>());
@@ -56,16 +35,11 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         context.Database.EnsureCreated();
     }
 
-    loggerFactory.AddLog4Net("log4net.config");
-
-    
-    var testLogger = loggerFactory.CreateLogger("test Logger");
-
-
-    testLogger.LogInformation("This is a test log message.");
+    // Use log4net for logging
+    loggerFactory.AddLog4Net();
 
     // Configure the HTTP request pipeline
-    
+
     if (env.IsDevelopment())
     {
         app.UseDeveloperExceptionPage();
