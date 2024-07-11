@@ -9,26 +9,38 @@ namespace SegmentSniper.Api.Logging
     public class EfCoreAppender : AppenderSkeleton
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public EfCoreAppender(IServiceProvider serviceProvider)
+        public EfCoreAppender(IServiceProvider serviceProvider, ISegmentSniperDbContext segmentSniperDbContext)
         {
             _serviceProvider = serviceProvider;
+            _segmentSniperDbContext = segmentSniperDbContext;
         }
 
         protected override void Append(LoggingEvent loggingEvent)
         {
+            var logEntry = new LogEntry
+            {
+                Message = loggingEvent.RenderedMessage,
+                LogLevel = loggingEvent.Level.Name,
+                Timestamp = loggingEvent.TimeStamp
+            };
+            _segmentSniperDbContext.LogEntries.Add(logEntry);
+            _segmentSniperDbContext.SaveChanges();
+        
+
             try
             {
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
-                    var logEntry = new LogEntry
+                    var logEntry2 = new LogEntry
                     {
                         Message = loggingEvent.RenderedMessage,
                         LogLevel = loggingEvent.Level.Name,
                         Timestamp = loggingEvent.TimeStamp
                     };
-                    context.LogEntries.Add(logEntry);
+                    context.LogEntries.Add(logEntry2);
                     context.SaveChanges();
                 }
 

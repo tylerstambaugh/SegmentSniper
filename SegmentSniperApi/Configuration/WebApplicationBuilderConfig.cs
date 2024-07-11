@@ -1,20 +1,20 @@
 ﻿using Azure.Identity;
-//using Microsoft.AspNetCore.Authentication;
 using Duende.IdentityServer.EntityFramework.Options;
-using log4net.Repository.Hierarchy;
 using log4net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SegmentSniper.Api.Logging;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using log4net.Config;
+using log4net.Repository;
+using log4net.Util;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -67,19 +67,29 @@ namespace SegmentSniper.Api.Configuration
                 options.EnableTokenCleanup = true;
             });
 
-            //configure logging
-            //builder.Services.AddLogging(loggingBuilder =>
-            //{
-            //    loggingBuilder.AddLog4Net("log4net.config");
-            //    loggingBuilder.AddConsole();
-            //});
 
-            builder.Services.AddSingleton<EfCoreAppender>(sp =>
-                 new EfCoreAppender(sp));
 
+            #region Logging
+            // Redirect log4net internal debug output to a file
+            var logFilePath = Path.Combine(Directory.GetCurrentDirectory(), "log4net-internal-debug.log");
+            var logFileWriter = new StreamWriter(logFilePath) { AutoFlush = true };
+            Console.SetOut(logFileWriter);
+
+
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            // Verify log4net configuration loaded
+            LogManager.GetLogger(typeof(Program)).Debug("log4net configuration loaded");
+
+            UpdateLog4NetConnectionString(connectionString, logRepository);
+
+            #endregion
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+
+            #region Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
@@ -171,7 +181,10 @@ namespace SegmentSniper.Api.Configuration
                         }
                     };
                 });
+            #endregion
 
+
+            #region API
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowReactApp",
@@ -227,6 +240,8 @@ namespace SegmentSniper.Api.Configuration
                 configuration.RootPath = "SegmentSniper.React/dist";
             });
 
+            #endregion
+
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
@@ -234,6 +249,24 @@ namespace SegmentSniper.Api.Configuration
             ServiceRegistrations.RegisterServices(builder.Services);
 
             return builder;
+        }
+
+        private static void UpdateLog4NetConnectionString(string connectionString, ILoggerRepository logRepository)
+        {
+            var appenders = logRepository.GetAppenders();
+            log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string to: {connectionString}");
+
+
+            foreach (var appender in appenders)
+            {
+                if (appender is log4net.Appender.AdoNetAppender adoNetAppender)
+                {
+                    log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string for appender: {adoNetAppender.Name}");
+                    adoNetAppender.ConnectionString = connectionString;
+                    adoNetAppender.ActivateOptions(); // Required to apply the new connection string
+                    log4net.Util.LogLog.Debug(typeof(Program), $"Connection string updated for appender: {adoNetAppender.Name}");
+                }
+            }
         }
     }
 }

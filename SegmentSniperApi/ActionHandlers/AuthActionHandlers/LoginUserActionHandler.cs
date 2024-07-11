@@ -1,6 +1,6 @@
 ﻿using IdentityModel;
+using log4net;
 using Microsoft.AspNetCore.Identity;
-using SegmentSniper.Api.Logging;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
@@ -20,8 +20,8 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         private readonly IGenerateRefreshToken _generateRefreshToken;
         private readonly IGetUserRoles _getUserRoles;
         private readonly IGetStravaTokenForUser _getStravaTokenForUser;
-        private readonly ILogger<LoginUserActionHandler> _logger;
-        
+        private static readonly ILog log = LogManager.GetLogger(typeof(LoginUserActionHandler));
+
 
         public LoginUserActionHandler(IAuthenticateUser authenticateUserService, 
             ICreateToken createTokenService, 
@@ -29,8 +29,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             IConfiguration configuration, 
             IGenerateRefreshToken generateRefreshToken, 
             IGetUserRoles getUserRoles, 
-            IGetStravaTokenForUser getStravaTokenForUser,
-            ILogger<LoginUserActionHandler> logger)
+            IGetStravaTokenForUser getStravaTokenForUser)
         {
             _authenticateUserService = authenticateUserService;
             _createToken = createTokenService;
@@ -39,7 +38,6 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
             _generateRefreshToken = generateRefreshToken;
             _getUserRoles = getUserRoles;
             _getStravaTokenForUser = getStravaTokenForUser;
-            _logger = logger;
         }
 
         public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
@@ -96,9 +94,8 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         Roles = user.Roles,
                     };
 
-                    var loggerType = _logger.GetType();
 
-                    _logger.LogInformation($"{authenticatedUser.Email} successfully logged in");
+                   log.Info($"{authenticatedUser.Email} successfully logged in");
                     
 
                     return new LoginUserRequest.Response
