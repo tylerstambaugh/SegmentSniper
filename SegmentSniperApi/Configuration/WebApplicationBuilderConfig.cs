@@ -1,6 +1,8 @@
 ﻿using Azure.Identity;
 //using Microsoft.AspNetCore.Authentication;
 using Duende.IdentityServer.EntityFramework.Options;
+using log4net.Repository.Hierarchy;
+using log4net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -65,12 +67,16 @@ namespace SegmentSniper.Api.Configuration
                 options.EnableTokenCleanup = true;
             });
 
-
             //configure logging
-            builder.Services.AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddLog4Net("log4net.config");
-            });
+            //builder.Services.AddLogging(loggingBuilder =>
+            //{
+            //    loggingBuilder.AddLog4Net("log4net.config");
+            //    loggingBuilder.AddConsole();
+            //});
+
+            builder.Services.AddSingleton<EfCoreAppender>(sp =>
+                 new EfCoreAppender(sp));
+
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
