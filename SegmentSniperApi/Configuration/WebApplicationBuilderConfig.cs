@@ -256,6 +256,11 @@ namespace SegmentSniper.Api.Configuration
             var appenders = logRepository.GetAppenders();
             log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string to: {connectionString}");
 
+           
+            foreach (var appender in appenders)
+            {
+                log4net.Util.LogLog.Debug(typeof(Program), $"Appender: {appender.Name}, Type: {appender.GetType().Name}");
+            }
 
             foreach (var appender in appenders)
             {
@@ -265,6 +270,7 @@ namespace SegmentSniper.Api.Configuration
                     adoNetAppender.ConnectionString = connectionString;
                     adoNetAppender.ActivateOptions(); // Required to apply the new connection string
                     log4net.Util.LogLog.Debug(typeof(Program), $"Connection string updated for appender: {adoNetAppender.Name}");
+                    Console.WriteLine($"Updated AdoNetAppender connection string to: {adoNetAppender.ConnectionString}");
                 }
             }
         }

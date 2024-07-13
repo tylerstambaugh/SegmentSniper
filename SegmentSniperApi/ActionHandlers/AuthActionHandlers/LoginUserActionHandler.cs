@@ -8,6 +8,7 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -20,7 +21,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         private readonly IGenerateRefreshToken _generateRefreshToken;
         private readonly IGetUserRoles _getUserRoles;
         private readonly IGetStravaTokenForUser _getStravaTokenForUser;
-        private static readonly ILog log = LogManager.GetLogger(typeof(LoginUserActionHandler));
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 
         public LoginUserActionHandler(IAuthenticateUser authenticateUserService, 

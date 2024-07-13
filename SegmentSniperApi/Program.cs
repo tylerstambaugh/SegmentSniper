@@ -1,4 +1,6 @@
 
+using log4net.Config;
+using log4net;
 using log4net.Util;
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Configuration;
@@ -34,6 +36,9 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         // Ensure database is created
         context.Database.EnsureCreated();
     }
+
+    var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+    XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
     // Use log4net for logging
     loggerFactory.AddLog4Net();
@@ -82,4 +87,6 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
             }
         );
     }
+
 }
+
