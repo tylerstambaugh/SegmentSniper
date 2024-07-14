@@ -253,6 +253,9 @@ namespace SegmentSniper.Api.Configuration
 
         private static void UpdateLog4NetConnectionString(string connectionString, ILoggerRepository logRepository)
         {
+
+            var resolvedConnectionString = connectionString.Replace("|DataDirectory|", AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString() ?? string.Empty);
+            Console.WriteLine($"Resolved connection string: {resolvedConnectionString}");
             var appenders = logRepository.GetAppenders();
             log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string to: {connectionString}");
 
@@ -273,6 +276,8 @@ namespace SegmentSniper.Api.Configuration
                     Console.WriteLine($"Updated AdoNetAppender connection string to: {adoNetAppender.ConnectionString}");
                 }
             }
+
+            XmlConfigurator.Configure(logRepository);
         }
     }
 }
