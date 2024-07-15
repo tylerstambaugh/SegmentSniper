@@ -1,6 +1,5 @@
 ﻿using Azure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
-using log4net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +11,6 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using log4net.Config;
-using log4net.Repository;
-using log4net.Util;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -32,7 +28,7 @@ namespace SegmentSniper.Api.Configuration
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
                 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
-                builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);                
+                builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
                 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
@@ -67,24 +63,6 @@ namespace SegmentSniper.Api.Configuration
                 options.EnableTokenCleanup = true;
             });
 
-
-
-            #region Logging
-            // Redirect log4net internal debug output to a file
-            var logFilePath = Path.Combine(Directory.GetCurrentDirectory(), "log4net-internal-debug.log");
-            var logFileWriter = new StreamWriter(logFilePath) { AutoFlush = true };
-            Console.SetOut(logFileWriter);
-
-
-            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-
-            // Verify log4net configuration loaded
-            LogManager.GetLogger(typeof(Program)).Debug("log4net configuration loaded");
-
-            UpdateLog4NetConnectionString(connectionString, logRepository);
-
-            #endregion
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -251,33 +229,5 @@ namespace SegmentSniper.Api.Configuration
             return builder;
         }
 
-        private static void UpdateLog4NetConnectionString(string connectionString, ILoggerRepository logRepository)
-        {
-
-            var resolvedConnectionString = connectionString.Replace("|DataDirectory|", AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString() ?? string.Empty);
-            Console.WriteLine($"Resolved connection string: {resolvedConnectionString}");
-            var appenders = logRepository.GetAppenders();
-            log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string to: {connectionString}");
-
-           
-            foreach (var appender in appenders)
-            {
-                log4net.Util.LogLog.Debug(typeof(Program), $"Appender: {appender.Name}, Type: {appender.GetType().Name}");
-            }
-
-            foreach (var appender in appenders)
-            {
-                if (appender is log4net.Appender.AdoNetAppender adoNetAppender)
-                {
-                    log4net.Util.LogLog.Debug(typeof(Program), $"Updating connection string for appender: {adoNetAppender.Name}");
-                    adoNetAppender.ConnectionString = connectionString;
-                    adoNetAppender.ActivateOptions(); // Required to apply the new connection string
-                    log4net.Util.LogLog.Debug(typeof(Program), $"Connection string updated for appender: {adoNetAppender.Name}");
-                    Console.WriteLine($"Updated AdoNetAppender connection string to: {adoNetAppender.ConnectionString}");
-                }
-            }
-
-            XmlConfigurator.Configure(logRepository);
-        }
     }
 }
