@@ -1,5 +1,4 @@
 ﻿using IdentityModel;
-using log4net;
 using Microsoft.AspNetCore.Identity;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth;
@@ -8,7 +7,6 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -21,15 +19,14 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         private readonly IGenerateRefreshToken _generateRefreshToken;
         private readonly IGetUserRoles _getUserRoles;
         private readonly IGetStravaTokenForUser _getStravaTokenForUser;
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 
-        public LoginUserActionHandler(IAuthenticateUser authenticateUserService, 
-            ICreateToken createTokenService, 
-            UserManager<ApplicationUser> userManager, 
-            IConfiguration configuration, 
-            IGenerateRefreshToken generateRefreshToken, 
-            IGetUserRoles getUserRoles, 
+        public LoginUserActionHandler(IAuthenticateUser authenticateUserService,
+            ICreateToken createTokenService,
+            UserManager<ApplicationUser> userManager,
+            IConfiguration configuration,
+            IGenerateRefreshToken generateRefreshToken,
+            IGetUserRoles getUserRoles,
             IGetStravaTokenForUser getStravaTokenForUser)
         {
             _authenticateUserService = authenticateUserService;
@@ -81,7 +78,7 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         Expiration = token.ValidTo
                     };
 
-                   var userStravaToken = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken;
+                    var userStravaToken = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken;
 
                     var hasStravaTokenData = userStravaToken != null && userStravaToken.ExpiresAt < DateTime.Now.ToEpochTime();
 
@@ -94,10 +91,6 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         VerifiedEmail = authenticatedUser.EmailConfirmed,
                         Roles = user.Roles,
                     };
-
-
-                   log.Info($"{authenticatedUser.Email} successfully logged in");
-                    
 
                     return new LoginUserRequest.Response
                     {
