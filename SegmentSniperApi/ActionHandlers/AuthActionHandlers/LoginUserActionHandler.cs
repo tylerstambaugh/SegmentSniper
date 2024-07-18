@@ -7,6 +7,7 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
+using Serilog;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -19,7 +20,6 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
         private readonly IGenerateRefreshToken _generateRefreshToken;
         private readonly IGetUserRoles _getUserRoles;
         private readonly IGetStravaTokenForUser _getStravaTokenForUser;
-
 
         public LoginUserActionHandler(IAuthenticateUser authenticateUserService,
             ICreateToken createTokenService,
@@ -92,11 +92,14 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                         Roles = user.Roles,
                     };
 
+                    Log.Debug($"User {authenticatedUser.Email} logged in");
+
                     return new LoginUserRequest.Response
                     {
                         UserData = userDto,
                         TokenData = tokenModel
                     };
+
                 }
                 else
                 {

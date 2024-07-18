@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -24,17 +26,22 @@ namespace SegmentSniper.Api.Configuration
 
             var connectionString = "";
 
+            // Setup configuration sources
+            builder.Configuration
+                .SetBasePath(builder.Environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+                .AddEnvironmentVariables();
+
             if (builder.Environment.IsDevelopment())
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
-                builder.Configuration.SetBasePath(builder.Environment.ContentRootPath).AddJsonFile(secretsFilePath, optional: true);
-                builder.Configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+                builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
                 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
                 connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
             }
-
-            if (!builder.Environment.IsDevelopment())
+            else
             {
                 var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
                 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
@@ -65,6 +72,21 @@ namespace SegmentSniper.Api.Configuration
 
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            #region Logging
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .WriteTo.MSSqlServer(
+                    connectionString: connectionString,
+                    sinkOptions: new MSSqlServerSinkOptions { TableName = "SegmentSniperLog", AutoCreateSqlTable = false })
+                .MinimumLevel.Debug()
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
+
+            #endregion
 
 
             #region Identity
@@ -229,5 +251,9 @@ namespace SegmentSniper.Api.Configuration
             return builder;
         }
 
+        private static void ConfigureLogging(string? connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
