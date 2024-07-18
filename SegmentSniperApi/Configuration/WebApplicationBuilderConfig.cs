@@ -74,13 +74,14 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             #region Logging
-            // Configure Serilog
+
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(builder.Configuration)
+                .ReadFrom.Configuration(configuration)
                 .Enrich.FromLogContext()
                 .WriteTo.MSSqlServer(
                     connectionString: connectionString,
-                    sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true })
+                    sinkOptions: new MSSqlServerSinkOptions { TableName = "SegmentSniperLog", AutoCreateSqlTable = false })
+                .MinimumLevel.Debug()
                 .CreateLogger();
 
             builder.Host.UseSerilog();
@@ -250,5 +251,9 @@ namespace SegmentSniper.Api.Configuration
             return builder;
         }
 
+        private static void ConfigureLogging(string? connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -45,6 +45,23 @@ namespace SegmentSniper.Data
             modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
             modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
 
+            // Ignore the SegmentSniperLog table by its name
+            modelBuilder.Entity<SegmentSniperLogEntity>().ToTable("SegmentSniperLog", t => t.ExcludeFromMigrations());
+
+
+        }
+
+        // Define a dummy entity class for the log table
+        public class SegmentSniperLogEntity
+        {
+            public int Id { get; set; }
+            public string Message { get; set; }
+            public string MessageTemplate { get; set; }
+            public string Level { get; set; }
+            public DateTimeOffset TimeStamp { get; set; }
+            public string Exception { get; set; }
+            public string Properties { get; set; }
+            public byte[] LogEvent { get; set; }
         }
     }
 }
