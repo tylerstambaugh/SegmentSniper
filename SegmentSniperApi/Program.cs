@@ -48,6 +48,8 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         app.UseHsts();
     }
 
+    app.UseMiddleware<UsernameLoggingMiddleware>();
+
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();

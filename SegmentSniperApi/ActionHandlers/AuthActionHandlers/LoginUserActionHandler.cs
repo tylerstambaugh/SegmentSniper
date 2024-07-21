@@ -8,6 +8,7 @@ using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
 using Serilog;
+using Serilog.Context;
 
 namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
 {
@@ -93,6 +94,11 @@ namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
                     };
 
                     Log.Debug($"User {authenticatedUser.Email} logged in");
+
+                    using(LogContext.PushProperty("UserId", "System"))
+                    {
+                        Log.Debug("writing event as system user");
+                    }
 
                     return new LoginUserRequest.Response
                     {

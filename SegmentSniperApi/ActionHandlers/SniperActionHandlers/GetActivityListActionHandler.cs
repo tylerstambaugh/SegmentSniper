@@ -9,6 +9,7 @@ using StravaApiClient.Services.Activity;
 using StravaApiClient;
 using IdentityModel;
 using SegmentSniper.Data.Enums;
+using Serilog;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
@@ -75,6 +76,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     {
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
+
+                    Log.Debug($"Activity Search");
+
 
                     return new GetActivityListRequest.Response { ActivityList = activityList };
 
