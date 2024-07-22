@@ -7,6 +7,7 @@ using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
+using Serilog;
 using System.Security.Claims;
 using System.Security.Policy;
 using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
@@ -202,6 +203,9 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                Log.Information("Checking for strava token");
+
                 return Ok(_checkForStravaTokenActionHandler.Handle(new CheckForStravaTokenRequest(userId)));
 
             }
@@ -218,6 +222,7 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                Log.Information("Logging out");
                 var result = await _revokeTokenActionHandler.HandleRevokeSingleUserToken(new RevokeUserTokenRequest(userId));
 
                 if(result.Success)
