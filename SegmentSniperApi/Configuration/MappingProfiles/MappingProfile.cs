@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.MachineLearning.DataModels;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
@@ -150,6 +152,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
             CreateMap<AthleteSegmentStats, AthleteSegmentStatsUiModel>();
+            
 
             CreateMap<MapApiModel, MapModel>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
@@ -162,6 +165,9 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.type_id))
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.type))
             .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.rank));
+
+            CreateMap<ML_SegmentEffort, ML_SegmentDataRecord>();
+            CreateMap<SegmentPredictionTrainingData, ML_SegmentPredictionModel>();
 
         }
     }

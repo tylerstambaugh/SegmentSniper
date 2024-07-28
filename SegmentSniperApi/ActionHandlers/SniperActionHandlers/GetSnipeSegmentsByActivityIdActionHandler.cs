@@ -6,6 +6,7 @@ using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
+using SegmentSniper.Services.MachineLearning;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Segment;
@@ -21,14 +22,16 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
+        private readonly ISaveSegmentPredictionTrainingData _saveSegmentPredictionTrainingData;
         private readonly IMapper _mapper;
         private string _userId;
 
 
-        public GetSnipeSegmentsByActivityIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+        public GetSnipeSegmentsByActivityIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData , IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
+            _saveSegmentPredictionTrainingData = saveSegmentPredictionTrainingData;
             _mapper = mapper;
         }
 
@@ -61,10 +64,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         snipeSegments.Add(snipeSegment);
                         
                         MlSegmentEfforts.Add(CreateMlSegmentEffort(dse, detailedSegment));
-
-                       await SaveMlSegmentEfforts(MlSegmentEfforts);
                     }
 
+                    await _saveSegmentPredictionTrainingData.ExecuteAsync(new SaveSegmentPredictionTrainingDataContract(MlSegmentEfforts));
 
                     return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(200, new GetSnipeSegmentsByActivityIdRequest.Response(snipeSegments));
                 }
@@ -79,6 +81,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
         }      
 
+        //refactor this into the service that saves the ML_SegmentEffort. Use automapper.
         private ML_SegmentEffort CreateMlSegmentEffort(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
         {
             return new ML_SegmentEffort
@@ -102,24 +105,6 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 StarCount = detailedSegment.StarCount,
                 PrRank = dse.PrRank,                
             };
-        }
-
-
-        private async Task SaveMlSegmentEfforts(List<ML_SegmentEffort> mlSegmentEfforts)
-        {
-                var existingIds = await _context.ML_SegmentEfforts
-                                               .Select(e => e.StravaSegmentEffortId)
-                                               .ToListAsync();
-
-                // Step 2: Filter the list to exclude existing entities
-                var newEntities = mlSegmentEfforts.Where(e => !existingIds.Contains(e.StravaSegmentEffortId)).ToList();
-
-                if (newEntities.Any())
-                {
-                _context.ML_SegmentEfforts.AddRange(newEntities);
-                    await _context.SaveChangesAsync();
-                }
-            
         }
 
         private SnipeSegment CreateSnipeSegmentFromDetails(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
@@ -170,6 +155,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             return snipeSegment;
         }
 
+        //convert all of these into a helpers class
 
         private XomsTimes GetXomTimeFromStrings(Xoms xoms)
         {

@@ -2,6 +2,7 @@
 using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
+using Serilog;
 using StravaApiClient;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Segment;
@@ -48,6 +49,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
+                    Log.Debug($"Error getting detailed segment by segment Id: ${ex.Message}");
                     throw new ApplicationException("Something went wrong handling the request.", ex);
                 }
             }

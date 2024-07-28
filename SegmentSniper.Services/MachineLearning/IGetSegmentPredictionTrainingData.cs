@@ -1,8 +1,9 @@
 ﻿using SegmentSniper.MachineLearning.DataModels;
+using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.MachineLearning
 {
-    public interface IGetSegmentPredictionTrainingData
+    public interface IGetSegmentPredictionTrainingData: IExecutableServiceAsync<GetSegmentPredictionTrainingDataContract, GetSegmentPredictionTrainingDataContract.Result>
     {
         Task<GetSegmentPredictionTrainingDataContract.Result> ExecuteAsync(GetSegmentPredictionTrainingDataContract contract);
     }
@@ -17,7 +18,7 @@ namespace SegmentSniper.Services.MachineLearning
         public string UserId { get; set; }
         public class Result
         {
-            public List<ML_SegmentDataRecord> mL_SegmentDataRecords { get; set; }
+            public List<ML_SegmentDataRecord> ML_SegmentDataRecords { get; set; }
         }
 
     }
