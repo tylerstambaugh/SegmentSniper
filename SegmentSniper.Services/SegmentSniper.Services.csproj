@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
+    <ProjectReference Include="..\SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
   </ItemGroup>
 

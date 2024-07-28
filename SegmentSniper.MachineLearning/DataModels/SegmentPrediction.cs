@@ -5,7 +5,7 @@ namespace SegmentSniper.MachineLearning.DataModels
     internal class SegmentPrediction
     {
 
-        [ColumnName("Score")]
+        [ColumnName("PredictedTime")]
         public float PredictedTime { get; set; }
     }
 }

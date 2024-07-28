@@ -1,8 +1,7 @@
 ﻿namespace SegmentSniper.MachineLearning.DataModels
 {
-    internal class SegmentData
+    public class ML_SegmentDataRecord
     {
-
         public int SegmentEffortId { get; set; }
         public string UserId { get; set; }
         public string StravaSegmentEffortId { get; set; }

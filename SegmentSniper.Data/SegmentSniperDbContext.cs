@@ -21,6 +21,7 @@ namespace SegmentSniper.Data
         public virtual DbSet<StravaApiToken> StravaTokens { get; set; }
         public virtual DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
+        public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
