@@ -481,6 +481,32 @@ namespace SegmentSniper.Data.Migrations
                     b.ToTable("ML_SegmentEfforts");
                 });
 
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentPredictionModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SegmentPredictionModelData")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ML_SegmentPredictionModels");
+                });
+
             modelBuilder.Entity("SegmentSniper.Data.Entities.StravaToken.StravaApiToken", b =>
                 {
                     b.Property<int>("Id")
@@ -615,6 +641,17 @@ namespace SegmentSniper.Data.Migrations
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentEffort", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentPredictionModel", b =>
                 {
                     b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
                         .WithMany()
