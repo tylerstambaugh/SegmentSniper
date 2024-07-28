@@ -10,6 +10,7 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
+using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
@@ -106,6 +107,12 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
+
+            //ML Services
+            services.AddScoped<IGetSegmentPredictionTrainingData, GetSegmentPredictionTrainingData>();
+            services.AddScoped<IGetSegmentPredictionModel, GetSegmentPredictionModel>();
+            services.AddScoped<ISaveSegmentPredictionModel, SaveSegmentPredictionModel>();
+            services.AddScoped<ISaveSegmentPredictionTrainingData, SaveSegmentPredictionTrainingData>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
