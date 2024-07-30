@@ -1,9 +1,9 @@
-﻿using SegmentSniper.MachineLearning.DataModels;
+﻿using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.MachineLearning
 {
-    public interface IGetSegmentPredictionTrainingData: IExecutableServiceAsync<GetSegmentPredictionTrainingDataContract, GetSegmentPredictionTrainingDataContract.Result>
+    public interface IGetSegmentPredictionTrainingData : IExecutableServiceAsync<GetSegmentPredictionTrainingDataContract, GetSegmentPredictionTrainingDataContract.Result>
     {
         Task<GetSegmentPredictionTrainingDataContract.Result> ExecuteAsync(GetSegmentPredictionTrainingDataContract contract);
     }

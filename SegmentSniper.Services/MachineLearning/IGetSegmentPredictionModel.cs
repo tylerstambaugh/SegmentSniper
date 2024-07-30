@@ -1,4 +1,4 @@
-﻿using SegmentSniper.MachineLearning.DataModels;
+﻿using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.MachineLearning
@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.MachineLearning
 
         public class Result
         {
-            public SegmentPredictionTrainingData segmentPredictionTrainingData { get; set; }
+            public SegmentPredictionTrainingData SegmentPredictionTrainingData { get; set; }
         }
     }
 }

@@ -36,5 +36,13 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(422, $"Unable topredict segment. \n {ex.Message}");
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        [Route("TrainModel")]
+        public async Task<IActionResult> TrainModel([FromBody] TrainModelRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

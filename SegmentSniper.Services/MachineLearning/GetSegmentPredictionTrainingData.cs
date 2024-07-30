@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.MachineLearning.DataModels;
+using SegmentSniper.Models.MachineLearning;
 
 namespace SegmentSniper.Services.MachineLearning
 {

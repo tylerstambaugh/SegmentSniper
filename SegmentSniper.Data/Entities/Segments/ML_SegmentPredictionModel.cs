@@ -11,7 +11,7 @@ namespace SegmentSniper.Data.Entities.Segments
         [ForeignKey("Users")]
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public string SegmentPredictionModelData {  get; set; } 
+        public byte[] SegmentPredictionModelData {  get; set; } 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
     }

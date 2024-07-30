@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.MachineLearning.DataModels
+﻿namespace SegmentSniper.Models.MachineLearning
 {
     public class ML_SegmentDataRecord
     {
