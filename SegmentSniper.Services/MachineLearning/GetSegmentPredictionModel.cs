@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.MachineLearning.DataModels;
+using SegmentSniper.Models.MachineLearning;
 
 namespace SegmentSniper.Services.MachineLearning
 {
@@ -34,7 +34,7 @@ namespace SegmentSniper.Services.MachineLearning
             {
                 return new GetSegmentPredictionModelContract.Result
                 {
-                    segmentPredictionTrainingData = _mapper.Map<ML_SegmentPredictionModel, SegmentPredictionTrainingData>(trainingData)
+                    SegmentPredictionTrainingData = _mapper.Map<ML_SegmentPredictionModel, SegmentPredictionTrainingData>(trainingData)
                 };
             }
             else
