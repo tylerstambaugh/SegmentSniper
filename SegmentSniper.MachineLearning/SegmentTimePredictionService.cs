@@ -6,9 +6,9 @@ namespace SegmentSniper.MachineLearning
     {
         private readonly SegmentTimePredictor _segmentTimePredictor;
 
-        public SegmentTimePredictionService(string modelPath)
+        public SegmentTimePredictionService()
         {
-            _segmentTimePredictor = new SegmentTimePredictor(modelPath);
+            //_segmentTimePredictor = new SegmentTimePredictor(modelPath);
         }
 
         public float GetPredictedTime(SegmentDetailDataForPrediction segmentForPrediction)

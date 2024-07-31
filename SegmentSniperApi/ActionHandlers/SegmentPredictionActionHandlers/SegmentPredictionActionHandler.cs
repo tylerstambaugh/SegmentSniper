@@ -15,17 +15,20 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly ISegmentTimePredictionService _segmentTimePredictionService;
+        private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
         private readonly IMapper _mapper;
 
         public SegmentPredictionActionHandler(
             ISegmentSniperDbContext context,
             IStravaRequestService stravaRequestService,
             ISegmentTimePredictionService segmentTimePredictionService,
+            ISegmentPredictionDataProcessor segmentPredictionDataProcessor,
             IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _segmentTimePredictionService = segmentTimePredictionService;
+            _segmentPredictionDataProcessor = segmentPredictionDataProcessor;
             _mapper = mapper;
         }
 

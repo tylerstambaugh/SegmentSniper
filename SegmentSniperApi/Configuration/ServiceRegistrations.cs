@@ -58,6 +58,7 @@ namespace SegmentSniper.Api.Configuration
 
             //segment prediction action handlers
             services.AddScoped<ISegmentPredictionActionHandler, SegmentPredictionActionHandler>();
+            services.AddScoped<IGetSegmentPredictionTrainingModelActionHandler, GetSegmentPredictionTrainingModelActionHandler>();
 
 
             ////admin action handlers

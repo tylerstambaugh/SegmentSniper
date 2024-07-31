@@ -6,6 +6,7 @@ using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Misc;
@@ -168,6 +169,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
 
             CreateMap<ML_SegmentEffort, ML_SegmentDataRecord>();
             CreateMap<SegmentPredictionTrainingData, ML_SegmentPredictionModel>();
+            CreateMap<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>();
 
         }
     }
