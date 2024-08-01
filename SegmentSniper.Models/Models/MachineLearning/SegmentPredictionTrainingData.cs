@@ -7,5 +7,7 @@
         public byte [] SegmentPredictionModelData { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
+
+        public int NumberOfSegmentsUsedInModelTraining { get; set; }
     }
 }

@@ -6,13 +6,13 @@ using SegmentSniper.Models.UIModels.MachineLearning;
 
 namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
-    public class GetSegmentPredictionTrainingModelActionHandler : IGetSegmentPredictionTrainingModelActionHandler
+    public class GetSegmentPredictionTrainedModelMetaDataActionHandler : IGetSegmentPredictionTrainedModelMetaDataActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
         private readonly IMapper _mapper;
 
-        public GetSegmentPredictionTrainingModelActionHandler(ISegmentSniperDbContext context, ISegmentPredictionDataProcessor segmentPredictionDataProcessor,
+        public GetSegmentPredictionTrainedModelMetaDataActionHandler(ISegmentSniperDbContext context, ISegmentPredictionDataProcessor segmentPredictionDataProcessor,
             IMapper mapper)
         {
             _context = context;
@@ -23,7 +23,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
         public async Task<GetSegmentPredictionTrainingModelActionHandlerRequest.Result> HandleAsync(GetSegmentPredictionTrainingModelActionHandlerRequest request)
         {
             ValidateRequest(request);
-            var trainingModel = await _segmentPredictionDataProcessor.DoesUserHaveTrainedModel(request.UserId);
+            var trainingModel = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 
             var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainingModel);
 

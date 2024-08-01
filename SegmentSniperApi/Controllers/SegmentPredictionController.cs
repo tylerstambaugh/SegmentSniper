@@ -13,12 +13,12 @@ namespace SegmentSniper.Api.Controllers
     public class SegmentPredictionController : ControllerBase
     {
         private readonly ISegmentPredictionActionHandler _segmentPredictionActionHandler;
-        private readonly IGetSegmentPredictionTrainingModelActionHandler _getSegmentPredictionTrainingModelActionHandler;
+        private readonly IGetSegmentPredictionTrainedModelMetaDataActionHandler _getSegmentPredictionTrainedModelMetaDataActionHandler;
 
-        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler, IGetSegmentPredictionTrainingModelActionHandler getSegmentPredictionTrainingModelActionHandler)
+        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler, IGetSegmentPredictionTrainedModelMetaDataActionHandler getSegmentPredictionTrainingModelActionHandler)
         {
             _segmentPredictionActionHandler = segmentPredictionActionHandler;
-            _getSegmentPredictionTrainingModelActionHandler = getSegmentPredictionTrainingModelActionHandler;
+            _getSegmentPredictionTrainedModelMetaDataActionHandler = getSegmentPredictionTrainingModelActionHandler;
         }
 
         [HttpPost]
@@ -49,13 +49,13 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        [Route("GetTrainedModel")]
+        [Route("GetTrainedModelMetaData")]
         public async Task<IActionResult> GetTrainedSegmentPredictionModel()
         {
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var trainedModel = await _getSegmentPredictionTrainingModelActionHandler.HandleAsync(new GetSegmentPredictionTrainingModelActionHandlerRequest(userId));
+                var trainedModel = await _getSegmentPredictionTrainedModelMetaDataActionHandler.HandleAsync(new GetSegmentPredictionTrainingModelActionHandlerRequest(userId));
                 if (trainedModel != null)
                     return Ok(trainedModel);
                 else

@@ -13,7 +13,7 @@ export type SegmentPredictionTrainedModelResponse = {
 export default async function getSegmentPredictionTrainedModelData(contract: ApiContract) {
   try {
     const response = apiGet<SegmentPredictionTrainedModelResponse>(
-      `${contract.baseUrl}/segmentPrediction/getTrainedModel`,
+      `${contract.baseUrl}/segmentPrediction/getTrainedModelMetaData`,
       contract
     );
 
