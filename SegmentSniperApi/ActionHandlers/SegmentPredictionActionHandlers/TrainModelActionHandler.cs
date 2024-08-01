@@ -17,7 +17,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             ValidateRequest(request);
 
             var hasTrainedModel = await _segmentPredictionDataProcessor.DoesUserHaveTrainedModel(request.UserId);
-            if(hasTrainedModel)
+            if(hasTrainedModel is not null)
             {
                 return new TrainModelRequest.Response(true);
             }
