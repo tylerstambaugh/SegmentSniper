@@ -91,7 +91,9 @@ namespace SegmentSniper.MachineLearning
         public async Task<SegmentPredictionTrainingData> DoesUserHaveTrainedModel(string userId)
         {
             var userModel = await _getSegmentPredictionModel.ExecuteAsync(new GetSegmentPredictionModelContract(userId));
-
+            var trainingRecordsCount = await _getSegmentPredictionTrainingData.GetCountOfTrainingRecords(userId);
+            //need to include the count
+            //userModel.SegmentPredictionTrainingData.C
             return userModel.SegmentPredictionTrainingData;
         }
 

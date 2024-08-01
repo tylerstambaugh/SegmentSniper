@@ -26,7 +26,7 @@ import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode"
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import About from "./pages/About";
 import ProfileMain from "./components/Organisms/Profile/ProfileMain";
-import SegmentMachineLearning from "./pages/SegmentMachineLearning";
+import SegmentMachineLearning from "./pages/SegmentPrediction";
 
 interface Props {
   defaultPage?: string;
@@ -133,7 +133,7 @@ export default function Routes({ defaultPage }: Props) {
             }
           />
                     <Route
-            path={AppRoutes.SegmentML}
+            path={AppRoutes.SegmentPredictor}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
                 <SegmentMachineLearning />

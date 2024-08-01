@@ -35,12 +35,12 @@ export default function MainMenu() {
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
                     <Link
-                      to={`/${AppRoutes.SegmentML}`}
+                      to={`/${AppRoutes.SegmentPredictor}`}
                       className="primary-rounded-button text0decoration-none
                       "
                       style={{ width: "155px" }}
                     >
-                      VooDoo Segment Analyzer
+                      Segment Time Predictor 
                     </Link>
                   </Col>
                 </Row>
