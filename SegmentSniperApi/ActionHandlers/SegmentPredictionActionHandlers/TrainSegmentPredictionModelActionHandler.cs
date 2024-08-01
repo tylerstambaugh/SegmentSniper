@@ -3,11 +3,11 @@ using SegmentSniper.MachineLearning;
 
 namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
-    public class TrainModelActionHandler : ITrainModelActionHandler
+    public class TrainSegmentPredictionModelActionHandler : ITrainSegmentPredictionModelActionHandler
     {
         private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
 
-        public TrainModelActionHandler(ISegmentPredictionDataProcessor segmentPredictionDataProcessor)
+        public TrainSegmentPredictionModelActionHandler(ISegmentPredictionDataProcessor segmentPredictionDataProcessor)
         {
             _segmentPredictionDataProcessor = segmentPredictionDataProcessor;
         }

@@ -13,10 +13,12 @@ namespace SegmentSniper.Api.Controllers
     public class SegmentPredictionController : ControllerBase
     {
         private readonly ISegmentPredictionActionHandler _segmentPredictionActionHandler;
+        private readonly IGetSegmentPredictionTrainingModelActionHandler _getSegmentPredictionTrainingModelActionHandler;
 
-        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler)
+        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler, IGetSegmentPredictionTrainingModelActionHandler getSegmentPredictionTrainingModelActionHandler)
         {
             _segmentPredictionActionHandler = segmentPredictionActionHandler;
+            _getSegmentPredictionTrainingModelActionHandler = getSegmentPredictionTrainingModelActionHandler;
         }
 
         [HttpPost]
@@ -43,6 +45,27 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> TrainModel([FromBody] TrainModelRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetTrainedModel")]
+        public async Task<IActionResult> GetTrainedSegmentPredictionModel()
+        {
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var trainedModel = await _getSegmentPredictionTrainingModelActionHandler.HandleAsync(new GetSegmentPredictionTrainingModelActionHandlerRequest(userId));
+                if (trainedModel != null)
+                    return Ok(trainedModel);
+                else
+                    return StatusCode(421, $"No trained segment prediction model exists for user {userId}");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to fetch trained model. \n {ex.Message}");
+            }
         }
     }
 }

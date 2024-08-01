@@ -8,6 +8,6 @@ export interface BaseApiRequestContract<TRequest> extends BaseApiContract {
 }
 
 export interface BaseApiContract {
-  token?: string;
+  token?: string | undefined;
   abortController?: AbortController;
 }

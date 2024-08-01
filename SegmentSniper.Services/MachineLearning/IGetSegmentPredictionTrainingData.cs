@@ -6,6 +6,7 @@ namespace SegmentSniper.Services.MachineLearning
     public interface IGetSegmentPredictionTrainingData : IExecutableServiceAsync<GetSegmentPredictionTrainingDataContract, GetSegmentPredictionTrainingDataContract.Result>
     {
         Task<GetSegmentPredictionTrainingDataContract.Result> ExecuteAsync(GetSegmentPredictionTrainingDataContract contract);
+        Task<int> GetCountOfTrainingRecords(string userId);
     }
 
     public class GetSegmentPredictionTrainingDataContract

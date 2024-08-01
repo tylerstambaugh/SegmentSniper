@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.MachineLearning;
+using System.Diagnostics.Contracts;
 
 namespace SegmentSniper.Services.MachineLearning
 {
@@ -38,6 +39,15 @@ namespace SegmentSniper.Services.MachineLearning
             {
                 ML_SegmentDataRecords = segmentDataRecords
             };
+        }
+
+        public async Task<int> GetCountOfTrainingRecords(string userId)
+        {
+            int segmentEffortCount = await _segmentSniperDbContext.ML_SegmentEfforts
+                .Where(e => e.UserId == userId)
+                .CountAsync();
+
+            return segmentEffortCount;
         }
 
     }

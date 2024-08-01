@@ -22,6 +22,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
         public async Task<GetSegmentPredictionTrainingModelActionHandlerRequest.Result> HandleAsync(GetSegmentPredictionTrainingModelActionHandlerRequest request)
         {
+            ValidateRequest(request);
             var trainingModel = await _segmentPredictionDataProcessor.DoesUserHaveTrainedModel(request.UserId);
 
             var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainingModel);
@@ -32,6 +33,19 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             };
 
             
+        }
+
+        private void ValidateRequest(GetSegmentPredictionTrainingModelActionHandlerRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                throw new ArgumentException(nameof(request.UserId), "User Id cannot be empty");
+            }
         }
     }
 }

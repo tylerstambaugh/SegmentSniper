@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
-    public interface ITrainModelActionHandler
+    public interface ITrainSegmentPredictionModelActionHandler
     {
         Task<TrainModelRequest.Response> HandleAsync(TrainModelRequest request);
     }
