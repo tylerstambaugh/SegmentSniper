@@ -2,7 +2,7 @@
 
 namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
-    public interface IGetSegmentPredictionTrainingModelActionHandler
+    public interface IGetSegmentPredictionTrainedModelMetaDataActionHandler
     {
         Task<GetSegmentPredictionTrainingModelActionHandlerRequest.Result> HandleAsync(GetSegmentPredictionTrainingModelActionHandlerRequest request);
     }

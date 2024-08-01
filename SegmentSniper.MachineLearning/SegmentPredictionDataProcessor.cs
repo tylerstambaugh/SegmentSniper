@@ -88,13 +88,13 @@ namespace SegmentSniper.MachineLearning
             }
         }
 
-        public async Task<SegmentPredictionTrainingData> DoesUserHaveTrainedModel(string userId)
+        public async Task<SegmentPredictionTrainingData> GetSegmentPredictionTrainedModelData(string userId)
         {
-            var userModel = await _getSegmentPredictionModel.ExecuteAsync(new GetSegmentPredictionModelContract(userId));
+            var result = await _getSegmentPredictionModel.ExecuteAsync(new GetSegmentPredictionModelContract(userId));
+            var userSegmentPredictionTrainingData = result.SegmentPredictionTrainingData;
             var trainingRecordsCount = await _getSegmentPredictionTrainingData.GetCountOfTrainingRecords(userId);
-            //need to include the count
-            //userModel.SegmentPredictionTrainingData.C
-            return userModel.SegmentPredictionTrainingData;
+            userSegmentPredictionTrainingData.NumberOfSegmentsUsedInModelTraining = trainingRecordsCount;
+            return userSegmentPredictionTrainingData;
         }
 
         public async Task LoadModelFromDatabase(string userId)
