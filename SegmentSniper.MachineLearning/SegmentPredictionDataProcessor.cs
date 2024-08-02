@@ -28,9 +28,12 @@ namespace SegmentSniper.MachineLearning
         {
             var trainingData = await _getSegmentPredictionTrainingData.ExecuteAsync(new GetSegmentPredictionTrainingDataContract(userId));
 
-            var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
-            _model = TrainModel(data);
-            SaveModelToDatabase(userId);
+            if(trainingData.ML_SegmentDataRecords.Count > 0)
+            {
+                var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
+                _model = TrainModel(data);
+                SaveModelToDatabase(userId);
+            }
         }
 
         //method to update the trained model if sufficient new segment effort recrods exist.
@@ -84,7 +87,6 @@ namespace SegmentSniper.MachineLearning
                 };
 
                 _saveSegmentPredictionModel.ExecuteAsync(new SaveSegmentPredictionModelContract(segmentPredictionTrainingData));
-
             }
         }
 

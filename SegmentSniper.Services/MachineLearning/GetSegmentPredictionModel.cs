@@ -26,15 +26,15 @@ namespace SegmentSniper.Services.MachineLearning
                 throw new Exception("User not found");
             }
 
-            var trainingData = _segmentSniperDbContext.ML_SegmentPredictionModels
+            var userSegmentPredictionModel = _segmentSniperDbContext.ML_SegmentPredictionModels
                 .Where(t => t.UserId == contract.UserId)
                 .FirstOrDefault();
 
-            if (trainingData != null)
+            if (userSegmentPredictionModel != null)
             {
                 return new GetSegmentPredictionModelContract.Result
                 {
-                    SegmentPredictionTrainingData = _mapper.Map<ML_SegmentPredictionModel, SegmentPredictionTrainingData>(trainingData)
+                    SegmentPredictionTrainingData = _mapper.Map<ML_SegmentPredictionModel, SegmentPredictionTrainingData>(userSegmentPredictionModel)
                 };
             }
             else

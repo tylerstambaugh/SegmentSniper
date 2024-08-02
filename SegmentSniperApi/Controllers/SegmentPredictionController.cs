@@ -14,11 +14,15 @@ namespace SegmentSniper.Api.Controllers
     {
         private readonly ISegmentPredictionActionHandler _segmentPredictionActionHandler;
         private readonly IGetSegmentPredictionTrainedModelMetaDataActionHandler _getSegmentPredictionTrainedModelMetaDataActionHandler;
+        private readonly ITrainSegmentPredictionModelActionHandler _trainSegmentPredictionModelActionHandler;
 
-        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler, IGetSegmentPredictionTrainedModelMetaDataActionHandler getSegmentPredictionTrainingModelActionHandler)
+        public SegmentPredictionController(ISegmentPredictionActionHandler segmentPredictionActionHandler, 
+            IGetSegmentPredictionTrainedModelMetaDataActionHandler getSegmentPredictionTrainingModelActionHandler,
+            ITrainSegmentPredictionModelActionHandler trainSegmentPredictionModelActionHandler)
         {
             _segmentPredictionActionHandler = segmentPredictionActionHandler;
             _getSegmentPredictionTrainedModelMetaDataActionHandler = getSegmentPredictionTrainingModelActionHandler;
+            _trainSegmentPredictionModelActionHandler = trainSegmentPredictionModelActionHandler;
         }
 
         [HttpPost]
@@ -39,12 +43,22 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize]
         [Route("TrainModel")]
-        public async Task<IActionResult> TrainModel([FromBody] TrainModelRequest request)
+        public async Task<IActionResult> TrainModel()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var response = await _trainSegmentPredictionModelActionHandler.HandleAsync(new TrainModelRequest(userId));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable topredict segment. \n {ex.Message}");
+            }
         }
 
         [HttpGet]

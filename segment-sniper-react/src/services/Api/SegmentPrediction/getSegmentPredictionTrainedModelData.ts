@@ -4,10 +4,8 @@ import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "../BaseApiService";
 
-
-
 export type SegmentPredictionTrainedModelResponse = {
-    segmentPredictionTrainedModel: SegmentPredictionTrainedModelData;
+    segmentPredictionTrainedModel: SegmentPredictionTrainedModelData | null | undefined;
 };
 
 export default async function getSegmentPredictionTrainedModelData(contract: ApiContract) {
