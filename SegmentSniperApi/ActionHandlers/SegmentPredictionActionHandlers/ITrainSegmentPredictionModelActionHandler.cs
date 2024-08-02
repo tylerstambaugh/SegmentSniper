@@ -1,4 +1,6 @@
-﻿namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+﻿using SegmentSniper.Models.UIModels.MachineLearning;
+
+namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
     public interface ITrainSegmentPredictionModelActionHandler
     {
@@ -15,12 +17,12 @@
         public string UserId { get; set; }
         public class Response
         {
-            public Response(bool success)
+            public Response(SegmentPredictionTrainingDataUiModel segmentPredictionTrainingDataUiModel)
             {
-                Success = success;
+                SegmentPredictionTrainingDataUiModel = segmentPredictionTrainingDataUiModel;
             }
 
-            public bool Success { get; set; }
+            public SegmentPredictionTrainingDataUiModel SegmentPredictionTrainingDataUiModel { get; set; }
         }
     }
 }
