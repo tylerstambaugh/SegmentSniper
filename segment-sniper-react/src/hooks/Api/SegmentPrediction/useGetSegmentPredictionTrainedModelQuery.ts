@@ -7,30 +7,29 @@ import getSegmentPredictionTrainedModelData, { SegmentPredictionTrainedModelResp
 export const useGetSegmentPredictionTrainedModelQuery = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  const { data, isLoading, isError, error } = useQuery({
-    queryFn: triggerQuery,
-    queryKey: ["segmentPredictionTrainedModelData"],
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
 
-  const abortController = new AbortController();
+  const { data, isLoading, isError, error } = useQuery(
+    ["segmentPredictionTrainedModelData", apiConfig, tokenData],
+    async () => {
+      const contract: ApiContract = {
+        baseUrl: apiConfig!.baseUrl,
+        token: tokenData?.accessToken ?? '',
+      };
 
-  async function triggerQuery() {
-    const contract: ApiContract = {
-      baseUrl: apiConfig!.baseUrl,
-      token: tokenData?.accessToken ?? '',
-      abortController,
-    };
+      const response: SegmentPredictionTrainedModelResponse = await getSegmentPredictionTrainedModelData(contract);
 
-    const response: SegmentPredictionTrainedModelResponse = await getSegmentPredictionTrainedModelData(contract);
-
-    if (!response.segmentPredictionTrainedModel) throw new Error("No segment prediction trained model found");
-    // setProfile(response.profileData);
-    //setProfileData(response.profileData);
-    return response.segmentPredictionTrainedModel;
-  }
+      if (!response.segmentPredictionTrainedModel) {
+        throw new Error("No segment prediction trained model found");
+      }
+      return response.segmentPredictionTrainedModel;
+    },
+    {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    }
+  );
 
   return { data, isLoading, isError, error };
 };

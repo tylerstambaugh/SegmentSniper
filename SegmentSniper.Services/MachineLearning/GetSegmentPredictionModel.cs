@@ -38,8 +38,11 @@ namespace SegmentSniper.Services.MachineLearning
                 };
             }
             else
-            {               
-                throw new ApplicationException($"No training data exists for user {user.Email}");
+            {
+                return new GetSegmentPredictionModelContract.Result
+                {
+                    SegmentPredictionTrainingData = new SegmentPredictionTrainingData()
+                };
             }
         }
     }
