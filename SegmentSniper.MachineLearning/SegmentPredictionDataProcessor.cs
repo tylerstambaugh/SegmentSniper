@@ -40,18 +40,25 @@ namespace SegmentSniper.MachineLearning
 
         private IDataView ConvertToIDataView(List<ML_SegmentDataRecord> trainingData)
         {
-            var segmentEffortDataList = trainingData.Select(record => new ML_SegmentDataRecord
+            try
             {
-                SegmentPrTime = record.SegmentPrTime,
-                Distance = record.Distance,
-                AverageGrade = record.AverageGrade,
-                ElevationGain = record.ElevationGain,
-                AverageHeartRate = record.AverageHeartRate,
-                AverageSpeed = record.AverageSpeed,
-                SegmentName = record.SegmentName
-            }).ToList();
+                var segmentEffortDataList = trainingData.Select(record => new ML_SegmentDataRecord
+                {
+                    SegmentPrTime = record.SegmentPrTime,
+                    Distance = record.Distance,
+                    AverageGrade = record.AverageGrade,
+                    ElevationGain = record.ElevationGain,
+                    AverageHeartRate = record.AverageHeartRate,
+                    AverageSpeed = record.AverageSpeed,
+                    SegmentName = record.SegmentName
+                }).ToList();
 
-            return _context.Data.LoadFromEnumerable(segmentEffortDataList);
+                return _context.Data.LoadFromEnumerable(segmentEffortDataList);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("unable to create IDataView", ex);
+            }
         }
 
         private ITransformer TrainModel(IDataView data)

@@ -30,9 +30,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             return new GetSegmentPredictionTrainingModelActionHandlerRequest.Result()
             {
                 SegmentPredictionTrainingDataUiModel = returnModel,
-            };
-
-            
+            };            
         }
 
         private void ValidateRequest(GetSegmentPredictionTrainingModelActionHandlerRequest request)
