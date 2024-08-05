@@ -20,7 +20,21 @@ namespace SegmentSniper.Services.MachineLearning
         {
             var modelToSave = _mapper.Map<SegmentPredictionTrainingData, ML_SegmentPredictionModel>(contract.SegmentPredictionTrainingData);
 
-            _segmentSniperDbContext.ML_SegmentPredictionModels.Add(modelToSave);
+            var existingModel = _segmentSniperDbContext.ML_SegmentPredictionModels
+                .Where(m => m.UserId == contract.SegmentPredictionTrainingData.UserId)
+                .FirstOrDefault();
+
+            if(existingModel is not null)
+            {
+                existingModel.SegmentPredictionModelData = contract.SegmentPredictionTrainingData.SegmentPredictionModelData;
+                existingModel.UpdatedDate = DateTime.Now;
+
+                _segmentSniperDbContext.ML_SegmentPredictionModels.Update(existingModel);
+            }
+            else
+            {
+                _segmentSniperDbContext.ML_SegmentPredictionModels.Add(modelToSave);
+            }
 
             return new SaveSegmentPredictionModelContract.Result
             {

@@ -170,7 +170,6 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             CreateMap<ML_SegmentEffort, ML_SegmentDataRecord>();
             CreateMap<SegmentPredictionTrainingData, ML_SegmentPredictionModel>();
             CreateMap<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>();
-
         }
     }
 }

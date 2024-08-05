@@ -9,7 +9,7 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
   const { data, isLoading, isError, error } = useQuery(
-    ["segmentPredictionTrainedModelData", apiConfig, tokenData],
+    ["segmentPredictionTrainedModelData"],
     async () => {
       const contract: ApiContract = {
         baseUrl: apiConfig!.baseUrl,
@@ -18,8 +18,13 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
 
       const response: SegmentPredictionTrainedModelResponse = await getSegmentPredictionTrainedModelData(contract);
 
-      if (!response.segmentPredictionTrainedModel) {
-        throw new Error("No segment prediction trained model found");
+    //   if (!response.segmentPredictionTrainedModel) {
+    //     throw new Error("No segment prediction trained model found");
+    //   }
+
+      if(response.segmentPredictionTrainedModel?.createdDate)
+      {
+        response.segmentPredictionTrainedModel.hasTrainedSegmentPredictionModel = true;
       }
       return response.segmentPredictionTrainedModel;
     },
