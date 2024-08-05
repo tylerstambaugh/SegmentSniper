@@ -21,7 +21,6 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
         {
             ValidateRequest(request);
 
-
             // can evaluate if trained model exists and determine whether to use it or train a new model?
             var hasTrainedModel = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 

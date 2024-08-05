@@ -9,7 +9,7 @@ namespace SegmentSniper.Services.Common
     public static class CommonConversionHelpers
     {
 
-        private static readonly double MetersToMilesFactor = 1609;
+        private static readonly double MetersToMilesFactor = 1609.34;
         private static readonly double MilesPerHourConversionFactor = 2.23694;
         public static double ConvertMetersToMiles(double distance)
         {

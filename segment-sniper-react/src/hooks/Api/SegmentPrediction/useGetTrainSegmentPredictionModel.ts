@@ -5,7 +5,7 @@ import useTokenDataStore from "../../../stores/useTokenStore";
 import  { SegmentPredictionTrainedModelResponse } from "../../../services/Api/SegmentPrediction/getSegmentPredictionTrainedModelData";
 import getTrainSegmentPredictionModel from "../../../services/Api/SegmentPrediction/getTrainSegmentPredictionModel";
 
-export const useGetTrainSegmentPredictionModelQuery = () => {
+export const useGetTrainSegmentPredictionModel = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const accessToken = useTokenDataStore(
     (state) => state.tokenData?.accessToken

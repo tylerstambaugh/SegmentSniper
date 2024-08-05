@@ -93,7 +93,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 ElapsedTime = dse.ElapsedTime,
                 SegmentPrTime = detailedSegment.AthleteSegmentStats.PrElapsedTime,
                 Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
-                AverageSpeed = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2) /( dse.ElapsedTime * 60 * 60),
+                AverageSpeed = CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
                 ElevationGain = detailedSegment.TotalElevationGain,
                 AverageGrade = detailedSegment.AverageGrade,
                 MaximumGrade = detailedSegment.MaximumGrade,
@@ -214,6 +214,27 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             }
 
             return timeAsString;
+        }
+
+        public double CalculateAverageSpeed(double distanceInMeters, int timeInsecods)
+        {
+            double averageSpeed;
+            double distanceInMiles = CommonConversionHelpers.ConvertMetersToMiles(distanceInMeters);
+            double elapsedTimeInHours = timeInsecods / 3600.0; // Ensure floating-point division
+
+            if (elapsedTimeInHours == 0)
+            {
+                // Handle division by zero error
+                averageSpeed = 0; // Or throw an exception
+            }
+            else
+            {
+                averageSpeed = distanceInMiles / elapsedTimeInHours;
+            }
+
+            averageSpeed = Math.Round(averageSpeed, 2);
+
+            return averageSpeed;
         }
              
 
