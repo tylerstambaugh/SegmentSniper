@@ -10,7 +10,7 @@ import {
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../Password/UpdatePasswordModal.module.scss";
 import useHandleUpdatePassword from "../../../../hooks/Api/Profile/Handlers/useHandleUpdatePassword";
 
@@ -89,12 +89,6 @@ const UpdatePasswordModal = ({
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisible((prevVisible) => !prevVisible);
   };
-
-useEffect(() => {
- console.log('error', formik.errors);
- 
-}, [formik.errors])
-
 
   return (
     <Modal show={showUpdatePasswordModal}>
