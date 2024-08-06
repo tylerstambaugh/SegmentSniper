@@ -2,14 +2,15 @@ import { Button, Card, Col, Row } from "react-bootstrap"
 import { useGetSegmentPredictionTrainedModelQuery } from "../../../hooks/Api/SegmentPrediction/useGetSegmentPredictionTrainedModelQuery"
 import { useGetTrainSegmentPredictionModel } from "../../../hooks/Api/SegmentPrediction/useGetTrainSegmentPredictionModel";
 import { useEffect, useState } from "react";
-import { SegmentPredictionTrainedModelData } from "../../../models/SegmentPrediction/SegmentPredictionTrainedModelData";
+import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
 import { CustomToast } from "../Toast/CustomToast";
+import { DateTime } from 'luxon';
 
 function SegmentPredictionTrainedModel () {
 
     const {data, isError, isLoading: getSegmentPredictionTrainedModelQueryloading, error: getSegmentPredictionTrainedModelQueryError  }= useGetSegmentPredictionTrainedModelQuery();
     const trainSegmentPredictionModel = useGetTrainSegmentPredictionModel();
-    const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainedModelData | null>(data || null);
+    const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainingDataUiModel | null>(data || null);
 
    async function handleTrainSegmentPredictionModelClick() {
     const trainedModel = await trainSegmentPredictionModel.mutateAsync();
@@ -33,6 +34,11 @@ function SegmentPredictionTrainedModel () {
         }
     }, [getSegmentPredictionTrainedModelQueryError] )
 
+    const formatDate = (date?: DateTime) => {
+        if (!date) return "None";
+        const dateString = DateTime.fromISO(date.toString());
+        return dateString.toLocaleString(DateTime.DATETIME_MED);
+      };
 
     if (getSegmentPredictionTrainedModelQueryloading) return <div>Loading...</div>;
    // if (isError) return <div>Error loading model data</div>;
@@ -47,12 +53,12 @@ function SegmentPredictionTrainedModel () {
         <Card.Body>
             <Col>
             <Row>
-                Model Created: {segmentPredictionTrainedModelData?.createdDate.toISODate() ?? "None"}
-               
-            </Row>
-            <Row>
-                Model Updated: {segmentPredictionTrainedModelData?.updatedDate.toISODate() ?? "None"}
-            </Row>
+                  Model Created: {formatDate(segmentPredictionTrainedModelData?.createdDate)}
+                </Row>
+                <Row>
+                  Model Updated: {formatDate(segmentPredictionTrainedModelData?.updatedDate)}
+                </Row>
+
             <Row>
                 Number of Segments Used In Training Model: {segmentPredictionTrainedModelData?.numberOfSegmentsUsedInModelTraining ?? 0}
             </Row>

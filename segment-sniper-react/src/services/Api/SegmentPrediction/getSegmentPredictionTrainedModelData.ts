@@ -1,11 +1,11 @@
 
-import { SegmentPredictionTrainedModelData } from "../../../models/SegmentPrediction/SegmentPredictionTrainedModelData";
+import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiGet } from "../BaseApiService";
 
 export type SegmentPredictionTrainedModelResponse = {
-    segmentPredictionTrainedModel: SegmentPredictionTrainedModelData | null | undefined;
+    segmentPredictionTrainingDataUiModel: SegmentPredictionTrainingDataUiModel | null | undefined;
 };
 
 export default async function getSegmentPredictionTrainedModelData(contract: ApiContract) {

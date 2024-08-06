@@ -1,11 +1,9 @@
-import SegmentPredictionTrainedModel from "../../components/Molecules/SegmentPrediction/GetSegmentPredictionTrainedModel"
+import SegmentPredictionTrainedModel from "../../components/Molecules/SegmentPrediction/SegmentPredictionTrainedModel"
 
 
 function SegmentMachineLearning () {
 return (
     <>
-    <h1>this is where the ML will happen</h1>
-
     <SegmentPredictionTrainedModel />
     </>
 )

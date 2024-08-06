@@ -10,11 +10,11 @@
         public int ElapsedTime { get; set; }
         public int SegmentPrTime { get; set; }
         public double Distance { get; set; }
-        public float? AverageSpeed { get; set; }
-        public float? MaximumSpeed { get; set; }
-        public float? ElevationGain { get; set; }
-        public float? AverageGrade { get; set; }
-        public float? MaximumGrade { get; set; }
+        public float AverageSpeed { get; set; }
+        public float MaximumSpeed { get; set; }
+        public float ElevationGain { get; set; }
+        public float AverageGrade { get; set; }
+        public float MaximumGrade { get; set; }
         public int? AverageHeartRate { get; set; }
         public int? KomTime { get; set; }
         public int? QomTime { get; set; }
