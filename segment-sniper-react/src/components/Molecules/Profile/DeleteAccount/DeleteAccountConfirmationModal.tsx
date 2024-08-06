@@ -7,7 +7,6 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import useHandleDeleteStravaToken from "../../../../hooks/Api/Profile/Handlers/useHandleDeleteStravaToken";
 import { FormikErrors, useFormik } from "formik";
 import * as yup from "yup";
 import styles from "./DeleteAccountConfirmationModal.module.scss";

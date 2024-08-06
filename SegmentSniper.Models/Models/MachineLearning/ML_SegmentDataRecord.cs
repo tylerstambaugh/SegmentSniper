@@ -15,13 +15,13 @@
         public float ElevationGain { get; set; }
         public float AverageGrade { get; set; }
         public float MaximumGrade { get; set; }
-        public int? AverageHeartRate { get; set; }
-        public int? KomTime { get; set; }
-        public int? QomTime { get; set; }
-        public int? AthleteCount { get; set; }
-        public int? EffortCount { get; set; }
-        public int? StarCount { get; set; }
-        public int? PrRank { get; set; }
-        public int? Rank { get; set; }
+        public int AverageHeartRate { get; set; }
+        public int KomTime { get; set; }
+        public int QomTime { get; set; }
+        public int AthleteCount { get; set; }
+        public int EffortCount { get; set; }
+        public int StarCount { get; set; }
+        public int PrRank { get; set; }
+        public int Rank { get; set; }
     }
 }

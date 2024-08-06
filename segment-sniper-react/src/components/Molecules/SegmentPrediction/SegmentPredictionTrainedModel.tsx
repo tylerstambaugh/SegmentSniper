@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
 import { CustomToast } from "../Toast/CustomToast";
 import { DateTime } from 'luxon';
+import ConfirmRretainSegmentPredictionModelModal from "./ConfirmRetrainModel";
 
 function SegmentPredictionTrainedModel () {
 
     const {data, isError, isLoading: getSegmentPredictionTrainedModelQueryloading, error: getSegmentPredictionTrainedModelQueryError  }= useGetSegmentPredictionTrainedModelQuery();
     const trainSegmentPredictionModel = useGetTrainSegmentPredictionModel();
     const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainingDataUiModel | null>(data || null);
+    const [showConfirmRetrainModelModal, setShowConfirmRetrainModelModal] = useState<boolean>(false);
 
    async function handleTrainSegmentPredictionModelClick() {
     const trainedModel = await trainSegmentPredictionModel.mutateAsync();
@@ -43,6 +45,9 @@ function SegmentPredictionTrainedModel () {
     if (getSegmentPredictionTrainedModelQueryloading) return <div>Loading...</div>;
    // if (isError) return <div>Error loading model data</div>;
 
+   function handleCloseModal()  {
+    setShowConfirmRetrainModelModal(false)
+   }
 
     return (
         <>
@@ -64,7 +69,7 @@ function SegmentPredictionTrainedModel () {
             </Row>
             <Row>
                 <Button
-                    onClick={() => handleTrainSegmentPredictionModelClick()}
+                    onClick={() => setShowConfirmRetrainModelModal(true)}
                 >
                     Retrain Model
                 </Button>
@@ -74,6 +79,11 @@ function SegmentPredictionTrainedModel () {
        </Card>
        </Col>
        </Row>
+
+       <ConfirmRretainSegmentPredictionModelModal 
+       numberOfRecordsUsedInTraining={data?.numberOfSegmentsUsedInModelTraining ?? 0}
+       showConfirmRetrainModelModal={showConfirmRetrainModelModal} 
+       handleCloseModal={handleCloseModal}/>
        </>
     )
     }

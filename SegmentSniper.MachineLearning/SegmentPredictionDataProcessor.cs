@@ -48,6 +48,7 @@ namespace SegmentSniper.MachineLearning
                     Distance = record.Distance,
                     AverageGrade = record.AverageGrade,
                     ElevationGain = record.ElevationGain,
+                    MaximumGrade = record.MaximumGrade,
                     AverageHeartRate = record.AverageHeartRate,
                     AverageSpeed = record.AverageSpeed,
                     SegmentName = record.SegmentName
@@ -63,9 +64,32 @@ namespace SegmentSniper.MachineLearning
 
         private ITransformer TrainModel(IDataView data)
         {
-            var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
+            // Convert all numeric columns to Single (float)
+            var convertedData = _context.Transforms.Conversion.MapValueToKey("SegmentName")
+                .Append(_context.Transforms.Concatenate("Features",
+                    new[]
+                    {
+                "SegmentPrTime",
+                "Distance",
+                "AverageGrade",
+                "ElevationGain",
+                "MaximumGrade",
+                "AverageHeartRate",
+                "AverageSpeed"
+                    }))
+                .Append(_context.Transforms.Conversion.ConvertType("SegmentPrTime", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("Distance", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
+                .Fit(data)
+                .Transform(data);
+
+            var dataSplit = _context.Data.TrainTestSplit(convertedData, testFraction: 0.2);
             var pipeline = _context.Transforms.Categorical.OneHotEncoding("SegmentName")
-                .Append(_context.Transforms.Concatenate("Features", "SegmentPrTime", "Distance", "AverageGrade", "ElevationGain", "AverageHeartRate", "AverageSpeed", "SegmentName"))
+                .Append(_context.Transforms.Concatenate("Features", "SegmentPrTime", "Distance", "AverageGrade", "ElevationGain", "MaximumGrade", "AverageHeartRate", "AverageSpeed", "SegmentName"))
                 .Append(_context.Regression.Trainers.FastTree());
 
             return pipeline.Fit(dataSplit.TrainSet);

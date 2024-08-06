@@ -34,7 +34,6 @@ interface Props {
 
 export default function Routes({ defaultPage }: Props) {
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (defaultPage) {

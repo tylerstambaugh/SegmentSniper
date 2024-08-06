@@ -26,13 +26,22 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
             if(hasTrainedModel.NumberOfSegmentsUsedInModelTraining > 0)
             {
-                await _segmentPredictionDataProcessor.TrainModel(request.UserId);
+                try
+                {
 
-                var trainedModelMetaData = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
+                    await _segmentPredictionDataProcessor.TrainModel(request.UserId);
 
-                var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainedModelMetaData);
+                    var trainedModelMetaData = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 
-                return new TrainModelRequest.Response(returnModel);
+                    var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainedModelMetaData);
+
+                    return new TrainModelRequest.Response(returnModel);
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Error training segment prediction model", ex);
+                }
+
             }
             else
             {
