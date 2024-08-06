@@ -22,11 +22,11 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
     //     throw new Error("No segment prediction trained model found");
     //   }
 
-      if(response.segmentPredictionTrainedModel?.createdDate)
+      if(response.segmentPredictionTrainingDataUiModel?.createdDate)
       {
-        response.segmentPredictionTrainedModel.hasTrainedSegmentPredictionModel = true;
+        response.segmentPredictionTrainingDataUiModel.hasTrainedSegmentPredictionModel = true;
       }
-      return response.segmentPredictionTrainedModel;
+      return response.segmentPredictionTrainingDataUiModel;
     },
     {
       refetchOnMount: false,

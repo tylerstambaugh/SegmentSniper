@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 
-export interface SegmentPredictionTrainedModelData {
+export interface SegmentPredictionTrainingDataUiModel {
     id: string,
     numberOfSegmentsUsedInModelTraining: number,
     createdDate: DateTime,
