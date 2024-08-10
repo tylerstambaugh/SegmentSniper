@@ -77,6 +77,7 @@ function SegmentPredictionTrainedModel () {
             </Col>
         </Card.Body>
        </Card>
+
        </Col>
        </Row>
 
