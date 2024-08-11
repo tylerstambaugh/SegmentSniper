@@ -3,6 +3,7 @@
     public class ML_SegmentDataRecord
     {
         public int SegmentEffortId { get; set; }
+        public float Label { get; set; }
         public string UserId { get; set; }
         public string StravaSegmentEffortId { get; set; }
         public string StravaSegmentId { get; set; }

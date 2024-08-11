@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
 using System.Security.Claims;
 
@@ -39,7 +38,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable topredict segment. \n {ex.Message}");
+                return StatusCode(422, $"Unable to predict segment. \n {ex.Message}");
             }
         }
 

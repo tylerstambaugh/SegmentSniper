@@ -1,11 +1,11 @@
-import SegmentPredictionTrainedModel from "../../components/Molecules/SegmentPrediction/SegmentPredictionTrainedModel"
-import SegmentPredictor from "../../components/Molecules/SegmentPrediction/SegmentPredictor"
+import SegmentPredictionModelData from "../../components/Molecules/SegmentPrediction/SegmentPredictionModelData"
+import SegmentPredictor from "../../components/Molecules/SegmentPrediction/SegmentPredictorForm"
 
 
 function SegmentMachineLearning () {
 return (
     <>
-    <SegmentPredictionTrainedModel />
+    <SegmentPredictionModelData />
     <SegmentPredictor />
     </>
 )

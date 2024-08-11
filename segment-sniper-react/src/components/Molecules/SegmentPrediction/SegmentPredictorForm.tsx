@@ -20,7 +20,6 @@ function SegmentPredictor() {
   };
 
 
-
   const validationSchema = yup.object({
     segmentId: yup.string().nullable().required(),
   });
@@ -152,4 +151,4 @@ function SegmentPredictor() {
   );
 }
 
-export default SegmentPredictor;
+export default SegmentPredictorForm;

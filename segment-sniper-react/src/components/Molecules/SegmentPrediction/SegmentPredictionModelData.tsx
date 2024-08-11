@@ -7,34 +7,33 @@ import { CustomToast } from "../Toast/CustomToast";
 import { DateTime } from 'luxon';
 import ConfirmRretainSegmentPredictionModelModal from "./ConfirmRetrainModel";
 
-function SegmentPredictionTrainedModel () {
+export type SegmentPredictionModelDataProps = {
+    trainSegmentPredictionModel: () => void,
+    isLoading: boolean,
+    error: Error | null,
+    segmentPredictionTrainedModelData: SegmentPredictionTrainingDataUiModel | null,
+}
 
-    const {data, isError, isLoading: getSegmentPredictionTrainedModelQueryloading, error: getSegmentPredictionTrainedModelQueryError  }= useGetSegmentPredictionTrainedModelQuery();
-    const trainSegmentPredictionModel = useGetTrainSegmentPredictionModel();
-    const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainingDataUiModel | null>(data || null);
+const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
+    trainSegmentPredictionModel,
+    isLoading,
+    error,
+    segmentPredictionTrainedModelData,
+}) => {
+
+   
     const [showConfirmRetrainModelModal, setShowConfirmRetrainModelModal] = useState<boolean>(false);
 
-   async function handleTrainSegmentPredictionModelClick() {
-    const trainedModel = await trainSegmentPredictionModel.mutateAsync();
-    setSegmentPredictionTrainedModelData(trainedModel);
-    }
-
-    useEffect(() => {
-        // Update state when query data changes
-        if (data) {
-            setSegmentPredictionTrainedModelData(data);
-        }
-    }, [data]);
     
     useEffect(() => {
-        if(getSegmentPredictionTrainedModelQueryError instanceof Error) {
+        if(error instanceof Error) {
             CustomToast({
                 message: "Trained Model Query Error",
-                error: `Error: ${getSegmentPredictionTrainedModelQueryError.message}`,
+                error: `Error: ${error.message}`,
                 type: "error"
             });
         }
-    }, [getSegmentPredictionTrainedModelQueryError] )
+    }, [error] )
 
     const formatDate = (date?: DateTime) => {
         if (!date) return "None";
@@ -42,7 +41,7 @@ function SegmentPredictionTrainedModel () {
         return dateString.toLocaleString(DateTime.DATETIME_MED);
       };
 
-    if (getSegmentPredictionTrainedModelQueryloading) return <div>Loading...</div>;
+    if (isLoading) return <div>Loading...</div>;
    // if (isError) return <div>Error loading model data</div>;
 
    function handleCloseModal()  {
@@ -82,11 +81,11 @@ function SegmentPredictionTrainedModel () {
        </Row>
 
        <ConfirmRretainSegmentPredictionModelModal 
-       numberOfRecordsUsedInTraining={data?.numberOfSegmentsUsedInModelTraining ?? 0}
+       numberOfRecordsUsedInTraining={segmentPredictionTrainedModelData?.numberOfSegmentsUsedInModelTraining ?? 0}
        showConfirmRetrainModelModal={showConfirmRetrainModelModal} 
        handleCloseModal={handleCloseModal}/>
        </>
     )
     }
     
-    export default SegmentPredictionTrainedModel
+    export default SegmentPredictionModelData
