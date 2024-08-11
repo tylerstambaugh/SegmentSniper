@@ -64,8 +64,14 @@ namespace SegmentSniper.MachineLearning
 
         private ITransformer TrainModel(IDataView data)
         {
-            // Convert all numeric columns to Single (float)
-            var convertedData = _context.Transforms.Conversion.MapValueToKey("SegmentName")
+            // Convert numeric columns to Single (float) type
+            var convertedData = _context.Transforms.Conversion.ConvertType("SegmentPrTime", outputKind: DataKind.Single)
+                .Append(_context.Transforms.Conversion.ConvertType("Distance", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Concatenate("Features",
                     new[]
                     {
@@ -77,21 +83,25 @@ namespace SegmentSniper.MachineLearning
                 "AverageHeartRate",
                 "AverageSpeed"
                     }))
-                .Append(_context.Transforms.Conversion.ConvertType("SegmentPrTime", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("Distance", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
+                .Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
                 .Transform(data);
 
+            // Split the data into training and test sets
             var dataSplit = _context.Data.TrainTestSplit(convertedData, testFraction: 0.2);
+
+            // Define the training pipeline with valid parameters
             var pipeline = _context.Transforms.Categorical.OneHotEncoding("SegmentName")
                 .Append(_context.Transforms.Concatenate("Features", "SegmentPrTime", "Distance", "AverageGrade", "ElevationGain", "MaximumGrade", "AverageHeartRate", "AverageSpeed", "SegmentName"))
-                .Append(_context.Regression.Trainers.FastTree());
+                .Append(_context.Regression.Trainers.FastTree(
+                    labelColumnName: "Label", // Replace with your actual label column
+                    numberOfLeaves: 50, // Example parameter
+                    minimumExampleCountPerLeaf: 10, // Example parameter
+                    learningRate: 0.1, // Example parameter
+                    numberOfTrees: 100 // Example parameter
+                ));
 
+            // Train the model
             return pipeline.Fit(dataSplit.TrainSet);
         }
 
