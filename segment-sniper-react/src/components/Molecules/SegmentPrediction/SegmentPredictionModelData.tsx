@@ -1,52 +1,34 @@
 import { Button, Card, Col, Row } from "react-bootstrap"
-import { useGetSegmentPredictionTrainedModelQuery } from "../../../hooks/Api/SegmentPrediction/useGetSegmentPredictionTrainedModelQuery"
-import { useGetTrainSegmentPredictionModel } from "../../../hooks/Api/SegmentPrediction/useGetTrainSegmentPredictionModel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
-import { CustomToast } from "../Toast/CustomToast";
 import { DateTime } from 'luxon';
 import ConfirmRretainSegmentPredictionModelModal from "./ConfirmRetrainModel";
 
 export type SegmentPredictionModelDataProps = {
     trainSegmentPredictionModel: () => void,
     isLoading: boolean,
-    error: Error | null,
     segmentPredictionTrainedModelData: SegmentPredictionTrainingDataUiModel | null,
 }
 
 const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
     trainSegmentPredictionModel,
     isLoading,
-    error,
     segmentPredictionTrainedModelData,
-}) => {
-
-   
+}) => {   
     const [showConfirmRetrainModelModal, setShowConfirmRetrainModelModal] = useState<boolean>(false);
-
-    
-    useEffect(() => {
-        if(error instanceof Error) {
-            CustomToast({
-                message: "Trained Model Query Error",
-                error: `Error: ${error.message}`,
-                type: "error"
-            });
-        }
-    }, [error] )
 
     const formatDate = (date?: DateTime) => {
         if (!date) return "None";
         const dateString = DateTime.fromISO(date.toString());
         return dateString.toLocaleString(DateTime.DATETIME_MED);
       };
+      function handleCloseModal()  {
+        setShowConfirmRetrainModelModal(false)
+       }
 
+       
     if (isLoading) return <div>Loading...</div>;
    // if (isError) return <div>Error loading model data</div>;
-
-   function handleCloseModal()  {
-    setShowConfirmRetrainModelModal(false)
-   }
 
     return (
         <>

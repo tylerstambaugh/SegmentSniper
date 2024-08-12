@@ -4,6 +4,7 @@ import { useGetTrainSegmentPredictionModel } from "../../../hooks/Api/SegmentPre
 import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
 import { CustomToast } from "../../Molecules/Toast/CustomToast";
 import SegmentPredictionModelData from "../../Molecules/SegmentPrediction/SegmentPredictionModelData";
+import SegmentPredictorForm from "../../Molecules/SegmentPrediction/SegmentPredictorForm";
 
 
 function SegmentPredictor () {
@@ -37,7 +38,7 @@ function SegmentPredictor () {
     }, [getSegmentPredictionTrainedModelQueryError] )
 
 
-return 
+return (
     <>
     <SegmentPredictionModelData
      trainSegmentPredictionModel={handleTrainSegmentPredictionModelClick} 
@@ -47,7 +48,7 @@ return
      />
      <SegmentPredictorForm />
      </>
-
+)
 
 }
 

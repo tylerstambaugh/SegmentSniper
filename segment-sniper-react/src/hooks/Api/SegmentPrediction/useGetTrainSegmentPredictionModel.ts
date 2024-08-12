@@ -24,10 +24,10 @@ export const useGetTrainSegmentPredictionModel = () => {
 
     const response: SegmentPredictionTrainedModelResponse = await getTrainSegmentPredictionModel(contract);
 
-    if (!response.segmentPredictionTrainedModel) throw new Error("Failure to train model");
+    if (!response.segmentPredictionTrainingDataUiModel) throw new Error("Failure to train model");
     // setProfile(response.profileData);
     //setProfileData(response.profileData);
-    return response.segmentPredictionTrainedModel;
+    return response.segmentPredictionTrainingDataUiModel;
   }
 
   return { mutateAsync, data, isLoading, isError, error };
