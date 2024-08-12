@@ -10,7 +10,7 @@ interface SegmentPredictorForm {
   segmentId: string | null;
 }
 
-function SegmentPredictor() {
+function SegmentPredictorForm() {
   const [validated, setValidated] = useState(false);
   const {mutateAsync: handle, isLoading: predictSegmentIsLoading, error: predictSegmentIsError, data: predictSegmentData} = usePostPredictSegment();
   const [requestData, setRequestData] = useState<SegmentPredictionRequest | null>(null);
@@ -18,7 +18,6 @@ function SegmentPredictor() {
   const initialValues = {
     segmentId: null,
   };
-
 
   const validationSchema = yup.object({
     segmentId: yup.string().nullable().required(),

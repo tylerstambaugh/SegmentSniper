@@ -36,6 +36,7 @@ namespace SegmentSniper.Services.MachineLearning
                 }
                 else
                 {
+                    modelToSave.Id = Guid.NewGuid().ToString();
                     _segmentSniperDbContext.ML_SegmentPredictionModels.Add(modelToSave);
                 }
             }

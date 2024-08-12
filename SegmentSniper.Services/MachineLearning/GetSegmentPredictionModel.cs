@@ -28,13 +28,26 @@ namespace SegmentSniper.Services.MachineLearning
 
             var userSegmentPredictionModel = _segmentSniperDbContext.ML_SegmentPredictionModels
                 .Where(t => t.UserId == contract.UserId)
+                                  .Select(s => new
+                                  {
+                                      s.Id,
+                                      s.UserId,
+                                      s.CreatedDate,
+                                      s.UpdatedDate
+                                  })
                 .FirstOrDefault();
+
 
             if (userSegmentPredictionModel != null)
             {
                 return new GetSegmentPredictionModelContract.Result
                 {
-                    SegmentPredictionTrainingData = _mapper.Map<ML_SegmentPredictionModel, SegmentPredictionTrainingData>(userSegmentPredictionModel)
+                    SegmentPredictionTrainingData = new SegmentPredictionTrainingData
+                    {
+                        Id = userSegmentPredictionModel.Id,
+                        CreatedDate = userSegmentPredictionModel.CreatedDate,
+                        UpdatedDate = userSegmentPredictionModel.UpdatedDate,
+                    }
                 };
             }
             else

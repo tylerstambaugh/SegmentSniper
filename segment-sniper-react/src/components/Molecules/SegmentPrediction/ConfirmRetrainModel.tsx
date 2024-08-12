@@ -1,6 +1,8 @@
-import { FormikErrors } from "formik";
-import { Modal, Col, Row, InputGroup, Button, Spinner } from "react-bootstrap";
+
+import { Modal, Col, Row, Button, Spinner } from "react-bootstrap";
 import { useGetTrainSegmentPredictionModel } from "../../../hooks/Api/SegmentPrediction/useGetTrainSegmentPredictionModel";
+import { useEffect } from "react";
+import { CustomToast } from "../Toast/CustomToast";
 
 
 export type ConfirmRetrainSegmentPredictionModelModalProps = {
@@ -16,7 +18,18 @@ const ConfirmRretainSegmentPredictionModelModal = ({
 }: ConfirmRetrainSegmentPredictionModelModalProps) => {
 
 
-const {mutateAsync: retrainModel, isLoading, error} = useGetTrainSegmentPredictionModel()
+const {mutateAsync: retrainModel, isLoading, error: retrainModelError} = useGetTrainSegmentPredictionModel()
+
+useEffect(() => {
+    if(retrainModelError instanceof Error) {
+        CustomToast({
+            message: "Retrain Model Error",
+            error: `Error: ${retrainModelError.message}`,
+            type: "error"
+        });
+    }
+}, [retrainModelError] )
+
 
 function handleConfirm() {
     retrainModel();
