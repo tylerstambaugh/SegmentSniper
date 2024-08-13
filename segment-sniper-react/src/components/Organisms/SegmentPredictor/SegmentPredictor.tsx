@@ -12,7 +12,6 @@ function SegmentPredictor () {
     const {data, isLoading: getSegmentPredictionTrainedModelQueryloading, error: getSegmentPredictionTrainedModelQueryError  }= useGetSegmentPredictionTrainedModelQuery();
     const trainSegmentPredictionModel = useGetTrainSegmentPredictionModel();
     const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainingDataUiModel | null>(data || null);
-    const typedError = getSegmentPredictionTrainedModelQueryError as Error | null; // Type assertion
 
 
    async function handleTrainSegmentPredictionModelClick() {
@@ -21,7 +20,6 @@ function SegmentPredictor () {
     }
 
     useEffect(() => {
-        // Update state when query data changes
         if (data) {
             setSegmentPredictionTrainedModelData(data);
         }
@@ -43,7 +41,6 @@ return (
     <SegmentPredictionModelData
      trainSegmentPredictionModel={handleTrainSegmentPredictionModelClick} 
      isLoading={getSegmentPredictionTrainedModelQueryloading} 
-     error={typedError}
      segmentPredictionTrainedModelData={segmentPredictionTrainedModelData}
      />
      <SegmentPredictorForm />

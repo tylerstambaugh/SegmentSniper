@@ -32,7 +32,7 @@ namespace SegmentSniper.Api.Controllers
             try
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                var response = await _segmentPredictionActionHandler.HandleAsync(new SegmentPredictionRequest(request.SegmentId, userId));
+                var response = await _segmentPredictionActionHandler.HandleAsync(new SegmentPredictionRequest(userId, request.SegmentId));
 
                 return Ok(response);
             }
