@@ -64,7 +64,7 @@ function SegmentPredictorForm() {
       <Row className="d-flex justify-content-center pt-3 ">
         <Col md={6} xs={10}>
           <Card className="shadow">
-            <Card.Title>Segment Predictor </Card.Title>
+            <Card.Title className='text-center'>Segment Predictor </Card.Title>
             <Card.Body>
               <Form
                 name="segmentPRedictionForm"

@@ -1,4 +1,6 @@
-﻿namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+﻿using System.Text.Json.Serialization;
+
+namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
     public interface ISegmentPredictionActionHandler
     {
@@ -7,14 +9,16 @@
 
     public class SegmentPredictionRequest
     {
+
+        [JsonConstructor]
         public SegmentPredictionRequest(string segmentId)
         {
             SegmentId = segmentId;
         }
 
-        public SegmentPredictionRequest(string? userId, string segmentId) : this(userId)
+        public SegmentPredictionRequest(string? userId, string segmentId) : this(segmentId)
         {
-            SegmentId = segmentId;
+            UserId = userId;
         }
 
         public string? UserId { get; }

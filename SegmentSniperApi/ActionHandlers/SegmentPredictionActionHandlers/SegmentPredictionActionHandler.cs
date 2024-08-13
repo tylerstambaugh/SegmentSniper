@@ -49,7 +49,9 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
                     var segmentToPredict = new SegmentDetailDataForPrediction
                     {
-                        PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime,
+                        
+                          //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime
+                        
                         Distance = (float)segment.Distance,
                         AverageGradient = (float)segment.AverageGrade,
                         ElevationGain = (float)segment.TotalElevationGain,
