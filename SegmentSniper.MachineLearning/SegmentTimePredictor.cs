@@ -1,4 +1,5 @@
 ﻿using Microsoft.ML;
+using SegmentSniper.Data;
 using SegmentSniper.Models.MachineLearning;
 
 namespace SegmentSniper.MachineLearning
@@ -7,12 +8,16 @@ namespace SegmentSniper.MachineLearning
     {
         private readonly MLContext _context;
         private readonly PredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction> _predictionEngine;
+        private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public SegmentTimePredictor(string modelPath)
+        public SegmentTimePredictor(byte[] modelData)
         {
             _context = new MLContext();
-            var model = _context.Model.Load(modelPath, out var modelInputSchema);
-            //_predictionEngine = _context.Model.CreatePredictionEngine<SegmentDetailDataForPrediction, SegmentPredictionTrainingData>(model);
+
+            var modelStream = new MemoryStream(modelData);
+            ITransformer model = _context.Model.Load(modelStream, out var modelInputSchema);
+
+            _predictionEngine = _context.Model.CreatePredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction>(model);
         }
 
         public float PredictSegmentEffort(SegmentDetailDataForPrediction segmentForPrediction)

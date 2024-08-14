@@ -47,19 +47,29 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     var response = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(request.SegmentId));
 
                     DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
-                    var segmentToPredict = new SegmentDetailDataForPrediction
+                    var predictionModel = _context.ML_SegmentPredictionModels.Where(m => m.UserId ==  request.UserId).FirstOrDefault();
+                    if (predictionModel != null)
                     {
-                        
-                          //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime
-                        
-                        Distance = (float)segment.Distance,
-                        AverageGradient = (float)segment.AverageGrade,
-                        ElevationGain = (float)segment.TotalElevationGain,
-                    };
+                        var segmentToPredict = new SegmentDetailDataForPrediction
+                        {
+                            //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime                        
+                            Distance = (float)segment.Distance,
+                            AverageGradient = (float)segment.AverageGrade,
+                            ElevationGain = (float)segment.TotalElevationGain
+                        };
 
-                    var segmentPrediction = _segmentTimePredictionService.GetPredictedTime(segmentToPredict);
+                        var segmentTimePredictionService = new SegmentTimePredictor(predictionModel.SegmentPredictionModelData);
 
-
+                        var segmentPrediction = segmentTimePredictionService.PredictSegmentEffort(segmentToPredict);
+                        return new SegmentPredictionRequest.Response
+                        {
+                            PredictedTime = (int)segmentPrediction
+                        };
+                    }
+                    else
+                    {
+                        throw new ApplicationException($"No segment prediction model for user {request.UserId}");
+                    }
                 }
 
                 catch (Exception ex)
@@ -71,12 +81,9 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             }
             else
             {
-                throw new ApplicationException("Something went wrong 'handling the request");
+                throw new ApplicationException($"No strava token for userId: {request.UserId}");
             }
-            return new SegmentPredictionRequest.Response
-            {
-                PredictedTime = 123
-            };
+            
 
         }
 

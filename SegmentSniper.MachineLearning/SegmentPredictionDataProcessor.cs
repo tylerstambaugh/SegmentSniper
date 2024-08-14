@@ -32,6 +32,7 @@ namespace SegmentSniper.MachineLearning
             {
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
+                var regressionMetrics = EvaluateModel(data);
                 SaveModelToDatabase(userId);
             }
         }
