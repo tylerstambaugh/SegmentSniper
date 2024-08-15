@@ -14,21 +14,22 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
-        private readonly ISegmentTimePredictionService _segmentTimePredictionService;
+        
         private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
+        private readonly ISegmentTimePredictor _segmentTimePredictor;
         private readonly IMapper _mapper;
 
         public SegmentPredictionActionHandler(
             ISegmentSniperDbContext context,
             IStravaRequestService stravaRequestService,
-            ISegmentTimePredictionService segmentTimePredictionService,
             ISegmentPredictionDataProcessor segmentPredictionDataProcessor,
+            ISegmentTimePredictor segmentTimePredictor,
             IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
-            _segmentTimePredictionService = segmentTimePredictionService;
             _segmentPredictionDataProcessor = segmentPredictionDataProcessor;
+            _segmentTimePredictor = segmentTimePredictor;
             _mapper = mapper;
         }
 
@@ -55,12 +56,12 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                             //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime                        
                             Distance = (float)segment.Distance,
                             AverageGradient = (float)segment.AverageGrade,
-                            ElevationGain = (float)segment.TotalElevationGain
+                            ElevationGain = (float)segment.TotalElevationGain,
+                            ModelData = predictionModel.SegmentPredictionModelData
                         };
 
-                        var segmentTimePredictionService = new SegmentTimePredictor(predictionModel.SegmentPredictionModelData);
+                       var segmentPrediction = _segmentTimePredictor.PredictSegmentEffort(segmentToPredict);
 
-                        var segmentPrediction = segmentTimePredictionService.PredictSegmentEffort(segmentToPredict);
                         return new SegmentPredictionRequest.Response
                         {
                             PredictedTime = (int)segmentPrediction
