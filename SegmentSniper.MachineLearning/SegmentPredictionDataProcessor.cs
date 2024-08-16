@@ -8,6 +8,7 @@ namespace SegmentSniper.MachineLearning
     public class SegmentPredictionDataProcessor : ISegmentPredictionDataProcessor
     {
         private readonly MLContext _context;
+        private PredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction> _predictionEngine;
         private readonly IGetSegmentPredictionTrainingData _getSegmentPredictionTrainingData;
         private readonly IGetSegmentPredictionModel _getSegmentPredictionModel;
         private readonly ISaveSegmentPredictionModel _saveSegmentPredictionModel;
@@ -154,13 +155,12 @@ namespace SegmentSniper.MachineLearning
             }
         }
 
-        //public async Task<float> Predict(ML_SegmentDataRecord segmentData, string userId)
-        //{
-        //   await LoadModelFromDatabase(userId);
-
-        //    var predictionEngine = _context.Model.CreatePredictionEngine<ML_SegmentDataRecord, SegmentDetailDataForPrediction>(_model);
-        //    var prediction = predictionEngine.Predict(segmentData);
-        //    return prediction.PredictedTime;
-        //}
+        public async Task<float> PredictSegmentEffort(SegmentDetailDataForPrediction segmentForPrediction, string userId)
+        {
+            await LoadModelFromDatabase(userId);
+            _predictionEngine = _context.Model.CreatePredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction>(_model);
+            var prediction = _predictionEngine.Predict(segmentForPrediction);
+            return prediction.PredictedTime;
+        }
     }
 }

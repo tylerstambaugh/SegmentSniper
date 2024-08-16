@@ -8,6 +8,5 @@
         public float ElevationGain { get; set; }
         public string SegmentName { get; set; }
         public float? PredictedTime { get; set; }
-        public byte[]? ModelData { get; set; }
     }
 }

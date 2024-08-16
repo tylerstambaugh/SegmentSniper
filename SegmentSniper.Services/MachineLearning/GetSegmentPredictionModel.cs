@@ -33,7 +33,8 @@ namespace SegmentSniper.Services.MachineLearning
                                       s.Id,
                                       s.UserId,
                                       s.CreatedDate,
-                                      s.UpdatedDate
+                                      s.UpdatedDate,
+                                      s.SegmentPredictionModelData
                                   })
                 .FirstOrDefault();
 
@@ -47,6 +48,7 @@ namespace SegmentSniper.Services.MachineLearning
                         Id = userSegmentPredictionModel.Id,
                         CreatedDate = userSegmentPredictionModel.CreatedDate,
                         UpdatedDate = userSegmentPredictionModel.UpdatedDate,
+                        SegmentPredictionModelData = userSegmentPredictionModel.SegmentPredictionModelData
                     }
                 };
             }
