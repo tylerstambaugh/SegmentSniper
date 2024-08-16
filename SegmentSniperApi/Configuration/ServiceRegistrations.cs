@@ -116,7 +116,6 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetSegmentPredictionModel, GetSegmentPredictionModel>();
             services.AddScoped<ISaveSegmentPredictionModel, SaveSegmentPredictionModel>();
             services.AddScoped<ISaveSegmentPredictionTrainingData, SaveSegmentPredictionTrainingData>();
-            services.AddScoped<ISegmentTimePredictor, SegmentTimePredictor>();
             services.AddScoped<ISegmentPredictionDataProcessor, SegmentPredictionDataProcessor>();
 
             //adapters:

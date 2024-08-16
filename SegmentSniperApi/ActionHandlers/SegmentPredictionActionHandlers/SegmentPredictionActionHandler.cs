@@ -16,20 +16,17 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
         private readonly IStravaRequestService _stravaRequestService;
         
         private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
-        private readonly ISegmentTimePredictor _segmentTimePredictor;
         private readonly IMapper _mapper;
 
         public SegmentPredictionActionHandler(
             ISegmentSniperDbContext context,
             IStravaRequestService stravaRequestService,
             ISegmentPredictionDataProcessor segmentPredictionDataProcessor,
-            ISegmentTimePredictor segmentTimePredictor,
             IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _segmentPredictionDataProcessor = segmentPredictionDataProcessor;
-            _segmentTimePredictor = segmentTimePredictor;
             _mapper = mapper;
         }
 
@@ -48,19 +45,19 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     var response = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(request.SegmentId));
 
                     DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
-                    var predictionModel = _context.ML_SegmentPredictionModels.Where(m => m.UserId ==  request.UserId).FirstOrDefault();
-                    if (predictionModel != null)
+                    var predictionModelExists = _context.ML_SegmentPredictionModels
+                        .Any(m => m.UserId == request.UserId);
+                    if (predictionModelExists != null)
                     {
                         var segmentToPredict = new SegmentDetailDataForPrediction
                         {
                             //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime                        
                             Distance = (float)segment.Distance,
                             AverageGradient = (float)segment.AverageGrade,
-                            ElevationGain = (float)segment.TotalElevationGain,
-                            ModelData = predictionModel.SegmentPredictionModelData
+                            ElevationGain = (float)segment.TotalElevationGain
                         };
 
-                       var segmentPrediction = _segmentTimePredictor.PredictSegmentEffort(segmentToPredict);
+                       var segmentPrediction = await _segmentPredictionDataProcessor.PredictSegmentEffort(segmentToPredict, request.UserId);
 
                         return new SegmentPredictionRequest.Response
                         {
@@ -69,6 +66,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     }
                     else
                     {
+                       
                         throw new ApplicationException($"No segment prediction model for user {request.UserId}");
                     }
                 }
@@ -76,7 +74,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                 catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
-                    Log.Debug($"Error getting detailed segment by segment Id: ${ex.Message}");
+                    Log.Debug($"Error handling segment prediction: ${ex.Message}");
                     throw new ApplicationException("Something went wrong handling the request.", ex);
                 }
             }

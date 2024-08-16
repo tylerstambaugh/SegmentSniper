@@ -10,5 +10,6 @@ namespace SegmentSniper.MachineLearning
         RegressionMetrics EvaluateModel(IDataView data);
         Task LoadModelFromDatabase(string userId);
         Task TrainModel(string userId);
+        Task<float> PredictSegmentEffort(SegmentDetailDataForPrediction segmentForPrediction, string userId);
     }
 }
