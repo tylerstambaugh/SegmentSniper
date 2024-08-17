@@ -1,8 +1,9 @@
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Row, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 import { SegmentPredictionTrainingDataUiModel } from '../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel';
 import { DateTime } from 'luxon';
 import ConfirmRretainSegmentPredictionModelModal from './ConfirmRetrainModel';
+import { useGetTrainSegmentPredictionModel } from '../../../hooks/Api/SegmentPrediction/useGetTrainSegmentPredictionModel';
 
 export type SegmentPredictionModelDataProps = {
   trainSegmentPredictionModel: () => void;
@@ -17,6 +18,12 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
 }) => {
   const [showConfirmRetrainModelModal, setShowConfirmRetrainModelModal] =
     useState<boolean>(false);
+
+  const {
+    mutateAsync: trainModel,
+    isLoading: trainModelIsLoading,
+    error: trainModelError,
+  } = useGetTrainSegmentPredictionModel();
 
   const formatDate = (date?: DateTime) => {
     if (!date) return 'None';
@@ -35,7 +42,9 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
       <Row className="d-flex justify-content-center pt-3 ">
         <Col md={6} xs={10}>
           <Card className="shadow">
-            <Card.Title className='text-center'>Segment Prediction Model Data</Card.Title>
+            <Card.Title className="text-center">
+              Segment Prediction Model Data
+            </Card.Title>
             <Card.Body>
               <Col>
                 <Row>
@@ -55,11 +64,34 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
                 <div className="d-flex justify-content-center mb-2">
                   <Row>
                     <Col>
-                      <Button
-                        onClick={() => setShowConfirmRetrainModelModal(true)}
-                      >
-                        Retrain Model
-                      </Button>
+                      {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (
+                        <Button
+                          onClick={() => setShowConfirmRetrainModelModal(true)}
+                        >
+                          Retrain Model
+                        </Button>
+                      ) : trainModelIsLoading ? (
+                        <Button
+                          type="submit"
+                          variant="secondary"
+                          style={{ width: '75px' }}
+                        >
+                          <Spinner
+                            as="span"
+                            variant="light"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                            animation="border"
+                          />
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => setShowConfirmRetrainModelModal(true)}
+                        >
+                          Train Segment Prediction Model
+                        </Button>
+                      )}
                     </Col>
                   </Row>
                 </div>
