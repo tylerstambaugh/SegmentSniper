@@ -33,7 +33,7 @@ namespace SegmentSniper.MachineLearning
             {
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
-                var regressionMetrics = EvaluateModel(data);
+               // var regressionMetrics = EvaluateModel(data);
                 SaveModelToDatabase(userId);
             }
         }
@@ -53,7 +53,7 @@ namespace SegmentSniper.MachineLearning
                     MaximumGrade = record.MaximumGrade,
                     AverageHeartRate = record.AverageHeartRate,
                     AverageSpeed = record.AverageSpeed,
-                    SegmentName = record.SegmentName
+                   // SegmentName = record.SegmentName
                 }).ToList();
 
                 return _context.Data.LoadFromEnumerable(segmentEffortDataList);
@@ -85,16 +85,22 @@ namespace SegmentSniper.MachineLearning
                 "AverageHeartRate",
                 "AverageSpeed"
                     }))
-                .Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
+                //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
                 .Transform(data);
 
             // Split the data into training and test sets
             var dataSplit = _context.Data.TrainTestSplit(convertedData, testFraction: 0.2);
 
-            // Define the training pipeline with valid parameters
-            var pipeline = _context.Transforms.Categorical.OneHotEncoding("SegmentName")
-                .Append(_context.Transforms.Concatenate("Features", "SegmentPrTime", "Distance", "AverageGrade", "ElevationGain", "MaximumGrade", "AverageHeartRate", "AverageSpeed", "SegmentName"))
+            // Define the training pipeline without SegmentName
+            var pipeline = _context.Transforms.Concatenate("Features",
+                    "SegmentPrTime",
+                    "Distance",
+                    "AverageGrade",
+                    "ElevationGain",
+                    "MaximumGrade",
+                    "AverageHeartRate",
+                    "AverageSpeed")
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "Label", // Replace with your actual label column
                     numberOfLeaves: 50, // Example parameter
