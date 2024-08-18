@@ -7,10 +7,10 @@
         public string UserId { get; set; }
         public string StravaSegmentEffortId { get; set; }
         public string StravaSegmentId { get; set; }
-        public string SegmentName { get; set; }
+        //public string SegmentName { get; set; }
         public int ElapsedTime { get; set; }
         public int SegmentPrTime { get; set; }
-        public double Distance { get; set; }
+        public float Distance { get; set; }
         public float AverageSpeed { get; set; }
         public float MaximumSpeed { get; set; }
         public float ElevationGain { get; set; }
