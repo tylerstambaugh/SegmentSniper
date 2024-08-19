@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.MachineLearning;
 
 namespace SegmentSniper.Services.MachineLearning

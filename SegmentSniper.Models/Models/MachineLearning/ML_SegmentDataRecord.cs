@@ -16,7 +16,7 @@
         public float ElevationGain { get; set; }
         public float AverageGrade { get; set; }
         public float MaximumGrade { get; set; }
-        public int AverageHeartRate { get; set; }
+        public float AverageHeartRate { get; set; }
         public int KomTime { get; set; }
         public int QomTime { get; set; }
         public int AthleteCount { get; set; }
