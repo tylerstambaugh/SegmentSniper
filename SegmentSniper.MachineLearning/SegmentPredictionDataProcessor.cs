@@ -33,7 +33,7 @@ namespace SegmentSniper.MachineLearning
             {
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
-               // var regressionMetrics = EvaluateModel(data);
+                var regressionMetrics = EvaluateModel(data);
                 SaveModelToDatabase(userId);
             }
         }
@@ -51,8 +51,8 @@ namespace SegmentSniper.MachineLearning
                     AverageGrade = record.AverageGrade,
                     ElevationGain = record.ElevationGain,
                     MaximumGrade = record.MaximumGrade,
-                    AverageHeartRate = record.AverageHeartRate,
-                    AverageSpeed = record.AverageSpeed,
+                   // AverageHeartRate = record.AverageHeartRate,
+                   // AverageSpeed = record.AverageSpeed,
                    // SegmentName = record.SegmentName
                 }).ToList();
 
@@ -72,18 +72,17 @@ namespace SegmentSniper.MachineLearning
                 .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
+                //.Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
+                //.Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Concatenate("Features",
                     new[]
                     {
-                "SegmentPrTime",
                 "Distance",
                 "AverageGrade",
                 "ElevationGain",
                 "MaximumGrade",
-                "AverageHeartRate",
-                "AverageSpeed"
+               // "AverageHeartRate",
+               // "AverageSpeed"
                     }))
                 //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
@@ -94,15 +93,15 @@ namespace SegmentSniper.MachineLearning
 
             // Define the training pipeline without SegmentName
             var pipeline = _context.Transforms.Concatenate("Features",
-                    "SegmentPrTime",
                     "Distance",
                     "AverageGrade",
                     "ElevationGain",
-                    "MaximumGrade",
-                    "AverageHeartRate",
-                    "AverageSpeed")
+                    "MaximumGrade"
+                   // "AverageHeartRate",
+                   // "AverageSpeed"
+                   )
                 .Append(_context.Regression.Trainers.FastTree(
-                    labelColumnName: "Label", // Replace with your actual label column
+                    labelColumnName: "SegmentPrTime", // Replace with your actual label column
                     numberOfLeaves: 50, // Example parameter
                     minimumExampleCountPerLeaf: 10, // Example parameter
                     learningRate: 0.1, // Example parameter
@@ -115,9 +114,17 @@ namespace SegmentSniper.MachineLearning
 
         public RegressionMetrics EvaluateModel(IDataView data)
         {
-            var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
-            var predictions = _model.Transform(dataSplit.TestSet);
-            return _context.Regression.Evaluate(predictions);
+            try
+            {
+
+                var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
+                var predictions = _model.Transform(dataSplit.TestSet);
+                return _context.Regression.Evaluate(predictions);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error funning Evaluate Model", ex);
+            }
         }
 
         private void SaveModelToDatabase(string userId)
