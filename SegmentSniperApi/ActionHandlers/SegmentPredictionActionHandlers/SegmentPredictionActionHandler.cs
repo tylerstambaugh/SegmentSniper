@@ -3,6 +3,7 @@ using SegmentSniper.Data;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.UIModels.Segment;
 using Serilog;
 using StravaApiClient;
 using StravaApiClient.Models.Segment;
@@ -45,6 +46,8 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     var response = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(request.SegmentId));
 
                     DetailedSegment segment = _mapper.Map<DetailedSegmentApiModel, DetailedSegment>(response.DetailedSegmentApiModel);
+
+                    var segmentUiModel = CreateSegmentUiModel(segment);
                     var predictionModelExists = _context.ML_SegmentPredictionModels
                         .Any(m => m.UserId == request.UserId);
                     if (predictionModelExists != null)
@@ -63,7 +66,9 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
                         return new SegmentPredictionRequest.Response
                         {
-                            PredictedTime = (int)segmentPrediction
+                            PredictedTime = (int)segmentPrediction,
+                            DetailedSegmentUIModel = segmentUiModel
+
                         };
                     }
                     else
@@ -88,6 +93,12 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
         }
 
+        private DetailedSegmentUIModel CreateSegmentUiModel(DetailedSegment segment)
+        {
+            DetailedSegmentUIModel segmentUiModel = _mapper.Map<DetailedSegment, DetailedSegmentUIModel>(segment);
+
+            return segmentUiModel;
+        }
 
         private void ValidateRequest(SegmentPredictionRequest request)
         {
