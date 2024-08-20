@@ -51,9 +51,6 @@ namespace SegmentSniper.MachineLearning
                     AverageGrade = record.AverageGrade,
                     ElevationGain = record.ElevationGain,
                     MaximumGrade = record.MaximumGrade,
-                   // AverageHeartRate = record.AverageHeartRate,
-                   // AverageSpeed = record.AverageSpeed,
-                   // SegmentName = record.SegmentName
                 }).ToList();
 
                 return _context.Data.LoadFromEnumerable(segmentEffortDataList);
@@ -72,8 +69,6 @@ namespace SegmentSniper.MachineLearning
                 .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
-                //.Append(_context.Transforms.Conversion.ConvertType("AverageHeartRate", outputKind: DataKind.Single))
-                //.Append(_context.Transforms.Conversion.ConvertType("AverageSpeed", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Concatenate("Features",
                     new[]
                     {
@@ -81,8 +76,6 @@ namespace SegmentSniper.MachineLearning
                 "AverageGrade",
                 "ElevationGain",
                 "MaximumGrade",
-               // "AverageHeartRate",
-               // "AverageSpeed"
                     }))
                 //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
@@ -97,8 +90,6 @@ namespace SegmentSniper.MachineLearning
                     "AverageGrade",
                     "ElevationGain",
                     "MaximumGrade"
-                   // "AverageHeartRate",
-                   // "AverageSpeed"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", // Replace with your actual label column

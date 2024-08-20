@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using SegmentSniper.Models.UIModels.Segment;
+using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
@@ -27,6 +28,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
         public class Response
         {
             public int PredictedTime { get; set; }
+            public DetailedSegmentUIModel DetailedSegmentUIModel { get; set; }
         }
     }
 }
