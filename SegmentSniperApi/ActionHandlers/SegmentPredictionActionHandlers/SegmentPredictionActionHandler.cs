@@ -68,7 +68,6 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                         {
                             PredictedTime = (int)segmentPrediction,
                             DetailedSegmentUIModel = segmentUiModel
-
                         };
                     }
                     else

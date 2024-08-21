@@ -5,6 +5,8 @@ import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPre
 import { CustomToast } from "../../Molecules/Toast/CustomToast";
 import SegmentPredictionModelData from "../../Molecules/SegmentPrediction/SegmentPredictionModelData";
 import SegmentPredictorForm from "../../Molecules/SegmentPrediction/SegmentPredictorForm";
+import SegmentDetailsCard from "../../Molecules/SegmentPrediction/SegmentDetailsCard";
+import { SegmentDetails } from "../../../models/Segment/SegmentDetails";
 
 
 function SegmentPredictor () {
@@ -13,7 +15,7 @@ function SegmentPredictor () {
     const trainSegmentPredictionModel = useGetTrainSegmentPredictionModel();
     const [segmentPredictionTrainedModelData, setSegmentPredictionTrainedModelData] = useState<SegmentPredictionTrainingDataUiModel | null>(data || null);
 
-
+    const [segmentDetails, setSegmentDetails] = useState<SegmentDetails>();
    async function handleTrainSegmentPredictionModelClick() {
     const trainedModel = await trainSegmentPredictionModel.mutateAsync();
     setSegmentPredictionTrainedModelData(trainedModel);
@@ -43,7 +45,8 @@ return (
      isLoading={getSegmentPredictionTrainedModelQueryloading} 
      segmentPredictionTrainedModelData={segmentPredictionTrainedModelData}
      />
-     <SegmentPredictorForm />
+     <SegmentPredictorForm setSegmentDetails={setSegmentDetails}/>
+     <SegmentDetailsCard segmentDetails={segmentDetails}/>
      </>
 )
 

@@ -1,3 +1,4 @@
+import { SegmentDetails } from "../../../models/Segment/SegmentDetails";
 import { ApiContract } from "../ApiCommon/ApiContract";
 import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
 import { apiPost } from "../BaseApiService";
@@ -8,6 +9,7 @@ export type SegmentPredictionRequest = {
 
 export type SegmentPredictionResponse = {
     predictedTime: number;
+    segmentDetails: SegmentDetails;
 }
 
 export default async function postPredictSegment(contract: ApiContract<SegmentPredictionRequest>) {
