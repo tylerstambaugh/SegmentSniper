@@ -1,10 +1,11 @@
+import { Card, Col, Row } from "react-bootstrap";
 import { usePostStarSegment } from "../../../hooks/Api/Segments/usePostStarSegment";
 import { SegmentDetails } from "../../../models/Segment/SegmentDetails"
 import { CustomToast } from "../Toast/CustomToast";
 
 
 type SegmentDetailsCardProps = {
-    segmentDetails: SegmentDetails
+    segmentDetails?: SegmentDetails
 }
 
 const SegmentDetailsCard = ({
@@ -14,8 +15,11 @@ const SegmentDetailsCard = ({
     const starSegment = usePostStarSegment();
 
     async function handleStarButtonClick() {
-        try {
-          const response = await starSegment.mutateAsync({
+        if(segmentDetails)
+        {
+
+            try {
+                const response = await starSegment.mutateAsync({
             segmentId: segmentDetails.segmentId!,
             star: !segmentDetails.starred,
           });
@@ -27,17 +31,50 @@ const SegmentDetailsCard = ({
         } catch (error) {
           if (starSegment.error instanceof Error) {
             CustomToast({
-              message: "Star failed",
-              error: `Error: ${starSegment.error.message}`,
-              type: "error",
+                message: "Star failed",
+                error: `Error: ${starSegment.error.message}`,
+                type: "error",
             });
-          } else {
+        } else {
             CustomToast({
-              message: "Star failed",
-              error: `Error: Unknown`,
-              type: "error",
+                message: "Star failed",
+                error: `Error: Unknown`,
+                type: "error",
             });
-          }
         }
-      }
+    }
 }
+      }
+
+      return (
+        <>
+          {segmentDetails ? (
+            <Col>
+              <Card>
+                <Card.Title>
+                  <Row>
+                    <Col>
+                      {segmentDetails.name}
+                    </Col>
+                  </Row>
+                </Card.Title>
+              </Card>
+            </Col>
+          ) : (
+            <Col>
+              <Card>
+                <Card.Title>
+                  <Row>
+                    <Col>
+                      No Segment
+                    </Col>
+                  </Row>
+                </Card.Title>
+              </Card>
+            </Col>
+          )}
+        </>
+      );     
+};
+
+export default SegmentDetailsCard

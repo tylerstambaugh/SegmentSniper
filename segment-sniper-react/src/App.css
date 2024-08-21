@@ -116,8 +116,11 @@ body {
   font-weight: 800;
 }
 
-
 .activity-card-label {
+  font-weight: 600;
+}
+
+.card-label {
   font-weight: 600;
 }
 

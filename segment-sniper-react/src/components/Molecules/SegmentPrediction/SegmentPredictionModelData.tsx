@@ -42,29 +42,35 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
       <Row className="d-flex justify-content-center pt-3 ">
         <Col md={6} xs={10}>
           <Card className="shadow">
-            <Card.Title className="text-center">
+            <Card.Title className="text-center pt-2">
               Segment Prediction Model Data
             </Card.Title>
             <Card.Body>
               <Col>
                 <Row>
-                  Model Created:{' '}
+                  <Col>
+                  <span className='card-label'>Model Created:{' '}</span>
                   {formatDate(segmentPredictionTrainedModelData?.createdDate)}
+                  </Col>
                 </Row>
                 <Row>
-                  Model Updated:{' '}
+                  <Col>
+                <span className='card-label'>Model Updated:{' '}</span>
                   {formatDate(segmentPredictionTrainedModelData?.updatedDate)}
+                  </Col>
                 </Row>
-
                 <Row>
-                  Number of Segments Used In Training Model:{' '}
+                  <Col>
+                <span className='card-label'>Number of Segments Used In Training Model:{' '}</span>
                   {segmentPredictionTrainedModelData?.numberOfSegmentsUsedInModelTraining ??
                     0}
+                    </Col>
                 </Row>
-                <div className="d-flex justify-content-center mb-2">
+                <div className="d-flex justify-content-center mb-2 mt-2">
                   <Row>
                     <Col>
                       {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (
+                        
                         <Button
                           onClick={() => setShowConfirmRetrainModelModal(true)}
                         >

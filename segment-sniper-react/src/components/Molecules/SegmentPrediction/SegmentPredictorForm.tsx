@@ -4,16 +4,30 @@ import { Button, Card, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { CustomToast } from '../Toast/CustomToast';
 import * as yup from 'yup';
 import { usePostPredictSegment } from '../../../hooks/Api/SegmentPrediction/usePostPredictSegment';
-import { SegmentPredictionRequest } from '../../../services/Api/SegmentPrediction/postPredictSegment';
+import {
+  SegmentPredictionRequest,
+  SegmentPredictionResponse,
+} from '../../../services/Api/SegmentPrediction/postPredictSegment';
+import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
 
 interface SegmentPredictorForm {
   segmentId: string | null;
 }
 
-function SegmentPredictorForm() {
+function SegmentPredictorForm({
+  setSegmentDetails,
+}: {
+  setSegmentDetails: (segmentDetails: SegmentDetails) => void;
+}) {
   const [validated, setValidated] = useState(false);
-  const {mutateAsync: handle, isLoading: predictSegmentIsLoading, error: predictSegmentIsError, data: predictSegmentData} = usePostPredictSegment();
-  const [requestData, setRequestData] = useState<SegmentPredictionRequest | null>(null);
+  const {
+    mutateAsync: handle,
+    isLoading: predictSegmentIsLoading,
+    error: predictSegmentIsError,
+    data: predictSegmentData,
+  } = usePostPredictSegment();
+  const [requestData, setRequestData] =
+    useState<SegmentPredictionRequest | null>(null);
 
   const initialValues = {
     segmentId: null,
@@ -24,15 +38,15 @@ function SegmentPredictorForm() {
   });
 
   useEffect(() => {
-      if (predictSegmentIsError !== null) {
-        const error = predictSegmentIsError as Error;
-        CustomToast({
-          message: "Segment Prediction Failed",
-          error: `Error: ${error.message}`,
-          type: "error",
-        });
-      }
-    }, [predictSegmentIsError]);
+    if (predictSegmentIsError !== null) {
+      const error = predictSegmentIsError as Error;
+      CustomToast({
+        message: 'Segment Prediction Failed',
+        error: `Error: ${error.message}`,
+        type: 'error',
+      });
+    }
+  }, [predictSegmentIsError]);
 
   const handleFormReset = () => {
     formik.resetForm({
@@ -41,7 +55,7 @@ function SegmentPredictorForm() {
       },
     });
     formik.setErrors({});
-    formik.setFieldValue("segmentId", null);
+    formik.setFieldValue('segmentId', null);
     setValidated(false);
   };
 
@@ -50,10 +64,13 @@ function SegmentPredictorForm() {
     enableReinitialize: true,
     onSubmit: async (values: SegmentPredictorForm) => {
       setValidated(true);
-    const request: SegmentPredictionRequest = {
-        segmentId: values.segmentId!
-    }
-      await handle(request)
+      const request: SegmentPredictionRequest = {
+        segmentId: values.segmentId!,
+      };
+      const segmentPredictionResults: SegmentPredictionResponse = await handle(
+        request
+      );
+      setSegmentDetails(segmentPredictionResults.segmentDetails);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -64,7 +81,9 @@ function SegmentPredictorForm() {
       <Row className="d-flex justify-content-center pt-3 ">
         <Col md={6} xs={10}>
           <Card className="shadow">
-            <Card.Title className='text-center'>Segment Predictor </Card.Title>
+            <Card.Title className="text-center pt-2">
+              Segment Predictor{' '}
+            </Card.Title>
             <Card.Body>
               <Form
                 name="segmentPRedictionForm"
@@ -77,27 +96,36 @@ function SegmentPredictorForm() {
                 <Row className=" justify-content-center mb-3">
                   <Col className="mb-2">
                     <Form.Group controlId="formSegmentIdSearch">
-                      <Form.Label id="segmentIdSearchLabel">
-                        Segment Id:
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder=""
-                        value={formik.values.segmentId ?? ''}
-                        name="segmentId"
-                        isInvalid={!!formik.errors.segmentId}
-                        onChange={(e) => {
-                          formik.setFieldValue('segmentId', e.target.value);
-                        }}
-                        //className={`${styles.activityNameInput}`}
-                      />
+                      <Row className="align-items-center">
+                        <Col xs="auto">
+                          <Form.Label
+                            id="segmentIdSearchLabel"
+                            className="card-label"
+                          >
+                            Segment Id:
+                          </Form.Label>
+                        </Col>
+                        <Col>
+                          <Form.Control
+                            type="text"
+                            placeholder="Found at the end of the segment URL"
+                            value={formik.values.segmentId ?? ''}
+                            name="segmentId"
+                            isInvalid={!!formik.errors.segmentId}
+                            onChange={(e) => {
+                              formik.setFieldValue('segmentId', e.target.value);
+                            }}
+                            //className={`${styles.activityNameInput}`}
+                          />
+                        </Col>
+                      </Row>
                       <Form.Control.Feedback type="invalid">
                         {formik.errors.segmentId as FormikErrors<string>}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
-                <div className="d-flex justify-content-center mb-2">
+                <div className="d-flex justify-content-center mb-3">
                   <Row>
                     <Col>
                       <Button
@@ -115,7 +143,7 @@ function SegmentPredictorForm() {
                         <Button
                           type="submit"
                           variant="secondary"
-                          style={{ width: "75px" }}
+                          style={{ width: '75px' }}
                         >
                           <Spinner
                             as="span"
@@ -139,8 +167,10 @@ function SegmentPredictorForm() {
                   </Row>
                 </div>
               </Form>
-              <Row>
-                Segment Time Prediction: {predictSegmentData?.predictedTime}
+              <hr className="hr-75" />
+              <Row className="d-flex align-items-center pt-2">
+                <span className="card-label"> Segment Time Prediction:</span>{' '}
+                {predictSegmentData?.predictedTime}
               </Row>
             </Card.Body>
           </Card>
