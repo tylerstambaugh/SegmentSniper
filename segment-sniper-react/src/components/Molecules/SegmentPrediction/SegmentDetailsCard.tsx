@@ -1,80 +1,109 @@
-import { Card, Col, Row } from "react-bootstrap";
-import { usePostStarSegment } from "../../../hooks/Api/Segments/usePostStarSegment";
-import { SegmentDetails } from "../../../models/Segment/SegmentDetails"
-import { CustomToast } from "../Toast/CustomToast";
-
+import { Card, Col, Row } from 'react-bootstrap';
+import { usePostStarSegment } from '../../../hooks/Api/Segments/usePostStarSegment';
+import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
+import { CustomToast } from '../Toast/CustomToast';
+import ActivityMap from '../Activity/ActivityMap/ActivityMap';
 
 type SegmentDetailsCardProps = {
-    segmentDetails?: SegmentDetails
-}
-
-const SegmentDetailsCard = ({
-    segmentDetails,
-} : SegmentDetailsCardProps) => {
-
-    const starSegment = usePostStarSegment();
-
-    async function handleStarButtonClick() {
-        if(segmentDetails)
-        {
-
-            try {
-                const response = await starSegment.mutateAsync({
-            segmentId: segmentDetails.segmentId!,
-            star: !segmentDetails.starred,
-          });
-    
-          if (!starSegment.isError && !starSegment.isLoading && response !== null) {
-            segmentDetails.starred = true 
-          }
-          
-        } catch (error) {
-          if (starSegment.error instanceof Error) {
-            CustomToast({
-                message: "Star failed",
-                error: `Error: ${starSegment.error.message}`,
-                type: "error",
-            });
-        } else {
-            CustomToast({
-                message: "Star failed",
-                error: `Error: Unknown`,
-                type: "error",
-            });
-        }
-    }
-}
-      }
-
-      return (
-        <>
-          {segmentDetails ? (
-            <Col>
-              <Card>
-                <Card.Title>
-                  <Row>
-                    <Col>
-                      {segmentDetails.name}
-                    </Col>
-                  </Row>
-                </Card.Title>
-              </Card>
-            </Col>
-          ) : (
-            <Col>
-              <Card>
-                <Card.Title>
-                  <Row>
-                    <Col>
-                      No Segment
-                    </Col>
-                  </Row>
-                </Card.Title>
-              </Card>
-            </Col>
-          )}
-        </>
-      );     
+  segmentDetails?: SegmentDetails;
 };
 
-export default SegmentDetailsCard
+const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
+  const starSegment = usePostStarSegment();
+
+  async function handleStarButtonClick() {
+    if (segmentDetails) {
+      try {
+        const response = await starSegment.mutateAsync({
+          segmentId: segmentDetails.segmentId!,
+          star: !segmentDetails.starred,
+        });
+
+        if (
+          !starSegment.isError &&
+          !starSegment.isLoading &&
+          response !== null
+        ) {
+          segmentDetails.starred = true;
+        }
+      } catch (error) {
+        if (starSegment.error instanceof Error) {
+          CustomToast({
+            message: 'Star failed',
+            error: `Error: ${starSegment.error.message}`,
+            type: 'error',
+          });
+        } else {
+          CustomToast({
+            message: 'Star failed',
+            error: `Error: Unknown`,
+            type: 'error',
+          });
+        }
+      }
+    }
+  }
+
+  return (
+    <>
+      {segmentDetails ? (
+        <Row className="d-flex justify-content-center pt-3 ">
+          <Col md={6} xs={10}>
+            <Card className="shadow">
+              <Card.Title>
+                <Col>
+                  <Row className="justify-content-around">
+                    <Col>{segmentDetails.name}</Col>
+                  </Row>
+                </Col>
+              </Card.Title>
+              <Card.Body className="py-0">
+                <Col>
+                  <Row>
+                    <Col className="p-3" md={12} lg={6}>
+                      <Row className="justify-content-start text-start">
+                        <Col className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <span className="activity-card-label">
+                              Distance:
+                            </span>{' '}
+                          </p>
+                          <p className="mb-0">{segmentDetails.distance} mi.</p>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col className="p-0" md={12} lg={6}>
+                <ActivityMap
+                  stravaMap={segmentDetails.map!}
+                  startLatlng={
+                    segmentDetails.startLatlng
+                  }
+                  endLatlng={
+                    segmentDetails.endLatlng
+                  }
+                />
+              </Col>
+                  </Row>
+                </Col>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : (
+        <Row className="d-flex justify-content-center pt-3 ">
+          <Col md={6} xs={10}>
+            <Card className="shadow">
+              <Card.Title>
+                <Row>
+                  <Col>No Segment</Col>
+                </Row>
+              </Card.Title>
+            </Card>
+          </Col>
+        </Row>
+      )}
+    </>
+  );
+};
+
+export default SegmentDetailsCard;
