@@ -18,7 +18,7 @@ const ConfirmRretainSegmentPredictionModelModal = ({
 }: ConfirmRetrainSegmentPredictionModelModalProps) => {
 
 
-const {mutateAsync: retrainModel, isLoading, error: retrainModelError} = useGetTrainSegmentPredictionModel()
+const {mutateAsync: retrainModel, data: trainedModelData, isLoading, error: retrainModelError} = useGetTrainSegmentPredictionModel()
 
 useEffect(() => {
     if(retrainModelError instanceof Error) {
@@ -29,6 +29,15 @@ useEffect(() => {
         });
     }
 }, [retrainModelError] )
+
+useEffect(() => {
+  if(trainedModelData !== undefined)
+  {
+    handleCloseModal();
+  }
+}, [trainedModelData, handleCloseModal])
+
+console.log("trained model data:", trainedModelData);
 
 
 function handleConfirm() {
@@ -46,7 +55,7 @@ return (
           <Row>
             <p>
               Are you sure you would like to retrain your segment prediction model? 
-              All segment details gathered from the Segment Sniper will be used to retrain 
+              All {numberOfRecordsUsedInTraining} segment details gathered from the Segment Sniper will be used to retrain 
               the model. This cannot be undone and the segment prediction feature will be 
               unavailable while the model is training.
             </p>

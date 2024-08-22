@@ -1,9 +1,10 @@
 import { Button, Card, Col, Row, Spinner } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SegmentPredictionTrainingDataUiModel } from '../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel';
 import { DateTime } from 'luxon';
 import ConfirmRretainSegmentPredictionModelModal from './ConfirmRetrainModel';
 import { useGetTrainSegmentPredictionModel } from '../../../hooks/Api/SegmentPrediction/useGetTrainSegmentPredictionModel';
+import { CustomToast } from '../Toast/CustomToast';
 
 export type SegmentPredictionModelDataProps = {
   trainSegmentPredictionModel: () => void;
@@ -25,6 +26,16 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
     error: trainModelError,
   } = useGetTrainSegmentPredictionModel();
 
+  useEffect(() => {
+    if (trainModelError instanceof Error) {
+      CustomToast({
+        message: 'Error training model',
+        error: `Error: ${trainModelError.message}`,
+        type: 'error',
+      });
+    }
+  }, [trainModelError]);
+
   const formatDate = (date?: DateTime) => {
     if (!date) return 'None';
     const dateString = DateTime.fromISO(date.toString());
@@ -35,7 +46,6 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
   }
 
   if (isLoading) return <div>Loading...</div>;
-  // if (isError) return <div>Error loading model data</div>;
 
   return (
     <>
@@ -47,30 +57,50 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
             </Card.Title>
             <Card.Body>
               <Col>
-                <Row>
-                  <Col>
-                  <span className='card-label'>Model Created:{' '}</span>
-                  {formatDate(segmentPredictionTrainedModelData?.createdDate)}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                <span className='card-label'>Model Updated:{' '}</span>
-                  {formatDate(segmentPredictionTrainedModelData?.updatedDate)}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                <span className='card-label'>Number of Segments Used In Training Model:{' '}</span>
-                  {segmentPredictionTrainedModelData?.numberOfSegmentsUsedInModelTraining ??
-                    0}
-                    </Col>
-                </Row>
+                {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (
+                  <>
+                    <Row>
+                      <Col>
+                        <span className="card-label">Model Created: </span>
+                        {formatDate(
+                          segmentPredictionTrainedModelData?.createdDate
+                        )}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <span className="card-label">Model Updated: </span>
+                        {formatDate(
+                          segmentPredictionTrainedModelData?.updatedDate
+                        )}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <span className="card-label">
+                          Number of Segments Used In Training Model:{' '}
+                        </span>
+                        {segmentPredictionTrainedModelData?.numberOfSegmentsUsedInModelTraining ??
+                          0}
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <>
+                    <Row>
+                      <Col>
+                        <span className="card-label">No model found </span>
+                        {formatDate(
+                          segmentPredictionTrainedModelData?.createdDate
+                        )}
+                      </Col>
+                    </Row>
+                  </>
+                )}
                 <div className="d-flex justify-content-center mb-2 mt-2">
                   <Row>
                     <Col>
                       {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (
-                        
                         <Button
                           onClick={() => setShowConfirmRetrainModelModal(true)}
                         >
@@ -93,7 +123,7 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
                         </Button>
                       ) : (
                         <Button
-                          onClick={() => setShowConfirmRetrainModelModal(true)}
+                          onClick={() => trainModel()}
                         >
                           Train Segment Prediction Model
                         </Button>

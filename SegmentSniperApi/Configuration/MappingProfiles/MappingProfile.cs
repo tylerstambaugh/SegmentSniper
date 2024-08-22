@@ -167,7 +167,13 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.type))
             .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.rank));
 
-            CreateMap<ML_SegmentEffort, ML_SegmentDataRecord>();
+            CreateMap<ML_SegmentEffort, ML_SegmentDataRecord>()
+                .ForMember(dest => dest.SegmentPrTime, opt => opt.MapFrom(src => src.SegmentPrTime))
+                .ForMember(dest => dest.Distance, opt => opt.MapFrom(src => src.Distance))
+                .ForMember(dest => dest.AverageGrade, opt => opt.MapFrom(src => src.AverageGrade))
+                .ForMember(dest => dest.ElevationGain, opt => opt.MapFrom(src => src.ElevationGain))
+                .ForMember(dest => dest.MaximumGrade, opt => opt.MapFrom(src => src.MaximumGrade));
+
             CreateMap<SegmentPredictionTrainingData, ML_SegmentPredictionModel>();
             CreateMap<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
