@@ -39,11 +39,9 @@ useEffect(() => {
 
 console.log("trained model data:", trainedModelData);
 
-
 function handleConfirm() {
     retrainModel();
 }
-
 
 return (
     <Modal show={showConfirmRetrainModelModal}>
