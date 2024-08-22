@@ -39,16 +39,20 @@ namespace SegmentSniper.Services.MachineLearning
                     modelToSave.Id = Guid.NewGuid().ToString();
                     _segmentSniperDbContext.ML_SegmentPredictionModels.Add(modelToSave);
                 }
+
+                var result = _segmentSniperDbContext.SaveChanges() == 1;
+
+                return new SaveSegmentPredictionModelContract.Result
+                {
+                    Success = result
+                };
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Error saving trained model", ex);
             }
 
-            return new SaveSegmentPredictionModelContract.Result
-            {
-                Success = await _segmentSniperDbContext.SaveChangesAsync() == 1
-            };
+           
         }
     }
 }

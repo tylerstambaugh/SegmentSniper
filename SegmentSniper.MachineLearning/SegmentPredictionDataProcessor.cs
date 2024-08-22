@@ -114,7 +114,7 @@ namespace SegmentSniper.MachineLearning
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Error funning Evaluate Model", ex);
+                throw new ApplicationException("Error running Evaluate Model", ex);
             }
         }
 
