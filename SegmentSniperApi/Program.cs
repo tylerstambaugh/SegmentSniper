@@ -30,7 +30,7 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
 
         // Ensure database is created
-        context.Database.EnsureCreated();
+       //context.Database.EnsureCreated();
     }
 
 
