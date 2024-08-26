@@ -53,13 +53,11 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     if (predictionModelExists != null)
                     {
                         var segmentToPredict = new SegmentDetailDataForPrediction
-                        {
-                            //  PreviousEffortTime = segment.AthleteSegmentStats.PrElapsedTime                        
+                        {                       
                             Distance = (float)segment.Distance,
                             AverageGrade = (float)segment.AverageGrade,
                             ElevationGain = (float)segment.TotalElevationGain,
-                            MaximumGrade = (float)segment.MaximumGrade
-                            
+                            MaximumGrade = (float)segment.MaximumGrade                            
                         };
 
                        var segmentPrediction = await _segmentPredictionDataProcessor.PredictSegmentEffort(segmentToPredict, request.UserId);

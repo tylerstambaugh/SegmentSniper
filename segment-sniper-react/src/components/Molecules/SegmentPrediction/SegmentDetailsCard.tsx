@@ -3,11 +3,14 @@ import { usePostStarSegment } from '../../../hooks/Api/Segments/usePostStarSegme
 import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
 import { CustomToast } from '../Toast/CustomToast';
 import ActivityMap from '../Activity/ActivityMap/ActivityMap';
+import { useEffect } from 'react';
 
 type SegmentDetailsCardProps = {
   segmentDetails?: SegmentDetails;
 };
 
+
+//segment Id: 27775517
 const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
   const starSegment = usePostStarSegment();
 
@@ -44,20 +47,27 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
     }
   }
 
+  useEffect(() => {
+  console.log("segment details:", segmentDetails);
+  
+  }, [segmentDetails])
+  
+
   return (
     <>
       {segmentDetails ? (
-        <Row className="d-flex justify-content-center pt-3 ">
+        <Row className="d-flex justify-content-center pt-3">
           <Col md={6} xs={10}>
             <Card className="shadow">
-              <Card.Title>
-                <Col>
-                  <Row className="justify-content-around">
+              <Card.Title className="pt-3">
+                <Col className="d-flex justify-content-center ">
+                  <Row >
                     <Col>{segmentDetails.name}</Col>
                   </Row>
                 </Col>
+                <hr className="hr-75" />
               </Card.Title>
-              <Card.Body className="py-0">
+              <Card.Body className="py-2">
                 <Col>
                   <Row>
                     <Col className="p-3" md={12} lg={6}>
@@ -93,11 +103,16 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
         <Row className="d-flex justify-content-center pt-3 ">
           <Col md={6} xs={10}>
             <Card className="shadow">
-              <Card.Title>
-                <Row>
-                  <Col>No Segment</Col>
+              <Card.Title className="d-flex justify-content-center pt-2">
+                <Row >
+                  <Col>Segment Details</Col>
                 </Row>
               </Card.Title>
+              <Card.Body>
+              <Row >
+                  <Col>No Segment Selected</Col>
+                </Row>
+              </Card.Body>
             </Card>
           </Col>
         </Row>
