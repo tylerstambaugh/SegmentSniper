@@ -70,7 +70,7 @@ function SegmentPredictorForm({
       const segmentPredictionResults: SegmentPredictionResponse = await handle(
         request
       );
-      setSegmentDetails(segmentPredictionResults.segmentDetails);
+      setSegmentDetails(segmentPredictionResults.detailedSegmentUIModel);
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
@@ -83,6 +83,7 @@ function SegmentPredictorForm({
           <Card className="shadow">
             <Card.Title className="text-center pt-2">
               Segment Predictor{' '}
+              <hr className="hr-75" />
             </Card.Title>
             <Card.Body>
               <Form

@@ -9,7 +9,7 @@ export type SegmentPredictionRequest = {
 
 export type SegmentPredictionResponse = {
     predictedTime: number;
-    segmentDetails: SegmentDetails;
+    detailedSegmentUIModel: SegmentDetails;
 }
 
 export default async function postPredictSegment(contract: ApiContract<SegmentPredictionRequest>) {

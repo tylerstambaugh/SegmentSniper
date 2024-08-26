@@ -54,7 +54,9 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
           <Card className="shadow">
             <Card.Title className="text-center pt-2">
               Segment Prediction Model Data
+              <hr className="hr-75" />
             </Card.Title>
+            
             <Card.Body>
               <Col>
                 {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (
