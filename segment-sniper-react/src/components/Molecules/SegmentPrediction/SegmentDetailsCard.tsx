@@ -4,16 +4,18 @@ import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
 import { CustomToast } from '../Toast/CustomToast';
 import ActivityMap from '../Activity/ActivityMap/ActivityMap';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 type SegmentDetailsCardProps = {
   segmentDetails?: SegmentDetails;
 };
 
-
 //segment Id: 27775517
 const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
   const starSegment = usePostStarSegment();
-
+  const segmentBaseUrl = 'https://www.strava.com/segments/';
   async function handleStarButtonClick() {
     if (segmentDetails) {
       try {
@@ -48,10 +50,8 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
   }
 
   useEffect(() => {
-  console.log("segment details:", segmentDetails);
-  
-  }, [segmentDetails])
-  
+    console.log('segment details:', segmentDetails);
+  }, [segmentDetails]);
 
   return (
     <>
@@ -61,7 +61,7 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
             <Card className="shadow">
               <Card.Title className="pt-3">
                 <Col className="d-flex justify-content-center ">
-                  <Row >
+                  <Row>
                     <Col>{segmentDetails.name}</Col>
                   </Row>
                 </Col>
@@ -81,18 +81,63 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
                           <p className="mb-0">{segmentDetails.distance} mi.</p>
                         </Col>
                       </Row>
+                      <Row className="justify-content-start text-start">
+                        <Col className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <span className="activity-card-label">
+                              Average Grade:
+                            </span>{' '}
+                          </p>
+                          <p className="mb-0">
+                            {segmentDetails.averageGrade * 10}%
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="justify-content-start text-start">
+                        <Col className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <span className="activity-card-label">Kom:</span>{' '}
+                          </p>
+                          <p className="mb-0">
+                            {segmentDetails.xoms.komTime}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
+                    <Col className="p-3" md={12} lg={6}>
+                      <Row className="justify-content-start text-start">
+                        <Col className="d-flex justify-content-between">
+                          <p className="mb-0">
+                            <Link
+                              to={`${segmentBaseUrl}/${segmentDetails.segmentId}`}
+                              target='_blank'
+                            >
+                              View on Strava
+                              <FontAwesomeIcon
+                                icon={faUpRightFromSquare}
+                                size="sm"
+                                style={{
+                                  color: '#ffca14',
+                                  paddingTop: '.6rem',
+                                  font: 'black',
+                                }}
+                              />
+                            </Link>
+                          </p>
+                          <p className="mb-0">
+                            {segmentDetails.xoms.komTime}
+                          </p>
+                        </Col>
+                      </Row>
+                    </Col>
+                  
                     <Col className="p-0" md={12} lg={6}>
-                <ActivityMap
-                  stravaMap={segmentDetails.map!}
-                  startLatlng={
-                    segmentDetails.startLatlng
-                  }
-                  endLatlng={
-                    segmentDetails.endLatlng
-                  }
-                />
-              </Col>
+                      <ActivityMap
+                        stravaMap={segmentDetails.map!}
+                        startLatlng={segmentDetails.startLatlng}
+                        endLatlng={segmentDetails.endLatlng}
+                      />
+                    </Col>
                   </Row>
                 </Col>
               </Card.Body>
@@ -104,12 +149,12 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
           <Col md={6} xs={10}>
             <Card className="shadow">
               <Card.Title className="d-flex justify-content-center pt-2">
-                <Row >
+                <Row>
                   <Col>Segment Details</Col>
                 </Row>
               </Card.Title>
               <Card.Body>
-              <Row >
+                <Row>
                   <Col>No Segment Selected</Col>
                 </Row>
               </Card.Body>

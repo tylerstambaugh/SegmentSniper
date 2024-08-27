@@ -8,6 +8,7 @@ using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
 using System.Text.RegularExpressions;
+using static SegmentSniper.Services.Common.SegmentFormattingHelpers;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
@@ -58,7 +59,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         segmentModels.Add(model);
 
                         //do sniping on list of segments
-                        XomsTimes xomsTime = GetXomTimeFromStrings(model.Xoms);
+                        XomsTimes xomsTime = (XomsTimes)SegmentFormattingHelpers.GetXomTimeFromStrings(model.Xoms);
                         int segementLeaderTime;
 
                         if (request.UseQom)
@@ -121,14 +122,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         }
 
-        private XomsTimes GetXomTimeFromStrings(Xoms xoms)
-        {
-            return new XomsTimes
-            {
-                KomTime = GetTimeFromString(xoms.Kom),
-                QomTime = GetTimeFromString(xoms.Qom)
-            };
-        }
+        //private XomsTimes GetXomTimeFromStrings(Xoms xoms)
+        //{
+        //    return new XomsTimes
+        //    {
+        //        KomTime = GetTimeFromString(xoms.Kom),
+        //        QomTime = GetTimeFromString(xoms.Qom)
+        //    };
+        //}
 
         private int GetTimeFromString(string time)
         {
@@ -151,11 +152,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             return regex.Replace(input, "");
         }
 
-        private class XomsTimes
-        {
-            public int KomTime { get; set; }
-            public int QomTime { get; set; }
-        }
+        //private class XomsTimes
+        //{
+        //    public int KomTime { get; set; }
+        //    public int QomTime { get; set; }
+        //}
 
         private string ConvertTimeInSeconds(int seconds)
         {            
