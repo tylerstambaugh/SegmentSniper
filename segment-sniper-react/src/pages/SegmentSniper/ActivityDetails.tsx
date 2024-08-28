@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSnipeSegments } from "../../hooks/Api/Segments/useSnipeSegments";
 import useActivityListStore from "../../stores/useActivityListStore";
 import toast from "react-hot-toast";
-import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Row, } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import ActivityCard from "../../components/Molecules/Activity/ActivityCard/ActivityCard";
@@ -78,10 +78,10 @@ const ActivityDetails = () => {
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
     handleSorting.Sort("date", queriedSnipeSegmentList);
-  }, [selectedActivityId]);
+  }, [handleSorting, queriedSnipeSegmentList, selectedActivityId, setQueriedSnipeSegmentList, snipeSegmentList, snipeSegments]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
-    let segmentList = snipeSegmentList.filter(
+    const segmentList = snipeSegmentList.filter(
       (s) => s.activityId === selectedActivityId
     );
 
@@ -132,11 +132,11 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
-  }, [snipeSegmentList]);
+  }, [selectedActivityId, setQueriedSnipeSegmentList, snipeSegmentList]);
 
   useEffect(() => {
     handleSorting.Sort(filterOptions.sortBy!, queriedSnipeSegmentList);
-  }, [filterOptions.sortBy]);
+  }, [filterOptions.sortBy, handleSorting, queriedSnipeSegmentList]);
 
   return (
     <>
@@ -177,7 +177,7 @@ const ActivityDetails = () => {
               snipeListLoading={snipeSegments.isLoading}
               filtering={filtering}
               segmentList={queriedSnipeSegmentList}
-              leaderTypeQom={filterOptions?.leaderTypeQom!}
+              leaderTypeQom={filterOptions?.leaderTypeQom}
               carouselIndex={carouselIndex}
             />
           </Col>

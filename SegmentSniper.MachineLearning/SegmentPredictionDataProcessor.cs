@@ -76,6 +76,7 @@ namespace SegmentSniper.MachineLearning
                 "AverageGrade",
                 "ElevationGain",
                 "MaximumGrade",
+                "SegmentPrTime"
                     }))
                 //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
@@ -89,7 +90,8 @@ namespace SegmentSniper.MachineLearning
                     "Distance",
                     "AverageGrade",
                     "ElevationGain",
-                    "MaximumGrade"
+                    "MaximumGrade",
+                     "SegmentPrTime"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", // Replace with your actual label column
@@ -161,10 +163,17 @@ namespace SegmentSniper.MachineLearning
 
         public async Task<float> PredictSegmentEffort(SegmentDetailDataForPrediction segmentForPrediction, string userId)
         {
-            await LoadModelFromDatabase(userId);
-            _predictionEngine = _context.Model.CreatePredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction>(_model);
-            var prediction = _predictionEngine.Predict(segmentForPrediction);
-            return prediction.PredictedTime;
+            try
+            {
+                await LoadModelFromDatabase(userId);
+                _predictionEngine = _context.Model.CreatePredictionEngine<SegmentDetailDataForPrediction, SegmentPrediction>(_model);
+                var prediction = _predictionEngine.Predict(segmentForPrediction);
+                return prediction.PredictedTime;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

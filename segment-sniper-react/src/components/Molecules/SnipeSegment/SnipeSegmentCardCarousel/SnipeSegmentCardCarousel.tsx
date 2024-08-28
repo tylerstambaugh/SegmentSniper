@@ -4,16 +4,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
 import SnipeSegmentCard from "../SnipeSegmentCard/SnipeSegmentCard";
-import {
-  faChevronCircleLeft,
-  faChevronCircleRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuidv4 } from "uuid";
-import { Button, Col, Row } from "react-bootstrap";
+import {  Col, Row } from "react-bootstrap";
 import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 import NextArrow from "../../../Atoms/Slider/NextArrow";
-import { width } from "@fortawesome/free-regular-svg-icons/faAddressBook";
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];

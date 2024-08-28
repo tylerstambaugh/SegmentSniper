@@ -89,7 +89,7 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
                             </span>{' '}
                           </p>
                           <p className="mb-0">
-                            {segmentDetails.averageGrade * 10}%
+                            {segmentDetails.averageGrade}%
                           </p>
                         </Col>
                       </Row>
