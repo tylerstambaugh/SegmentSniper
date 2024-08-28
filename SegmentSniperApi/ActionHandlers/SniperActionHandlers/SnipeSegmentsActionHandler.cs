@@ -12,6 +12,7 @@ using static SegmentSniper.Services.Common.SegmentFormattingHelpers;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
+    [Obsolete]
     public class SnipeSegmentsActionHandler : ISnipeSegmentsActionHandler
     {
         private readonly ISegmentSniperDbContext _context;

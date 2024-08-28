@@ -4,10 +4,12 @@ using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
+using SegmentSniper.Services.Common;
 using Serilog;
 using StravaApiClient;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Segment;
+using static SegmentSniper.Services.Common.SegmentFormattingHelpers;
 
 namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 {
@@ -92,7 +94,40 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
         private DetailedSegmentUIModel CreateSegmentUiModel(DetailedSegment segment)
         {
-            DetailedSegmentUIModel segmentUiModel = _mapper.Map<DetailedSegment, DetailedSegmentUIModel>(segment);
+            XomsTimes xomsTime = GetXomTimeFromStrings(segment.Xoms);
+
+
+            DetailedSegmentUIModel segmentUiModel = new DetailedSegmentUIModel
+            {
+                SegmentId = segment.SegmentId,
+                Name = segment.Name,
+                ActivityType = segment.ActivityType,
+                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(segment.Distance), 2),
+                AverageGrade = segment.AverageGrade * 10,
+                MaximumGrade = segment.MaximumGrade,
+                ElevationHigh = segment.ElevationHigh,
+                ElevationLow = segment.ElevationLow,
+                StartLatlng = segment.StartLatlng,
+                EndLatlng = segment.EndLatlng,
+                ElevationProfile = segment.ElevationProfile,
+                ClimbCategory = segment.ClimbCategory,
+                City = segment.City,
+                State = segment.State,
+                Country = segment.Country,
+                Private = segment.Private,
+                Hazardous = segment.Hazardous,
+                Starred = segment.Starred,
+                CreatedAt = segment.CreatedAt,
+                UpdatedAt = segment.UpdatedAt,
+                TotalElevationGain = segment.TotalElevationGain,
+                Map = segment.Map,
+                EffortCount = segment.EffortCount,
+                AthleteCount = segment.AthleteCount,
+                StarCount = segment.StarCount,
+                AthleteSegmentStats = segment.AthleteSegmentStats,
+                Xoms = segment.Xoms,
+                LocalLegend = segment.LocalLegend
+            };
 
             return segmentUiModel;
         }
