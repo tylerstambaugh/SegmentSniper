@@ -1,13 +1,20 @@
-﻿namespace SegmentSniper.Models.MachineLearning
+﻿using Microsoft.ML.Data;
+
+namespace SegmentSniper.Models.MachineLearning
 {
     public class ML_SegmentDataRecord
     {
-        public float SegmentPrTime { get; set; }
+        [LoadColumn(1)]
         public float Distance { get; set; }
+        [LoadColumn(2)]
         public float ElevationGain { get; set; }
+        [LoadColumn(3)]
         public float AverageGrade { get; set; }
+        [LoadColumn(4)]
         public float MaximumGrade { get; set; }
-        public float Label { get; set; }
+        [LoadColumn(5)]
+        public float SegmentPrTime { get; set; }
+        //public float Label { get; set; }
         //public int SegmentEffortId { get; set; }
         //public string UserId { get; set; }
         //public string StravaSegmentEffortId { get; set; }

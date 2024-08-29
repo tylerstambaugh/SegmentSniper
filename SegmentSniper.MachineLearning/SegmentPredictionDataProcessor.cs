@@ -76,7 +76,6 @@ namespace SegmentSniper.MachineLearning
                 "AverageGrade",
                 "ElevationGain",
                 "MaximumGrade",
-                "SegmentPrTime"
                     }))
                 //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
@@ -90,8 +89,7 @@ namespace SegmentSniper.MachineLearning
                     "Distance",
                     "AverageGrade",
                     "ElevationGain",
-                    "MaximumGrade",
-                     "SegmentPrTime"
+                    "MaximumGrade"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", // Replace with your actual label column
@@ -102,7 +100,8 @@ namespace SegmentSniper.MachineLearning
                 ));
 
             // Train the model
-            return pipeline.Fit(dataSplit.TrainSet);
+            var model = pipeline.Fit(dataSplit.TrainSet);
+            return model;
         }
 
         public RegressionMetrics EvaluateModel(IDataView data)
