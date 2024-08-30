@@ -1,6 +1,6 @@
 ﻿namespace SegmentSniper.Models.MachineLearning
 {
-    public class SegmentPredictionTrainingData
+    public class SegmentPredictionTrainedData
     {
         public string Id { get; set; }
         public string UserId { get; set; }

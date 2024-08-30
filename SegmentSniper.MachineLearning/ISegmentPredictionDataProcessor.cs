@@ -6,7 +6,7 @@ namespace SegmentSniper.MachineLearning
 {
     public interface ISegmentPredictionDataProcessor
     {
-        Task<SegmentPredictionTrainingData> GetSegmentPredictionTrainedModelData(string userId);
+        Task<SegmentPredictionTrainedData> GetSegmentPredictionTrainedModelData(string userId);
         RegressionMetrics EvaluateModel(IDataView data);
         Task LoadModelFromDatabase(string userId);
         Task TrainModel(string userId);

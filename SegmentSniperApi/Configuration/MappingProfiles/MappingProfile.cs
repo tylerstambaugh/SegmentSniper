@@ -174,8 +174,8 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.ElevationGain, opt => opt.MapFrom(src => src.ElevationGain))
                 .ForMember(dest => dest.MaximumGrade, opt => opt.MapFrom(src => src.MaximumGrade));
 
-            CreateMap<SegmentPredictionTrainingData, ML_SegmentPredictionModel>();
-            CreateMap<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>()
+            CreateMap<SegmentPredictionTrainedData, ML_SegmentPredictionModel>();
+            CreateMap<SegmentPredictionTrainedData, SegmentPredictionTrainingDataUiModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))

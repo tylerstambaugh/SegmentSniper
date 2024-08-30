@@ -25,7 +25,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             ValidateRequest(request);
             var trainingModel = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 
-            var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainingModel);
+            var returnModel = _mapper.Map<SegmentPredictionTrainedData, SegmentPredictionTrainingDataUiModel>(trainingModel);
 
             return new GetSegmentPredictionTrainingModelActionHandlerRequest.Result()
             {
