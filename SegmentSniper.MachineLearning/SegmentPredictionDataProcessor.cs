@@ -76,6 +76,7 @@ namespace SegmentSniper.MachineLearning
                 "AverageGrade",
                 "ElevationGain",
                 "MaximumGrade",
+                "SegmentPrTime"
                     }))
                 //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
@@ -92,11 +93,11 @@ namespace SegmentSniper.MachineLearning
                     "MaximumGrade"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
-                    labelColumnName: "SegmentPrTime", // Replace with your actual label column
-                    numberOfLeaves: 50, // Example parameter
-                    minimumExampleCountPerLeaf: 10, // Example parameter
-                    learningRate: 0.1, // Example parameter
-                    numberOfTrees: 100 // Example parameter
+                    labelColumnName: "SegmentPrTime", 
+                    numberOfLeaves: 50,
+                    minimumExampleCountPerLeaf: 10, 
+                    learningRate: 0.1,
+                    numberOfTrees: 100 
                 ));
 
             // Train the model
@@ -126,7 +127,7 @@ namespace SegmentSniper.MachineLearning
                 _context.Model.Save(_model, null, memoryStream);
                 var modelBytes = memoryStream.ToArray();
 
-                var segmentPredictionTrainingData = new SegmentPredictionTrainingData
+                var segmentPredictionTrainingData = new SegmentPredictionTrainedData
                 {
                     UserId = userId,
                     SegmentPredictionModelData = modelBytes,
@@ -138,7 +139,7 @@ namespace SegmentSniper.MachineLearning
             }
         }
 
-        public async Task<SegmentPredictionTrainingData> GetSegmentPredictionTrainedModelData(string userId)
+        public async Task<SegmentPredictionTrainedData> GetSegmentPredictionTrainedModelData(string userId)
         {
             var result = await _getSegmentPredictionModel.ExecuteAsync(new GetSegmentPredictionModelContract(userId));
             var userSegmentPredictionTrainingData = result.SegmentPredictionTrainingData;

@@ -33,7 +33,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
 
                     var trainedModelMetaData = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 
-                    var returnModel = _mapper.Map<SegmentPredictionTrainingData, SegmentPredictionTrainingDataUiModel>(trainedModelMetaData);
+                    var returnModel = _mapper.Map<SegmentPredictionTrainedData, SegmentPredictionTrainingDataUiModel>(trainedModelMetaData);
 
                     return new TrainModelRequest.Response(returnModel);
                 }

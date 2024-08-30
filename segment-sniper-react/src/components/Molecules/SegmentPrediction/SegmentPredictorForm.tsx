@@ -9,6 +9,7 @@ import {
   SegmentPredictionResponse,
 } from '../../../services/Api/SegmentPrediction/postPredictSegment';
 import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
+import { useConvertTimeStringToNumericValue } from '../../../hooks/useConvertTimeStringToNumericValue';
 
 interface SegmentPredictorForm {
   segmentId: string | null;
@@ -28,6 +29,8 @@ function SegmentPredictorForm({
   } = usePostPredictSegment();
   const [requestData, setRequestData] =
     useState<SegmentPredictionRequest | null>(null);
+
+    const timeFormatter = useConvertTimeStringToNumericValue();
 
   const initialValues = {
     segmentId: null,
@@ -176,7 +179,7 @@ function SegmentPredictorForm({
               <hr className="hr-75" />
               <Row className="d-flex align-items-center pt-2">
                 <span className="card-label"> Segment Time Prediction:</span>{' '}
-                {predictSegmentData?.predictedTime}
+                {timeFormatter.numericTimeToString(predictSegmentData?.predictedTime || 0 )}
               </Row>
             </Card.Body>
           </Card>

@@ -42,7 +42,7 @@ namespace SegmentSniper.Services.MachineLearning
             {
                 return new GetSegmentPredictionModelContract.Result
                 {
-                    SegmentPredictionTrainingData = new SegmentPredictionTrainingData
+                    SegmentPredictionTrainingData = new SegmentPredictionTrainedData
                     {
                         Id = userSegmentPredictionModel.Id,
                         CreatedDate = userSegmentPredictionModel.CreatedDate,
@@ -55,7 +55,7 @@ namespace SegmentSniper.Services.MachineLearning
             {
                 return new GetSegmentPredictionModelContract.Result
                 {
-                    SegmentPredictionTrainingData = new SegmentPredictionTrainingData()
+                    SegmentPredictionTrainingData = new SegmentPredictionTrainedData()
                 };
             }
         }

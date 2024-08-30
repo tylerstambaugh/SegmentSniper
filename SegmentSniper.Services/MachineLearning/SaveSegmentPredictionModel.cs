@@ -21,7 +21,7 @@ namespace SegmentSniper.Services.MachineLearning
             try
             {
 
-                var modelToSave = _mapper.Map<SegmentPredictionTrainingData, ML_SegmentPredictionModel>(contract.SegmentPredictionTrainingData);
+                var modelToSave = _mapper.Map<SegmentPredictionTrainedData, ML_SegmentPredictionModel>(contract.SegmentPredictionTrainingData);
 
                 var existingModel = _segmentSniperDbContext.ML_SegmentPredictionModels
                     .Where(m => m.UserId == contract.SegmentPredictionTrainingData.UserId)

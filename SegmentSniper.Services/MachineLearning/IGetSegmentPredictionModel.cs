@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.MachineLearning
 
         public class Result
         {
-            public SegmentPredictionTrainingData SegmentPredictionTrainingData { get; set; }
+            public SegmentPredictionTrainedData SegmentPredictionTrainingData { get; set; }
         }
     }
 }

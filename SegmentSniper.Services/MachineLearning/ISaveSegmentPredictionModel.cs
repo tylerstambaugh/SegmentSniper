@@ -10,12 +10,12 @@ namespace SegmentSniper.Services.MachineLearning
 
     public class SaveSegmentPredictionModelContract
     {
-        public SaveSegmentPredictionModelContract(SegmentPredictionTrainingData segmentPredictionTrainingData)
+        public SaveSegmentPredictionModelContract(SegmentPredictionTrainedData segmentPredictionTrainingData)
         {
             SegmentPredictionTrainingData = segmentPredictionTrainingData;
         }
 
-        public SegmentPredictionTrainingData SegmentPredictionTrainingData { get; set; }
+        public SegmentPredictionTrainedData SegmentPredictionTrainingData { get; set; }
 
         public class Result
         {
