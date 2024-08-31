@@ -1,4 +1,4 @@
-export const useConvertTimeStringToNumericValue = () => {
+export const useTimeFormatConverter = () => {
   function timeStringToNumericValue(timeString: string): number {
     let totalSeconds = 0;
     if (timeString.split(":").length === 3) {

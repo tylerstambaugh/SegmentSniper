@@ -12,17 +12,21 @@ namespace SegmentSniper.MachineLearning
         private readonly IGetSegmentPredictionTrainingData _getSegmentPredictionTrainingData;
         private readonly IGetSegmentPredictionModel _getSegmentPredictionModel;
         private readonly ISaveSegmentPredictionModel _saveSegmentPredictionModel;
+        private readonly ISaveSegmentPredictionRegressionMetrics _saveSegmentPredictionRegressionMetrics;
         private ITransformer _model;
+        private RegressionMetrics _regressionMetrics;
 
         public SegmentPredictionDataProcessor(
             IGetSegmentPredictionTrainingData getSegmentPredictionTrainingData,
             IGetSegmentPredictionModel getSegmentPredictionModel,
-            ISaveSegmentPredictionModel saveSegmentPredictionModel)
+            ISaveSegmentPredictionModel saveSegmentPredictionModel,
+            ISaveSegmentPredictionRegressionMetrics saveSegmentPredictionRegressionMetrics)
         {
             _context = new MLContext();
             _getSegmentPredictionTrainingData = getSegmentPredictionTrainingData;
             _getSegmentPredictionModel = getSegmentPredictionModel;
             _saveSegmentPredictionModel = saveSegmentPredictionModel;
+            _saveSegmentPredictionRegressionMetrics = saveSegmentPredictionRegressionMetrics;
         }
 
         public async Task TrainModel(string userId)
@@ -33,10 +37,12 @@ namespace SegmentSniper.MachineLearning
             {
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
-                var regressionMetrics = EvaluateModel(data);
+                _regressionMetrics = EvaluateModel(data);
+                SaveMetricsToDatabase(_regressionMetrics);
                 SaveModelToDatabase(userId);
             }
         }
+
 
         //method to update the trained model if sufficient new segment effort recrods exist.
 
@@ -137,6 +143,11 @@ namespace SegmentSniper.MachineLearning
 
                 _saveSegmentPredictionModel.ExecuteAsync(new SaveSegmentPredictionModelContract(segmentPredictionTrainingData));
             }
+        }
+
+        private void SaveMetricsToDatabase(RegressionMetrics regressionMetrics)
+        {
+           
         }
 
         public async Task<SegmentPredictionTrainedData> GetSegmentPredictionTrainedModelData(string userId)
