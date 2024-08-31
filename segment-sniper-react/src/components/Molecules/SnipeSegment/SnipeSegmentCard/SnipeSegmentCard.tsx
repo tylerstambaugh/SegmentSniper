@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import ActivityMap from "../../Activity/ActivityMap/ActivityMap";
-import { useConvertTimeStringToNumericValue } from "../../../../hooks/useConvertTimeStringToNumericValue";
+import { useTimeFormatConverter } from "../../../../hooks/useTimeFormatConverter";
 import { useState } from "react";
 import styles from "./SnipeSegmentCard.module.scss";
 import { CustomToast } from "../../Toast/CustomToast";
@@ -28,7 +28,7 @@ const SnipeSegmentCard = ({
   leaderTypeQom,
 }: SnipedSegmentCardProps) => {
   const starSegment = usePostStarSegment();
-  const convertTime = useConvertTimeStringToNumericValue();
+  const convertTime = useTimeFormatConverter();
   const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
     state.setQueriedSnipeSegmentsList,
   ]);

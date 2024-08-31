@@ -1,9 +1,8 @@
-import { useConvertTimeStringToNumericValue } from "../useConvertTimeStringToNumericValue";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import { useTimeFormatConverter } from "../useTimeFormatConverter";
 import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
 
 const useHandleSecondsFromLeaderChange = () => {
-  const convertTimeStringToNumeric = useConvertTimeStringToNumericValue();
+  const convertTimeStringToNumeric = useTimeFormatConverter();
 
   async function Handle(
     secondsFromLeader: number,
@@ -11,10 +10,10 @@ const useHandleSecondsFromLeaderChange = () => {
     segmentList: SnipeSegmentListItem[]
   ) {
     const newFilteredList = segmentList.filter((s) => {
-      let secondsFromQom = convertTimeStringToNumeric.timeStringToNumericValue(
+      const secondsFromQom = convertTimeStringToNumeric.timeStringToNumericValue(
         s.secondsFromQom!
       );
-      let secondsFromKom = convertTimeStringToNumeric.timeStringToNumericValue(
+      const secondsFromKom = convertTimeStringToNumeric.timeStringToNumericValue(
         s.secondsFromKom!
       );
 

@@ -9,7 +9,7 @@ import {
   SegmentPredictionResponse,
 } from '../../../services/Api/SegmentPrediction/postPredictSegment';
 import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
-import { useConvertTimeStringToNumericValue } from '../../../hooks/useConvertTimeStringToNumericValue';
+import { useTimeFormatConverter } from '../../../hooks/useTimeFormatConverter';
 
 interface SegmentPredictorForm {
   segmentId: string | null;
@@ -30,7 +30,7 @@ function SegmentPredictorForm({
   const [requestData, setRequestData] =
     useState<SegmentPredictionRequest | null>(null);
 
-    const timeFormatter = useConvertTimeStringToNumericValue();
+    const timeFormatter = useTimeFormatConverter();
 
   const initialValues = {
     segmentId: null,

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Data.Entities;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
@@ -22,6 +23,7 @@ namespace SegmentSniper.Data
         public virtual DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
+        public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
