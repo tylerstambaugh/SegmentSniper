@@ -2,6 +2,7 @@
 using Microsoft.ML.Data;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.MachineLearning;
+using static Microsoft.ML.RegressionCatalog;
 
 namespace SegmentSniper.MachineLearning
 {
@@ -15,6 +16,11 @@ namespace SegmentSniper.MachineLearning
         private readonly ISaveSegmentPredictionRegressionMetrics _saveSegmentPredictionRegressionMetrics;
         private ITransformer _model;
         private RegressionMetrics _regressionMetrics;
+        private readonly int _numberOfLeaves = 50;
+        private readonly int _minimumExampleCountPerLeaf = 10;
+        private readonly double _learningRate = 0.1;
+        private readonly int _numberOfTrees = 100;
+        private readonly string _regressionType = typeof(RegressionTrainers).GetMethods().First(m => m.Name == "FastTree").Name;
 
         public SegmentPredictionDataProcessor(
             IGetSegmentPredictionTrainingData getSegmentPredictionTrainingData,
@@ -38,7 +44,7 @@ namespace SegmentSniper.MachineLearning
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
                 _regressionMetrics = EvaluateModel(data);
-                SaveMetricsToDatabase(_regressionMetrics);
+                SaveMetricsToDatabase(userId);
                 SaveModelToDatabase(userId);
             }
         }
@@ -100,10 +106,10 @@ namespace SegmentSniper.MachineLearning
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", 
-                    numberOfLeaves: 50,
-                    minimumExampleCountPerLeaf: 10, 
-                    learningRate: 0.1,
-                    numberOfTrees: 100 
+                    numberOfLeaves: _numberOfLeaves,
+                    minimumExampleCountPerLeaf: _minimumExampleCountPerLeaf, 
+                    learningRate: _learningRate,
+                    numberOfTrees: _numberOfTrees
                 ));
 
             // Train the model
@@ -145,9 +151,25 @@ namespace SegmentSniper.MachineLearning
             }
         }
 
-        private void SaveMetricsToDatabase(RegressionMetrics regressionMetrics)
+        private async void SaveMetricsToDatabase(string userId)
         {
-           
+            try
+            {
+                await _saveSegmentPredictionRegressionMetrics.ExecuteAsync(new SaveSegmentPredictionRegressionMetricsContract
+                {
+                    UserId = userId,
+                    RegressionType = _regressionType,
+                    RegressionMetrics = _regressionMetrics,
+                    LearningRate = _learningRate,
+                    NumberOfLeaves = _numberOfLeaves,
+                    NumberOfTrees = _numberOfTrees,
+                    MinimumExampleCountPerLeaf = _minimumExampleCountPerLeaf,
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error saving regression metrics", ex);
+            }
         }
 
         public async Task<SegmentPredictionTrainedData> GetSegmentPredictionTrainedModelData(string userId)
