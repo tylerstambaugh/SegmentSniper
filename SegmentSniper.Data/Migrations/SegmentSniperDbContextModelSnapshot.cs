@@ -377,6 +377,56 @@ namespace SegmentSniper.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("LearningRate")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LossFunction")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MeanAbsoluteError")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MeanSquaredError")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MinimumExampleCountPerLeaf")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfLeaves")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfTrees")
+                        .HasColumnType("int");
+
+                    b.Property<double>("RSquared")
+                        .HasColumnType("float");
+
+                    b.Property<string>("RegressionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("RootMeanSquaredError")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SegmentPredictionRegressionMetrics");
+                });
+
             modelBuilder.Entity("SegmentSniper.Data.Entities.ManageProfile.ChangeEmailVerificationCode", b =>
                 {
                     b.Property<int>("Id")
@@ -627,6 +677,17 @@ namespace SegmentSniper.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.ManageProfile.ChangeEmailVerificationCode", b =>

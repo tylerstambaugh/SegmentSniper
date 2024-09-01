@@ -13,10 +13,11 @@ namespace SegmentSniper.Services.MachineLearning
 
     public class SaveSegmentPredictionRegressionMetricsContract
     {
+        public string UserId { get; set; }
         public string RegressionType { get; set; }
         public int NumberOfLeaves { get; set; }
         public int MinimumExampleCountPerLeaf { get; set; }
-        public int LearningRate { get; set; }
+        public double LearningRate { get; set; }
         public int NumberOfTrees { get; set; }
         public RegressionMetrics RegressionMetrics { get; set; }
 
