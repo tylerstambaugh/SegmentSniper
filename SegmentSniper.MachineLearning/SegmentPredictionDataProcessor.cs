@@ -2,6 +2,7 @@
 using Microsoft.ML.Data;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.MachineLearning;
+using Serilog;
 using static Microsoft.ML.RegressionCatalog;
 
 namespace SegmentSniper.MachineLearning
@@ -20,7 +21,8 @@ namespace SegmentSniper.MachineLearning
         private readonly int _minimumExampleCountPerLeaf = 10;
         private readonly double _learningRate = 0.1;
         private readonly int _numberOfTrees = 100;
-        private readonly string _regressionType = typeof(RegressionTrainers).GetMethods().First(m => m.Name == "FastTree").Name;
+        //private readonly string _regressionType = typeof(RegressionTrainers).GetMethods().First(m => m.Name == "FastTree").Name;
+        private readonly string _regressionType = "FastTree";
 
         public SegmentPredictionDataProcessor(
             IGetSegmentPredictionTrainingData getSegmentPredictionTrainingData,
@@ -44,7 +46,7 @@ namespace SegmentSniper.MachineLearning
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
                 _regressionMetrics = EvaluateModel(data);
-                SaveMetricsToDatabase(userId);
+                await SaveMetricsToDatabase(userId);
                 SaveModelToDatabase(userId);
             }
         }
@@ -102,7 +104,8 @@ namespace SegmentSniper.MachineLearning
                     "Distance",
                     "AverageGrade",
                     "ElevationGain",
-                    "MaximumGrade"
+                    "MaximumGrade",
+                     "SegmentPrTime"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", 
@@ -151,7 +154,7 @@ namespace SegmentSniper.MachineLearning
             }
         }
 
-        private async void SaveMetricsToDatabase(string userId)
+        private async Task SaveMetricsToDatabase(string userId)
         {
             try
             {
@@ -168,6 +171,7 @@ namespace SegmentSniper.MachineLearning
             }
             catch (Exception ex)
             {
+                Log.Debug($"Error saving regression metrics training data: {ex.Message}");
                 throw new ApplicationException("Error saving regression metrics", ex);
             }
         }
