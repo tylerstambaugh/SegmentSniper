@@ -16,11 +16,11 @@ namespace SegmentSniper.Data.Entities.MachineLearning
         public int MinimumExampleCountPerLeaf { get; set; }
         public double LearningRate { get; set; }
         public int NumberOfTrees { get; set; }
-        public double MeanAbsoluteError { get; set; }
-        public double MeanSquaredError { get; set; }
-        public double RootMeanSquaredError { get; set; }
-        public double LossFunction { get; set; }
-        public double RSquared { get; set; }
+        public double? MeanAbsoluteError { get; set; }
+        public double? MeanSquaredError { get; set; }
+        public double? RootMeanSquaredError { get; set; }
+        public double? LossFunction { get; set; }
+        public double? RSquared { get; set; }
 
     }
 }

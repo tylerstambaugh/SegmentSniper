@@ -158,7 +158,7 @@ namespace SegmentSniper.MachineLearning
         {
             try
             {
-                await _saveSegmentPredictionRegressionMetrics.ExecuteAsync(new SaveSegmentPredictionRegressionMetricsContract
+                var result = await _saveSegmentPredictionRegressionMetrics.ExecuteAsync(new SaveSegmentPredictionRegressionMetricsContract
                 {
                     UserId = userId,
                     RegressionType = _regressionType,
@@ -168,6 +168,8 @@ namespace SegmentSniper.MachineLearning
                     NumberOfTrees = _numberOfTrees,
                     MinimumExampleCountPerLeaf = _minimumExampleCountPerLeaf,
                 });
+
+                //do something with the result?
             }
             catch (Exception ex)
             {
