@@ -388,13 +388,13 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<double>("LearningRate")
                         .HasColumnType("float");
 
-                    b.Property<double>("LossFunction")
+                    b.Property<double?>("LossFunction")
                         .HasColumnType("float");
 
-                    b.Property<double>("MeanAbsoluteError")
+                    b.Property<double?>("MeanAbsoluteError")
                         .HasColumnType("float");
 
-                    b.Property<double>("MeanSquaredError")
+                    b.Property<double?>("MeanSquaredError")
                         .HasColumnType("float");
 
                     b.Property<int>("MinimumExampleCountPerLeaf")
@@ -406,14 +406,14 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<int>("NumberOfTrees")
                         .HasColumnType("int");
 
-                    b.Property<double>("RSquared")
+                    b.Property<double?>("RSquared")
                         .HasColumnType("float");
 
                     b.Property<string>("RegressionType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("RootMeanSquaredError")
+                    b.Property<double?>("RootMeanSquaredError")
                         .HasColumnType("float");
 
                     b.Property<string>("UserId")

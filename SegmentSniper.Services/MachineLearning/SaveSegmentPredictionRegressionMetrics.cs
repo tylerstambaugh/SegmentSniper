@@ -17,16 +17,27 @@ namespace SegmentSniper.Services.MachineLearning
 
             var metricsToAdd = new SegmentPredictionRegressionMetrics
             {
+                UserId = contract.UserId,
                 RegressionType = contract.RegressionType,
                 NumberOfLeaves = contract.NumberOfLeaves,
                 NumberOfTrees = contract.NumberOfTrees,
                 MinimumExampleCountPerLeaf = contract.MinimumExampleCountPerLeaf,
                 LearningRate = contract.LearningRate,
-                MeanAbsoluteError = contract.RegressionMetrics.MeanAbsoluteError,
-                MeanSquaredError = contract.RegressionMetrics.MeanSquaredError,
-                LossFunction = contract.RegressionMetrics.LossFunction,
-                RootMeanSquaredError = contract.RegressionMetrics.RootMeanSquaredError,
-                RSquared = contract.RegressionMetrics.RSquared
+                MeanAbsoluteError = double.IsNaN(contract.RegressionMetrics.MeanAbsoluteError)
+                    ? (double?)null
+                    : contract.RegressionMetrics.MeanAbsoluteError,
+                MeanSquaredError = double.IsNaN(contract.RegressionMetrics.MeanSquaredError)
+                    ? (double?)null
+                    : contract.RegressionMetrics.MeanSquaredError,
+                LossFunction = double.IsNaN(contract.RegressionMetrics.LossFunction)
+                    ? (double?)null
+                    : contract.RegressionMetrics.LossFunction,
+                RootMeanSquaredError = double.IsNaN(contract.RegressionMetrics.RootMeanSquaredError)
+                    ? (double?)null
+                    : contract.RegressionMetrics.RootMeanSquaredError,
+                RSquared = double.IsNaN(contract.RegressionMetrics.RSquared)
+                    ? (double?)null
+                    : contract.RegressionMetrics.RSquared
             };
 
             _context.SegmentPredictionRegressionMetrics.Add(metricsToAdd);
