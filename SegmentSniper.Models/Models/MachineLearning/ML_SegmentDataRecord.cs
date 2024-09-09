@@ -13,8 +13,9 @@ namespace SegmentSniper.Models.MachineLearning
         [LoadColumn(4)]
         public float MaximumGrade { get; set; }
         [LoadColumn(5)]
+        
         public float SegmentPrTime { get; set; }
-        public float Label { get; set; }
+       public float Label { get; set; }
         //public int SegmentEffortId { get; set; }
         //public string UserId { get; set; }
         //public string StravaSegmentEffortId { get; set; }
