@@ -92,7 +92,6 @@ namespace SegmentSniper.MachineLearning
                 "MaximumGrade",
                 "SegmentPrTime"
                     }))
-                //.Append(_context.Transforms.Conversion.MapValueToKey("SegmentName")) // Apply this after conversion
                 .Fit(data)
                 .Transform(data);
 
@@ -104,8 +103,7 @@ namespace SegmentSniper.MachineLearning
                     "Distance",
                     "AverageGrade",
                     "ElevationGain",
-                    "MaximumGrade",
-                     "SegmentPrTime"
+                    "MaximumGrade"
                    )
                 .Append(_context.Regression.Trainers.FastTree(
                     labelColumnName: "SegmentPrTime", 

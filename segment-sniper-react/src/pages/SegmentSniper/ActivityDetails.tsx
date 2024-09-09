@@ -78,7 +78,7 @@ const ActivityDetails = () => {
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
     handleSorting.Sort("date", queriedSnipeSegmentList);
-  }, [handleSorting, queriedSnipeSegmentList, selectedActivityId, setQueriedSnipeSegmentList, snipeSegmentList, snipeSegments]);
+  }, [selectedActivityId]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
     const segmentList = snipeSegmentList.filter(
@@ -132,7 +132,7 @@ const ActivityDetails = () => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
     );
-  }, [selectedActivityId]);
+  }, [snipeSegmentList]);
 
   useEffect(() => {
     handleSorting.Sort(filterOptions.sortBy!, queriedSnipeSegmentList);
