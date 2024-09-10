@@ -4,6 +4,7 @@ using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.MachineLearning;
 using Serilog;
 using static Microsoft.ML.RegressionCatalog;
+using static Microsoft.ML.Vision.ImageClassificationTrainer;
 
 namespace SegmentSniper.MachineLearning
 {
@@ -46,7 +47,7 @@ namespace SegmentSniper.MachineLearning
                 var data = ConvertToIDataView(trainingData.ML_SegmentDataRecords);
                 _model = TrainModel(data);
                 _regressionMetrics = EvaluateModel(data);
-                await SaveMetricsToDatabase(userId);
+               // await SaveMetricsToDatabase(userId);
                 SaveModelToDatabase(userId);
             }
         }
@@ -77,47 +78,43 @@ namespace SegmentSniper.MachineLearning
 
         private ITransformer TrainModel(IDataView data)
         {
-            // Convert numeric columns to Single (float) type
-            var convertedData = _context.Transforms.Conversion.ConvertType("SegmentPrTime", outputKind: DataKind.Single)
+            // Step 1: Convert numeric columns to Single (float) type
+            var convertPipeline = _context.Transforms.Conversion.ConvertType("SegmentPrTime", outputKind: DataKind.Single)
                 .Append(_context.Transforms.Conversion.ConvertType("Distance", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("AverageGrade", outputKind: DataKind.Single))
                 .Append(_context.Transforms.Conversion.ConvertType("ElevationGain", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single))
-                .Append(_context.Transforms.Concatenate("Features",
-                    new[]
-                    {
-                "Distance",
-                "AverageGrade",
-                "ElevationGain",
-                "MaximumGrade",
-                "SegmentPrTime"
-                    }))
-                .Fit(data)
-                .Transform(data);
+                .Append(_context.Transforms.Conversion.ConvertType("MaximumGrade", outputKind: DataKind.Single));
 
-            // Split the data into training and test sets
-            var dataSplit = _context.Data.TrainTestSplit(convertedData, testFraction: 0.2);
+            // Step 2: Concatenate the features
+            var featurePipeline = convertPipeline.Append(
+                _context.Transforms.Concatenate("Features", new[]
+                {
+            "Distance",
+            "AverageGrade",
+            "ElevationGain",
+            "MaximumGrade"
+                }));
 
-            // Define the training pipeline without SegmentName
+            // Step 3: Fit the pipeline and split the data into training and test sets
+            var transformedData = featurePipeline.Fit(data).Transform(data);
+            var dataSplit = _context.Data.TrainTestSplit(transformedData, testFraction: 0.2);
+
+            // Step 4: Define the regression trainer pipeline
             var pipeline = _context.Transforms.Concatenate("Features",
-                    "Distance",
-                    "AverageGrade",
-                    "ElevationGain",
-                    "MaximumGrade"
-                   )
-                .Append(_context.Regression.Trainers.FastTree(
-                    labelColumnName: "SegmentPrTime", 
-                    numberOfLeaves: _numberOfLeaves,
-                    minimumExampleCountPerLeaf: _minimumExampleCountPerLeaf, 
-                    learningRate: _learningRate,
-                    numberOfTrees: _numberOfTrees
+                    "Distance", "AverageGrade", "ElevationGain", "MaximumGrade")
+                .Append(_context.Regression.Trainers.LbfgsPoissonRegression(
+                    labelColumnName: "SegmentPrTime",
+                    l1Regularization: (float)0.01,
+                    l2Regularization: (float)0.01,
+                    optimizationTolerance: (float)1e-5,
+                    historySize: 20,
+                    enforceNonNegativity: true
                 ));
 
             // Train the model
             var model = pipeline.Fit(dataSplit.TrainSet);
             return model;
         }
-
         public RegressionMetrics EvaluateModel(IDataView data)
         {
             try
@@ -125,7 +122,7 @@ namespace SegmentSniper.MachineLearning
 
                 var dataSplit = _context.Data.TrainTestSplit(data, testFraction: 0.2);
                 var predictions = _model.Transform(dataSplit.TestSet);
-                return _context.Regression.Evaluate(predictions);
+                return _context.Regression.Evaluate(predictions, labelColumnName: "SegmentPrTime");
             }
             catch (Exception ex)
             {
