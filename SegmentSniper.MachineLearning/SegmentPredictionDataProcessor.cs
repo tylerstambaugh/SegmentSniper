@@ -3,8 +3,6 @@ using Microsoft.ML.Data;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Services.MachineLearning;
 using Serilog;
-using static Microsoft.ML.RegressionCatalog;
-using static Microsoft.ML.Vision.ImageClassificationTrainer;
 
 namespace SegmentSniper.MachineLearning
 {
