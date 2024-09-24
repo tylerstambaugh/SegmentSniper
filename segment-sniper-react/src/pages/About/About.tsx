@@ -5,13 +5,13 @@ export type AboutPageComponentProps = {
   collapsed: boolean;
 };
 
-function AboutLandingPage() {
+function About() {
   return (
-    <Row>
-      <Col>
-        <Accordion>
+    <Row className='pt-3'>
+      <Col  md={7} className="mb-2 mx-auto">
+        <Accordion style={{ backgroundColor: '#f0f0f0' }}>
           <Accordion.Item eventKey="0">
-            <Accordion.Header>About the Author</Accordion.Header>
+            <Accordion.Header>Meet The Maker</Accordion.Header>
             <Accordion.Body>
               <AboutAuthor />
             </Accordion.Body>
@@ -20,7 +20,7 @@ function AboutLandingPage() {
             <Accordion.Header>About Segment Sniper</Accordion.Header>
             <Accordion.Body></Accordion.Body>
           </Accordion.Item>
-          <Accordion.Item eventKey="1">
+          <Accordion.Item eventKey="2">
             <Accordion.Header>Accordion Segment Time Predictor</Accordion.Header>
             <Accordion.Body></Accordion.Body>
           </Accordion.Item>
@@ -30,4 +30,4 @@ function AboutLandingPage() {
   );
 }
 
-export default AboutLandingPage;
+export default About;
