@@ -25,7 +25,7 @@ import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode"
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import ProfileMain from "./components/Organisms/Profile/ProfileMain";
 import SegmentMachineLearning from "./pages/SegmentPrediction";
-import AboutLandingPage from "./pages/About/AboutLandingPage";
+import About from "./pages/About/About";
 
 interface Props {
   defaultPage?: string;
@@ -73,7 +73,7 @@ export default function Routes({ defaultPage }: Props) {
             path={AppRoutes.InactiveLogout}
             element={<Logout inactive={true} />}
           />
-          <Route path={AppRoutes.About} element={<AboutLandingPage />} />
+          <Route path={AppRoutes.About} element={<About />} />
           <Route
             path={AppRoutes.Dashboard}
             element={

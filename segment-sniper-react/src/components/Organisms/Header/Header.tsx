@@ -1,14 +1,14 @@
-import Container from "react-bootstrap/Container";
-import { Link } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
-import { Col, Nav, Navbar, Row } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import useUserStore from "../../../stores/useUserStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import logo from "../../../assets/images/segment_sniper_logo_v3.webp";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+import Container from 'react-bootstrap/Container';
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../../enums/AppRoutes';
+import { Col, Nav, Navbar, Row } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import useUserStore from '../../../stores/useUserStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import logo from '../../../assets/images/segment_sniper_logo_v3.webp';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useRef, useState } from 'react';
 
 function Header() {
   const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
@@ -32,10 +32,10 @@ function Header() {
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [navbarRef, isNavbarOpen]);
 
@@ -47,17 +47,17 @@ function Header() {
       bg="light"
       className="pb-0"
     >
-      <Container fluid className={""}>
-        <Navbar.Brand className={"ps-3"}>
+      <Container fluid className={''}>
+        <Navbar.Brand className={'ps-3'}>
           <Link
             to={
               !isAuthenticated
                 ? `/${AppRoutes.Home}`
                 : `/${AppRoutes.Dashboard}`
             }
-            className={"d-flex text-white text-decoration-none"}
+            className={'d-flex text-white text-decoration-none'}
           >
-            {" "}
+            {' '}
             <img
               src={logo}
               alt="segmentSniperLogo"
@@ -76,30 +76,45 @@ function Header() {
             user !== null &&
             user!.id ? (
               <>
-                <Nav.Item className={"fw-semibold text-end"}>
+                <Nav.Item className={'fw-semibold text-end'}>
+                  <Navbar.Text>
+                    <Link
+                      to={
+                        !isAuthenticated
+                          ? `/${AppRoutes.Home}`
+                          : `/${AppRoutes.Dashboard}`
+                      }
+                    >
+                      Menu
+                    </Link>
+                  </Navbar.Text>
+                </Nav.Item>
+                <div className={'border-end mx-3 d-none d-md-block'}></div>
+                <div className={'border-top mt-1 d-md-none'}></div>
+                <Nav.Item className={'fw-semibold text-end'}>
                   <Navbar.Text>
                     <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
                       About
                     </Link>
                   </Navbar.Text>
                 </Nav.Item>
-                <div className={"border-end mx-3 d-none d-md-block"}></div>
-                <div className={"border-top mt-1 d-md-none"}></div>
-                <Nav.Item className={"text-end"}>
+                <div className={'border-end mx-3 d-none d-md-block'}></div>
+                <div className={'border-top mt-1 d-md-none'}></div>
+                <Nav.Item className={'text-end'}>
                   <Navbar.Text>
-                    Signed in as:{" "}
+                    Signed in as:{' '}
                     <Link to={`/${AppRoutes.Profile}`}>
-                      <span style={{ textDecoration: "none" }}>
-                        <FontAwesomeIcon icon={faUser} />{" "}
+                      <span style={{ textDecoration: 'none' }}>
+                        <FontAwesomeIcon icon={faUser} />{' '}
                       </span>
                       {user!.firstName}
                     </Link>
                     {}
                   </Navbar.Text>
                 </Nav.Item>
-                <div className={"border-end mx-3 d-none d-md-block"}></div>
-                <div className={"border-top mt-1 d-md-none"}></div>
-                <Nav.Item className={"fw-semibold text-end"}>
+                <div className={'border-end mx-3 d-none d-md-block'}></div>
+                <div className={'border-top mt-1 d-md-none'}></div>
+                <Nav.Item className={'fw-semibold text-end'}>
                   <Navbar.Text className="">
                     <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
                       Logout
@@ -109,8 +124,8 @@ function Header() {
               </>
             ) : (
               <>
-                <div className={"d-flex justify-content-end pt-md-0 me-md-3"}>
-                  <Nav.Item className={"fw-semibold"}>
+                <div className={'d-flex justify-content-end pt-md-0 me-md-3'}>
+                  <Nav.Item className={'fw-semibold'}>
                     <Navbar.Text className="d-flex">
                       <Link
                         to={`/${AppRoutes.About}`}
@@ -121,8 +136,8 @@ function Header() {
                     </Navbar.Text>
                   </Nav.Item>
                 </div>
-                <div className={"d-flex justify-content-end pt-md-0"}>
-                  <Nav.Item className={"fw-semibold"}>
+                <div className={'d-flex justify-content-end pt-md-0'}>
+                  <Nav.Item className={'fw-semibold'}>
                     <Navbar.Text className="d-flex">
                       <Link
                         to={`/${AppRoutes.Login}`}

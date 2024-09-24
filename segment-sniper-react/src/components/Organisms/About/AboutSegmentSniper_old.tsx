@@ -12,7 +12,7 @@ import searchResults from "../assets/images/about/search_results_img.png";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
-function About() {
+function About_Old() {
   const navigate = useNavigate();
   return (
     <Col className="px-2">
@@ -164,4 +164,4 @@ function About() {
     </Col>
   );
 }
-export default About;
+export default About_Old;

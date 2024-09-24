@@ -189,3 +189,17 @@ body {
   cursor: not-allowed; /* Show a not-allowed cursor when hovering over the disabled slider */
 }
 
+.accordion-button {
+  background-color: #e0e0b1 !important;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  background-color: #ee6e57 !important;
+  
+}
+
+.accordion-button:not(.collapsed) {
+  color: #000;
+  background-color: #bb7da6 !important;
+}
