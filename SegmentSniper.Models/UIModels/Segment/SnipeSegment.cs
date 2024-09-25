@@ -13,8 +13,10 @@ namespace SegmentSniper.Models.UIModels.Segment
         public string QomTime { get; set; }
         public int PercentageFromKom{ get; set; }
         public int PercentageFromQom{ get; set; }
-        public string SecondsFromKom { get; set; }
-        public string SecondsFromQom { get; set; }
+        public string TimeFromKom { get; set; }
+        public string TimeFromQom { get; set; }
+        public int SecondsFromKom { get; set; }
+        public int SecondsFromQom { get; set; }
         public int PrPercentageFromKom { get; set; }
         public int PrPercentageFromQom { get; set; }
         public string PrSecondsFromKom { get; set; }
