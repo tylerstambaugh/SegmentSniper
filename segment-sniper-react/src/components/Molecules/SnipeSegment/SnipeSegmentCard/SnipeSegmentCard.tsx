@@ -1,22 +1,17 @@
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Spinner,
-  Form,
-} from "react-bootstrap";
-import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
-import { usePostStarSegment } from "../../../../hooks/Api/Segments/usePostStarSegment";
-import useSnipeSegmentsListStore from "../../../../stores/useSnipeSegmentsListStore";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import ActivityMap from "../../Activity/ActivityMap/ActivityMap";
-import { useTimeFormatConverter } from "../../../../hooks/useTimeFormatConverter";
-import { useState } from "react";
-import styles from "./SnipeSegmentCard.module.scss";
-import { CustomToast } from "../../Toast/CustomToast";
+import { Row, Col, Card, Button, Spinner, Form } from 'react-bootstrap';
+import { SnipeSegmentListItem } from '../../../../models/Segment/SnipeSegmentListItem';
+import { usePostStarSegment } from '../../../../hooks/Api/Segments/usePostStarSegment';
+import useSnipeSegmentsListStore from '../../../../stores/useSnipeSegmentsListStore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faCrown as crown } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import ActivityMap from '../../Activity/ActivityMap/ActivityMap';
+import { useTimeFormatConverter } from '../../../../hooks/useTimeFormatConverter';
+import { useState } from 'react';
+import styles from './SnipeSegmentCard.module.scss';
+import { CustomToast } from '../../Toast/CustomToast';
+import { Link } from 'react-router-dom';
 
 type SnipedSegmentCardProps = {
   snipeSegment: SnipeSegmentListItem;
@@ -63,15 +58,15 @@ const SnipeSegmentCard = ({
     } catch (error) {
       if (starSegment.error instanceof Error) {
         CustomToast({
-          message: "Star failed",
+          message: 'Star failed',
           error: `Error: ${starSegment.error.message}`,
-          type: "error",
+          type: 'error',
         });
       } else {
         CustomToast({
-          message: "Star failed",
+          message: 'Star failed',
           error: `Error: Unknown`,
-          type: "error",
+          type: 'error',
         });
       }
     }
@@ -85,13 +80,24 @@ const SnipeSegmentCard = ({
     snipeSegment.athleteSegmentStats?.prElapsedTime ?? 9999
   );
 
+  const linkToSegmentOnStrava: string = `https://www.strava.com/segments/${snipeSegment.segmentId}`;
+
   return (
     <Col className="py-2 px-2">
       <Card>
         <Card.Title className={`mb-0 pt-2 ${styles.title}`}>
           <Col>
             <Row className="justify-content-around">
-              <Col>{snipeSegment.name}</Col>
+              <Col>
+                <Link to={linkToSegmentOnStrava} target='blank'>{snipeSegment.name}</Link>
+
+                {(!leaderTypeQom && snipeSegment.secondsFromKom === 0) ||
+                (leaderTypeQom && snipeSegment.secondsFromQom === 0) ? (
+                  <FontAwesomeIcon icon={crown} className="ps-2" />
+                ) : (
+                  <></>
+                )}
+              </Col>
               <Col className="d-flex justify-content-end p-0">
                 <p className={`pt-1 ${styles.switch_label}`}>Compare PR:</p>
                 <Form.Check
@@ -114,7 +120,7 @@ const SnipeSegmentCard = ({
                 <Row className="justify-content-start text-start">
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
-                      <span className="activity-card-label">Distance:</span>{" "}
+                      <span className="activity-card-label">Distance:</span>{' '}
                     </p>
                     <p className="mb-0">{snipeSegment.distance} mi.</p>
                   </Col>
@@ -137,7 +143,7 @@ const SnipeSegmentCard = ({
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        {comparePrTime ? "My PR Time:" : "My Time"}
+                        {comparePrTime ? 'My PR Time:' : 'My Time'}
                       </span>
                     </p>
                     <p className="mb-0">{comparePrTime ? myPrTime : myTime}</p>
@@ -156,10 +162,10 @@ const SnipeSegmentCard = ({
                       {!leaderTypeQom
                         ? comparePrTime
                           ? snipeSegment.prSecondsFromKom
-                          : snipeSegment.secondsFromKom
+                          : snipeSegment.timeFromKom
                         : comparePrTime
                         ? snipeSegment.prSecondsFromQom
-                        : snipeSegment.secondsFromQom}
+                        : snipeSegment.timeFromQom}
                     </p>
                   </Col>
                 </Row>
@@ -230,7 +236,7 @@ const SnipeSegmentCard = ({
             <Button
               type="submit"
               variant="secondary"
-              style={{ width: "175px" }}
+              style={{ width: '175px' }}
             >
               <Spinner
                 as="span"
@@ -245,7 +251,7 @@ const SnipeSegmentCard = ({
             <Button
               className="px-4"
               onClick={() => handleStarButtonClick()}
-              style={{ width: "175px" }}
+              style={{ width: '175px' }}
             >
               {snipeSegment.starred ? (
                 <FontAwesomeIcon icon={solidStar} />

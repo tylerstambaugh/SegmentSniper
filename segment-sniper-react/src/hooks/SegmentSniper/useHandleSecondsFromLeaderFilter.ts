@@ -11,10 +11,10 @@ const useHandleSecondsFromLeaderChange = () => {
   ) {
     const newFilteredList = segmentList.filter((s) => {
       const secondsFromQom = convertTimeStringToNumeric.timeStringToNumericValue(
-        s.secondsFromQom!
+        s.timeFromQom!
       );
       const secondsFromKom = convertTimeStringToNumeric.timeStringToNumericValue(
-        s.secondsFromKom!
+        s.timeFromKom!
       );
 
       const secondsFilter = leaderTypeQom
