@@ -21,7 +21,7 @@ function About() {
             <Accordion.Body></Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
-            <Accordion.Header>Accordion Segment Time Predictor</Accordion.Header>
+            <Accordion.Header>About Segment Time Predictor</Accordion.Header>
             <Accordion.Body></Accordion.Body>
           </Accordion.Item>
         </Accordion>
