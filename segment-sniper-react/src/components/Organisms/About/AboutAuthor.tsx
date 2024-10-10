@@ -1,4 +1,6 @@
 import { Card, Col, Row } from 'react-bootstrap';
+import authorImage from '../../../assets/images/about/bobe_author_image.png';
+import styles from './about.module.scss';
 
 function AboutAuthor() {
   return (
@@ -6,9 +8,16 @@ function AboutAuthor() {
       <Col>
         <Row>
           <Col>
-            <Card>             
+            <Card>
               <Card.Body>
-                <h3>Meet Bobe.</h3>
+                <Row className='d-flex'>
+                  <Col>
+                    <h3>Meet Bobe.</h3>
+                  </Col>
+                  <Col className={` ${styles.author_image}`}>
+                    <img src={authorImage} alt="authorImage" className="" />
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>
