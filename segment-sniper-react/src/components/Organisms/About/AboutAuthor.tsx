@@ -1,28 +1,27 @@
 import { Card, Col, Row } from 'react-bootstrap';
-import authorImage from '../../../assets/images/about/bobe_author_image.png';
 import styles from './about.module.scss';
+import authorImage from '../../../assets/images/about/Bobe_Bike.jpg'
 
 function AboutAuthor() {
   return (
     <>
-      <Col>
-        <Row>
           <Col>
             <Card>
               <Card.Body>
-                <Row className='d-flex'>
+                <Row className='flex-row justify-content-between'>
                   <Col>
-                    <h3>Meet Bobe.</h3>
+                    <h4>Meet Bobe</h4>
+                    <p>A long time bicycle and technology enthusiast, I was struck with the idea for the Segment Sniper
+                       while clamoring up the leaderboards and looking for a project to work on to showcase my skills as a web developer.
+                       Wh</p>
                   </Col>
-                  <Col className={` ${styles.author_image}`}>
-                    <img src={authorImage} alt="authorImage" className="" />
+                  <Col md={6} className="justify-content-end">
+                    <img src={authorImage} alt="authorImage" className={`${styles.author_image}`} />
                   </Col>
                 </Row>
               </Card.Body>
             </Card>
           </Col>
-        </Row>
-      </Col>
     </>
   );
 }

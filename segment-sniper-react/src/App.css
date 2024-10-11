@@ -190,16 +190,16 @@ body {
 }
 
 .accordion-button {
-  background-color: #e0e0b1 !important;
+  background-color: #29dcb2 !important;
 }
 
 .accordion-button:focus {
   box-shadow: none;
-  background-color: #ee6e57 !important;
+  background-color: #ffca14 !important;
   
 }
 
 .accordion-button:not(.collapsed) {
   color: #000;
-  background-color: #bb7da6 !important;
+  background-color: #fd2c60 !important;
 }

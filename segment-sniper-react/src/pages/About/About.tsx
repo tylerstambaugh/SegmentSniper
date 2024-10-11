@@ -7,8 +7,8 @@ export type AboutPageComponentProps = {
 
 function About() {
   return (
-    <Row className='pt-3'>
-      <Col  md={7} className="mb-2 mx-auto">
+    <Row className='pt-3 p-1'>
+      <Col md={8} className="mb-2 mx-auto">
         <Accordion style={{ backgroundColor: '#f0f0f0' }}>
           <Accordion.Item eventKey="0">
             <Accordion.Header>Meet The Maker</Accordion.Header>
