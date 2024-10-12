@@ -7,11 +7,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthenticatedUserMonitor from "./components/Organisms/Authentication/AuthenticatedUserMonitor";
 import "./App.css";
 import InitializeApp from "./components/InitializeApp";
-import { NeuronStore } from "./stores/NeuronStore";
 
 const client = new QueryClient();
 
@@ -19,7 +17,6 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <>
-    <NeuronStore />
     <QueryClientProvider client={client}>
       <InitializeApp>
         <Router>
