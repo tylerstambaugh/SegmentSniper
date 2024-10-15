@@ -1,4 +1,3 @@
-
 :root {
   --slider-main-color: #969696;
   --slider-thumb-color: #ffca14;
@@ -16,19 +15,18 @@ body {
   border-top-color: #f3f3f3;
 }
 
-.btn-primary {  
-  padding: 4px ;
+.btn-primary {
+  padding: 4px;
   border-radius: 7px;
   background-color: #29dcb2;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  text-align: center; 
+  text-align: center;
 }
 
 .btn-primary:disabled {
   background-color: #748883;
   transform: scale(1.05);
-  
 }
 
 .btn-primary:hover {
@@ -37,13 +35,13 @@ body {
   color: #292b2c;
 }
 
-.btn-secondary {  
-  padding: 4px ;
+.btn-secondary {
+  padding: 4px;
   border-radius: 7px;
   background-color: #ffca14;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  text-align: center; 
+  text-align: center;
 }
 .btn-secondary:hover {
   background-color: #ddaf17;
@@ -51,13 +49,13 @@ body {
   color: #292b2c;
 }
 
-.btn-third {  
-  padding: 4px ;
+.btn-third {
+  padding: 4px;
   border-radius: 7px;
   background-color: #fd2c60;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  text-align: center; 
+  text-align: center;
 }
 .btn-third:hover {
   background-color: #fd2c60;
@@ -65,15 +63,14 @@ body {
   color: #292b2c;
 }
 
-
-.primary-rounded-button {  
-  padding: 8px ;
+.primary-rounded-button {
+  padding: 8px;
   border-radius: 7px;
-  border: .5px solid #007bff;
+  border: 0.5px solid #007bff;
   background-color: #29dcb2;
   color: #292b2c;
   transition: background-color 0.4s ease;
-  text-align: center; 
+  text-align: center;
 }
 
 .primary-rounded-button:hover {
@@ -81,9 +78,8 @@ body {
   transform: scale(1.05);
 }
 
-
 .header-image {
- width: 250px
+  width: 250px;
 }
 
 .navbar.collapse.hide {
@@ -96,9 +92,8 @@ body {
 
 .hr-75 {
   width: 75%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
-
 
 .segment-card-heading {
   background-color: azure;
@@ -107,7 +102,7 @@ body {
 .segment-list-options {
   margin: auto;
   align-items: center;
-  padding: 11px ;
+  padding: 11px;
   border-radius: 7px;
   border: 1px solid;
 }
@@ -128,14 +123,13 @@ body {
   display: flex;
   align-self: center;
   justify-self: center;
-  border: 16px solid #f3f3f3; 
-  border-top: 16px solid #ffca14; 
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #ffca14;
   border-radius: 50%;
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
 }
-
 
 .customSlider {
   /* max width of your slider */
@@ -150,7 +144,7 @@ body {
   top: 8px;
   /* thickness of the track */
   height: 6px;
- /* default color of your track */
+  /* default color of your track */
   background: var(--slider-main-color);
 }
 
@@ -178,7 +172,7 @@ body {
 .customSlider-mark {
   cursor: pointer;
   top: 6px;
-  width: 2.0px;
+  width: 2px;
   height: 10px;
   background-color: var(--slider-mark-color);
 }
@@ -196,7 +190,6 @@ body {
 .accordion-button:focus {
   box-shadow: none;
   background-color: #ffca14 !important;
-  
 }
 
 .accordion-button:not(.collapsed) {
