@@ -10,7 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import AuthenticatedUserMonitor from './components/Organisms/Authentication/AuthenticatedUserMonitor';
 import './App.css';
 import InitializeApp from './components/InitializeApp';
-import { Footer } from './components/Organisms/Footer/footer';
+import { Footer } from './components/Organisms/Footer/Footer';
 
 const client = new QueryClient();
 

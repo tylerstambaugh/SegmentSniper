@@ -4,10 +4,19 @@
   --slider-main-color-hover: #d3a510;
   --slider-track-color: #29dcb2;
   --slider-mark-color: #20ad8c;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-body {
+body,
+html {
   font-family: 'Roboto Mono', 'Lucida Console', monospace;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .custom-spinner {

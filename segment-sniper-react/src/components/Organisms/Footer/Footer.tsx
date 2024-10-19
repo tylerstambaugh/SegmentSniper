@@ -14,16 +14,16 @@ import '../../../App.css';
 export const Footer: React.FC = () => {
   return (
     <footer
-      className={`${styles.footer} d-flex flex-column justify-content-center align-items-center`}
+      className={`${styles.footer} d-flex flex-column justify-content-center align-items-center mt-auto`}
     >
       <Container>
-        <Row>
-          <Col className="text-center">
-            <p>Copyright 2024 Tyler Stambaugh</p>
-          </Col>
-        </Row>
-        <Row style={{ width: '50%', alignItems: 'center' }}>
-          <Col>
+        <Row
+          className="d-flex justify-content-center px-5"
+          style={{
+            width: '100%',
+          }}
+        >
+          <Col className="d-flex justify-content-center">
             <a href="mailto:segmentsniper@gmail.com" target="_blank">
               <FontAwesomeIcon
                 icon={faEnvelope}
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
               />
             </a>
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-center">
             <a
               href="https://github.com/tylerstambaugh"
               target="_blank"
@@ -41,7 +41,7 @@ export const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faGithub} />
             </a>
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-center">
             <a
               href="https://www.strava.com/athletes/381648"
               target="_blank"
@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faStrava} />
             </a>
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-center">
             <a
               href="https://www.instagram.com/tyler_stambaugh/"
               target="_blank"
@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faInstagram} />
             </a>
           </Col>
-          <Col>
+          <Col className="d-flex justify-content-center">
             <a
               href="https://www.linkedin.com/in/tyler-stambaugh-b274a59/"
               target="_blank"
@@ -67,6 +67,11 @@ export const Footer: React.FC = () => {
             >
               <FontAwesomeIcon icon={faLinkedin} />
             </a>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="text-center">
+            <p>Copyright 2024 Tyler Stambaugh</p>
           </Col>
         </Row>
       </Container>
