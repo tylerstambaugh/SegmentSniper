@@ -1,6 +1,6 @@
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../enums/AppRoutes";
+import { Button, Card, Col, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../enums/AppRoutes';
 
 function Home() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Home() {
         <Col sm={12} md={7} sl={5} className="mb-3">
           <Card>
             <Card.Body className="  py-1">
-              <div className="text-center" style={{ fontWeight: "600" }}>
+              <div className="text-center" style={{ fontWeight: '600' }}>
                 Are you a Strava athlete that spends too much time looking for
                 segments to KOM? If so, this app is designed and built for you.
                 <br />

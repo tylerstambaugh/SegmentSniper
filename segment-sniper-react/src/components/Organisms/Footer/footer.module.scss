@@ -1,12 +1,31 @@
-.fa_icon {
+.fa_icon_regular {
+  color: #000; /* Black color */
+  font-size: 23px; /* Adjust for medium size */
+}
+
+.fa_icon_regular {
+  color: #000; /* Black color */
+  font-size: 23px; /* Adjust for medium size */
+}
+
+.fa_icon_strava {
+  color: #000; /* Black color */
+  font-size: 23px; /* Adjust for medium size */
+}
+
+.fa_icon_instagram {
+  color: #000; /* Black color */
+  font-size: 23px; /* Adjust for medium size */
+}
+
+.fa_icon_linkedin {
   color: #000; /* Black color */
   font-size: 23px; /* Adjust for medium size */
 }
 
 .footer {
-  //position: sticky;
-  //bottom: 100;
-  //margin-top: auto;
+  position: sticky;
+  margin-top: auto;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {

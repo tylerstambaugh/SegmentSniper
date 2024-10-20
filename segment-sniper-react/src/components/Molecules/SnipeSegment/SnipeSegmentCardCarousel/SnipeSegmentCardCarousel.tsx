@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { SnipeSegmentListItem } from "../../../../models/Segment/SnipeSegmentListItem";
-import SnipeSegmentCard from "../SnipeSegmentCard/SnipeSegmentCard";
-import { v4 as uuidv4 } from "uuid";
-import {  Col, Row } from "react-bootstrap";
-import PrevArrow from "../../../Atoms/Slider/PrevArrow";
-import NextArrow from "../../../Atoms/Slider/NextArrow";
+import React, { useEffect, useState } from 'react';
+import Slider, { Settings } from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { SnipeSegmentListItem } from '../../../../models/Segment/SnipeSegmentListItem';
+import SnipeSegmentCard from '../SnipeSegmentCard/SnipeSegmentCard';
+import { v4 as uuidv4 } from 'uuid';
+import { Col, Row } from 'react-bootstrap';
+import PrevArrow from '../../../Atoms/Slider/PrevArrow';
+import NextArrow from '../../../Atoms/Slider/NextArrow';
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
@@ -57,10 +57,10 @@ const SnipeSegmentCardCarousel = ({
 
     checkScreenSize();
 
-    window.addEventListener("resize", checkScreenSize);
+    window.addEventListener('resize', checkScreenSize);
 
     return () => {
-      window.removeEventListener("resize", checkScreenSize);
+      window.removeEventListener('resize', checkScreenSize);
     };
   }, []);
 
@@ -69,16 +69,6 @@ const SnipeSegmentCardCarousel = ({
       {!snipeSegmentIsLoading ? (
         <>
           <Col>
-            <Row>
-              <h4 className="text-center pt-3 pb-0 mb-0">
-                Segment {1 + segmentIndex} of {snipeSegmentList.length}
-              </h4>
-            </Row>
-            <Row>
-              <p className="text-center small text-muted p-0 m-0">
-                Swipe to see more
-              </p>
-            </Row>
             <Row className="">
               <Col className="p-0">
                 <Slider
@@ -97,6 +87,16 @@ const SnipeSegmentCardCarousel = ({
                   ))}
                 </Slider>
               </Col>
+            </Row>
+            <Row>
+              <h4 className="text-center pt-3 pb-0 mb-0">
+                Segment {1 + segmentIndex} of {snipeSegmentList.length}
+              </h4>
+            </Row>
+            <Row>
+              <p className="text-center small text-muted p-0 m-0">
+                Swipe to see more
+              </p>
             </Row>
           </Col>
         </>

@@ -14,7 +14,7 @@ import '../../../App.css';
 export const Footer: React.FC = () => {
   return (
     <footer
-      className={`${styles.footer} d-flex flex-column justify-content-center align-items-center mt-auto`}
+      className={`${styles.footer} justify-content-center align-items-center mt-auto`}
     >
       <Container>
         <Row
@@ -24,21 +24,12 @@ export const Footer: React.FC = () => {
           }}
         >
           <Col className="d-flex justify-content-center">
-            <a href="mailto:segmentsniper@gmail.com" target="_blank">
-              <FontAwesomeIcon
-                icon={faEnvelope}
-                size="xs"
-                className={`${styles.fa_icon}`}
-              />
-            </a>
-          </Col>
-          <Col className="d-flex justify-content-center">
             <a
               href="https://github.com/tylerstambaugh"
               target="_blank"
               className={`${styles.fa_icon}`}
             >
-              <FontAwesomeIcon icon={faGithub} />
+              <FontAwesomeIcon icon={faGithub} color="#333" />
             </a>
           </Col>
           <Col className="d-flex justify-content-center">
@@ -47,7 +38,7 @@ export const Footer: React.FC = () => {
               target="_blank"
               className={`${styles.fa_icon}`}
             >
-              <FontAwesomeIcon icon={faStrava} />
+              <FontAwesomeIcon icon={faStrava} color="#fc4c02" />
             </a>
           </Col>
           <Col className="d-flex justify-content-center">
@@ -56,7 +47,7 @@ export const Footer: React.FC = () => {
               target="_blank"
               className={`${styles.fa_icon}`}
             >
-              <FontAwesomeIcon icon={faInstagram} />
+              <FontAwesomeIcon icon={faInstagram} color="#c13584" />
             </a>
           </Col>
           <Col className="d-flex justify-content-center">
@@ -65,7 +56,16 @@ export const Footer: React.FC = () => {
               target="_blank"
               className={`${styles.fa_icon}`}
             >
-              <FontAwesomeIcon icon={faLinkedin} />
+              <FontAwesomeIcon icon={faLinkedin} color="#0a66c2" />
+            </a>
+          </Col>
+          <Col className="d-flex justify-content-center">
+            <a href="mailto:segmentsniper@gmail.com" target="_blank">
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                size="xs"
+                className={`${styles.fa_icon}`}
+              />
             </a>
           </Col>
         </Row>

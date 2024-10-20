@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import useUserStore from "../../../stores/useUserStore";
-import AutoLogoutModal from "./AutoLogoutModal/AutoLogoutModal";
+import { useEffect, useRef, useState } from 'react';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import useUserStore from '../../../stores/useUserStore';
+import AutoLogoutModal from './AutoLogoutModal/AutoLogoutModal';
 
 export default function AuthenticatedUserMonitor() {
   const tokenData = useTokenDataStore((state) => state.tokenData);
@@ -16,7 +16,7 @@ export default function AuthenticatedUserMonitor() {
     intervalRef.current = setInterval(() => {
       if (tokenData) {
         const currentTime = new Date().getTime();
-        const expirationTime = new Date(tokenData.expiration || "").getTime();
+        const expirationTime = new Date(tokenData.expiration || '').getTime();
 
         setShowAutoLogoutModal(expirationTime - currentTime < 5 * 60 * 1000);
 

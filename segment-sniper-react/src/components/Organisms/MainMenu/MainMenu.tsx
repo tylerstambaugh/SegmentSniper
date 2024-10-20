@@ -1,7 +1,7 @@
-import {  Row, Col, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
-import useUserStore from "../../../stores/useUserStore";
+import { Row, Col, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../../enums/AppRoutes';
+import useUserStore from '../../../stores/useUserStore';
 
 export default function MainMenu() {
   const user = useUserStore((state) => state.user);
@@ -9,9 +9,9 @@ export default function MainMenu() {
   return (
     <>
       <Row className="d-flex justify-content-center pt-3 ">
-        <Col md={6} xs={10}>
+        <Col md={10}>
           <Card className="shadow">
-            <Card.Body>
+            <Card.Body className="mx-3">
               <div className="mb-2 text-center">
                 <h2 className="fw-bold mb-2 ">Main Menu</h2>
                 <Row>
@@ -23,7 +23,7 @@ export default function MainMenu() {
                       to={`/${AppRoutes.Snipe}`}
                       className="primary-rounded-button text0decoration-none
                       "
-                      style={{ width: "155px" }}
+                      style={{ width: '155px' }}
                     >
                       Segment Sniper
                     </Link>
@@ -38,13 +38,13 @@ export default function MainMenu() {
                       to={`/${AppRoutes.SegmentPredictor}`}
                       className="primary-rounded-button text0decoration-none
                       "
-                      style={{ width: "155px" }}
+                      style={{ width: '155px' }}
                     >
-                      Segment Time Predictor 
+                      Segment Time Predictor
                     </Link>
                   </Col>
                 </Row>
-                {user?.roles?.some((r) => r.toString() === "Admin") ? (
+                {user?.roles?.some((r) => r.toString() === 'Admin') ? (
                   <Row>
                     <Col
                       md={12}
@@ -54,7 +54,7 @@ export default function MainMenu() {
                         to={`/${AppRoutes.Admin}`}
                         className="primary-rounded-button
                       "
-                        style={{ width: "155px" }}
+                        style={{ width: '155px' }}
                       >
                         Admin
                       </Link>
