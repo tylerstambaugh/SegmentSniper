@@ -1,12 +1,11 @@
 :root {
+  font-family: Lucida Console, Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   --slider-main-color: #969696;
   --slider-thumb-color: #ffca14;
   --slider-main-color-hover: #d3a510;
   --slider-track-color: #29dcb2;
   --slider-mark-color: #20ad8c;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 body,
