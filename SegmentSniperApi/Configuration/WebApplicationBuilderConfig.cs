@@ -1,10 +1,12 @@
-﻿using Azure.Identity;
+﻿using AutoMapper;
+using Azure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using Serilog;
@@ -242,7 +244,17 @@ namespace SegmentSniper.Api.Configuration
 
             #endregion
 
-            builder.Services.AddAutoMapper(typeof(Program));
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+
+
+            builder.Services.AddSingleton(mapperConfig); 
+            builder.Services.AddSingleton<IMapper>(mapper);
+
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 

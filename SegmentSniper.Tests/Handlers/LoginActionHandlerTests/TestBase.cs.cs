@@ -37,7 +37,7 @@ namespace SegmentSniper.Tests.Handlers.LoginActionHandlerTests
 
             var mapperConfig = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<MappingProfiles>(); // Replace with your AutoMapper profile
+                cfg.AddProfile<MappingProfile>(); // Replace with your AutoMapper profile
             });
 
             _mapper = mapperConfig.CreateMapper();
