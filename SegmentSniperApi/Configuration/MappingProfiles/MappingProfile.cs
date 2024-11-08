@@ -14,9 +14,9 @@ using StravaApiClient.Models.Segment;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
-    public class MappingProfiles : Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfiles()
+        public MappingProfile()
         {
             SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
