@@ -44,11 +44,10 @@ export default function Dashboard() {
     <>
       <Container
         className="d-flex flex-column justify-content-center"
-        style={{ width: "auto" }}
       >
         {user?.hasStravaTokenData ? (
-          <Row>
-            <Col>
+          <Row >
+            <Col >
               <MainMenu />
             </Col>
           </Row>

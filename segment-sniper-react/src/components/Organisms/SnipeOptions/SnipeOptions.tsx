@@ -34,7 +34,7 @@ const SnipeOptions = ({ onChange }: SnipeOptionsProps) => {
     useState<string>("Sort By");
 
   useEffect(() => {
-    let newFilterOptions: FilterOptions = {
+    const newFilterOptions: FilterOptions = {
       percentageFromLeader: percentageFromLeader,
       secondsFromLeader: secondsFromLeader,
       headings: headingsFilter,
