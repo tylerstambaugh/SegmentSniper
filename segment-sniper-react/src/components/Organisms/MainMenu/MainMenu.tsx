@@ -9,19 +9,18 @@ export default function MainMenu() {
   return (
     <>
       <Row className="d-flex justify-content-center pt-3 ">
-        <Col md={10}>
+        <Col >
           <Card className="shadow">
             <Card.Body className="mx-3">
               <div className="mb-2 text-center">
                 <h2 className="fw-bold mb-2 ">Main Menu</h2>
-                <Row>
+                <Row >
                   <Col
-                    md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
                     <Link
                       to={`/${AppRoutes.Snipe}`}
-                      className="primary-rounded-button text0decoration-none
+                      className="primary-rounded-button text-decoration-none
                       "
                       style={{ width: '155px' }}
                     >
@@ -36,11 +35,26 @@ export default function MainMenu() {
                   >
                     <Link
                       to={`/${AppRoutes.SegmentPredictor}`}
-                      className="primary-rounded-button text0decoration-none
+                      className="primary-rounded-button text-decoration-none
                       "
                       style={{ width: '155px' }}
                     >
                       Segment Time Predictor
+                    </Link>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    md={12}
+                    className="d-flex p-2 mb-2 justify-content-center"
+                  >
+                    <Link
+                      to={`/${AppRoutes.GearWearLog}`}
+                      className="primary-rounded-button text-decoration-none
+                      "
+                      style={{ width: '155px' }}
+                    >
+                      Gear Wear Log
                     </Link>
                   </Col>
                 </Row>
@@ -52,7 +66,7 @@ export default function MainMenu() {
                     >
                       <Link
                         to={`/${AppRoutes.Admin}`}
-                        className="primary-rounded-button
+                        className="primary-rounded-button  text-decoration-none
                       "
                         style={{ width: '155px' }}
                       >

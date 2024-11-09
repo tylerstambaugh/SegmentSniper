@@ -2,12 +2,12 @@ import SegmentPredictor from "../../components/Organisms/SegmentPredictor/Segmen
 
 
 
-function SegmentMachineLearning () {
-return (
-    <>
-    <SegmentPredictor />
-    </>
-)
+function SegmentPredictions() {
+    return (
+        <>
+            <SegmentPredictor />
+        </>
+    )
 }
 
-export default SegmentMachineLearning
+export default SegmentPredictions

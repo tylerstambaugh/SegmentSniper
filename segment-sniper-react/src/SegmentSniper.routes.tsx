@@ -24,8 +24,9 @@ import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
 import ResetPassword from "./pages/Authentication/ResetPassword";
 import ProfileMain from "./components/Organisms/Profile/ProfileMain";
-import SegmentMachineLearning from "./pages/SegmentPrediction";
+import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
+import GearWearLog from "./pages/GearWearLog";
 
 interface Props {
   defaultPage?: string;
@@ -130,11 +131,19 @@ export default function Routes({ defaultPage }: Props) {
               </PrivateRoute>
             }
           />
-                    <Route
+          <Route
             path={AppRoutes.SegmentPredictor}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
-                <SegmentMachineLearning />
+                <SegmentPredictions />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.GearWearLog}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <GearWearLog />
               </PrivateRoute>
             }
           />
