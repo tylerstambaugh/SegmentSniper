@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
@@ -18,6 +19,8 @@ namespace SegmentSniper.Data
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
+        DbSet<Bike> Bikes { get; set; }
+        DbSet<Equipment> Equipment { get; set; }
 
         int SaveChanges();
 

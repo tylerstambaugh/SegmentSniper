@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
@@ -23,6 +24,8 @@ namespace SegmentSniper.Data
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
+        public virtual DbSet<Bike> Bikes { get; set; }
+        public virtual DbSet<Equipment> Equipment { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -49,8 +52,6 @@ namespace SegmentSniper.Data
 
             // Ignore the SegmentSniperLog table by its name
             modelBuilder.Entity<SegmentSniperLogEntity>().ToTable("SegmentSniperLog", t => t.ExcludeFromMigrations());
-
-
         }
 
         // Define a dummy entity class for the log table
