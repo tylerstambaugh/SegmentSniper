@@ -26,7 +26,7 @@ import ResetPassword from "./pages/Authentication/ResetPassword";
 import ProfileMain from "./components/Organisms/Profile/ProfileMain";
 import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
-import GearWearLog from "./pages/GearWearLog";
+import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
 
 interface Props {
   defaultPage?: string;
@@ -140,10 +140,10 @@ export default function Routes({ defaultPage }: Props) {
             }
           />
           <Route
-            path={AppRoutes.GearWearLog}
+            path={AppRoutes.Garage}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
-                <GearWearLog />
+                <GarageMenu />
               </PrivateRoute>
             }
           />

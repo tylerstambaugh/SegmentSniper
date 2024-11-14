@@ -19,5 +19,5 @@ export enum AppRoutes {
   ActivitySearchResults = 'snipe/activity-search-results',
   ActivityDetails = 'snipe/activity-details',
   SnipedSegments = 'snipe/sniped-segments',
-  GearWearLog = 'gear-wear-log',
+  Garage = 'garage',
 }
