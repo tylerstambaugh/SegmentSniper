@@ -1,5 +1,5 @@
 import { Card, Col, Row } from 'react-bootstrap';
-import YouTube from 'react-youtube';
+import ReactPlayer from 'react-player/lazy'
 
 function AboutSegmentTimePredictor() {
   return (
@@ -7,9 +7,9 @@ function AboutSegmentTimePredictor() {
       <Col>
         <Row>
           <Col>
-            <Card>             
+            <Card>
               <Card.Body>
-              <YouTube videoId="IEDEtZ4UVtI"/>
+                <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
               </Card.Body>
             </Card>
           </Col>

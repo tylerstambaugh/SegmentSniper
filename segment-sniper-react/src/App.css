@@ -10,7 +10,9 @@
 
 body,
 html {
-  font-family: 'Roboto Mono', 'Lucida Console', monospace;
+  font-family: -apple-system, monospace, system-ui, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
   height: 100%;
   margin: 0;
   display: flex;

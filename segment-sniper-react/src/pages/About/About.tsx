@@ -1,5 +1,7 @@
 import { Accordion, Col, Row } from 'react-bootstrap';
 import AboutAuthor from '../../components/Organisms/About/AboutAuthor';
+import AboutSegmentSniper from '../../components/Organisms/About/AboutSegmentSniper';
+import AboutSegmentTimePredictor from '../../components/Organisms/About/AboutSegmentTimePredictor';
 
 export type AboutPageComponentProps = {
   collapsed: boolean;
@@ -18,11 +20,11 @@ function About() {
           </Accordion.Item>
           <Accordion.Item eventKey="1">
             <Accordion.Header>About Segment Sniper</Accordion.Header>
-            <Accordion.Body></Accordion.Body>
+            <Accordion.Body><AboutSegmentSniper /></Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
             <Accordion.Header>About Segment Time Predictor</Accordion.Header>
-            <Accordion.Body></Accordion.Body>
+            <Accordion.Body><AboutSegmentTimePredictor /></Accordion.Body>
           </Accordion.Item>
         </Accordion>
       </Col>

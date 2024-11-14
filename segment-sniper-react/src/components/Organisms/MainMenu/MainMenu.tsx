@@ -49,12 +49,12 @@ export default function MainMenu() {
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
                     <Link
-                      to={`/${AppRoutes.GearWearLog}`}
+                      to={`/${AppRoutes.Garage}`}
                       className="primary-rounded-button text-decoration-none
                       "
                       style={{ width: '155px' }}
                     >
-                      Gear Wear Log
+                      Garage
                     </Link>
                   </Col>
                 </Row>
