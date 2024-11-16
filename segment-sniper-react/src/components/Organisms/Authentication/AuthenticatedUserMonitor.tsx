@@ -13,34 +13,36 @@ export default function AuthenticatedUserMonitor() {
   const [showAutoLogoutModal, setShowAutoLogoutModal] = useState(false);
 
   useEffect(() => {
+    // Only run the effect if both accessToken and expiration are available
+    if (!tokenData?.accessToken || !tokenData?.expiration) {
+      setIsAuthenticated(false);
+      return;
+    }
+
     intervalRef.current = setInterval(() => {
-      if (tokenData) {
-        const currentTime = new Date().getTime();
-        const expirationTime = new Date(tokenData.expiration || '').getTime();
+      const currentTime = new Date().getTime();
+      const expirationTime = new Date(tokenData.expiration!).getTime();
+      console.log("token expiration time", expirationTime);
 
-        setShowAutoLogoutModal(expirationTime - currentTime < 5 * 60 * 1000);
+      setShowAutoLogoutModal(expirationTime - currentTime < 5 * 60 * 1000);
 
-        if (
-          tokenData.accessToken &&
-          expirationTime > currentTime &&
-          userData !== null
-        ) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
+      if (
+        expirationTime > currentTime &&
+        userData !== null
+      ) {
+        setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
       }
     }, 10000);
 
-    // clear interval on component unmount
+    // Clear interval on component unmount
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [tokenData, userData]);
+  }, [setIsAuthenticated, tokenData?.accessToken, tokenData?.expiration, userData]);
 
   return showAutoLogoutModal ? <AutoLogoutModal showModal={true} /> : null;
 }

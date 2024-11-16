@@ -24,7 +24,7 @@ export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
   const loginUser = usePostLogin();
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
+  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [state.tokenData, state.isAuthenticated]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -112,7 +112,7 @@ export default function RegisterWidget() {
       try {
         await loginUser.mutateAsync(loginRequest);
 
-        if (!loginUser.error && tokenData?.accessToken !== null) {
+        if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
           navigate(`/${AppRoutes.Dashboard}`);
         }
       } catch (error) {
@@ -127,11 +127,11 @@ export default function RegisterWidget() {
     }
   }
 
-  useEffect(() => {
-    if (!loginUser.error && tokenData?.accessToken !== null) {
-      navigate(`/${AppRoutes.Dashboard}`);
-    }
-  }, [tokenData?.accessToken]);
+  // useEffect(() => {
+  //   if (!loginUser.error && tokenData?.accessToken !== null) {
+  //     navigate(`/${AppRoutes.Dashboard}`);
+  //   }
+  // }, [loginUser.error, navigate, tokenData?.accessToken]);
 
   function handleReset() {
     formik.resetForm({
@@ -246,9 +246,8 @@ export default function RegisterWidget() {
                         onClick={toggleConfirmPasswordVisibility}
                       >
                         <i
-                          className={`bi bi-eye${
-                            showConfirmPassword ? "" : "-slash"
-                          }`}
+                          className={`bi bi-eye${showConfirmPassword ? "" : "-slash"
+                            }`}
                         />
                       </div>
                     </div>

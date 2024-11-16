@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import AuthenticatedUserMonitor from './components/Organisms/Authentication/AuthenticatedUserMonitor';
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const client = new QueryClient();
 
@@ -19,14 +20,15 @@ const root = createRoot(container!);
 root.render(
   <>
     <QueryClientProvider client={client}>
-      <InitializeApp>
-        <Router>
+      <Router>
+        <InitializeApp>
+          <ReactQueryDevtools initialIsOpen={false} />
           <AuthenticatedUserMonitor />
           <Header />
           <Routes />
           <Footer />
-        </Router>
-      </InitializeApp>
+        </InitializeApp>
+      </Router>
       <Toaster
         toastOptions={{
           success: {

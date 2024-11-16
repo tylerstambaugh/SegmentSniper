@@ -1,14 +1,14 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 
 const persistOptions = {
-  name: "token-data-store",
+  name: 'token-data-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "Token Data Store",
+  name: 'Token Data Store',
 };
 
 export type TokenData = {
