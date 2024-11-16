@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useTokenDataStore from "../../../../stores/useTokenStore";
+import useRefreshTokenQuery from "../../../../hooks/Api/Auth/useRefreshTokenQuery";
 
 type AutoLogoutModalProps = {
   showModal: boolean;
@@ -19,8 +20,9 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
   const expirationTime = new Date(tokenExpiration || "").getTime();
   const timeRemaining = expirationTime - currentTime;
   const [timer, setTimer] = useState(Math.floor(timeRemaining / 1000));
+  const { refetch: refetchToken } = useRefreshTokenQuery();
 
-  const handleClose = () => setShow(false);
+  const handleClose = async () => { setShow(false), await refetchToken(); };
   const handleLogoutButton = () => {
     handleClose();
     navigate(`/${AppRoutes.Logout}`);
