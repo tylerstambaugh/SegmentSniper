@@ -30,10 +30,12 @@ export default function RegisterWidget() {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  const [emailAddress, setEmailAddress] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const [confirmPassword, setConfirmPassword] = useState<string>();
-  const [firstName, setFirstName] = useState<string>();
+
+  //TODO Remove this after testing
+  // const [emailAddress, setEmailAddress] = useState<string>();
+  // const [password, setPassword] = useState<string>();
+  // const [confirmPassword, setConfirmPassword] = useState<string>();
+  // const [firstName, setFirstName] = useState<string>();
 
   interface RegisterForm {
     firstName: string | null;
@@ -73,28 +75,44 @@ export default function RegisterWidget() {
       confirmPassword: null,
     },
     onSubmit: async (values: RegisterForm) => {
-      await handleRegisterUser();
-      if (!registerUser.isError) {
-        await handleLoginUser();
-      }
+      await handleRegisterUser(values);
+      //TODO Remove this after testing
+      // if (!registerUser.isError) {
+      //   await handleLoginUser();
+      // }
     },
     validationSchema,
     validateOnChange: validated,
     validateOnBlur: validated,
   });
 
-  async function handleRegisterUser() {
+  async function handleRegisterUser(values: RegisterForm) {
     const registerUserRequest: RegisterUserRequest = {
-      firstName: firstName!,
-      email: emailAddress!,
-      password: password!,
+      firstName: values.firstName ?? "",
+      email: values.emailAddress ?? "",
+      password: values.password ?? "",
     };
     try {
-      await registerUser.mutateAsync(registerUserRequest);
+      await registerUser.mutateAsync(registerUserRequest).then(() => {
+        const loginRequest: LoginRequest = {
+          userName: values.emailAddress ?? "",
+          password: values.password ?? "",
+        };
+        console.log("register finished, logging in...");
+
+        loginUser.mutateAsync(loginRequest).then(() => {
+          console.log("login called");
+
+          console.log("login error, accesstoken, isAuthenticaed:", loginUser.error, tokenData?.accessToken, isAuthenticated);
+          if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
+            navigate(`/${AppRoutes.Dashboard}`);
+          }
+        });
+      });
     } catch (error) {
       if (error instanceof Error) {
         CustomToast({
-          message: "Error registering user",
+          message: "Error registering/logging in user",
           error: `Error: ${error.message}`,
           type: "error",
         });
@@ -102,30 +120,31 @@ export default function RegisterWidget() {
     }
   }
 
-  async function handleLoginUser() {
-    if (!registerUser.isError && !registerUser.isLoading) {
-      const loginRequest: LoginRequest = {
-        userName: emailAddress ?? "",
-        password: password ?? "",
-      };
+  //TODO Remove this after testing
+  // async function handleLoginUser() {
+  //   if (!registerUser.isError && !registerUser.isLoading) {
+  //     const loginRequest: LoginRequest = {
+  //       userName: emailAddress ?? "",
+  //       password: password ?? "",
+  //     };
 
-      try {
-        await loginUser.mutateAsync(loginRequest);
+  //     try {
+  //       await loginUser.mutateAsync(loginRequest);
 
-        if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
-          navigate(`/${AppRoutes.Dashboard}`);
-        }
-      } catch (error) {
-        if (loginUser.error instanceof Error) {
-          CustomToast({
-            message: "Login failed",
-            error: `Error: ${loginUser.error.message}`,
-            type: "error",
-          });
-        }
-      }
-    }
-  }
+  //       if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
+  //         navigate(`/${AppRoutes.Dashboard}`);
+  //       }
+  //     } catch (error) {
+  //       if (loginUser.error instanceof Error) {
+  //         CustomToast({
+  //           message: "Login failed",
+  //           error: `Error: ${loginUser.error.message}`,
+  //           type: "error",
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
   // useEffect(() => {
   //   if (!loginUser.error && tokenData?.accessToken !== null) {
@@ -179,7 +198,8 @@ export default function RegisterWidget() {
                     isInvalid={!!formik.errors.firstName}
                     onChange={(e) => {
                       formik.setFieldValue("firstName", e.target.value);
-                      setFirstName(e.target.value);
+                      //TODO Remove this after testing
+                      //setFirstName(e.target.value);
                     }}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -194,7 +214,8 @@ export default function RegisterWidget() {
                     isInvalid={!!formik.errors.emailAddress}
                     onChange={(e) => {
                       formik.setFieldValue("emailAddress", e.target.value);
-                      setEmailAddress(e.target.value);
+                      //TODO Remove this after testing
+                      // setEmailAddress(e.target.value);
                     }}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -210,7 +231,8 @@ export default function RegisterWidget() {
                       isInvalid={!!formik.errors.password}
                       onChange={(e) => {
                         formik.setFieldValue("password", e.target.value);
-                        setPassword(e.target.value);
+                        //TODO Remove this after testing
+                        //setPassword(e.target.value);
                       }}
                     />
                     <div className="input-group-append">
@@ -237,7 +259,8 @@ export default function RegisterWidget() {
                       isInvalid={!!formik.errors.confirmPassword}
                       onChange={(e) => {
                         formik.setFieldValue("confirmPassword", e.target.value);
-                        setConfirmPassword(e.target.value);
+                        //TODO Remove this after testing
+                        //setConfirmPassword(e.target.value);
                       }}
                     />
                     <div className="input-group-append">

@@ -51,7 +51,7 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated) {
       const refreshTokenOnNavigation = async () => {
-        console.log("Route changed, refreshing token...");
+        console.log("Route changed, refreshing token... New Location:", location.pathname);
         await refetchToken();
       };
 

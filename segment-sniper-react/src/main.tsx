@@ -22,7 +22,7 @@ root.render(
     <QueryClientProvider client={client}>
       <Router>
         <InitializeApp>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <AuthenticatedUserMonitor />
           <Header />
           <Routes />

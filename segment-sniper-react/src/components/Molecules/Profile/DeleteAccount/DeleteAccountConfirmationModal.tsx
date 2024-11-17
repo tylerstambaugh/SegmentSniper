@@ -13,6 +13,9 @@ import styles from "./DeleteAccountConfirmationModal.module.scss";
 import { useState } from "react";
 import { useDeleteAccount } from "../../../../hooks/Api/Profile/useDeleteAccount";
 import useProfileStore from "../../../../stores/useProfileStore";
+import { CustomToast } from "../../Toast/CustomToast";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 
 interface DeleteAccountForm {
   confirmationText: string | null;
@@ -30,6 +33,7 @@ const DeleteAccountConfirmationModal = ({
   const [validated, setValidated] = useState(false);
   const emailAddress = useProfileStore((state) => state.profileData?.email);
   const { mutateAsync: deleteAccount, isLoading } = useDeleteAccount();
+  const navigate = useNavigate();
 
   const validationSchema = yup.object({
     confirmationText: yup
@@ -51,8 +55,25 @@ const DeleteAccountConfirmationModal = ({
     enableReinitialize: true,
     onSubmit: async () => {
       setValidated(true);
-      await deleteAccount();
-      handleCloseModal();
+      try {
+        await deleteAccount().then(() => {
+          navigate(`/${AppRoutes.Home}`);
+        });
+        handleCloseModal();
+        CustomToast({
+          message: "Account Deletion Succeeded",
+          type: "success",
+        });
+      }
+      catch (error) {
+        if (error instanceof Error) {
+          CustomToast({
+            message: "Error deleting account",
+            error: `Error: ${error.message}`,
+            type: "error",
+          });
+        }
+      }
     },
     validationSchema: validationSchema,
     validateOnBlur: validated,
