@@ -64,6 +64,21 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
             {
                 throw new ArgumentNullException(nameof(request.User.Password));
             }
+
+            if (string.IsNullOrEmpty(request.User.Email))
+            {
+                throw new ArgumentNullException(nameof(request.User.Email));
+            }
+
+            if (string.IsNullOrEmpty(request.User.FirstName))
+            {
+                throw new ArgumentNullException(nameof(request.User.FirstName));
+            }
+
+            if (string.IsNullOrEmpty(request.User.Password))
+            {
+                throw new ArgumentNullException(nameof(request.User.Password));
+            }
         }
 
     }
