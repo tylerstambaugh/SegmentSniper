@@ -8,6 +8,7 @@ const persistOptions = {
 };
 
 const devtoolOptions = {
+  enabled: true,
   name: 'Token Data Store',
 };
 
@@ -25,15 +26,20 @@ const initialTokenState: TokenData = {
 
 const useTokenDataStore = create<TokenDataStore>()(
   immer(
-    devtools(
-      persist(
+    persist(
+      devtools(
         (set) => ({
           tokenData: initialTokenState,
           isAuthenticated: false,
-          setTokenData: (tokenData: TokenData | null) =>
-            set((state) => {
-              state.tokenData = tokenData;
-            }),
+          setTokenData: async (tokenData: TokenData | null) => {
+            return new Promise<void>((resolve) => {
+              set((state) => {
+                state.tokenData = tokenData;
+                console.log('Setting token data in store');
+              });
+              resolve();
+            });
+          },
           setIsAuthenticated: (isAuthenticated: boolean) =>
             set((state) => {
               state.isAuthenticated = isAuthenticated;
@@ -45,9 +51,9 @@ const useTokenDataStore = create<TokenDataStore>()(
             });
           },
         }),
-        persistOptions
+        devtoolOptions
       ),
-      devtoolOptions
+      persistOptions
     )
   )
 );
@@ -57,7 +63,7 @@ export default useTokenDataStore;
 interface TokenDataStore {
   tokenData: TokenData | null;
   isAuthenticated: boolean;
-  setTokenData: (tokenData: TokenData | null) => void;
+  setTokenData: (tokenData: TokenData | null) => Promise<void>;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   resetTokenDataStore: () => void;
 }

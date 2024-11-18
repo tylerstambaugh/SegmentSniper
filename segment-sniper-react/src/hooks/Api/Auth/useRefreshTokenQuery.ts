@@ -17,7 +17,7 @@ const useRefreshTokenQuery = () => {
   const query = useQuery({
     queryFn: refreshTokenQuery,
     queryKey: ['token'],
-    enabled: true,
+    enabled: false,
     refetchInterval: 60 * 1000 * 29.5,
     refetchIntervalInBackground: true,
   });
@@ -34,7 +34,7 @@ const useRefreshTokenQuery = () => {
           abortController,
         });
 
-        setTokenData(tokenDataResponse);
+        await setTokenData(tokenDataResponse.refreshedToken);
         return tokenDataResponse;
       } catch (error) {
         console.error('Error refreshing token:', error);

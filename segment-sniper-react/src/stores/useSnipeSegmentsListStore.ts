@@ -1,15 +1,16 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import { SnipeSegmentListItem } from "../models/Segment/SnipeSegmentListItem";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { SnipeSegmentListItem } from '../models/Segment/SnipeSegmentListItem';
 
 const persistOptions = {
-  name: "sniped-segment-list-store",
+  name: 'sniped-segment-list-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "Sniped Segment List Store",
+  enabled: true,
+  name: 'Sniped Segment List Store',
 };
 
 const initialState: SnipeSegmentListItem[] = [];
@@ -24,7 +25,7 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
           setSnipeSegmentsList: (snipedSegmentsList) =>
             set((state) => {
               state.snipeSegmentsList =
-                typeof snipedSegmentsList === "function"
+                typeof snipedSegmentsList === 'function'
                   ? snipedSegmentsList(state.snipeSegmentsList)
                   : snipedSegmentsList;
             }),
@@ -35,7 +36,7 @@ const useSnipeSegmentsListStore = create<SnipeSegmentsListStore>()(
           ) =>
             set((state) => {
               state.queriedSnipeSegmentsList =
-                typeof queriedSnipeSegmentsList === "function"
+                typeof queriedSnipeSegmentsList === 'function'
                   ? queriedSnipeSegmentsList(state.queriedSnipeSegmentsList)
                   : queriedSnipeSegmentsList;
             }),

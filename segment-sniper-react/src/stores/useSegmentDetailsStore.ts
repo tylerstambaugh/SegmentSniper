@@ -1,17 +1,16 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import { ActivityListItem } from "../models/Activity/ActivityListItem";
-import { SegmentDetails } from "../models/Segment/SegmentDetails";
-import { v4 } from "uuid";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { SegmentDetails } from '../models/Segment/SegmentDetails';
 
 const persistOptions = {
-  name: "segment-details-store",
+  name: 'segment-details-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "Segment Details Store",
+  enabled: true,
+  name: 'Segment Details Store',
 };
 
 const useSegmentDetailsStore = create<SegmentDetailsStore>()(

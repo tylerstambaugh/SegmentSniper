@@ -1,15 +1,16 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import { ActivityListItem } from "../models/Activity/ActivityListItem";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { ActivityListItem } from '../models/Activity/ActivityListItem';
 
 const persistOptions = {
-  name: "activity-list-store",
+  name: 'activity-list-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "Activity List Store",
+  enabled: true,
+  name: 'Activity List Store',
 };
 
 const initialState: ActivityListItem[] = [];
