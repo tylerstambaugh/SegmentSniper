@@ -21,9 +21,9 @@ export const usePostLogin = () => {
       request: request,
     };
 
-    await postLogin(contract).then((res) => {
+    await postLogin(contract).then(async (res) => {
       setUser(res.userData);
-      setTokenData(res.tokenData);
+      await setTokenData(res.tokenData);
       if (res.tokenData.accessToken !== null) setIsAuthenticated(true);
     });
   }

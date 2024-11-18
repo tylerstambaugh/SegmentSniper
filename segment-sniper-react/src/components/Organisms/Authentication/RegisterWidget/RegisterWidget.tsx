@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import {
@@ -24,18 +24,10 @@ export default function RegisterWidget() {
   const [validated, setValidated] = useState(false);
   const registerUser = usePostRegisterUser();
   const loginUser = usePostLogin();
-  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [state.tokenData, state.isAuthenticated]);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-
-
-  //TODO Remove this after testing
-  // const [emailAddress, setEmailAddress] = useState<string>();
-  // const [password, setPassword] = useState<string>();
-  // const [confirmPassword, setConfirmPassword] = useState<string>();
-  // const [firstName, setFirstName] = useState<string>();
 
   interface RegisterForm {
     firstName: string | null;
@@ -76,10 +68,6 @@ export default function RegisterWidget() {
     },
     onSubmit: async (values: RegisterForm) => {
       await handleRegisterUser(values);
-      //TODO Remove this after testing
-      // if (!registerUser.isError) {
-      //   await handleLoginUser();
-      // }
     },
     validationSchema,
     validateOnChange: validated,
@@ -98,12 +86,12 @@ export default function RegisterWidget() {
           userName: values.emailAddress ?? "",
           password: values.password ?? "",
         };
-        console.log("register finished, logging in...");
 
         loginUser.mutateAsync(loginRequest).then(() => {
-          console.log("login called");
 
-          console.log("login error, accesstoken, isAuthenticaed:", loginUser.error, tokenData?.accessToken, isAuthenticated);
+          const tokenData = useTokenDataStore.getState().tokenData;
+          const isAuthenticated = useTokenDataStore.getState().isAuthenticated;
+
           if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
             navigate(`/${AppRoutes.Dashboard}`);
           }
@@ -119,38 +107,6 @@ export default function RegisterWidget() {
       }
     }
   }
-
-  //TODO Remove this after testing
-  // async function handleLoginUser() {
-  //   if (!registerUser.isError && !registerUser.isLoading) {
-  //     const loginRequest: LoginRequest = {
-  //       userName: emailAddress ?? "",
-  //       password: password ?? "",
-  //     };
-
-  //     try {
-  //       await loginUser.mutateAsync(loginRequest);
-
-  //       if (!loginUser.error && tokenData?.accessToken !== null && isAuthenticated) {
-  //         navigate(`/${AppRoutes.Dashboard}`);
-  //       }
-  //     } catch (error) {
-  //       if (loginUser.error instanceof Error) {
-  //         CustomToast({
-  //           message: "Login failed",
-  //           error: `Error: ${loginUser.error.message}`,
-  //           type: "error",
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (!loginUser.error && tokenData?.accessToken !== null) {
-  //     navigate(`/${AppRoutes.Dashboard}`);
-  //   }
-  // }, [loginUser.error, navigate, tokenData?.accessToken]);
 
   function handleReset() {
     formik.resetForm({
@@ -198,8 +154,6 @@ export default function RegisterWidget() {
                     isInvalid={!!formik.errors.firstName}
                     onChange={(e) => {
                       formik.setFieldValue("firstName", e.target.value);
-                      //TODO Remove this after testing
-                      //setFirstName(e.target.value);
                     }}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -214,8 +168,6 @@ export default function RegisterWidget() {
                     isInvalid={!!formik.errors.emailAddress}
                     onChange={(e) => {
                       formik.setFieldValue("emailAddress", e.target.value);
-                      //TODO Remove this after testing
-                      // setEmailAddress(e.target.value);
                     }}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -231,8 +183,6 @@ export default function RegisterWidget() {
                       isInvalid={!!formik.errors.password}
                       onChange={(e) => {
                         formik.setFieldValue("password", e.target.value);
-                        //TODO Remove this after testing
-                        //setPassword(e.target.value);
                       }}
                     />
                     <div className="input-group-append">
@@ -259,8 +209,6 @@ export default function RegisterWidget() {
                       isInvalid={!!formik.errors.confirmPassword}
                       onChange={(e) => {
                         formik.setFieldValue("confirmPassword", e.target.value);
-                        //TODO Remove this after testing
-                        //setConfirmPassword(e.target.value);
                       }}
                     />
                     <div className="input-group-append">
