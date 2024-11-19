@@ -12,8 +12,7 @@ interface InitializeComponentProps {
 
 const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   const { refetch: refetchToken } = useRefreshTokenQuery();
-  const [appConfig, setAppConfig] = useAppConfigStore((state) => [
-    state.appConfig,
+  const [setAppConfig] = useAppConfigStore((state) => [
     state.setAppConfig,
   ]);
   const isAuthenticated = useTokenDataStore((state) => (state.isAuthenticated));
@@ -23,8 +22,6 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
 
   // Fetch app configuration on mount
   useEffect(() => {
-    console.log("Running initialize app");
-
     const initializeApp = async () => {
       try {
         const appConfigData = await getClientConfig.mutateAsync();
@@ -45,13 +42,13 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
     };
 
     initializeApp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Trigger token refresh on navigation
   useEffect(() => {
     if (isAuthenticated) {
       const refreshTokenOnNavigation = async () => {
-        console.log("Route changed, refreshing token... New Location:", location.pathname);
         await refetchToken();
       };
 

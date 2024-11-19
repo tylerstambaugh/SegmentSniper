@@ -153,6 +153,7 @@ const DeleteAccountConfirmationModal = ({
                 variant="third"
                 onClick={() => formik.handleSubmit()}
                 className={`${styles.deleteAccountButton}`}
+
               >
                 DELETE
               </Button>

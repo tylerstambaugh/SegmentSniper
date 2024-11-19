@@ -30,10 +30,14 @@ const useTokenDataStore = create<TokenDataStore>()(
         (set) => ({
           tokenData: initialTokenState,
           isAuthenticated: false,
-          setTokenData: (tokenData: TokenData | null) =>
-            set((state) => {
-              state.tokenData = tokenData;
-            }),
+          setTokenData: async (tokenData: TokenData | null) => {
+            return new Promise<void>((resolve) => {
+              set((state) => {
+                state.tokenData = tokenData;
+              });
+              resolve();
+            });
+          },
           setIsAuthenticated: (isAuthenticated: boolean) =>
             set((state) => {
               state.isAuthenticated = isAuthenticated;

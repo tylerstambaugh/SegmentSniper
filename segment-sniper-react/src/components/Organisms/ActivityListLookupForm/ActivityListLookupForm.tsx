@@ -245,15 +245,15 @@ function ActivityListLookupForm() {
                     <Col>
                       {handleActivitySearch.isLoading ? (
                         <Button
-                          type="submit"
                           variant="secondary"
+                          className={"me-1"}
                           style={{ width: "75px" }}
                         >
                           <Spinner
-                            as="span"
-                            variant="light"
                             size="sm"
-                            role="status"
+                            variant="light"
+                            // as="span"
+                            // role="status"
                             aria-hidden="true"
                             animation="border"
                           />

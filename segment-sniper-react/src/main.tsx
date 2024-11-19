@@ -12,6 +12,7 @@ import AuthenticatedUserMonitor from './components/Organisms/Authentication/Auth
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const client = new QueryClient();
 
@@ -19,30 +20,33 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <>
-    <QueryClientProvider client={client}>
-      <Router>
-        <InitializeApp>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-          <AuthenticatedUserMonitor />
-          <Header />
-          <Routes />
-          <Footer />
-        </InitializeApp>
-      </Router>
-      <Toaster
-        toastOptions={{
-          success: {
-            style: {
-              background: 'green',
+    <ErrorBoundary>
+
+      <QueryClientProvider client={client}>
+        <Router>
+          <InitializeApp>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <AuthenticatedUserMonitor />
+            <Header />
+            <Routes />
+            <Footer />
+          </InitializeApp>
+        </Router>
+        <Toaster
+          toastOptions={{
+            success: {
+              style: {
+                background: 'green',
+              },
             },
-          },
-          error: {
-            style: {
-              background: '#fd2c60',
+            error: {
+              style: {
+                background: '#fd2c60',
+              },
             },
-          },
-        }}
-      />
-    </QueryClientProvider>
+          }}
+        />
+      </QueryClientProvider>
+    </ErrorBoundary>
   </>
 );

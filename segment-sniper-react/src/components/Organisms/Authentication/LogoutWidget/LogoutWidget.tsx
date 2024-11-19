@@ -18,8 +18,9 @@ export default function LogoutWidget({ inactive }: { inactive: boolean }) {
   useEffect(() => {
     const revokeTokenAsync = async () => {
       try {
-        await logout.mutateAsync();
-        resetAllStores();
+        await logout.mutateAsync().then(() =>
+          resetAllStores()
+        );
       } catch (error) {
         if (logout.error instanceof Error) {
           CustomToast({
