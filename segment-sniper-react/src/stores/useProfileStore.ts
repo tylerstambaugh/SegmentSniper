@@ -1,10 +1,11 @@
-import { ProfileData } from "../models/Profile/ProfileData";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
-import { devtools } from "zustand/middleware";
+import { ProfileData } from '../models/Profile/ProfileData';
+import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
+import { devtools } from 'zustand/middleware';
 
 const devtoolOptions = {
-  name: "User Profile Store",
+  enabled: true,
+  name: 'User Profile Store',
 };
 
 const useProfileStore = create<ProfileStore>()(
@@ -12,12 +13,12 @@ const useProfileStore = create<ProfileStore>()(
     devtools(
       (set) => ({
         profileData: {
-          email: "",
-          userId: "",
-          userName: "",
-          firstName: "",
+          email: '',
+          userId: '',
+          userName: '',
+          firstName: '',
           hasStravaToken: false,
-          stravaRefreshToken: "",
+          stravaRefreshToken: '',
           stravaTokenExpiresAt: null,
         },
         setProfileData: (profileData: ProfileData) => {

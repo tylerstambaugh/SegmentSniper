@@ -1,15 +1,16 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import { ApplicationUser } from "../models/ApplicationUser";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { ApplicationUser } from '../models/ApplicationUser';
 
 const persistOptions = {
-  name: "user-store",
+  name: 'user-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "User Store",
+  enabled: true,
+  name: 'User Store',
 };
 
 export type User = {

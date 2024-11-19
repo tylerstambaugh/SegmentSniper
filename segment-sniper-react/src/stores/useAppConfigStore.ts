@@ -1,14 +1,15 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 
 const persistOptions = {
-  name: "app-config-store",
+  name: 'app-config-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "App Config Store",
+  enabled: true,
+  name: 'App Config Store',
 };
 
 export type AppConfig = {
@@ -17,8 +18,8 @@ export type AppConfig = {
 };
 
 const initialAppConfigState: AppConfig = {
-  clientId: "",
-  googleMapsApiKey: "",
+  clientId: '',
+  googleMapsApiKey: '',
 };
 
 const useAppConfigStore = create<AppConfigStore>()(

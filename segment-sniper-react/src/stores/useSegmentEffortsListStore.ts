@@ -1,15 +1,16 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
-import { SegmentEffortListItem } from "../models/Segment/SegmentEffortListItem";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { SegmentEffortListItem } from '../models/Segment/SegmentEffortListItem';
 
 const persistOptions = {
-  name: "segment-list-store",
+  name: 'segment-list-store',
   storage: createJSONStorage(() => sessionStorage),
 };
 
 const devtoolOptions = {
-  name: "Segment Efforts List Store",
+  enabled: true,
+  name: 'Segment Efforts List Store',
 };
 
 const useSegmentEffortsListStore = create<SegmentEffortsListStore>()(
@@ -21,7 +22,7 @@ const useSegmentEffortsListStore = create<SegmentEffortsListStore>()(
           setSegmentEffortsList: (segmentEffortsList) =>
             set((state) => {
               state.segmentEffortsList =
-                typeof segmentEffortsList === "function"
+                typeof segmentEffortsList === 'function'
                   ? segmentEffortsList(state.segmentEffortsList)
                   : segmentEffortsList;
             }),
