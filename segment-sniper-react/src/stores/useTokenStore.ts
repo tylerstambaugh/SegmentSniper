@@ -35,7 +35,6 @@ const useTokenDataStore = create<TokenDataStore>()(
             return new Promise<void>((resolve) => {
               set((state) => {
                 state.tokenData = tokenData;
-                console.log('Setting token data in store');
               });
               resolve();
             });
