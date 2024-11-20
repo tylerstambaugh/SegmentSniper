@@ -76,7 +76,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
                     onChange={(e) => {
                       formik.setFieldValue("firstName", e.target.value);
                     }}
-                    className={`${styles.firstNameInput} ${styles.profileValue}`}
+                    className={`${styles.editProfileValue} ${styles.profileValue}`}
                   />
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.firstName as FormikErrors<string>}

@@ -106,6 +106,7 @@ namespace SegmentSniper.Api.Configuration
 
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
+            services.AddScoped<IUpdateStravaTokenForUser, UpdateStravaTokenForUser>();
             services.AddScoped<IAddStravaToken, AddStravaToken>();
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();

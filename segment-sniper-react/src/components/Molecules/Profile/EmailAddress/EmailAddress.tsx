@@ -106,7 +106,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
                         formik.setFieldValue("emailAddress", e.target.value);
                         setNewEmailAddress(e.target.value);
                       }}
-                      className={`${styles.emailAddressInput} ${styles.profileValue}`}
+                      className={`${styles.editProfileValue} ${styles.profileValue}`}
                     />
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.emailAddress as FormikErrors<string>}

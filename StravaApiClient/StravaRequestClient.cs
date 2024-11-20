@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
+using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -12,6 +15,7 @@ namespace StravaApiClient
     {
         private readonly IStravaRequestClientConfiguration _config;
         private readonly IMemoryCache _cache;
+        private readonly IUpdateStravaTokenForUser _updateStravaToken;
         private  string _accessToken { get; set; }
         private  DateTime _tokenExpiration { get; set; }
         private int _tokenExpirationBufferSeconds = 120;
@@ -23,15 +27,16 @@ namespace StravaApiClient
             set => _handler = value;
         }
 
-        public StravaRequestClient(IStravaRequestClientConfiguration config, IMemoryCache cache) : this(null, config, cache)
+        public StravaRequestClient(IStravaRequestClientConfiguration config, IMemoryCache cache, IUpdateStravaTokenForUser updateStravaToken) : this(null, config, cache, updateStravaToken)
         {
         }
 
-        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config, IMemoryCache cache)
+        internal StravaRequestClient(HttpMessageHandler handler, IStravaRequestClientConfiguration config, IMemoryCache cache, IUpdateStravaTokenForUser updateStravaToken)
         {
             _handler = handler;
             _config = config;
             _cache = cache;
+            _updateStravaToken = updateStravaToken;
         }
 
         public async Task<TResponse> GetAsync<TResponse>(string url) where TResponse : class
@@ -171,6 +176,21 @@ namespace StravaApiClient
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<RefreshTokenResponse>(stringResult);
+
+                try
+                {
+                    _updateStravaToken.Execute(new UpdateStravaTokenContract
+                    {
+                        StravaToken = new SegmentSniper.Models.Models.Strava.Token.StravaApiTokenModel
+                        {
+                            RefreshToken = result.RefreshToken,
+                            ExpiresAt = Int32.Parse(result.ExpiresAt),
+                            ExpiresIn = result.ExpiresIn
+
+                        }
+                    });
+                }
+                catch (Exception ex) { }
 
                 _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
             }
