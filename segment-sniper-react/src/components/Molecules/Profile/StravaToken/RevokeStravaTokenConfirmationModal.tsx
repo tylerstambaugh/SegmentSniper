@@ -28,7 +28,7 @@ const RevokeStravaTokenConfirmationModal = ({
             <p>
               Are you sure you would like to revoke Segment Sniper Pro's access
               to your Strava account? You won't be able to use the app until you
-              re-link our account.
+              re-link your account.
             </p>
           </Row>
         </Col>

@@ -20,8 +20,8 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <>
-    <ErrorBoundary>
 
+    <ErrorBoundary>
       <QueryClientProvider client={client}>
         <Router>
           <InitializeApp>

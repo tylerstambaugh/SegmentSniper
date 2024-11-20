@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
@@ -10,10 +11,10 @@ namespace StravaApiClient
         private readonly IStravaRequestClientConfiguration _config;
         private readonly IStravaRequestClient _client;
 
-        public StravaRequestService(IStravaRequestClientConfiguration config, IMemoryCache cache)
+        public StravaRequestService(IStravaRequestClientConfiguration config, IMemoryCache cache, IUpdateStravaTokenForUser updateStravaTokenForUser)
         {
             _config = config;
-            _client = new StravaRequestClient(config, cache);
+            _client = new StravaRequestClient(config, cache, updateStravaTokenForUser);
         }
 
         public string RefreshToken
