@@ -9,7 +9,7 @@ function AboutSegmentTimePredictor() {
           <Col>
             <Card>
               <Card.Body>
-                <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
+                <h2>Under Construction.... check back soon</h2>
               </Card.Body>
             </Card>
           </Col>

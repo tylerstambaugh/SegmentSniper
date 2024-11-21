@@ -35,11 +35,13 @@ root.render(
         <Toaster
           toastOptions={{
             success: {
+              duration: 3000,
               style: {
                 background: 'green',
               },
             },
             error: {
+              duration: 5000,
               style: {
                 background: '#fd2c60',
               },

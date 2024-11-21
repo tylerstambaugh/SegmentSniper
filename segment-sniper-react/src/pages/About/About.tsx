@@ -2,6 +2,7 @@ import { Accordion, Col, Row } from 'react-bootstrap';
 import AboutAuthor from '../../components/Organisms/About/AboutAuthor';
 import AboutSegmentSniper from '../../components/Organisms/About/AboutSegmentSniper';
 import AboutSegmentTimePredictor from '../../components/Organisms/About/AboutSegmentTimePredictor';
+import AboutGarage from '../../components/Organisms/About/AboutGarage';
 
 export type AboutPageComponentProps = {
   collapsed: boolean;
@@ -25,6 +26,10 @@ function About() {
           <Accordion.Item eventKey="2">
             <Accordion.Header>About Segment Time Predictor</Accordion.Header>
             <Accordion.Body><AboutSegmentTimePredictor /></Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="3">
+            <Accordion.Header>About Garage</Accordion.Header>
+            <Accordion.Body><AboutGarage /></Accordion.Body>
           </Accordion.Item>
         </Accordion>
       </Col>

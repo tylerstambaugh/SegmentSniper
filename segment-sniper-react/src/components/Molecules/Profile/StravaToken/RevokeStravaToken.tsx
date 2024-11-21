@@ -1,9 +1,9 @@
 import { Row, Col, Button } from "react-bootstrap";
 import useProfileStore from "../../../../stores/useProfileStore";
 import styles from "./RevokeStravaToken.module.scss";
-import { DateTime } from "luxon";
 import RevokeStravaTokenConfirmationModal from "./RevokeStravaTokenConfirmationModal";
 import { useState } from "react";
+import { DateTime } from "luxon";
 
 const RevokeStravaToken = () => {
   const [profile] = useProfileStore((state) => [state.profileData]);
@@ -32,10 +32,9 @@ const RevokeStravaToken = () => {
                   <p className="ps-3 pt-2 small text-muted">
                     Expires at{" "}
                     {profile?.stravaTokenExpiresAt !== null &&
-                    profile?.stravaTokenExpiresAt !== undefined
-                      ? profile?.stravaTokenExpiresAt.toLocaleString(
-                          DateTime.DATETIME_FULL
-                        )
+                      profile?.stravaTokenExpiresAt !== undefined
+                      ? profile?.stravaTokenExpiresAt
+                        .toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)
                       : ""}
                   </p>
                   <Button
