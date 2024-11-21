@@ -13,14 +13,19 @@ export type CustomToastProps = {
 
 export function CustomToast({ message, type, error }: CustomToastProps) {
   let backgroundColor: string;
+  let duration: number;
   if (type === "success") {
     backgroundColor = "green";
+    duration = 3000;
   } else if (type === "error") {
     backgroundColor = `#fd2c60`;
+    duration = 2000;
   } else if (type === "loading") {
     backgroundColor = "blue";
+    duration = Infinity;
   } else {
     backgroundColor = "gray";
+    duration = Infinity;
   }
 
   toast.custom(
@@ -51,7 +56,7 @@ export function CustomToast({ message, type, error }: CustomToastProps) {
       </Col>
     ),
     {
-      duration: Infinity,
+      duration: duration,
       position: "bottom-center",
       className: styles.toastContainer,
     }

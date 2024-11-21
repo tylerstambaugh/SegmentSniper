@@ -41,9 +41,17 @@ namespace SegmentSniper.Services.StravaTokenServices
             {
                 throw new ArgumentNullException(nameof(contract.StravaToken));
             }
-            if (_context.StravaTokens.Where(t => t.RefreshToken == contract.StravaToken.RefreshToken).FirstOrDefault() != null)
+            if (string.IsNullOrEmpty(contract.StravaToken.RefreshToken))
             {
-                throw new ApplicationException("Refresh token does not already exist");
+                throw new ArgumentNullException(nameof(contract.StravaToken.RefreshToken));
+            }
+            if (contract.StravaToken.ExpiresIn < 0)
+            {
+                throw new ArgumentException(nameof(contract.StravaToken.ExpiresIn));
+            }
+            if (contract.StravaToken.ExpiresAt < 0)
+            {
+                throw new ArgumentException(nameof(contract.StravaToken.ExpiresAt));
             }
         }
     }
