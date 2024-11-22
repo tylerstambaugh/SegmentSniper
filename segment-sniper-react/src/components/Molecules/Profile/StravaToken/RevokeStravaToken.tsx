@@ -33,8 +33,9 @@ const RevokeStravaToken = () => {
                     Expires at{" "}
                     {profile?.stravaTokenExpiresAt !== null &&
                       profile?.stravaTokenExpiresAt !== undefined
-                      ? profile?.stravaTokenExpiresAt
-                        .toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)
+                      ? DateTime.fromISO(profile.stravaTokenExpiresAt.toString()).toLocaleString(
+                        DateTime.DATETIME_MED_WITH_WEEKDAY
+                      )
                       : ""}
                   </p>
                   <Button
