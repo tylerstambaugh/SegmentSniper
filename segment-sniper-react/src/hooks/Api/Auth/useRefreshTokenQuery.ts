@@ -37,8 +37,8 @@ const useRefreshTokenQuery = () => {
         await setTokenData(tokenDataResponse.refreshedToken);
         return tokenDataResponse;
       } catch (error) {
-        console.error('Error refreshing token:', error);
-        throw new Error('Failed to refresh token.');
+        //If staying authenticated becomes an issue, good luck.
+        //throw new Error('Failed to refresh token.');
       }
     }
 
