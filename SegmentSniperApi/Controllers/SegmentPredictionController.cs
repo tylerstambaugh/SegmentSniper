@@ -56,7 +56,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to predict segment. \n {ex.Message}");
+                return StatusCode(422, $"Unable to train model. \n {ex.Message}");
             }
         }
 

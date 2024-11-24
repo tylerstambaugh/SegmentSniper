@@ -6,44 +6,43 @@ import { CustomToast } from "../Toast/CustomToast";
 
 
 export type ConfirmRetrainSegmentPredictionModelModalProps = {
-    numberOfRecordsUsedInTraining: number,
-    showConfirmRetrainModelModal: boolean,
-    handleCloseModal: () => void
+  numberOfRecordsUsedInTraining: number,
+  showConfirmRetrainModelModal: boolean,
+  handleCloseModal: () => void
 }
 
 const ConfirmRretainSegmentPredictionModelModal = ({
-    numberOfRecordsUsedInTraining, 
-    showConfirmRetrainModelModal,
-    handleCloseModal
+  numberOfRecordsUsedInTraining,
+  showConfirmRetrainModelModal,
+  handleCloseModal
 }: ConfirmRetrainSegmentPredictionModelModalProps) => {
 
 
-const {mutateAsync: retrainModel, data: trainedModelData, isLoading, error: retrainModelError} = useGetTrainSegmentPredictionModel()
+  const { mutateAsync: retrainModel, data: trainedModelData, isLoading, error: retrainModelError } = useGetTrainSegmentPredictionModel()
 
-useEffect(() => {
-    if(retrainModelError instanceof Error) {
-        CustomToast({
-            message: "Retrain Model Error",
-            error: `Error: ${retrainModelError.message}`,
-            type: "error"
-        });
+  useEffect(() => {
+    if (retrainModelError instanceof Error) {
+      CustomToast({
+        message: "Retrain Model Error",
+        error: `Error: ${retrainModelError.message}`,
+        type: "error"
+      });
     }
-}, [retrainModelError] )
+  }, [retrainModelError])
 
-useEffect(() => {
-  if(trainedModelData !== undefined)
-  {
-    handleCloseModal();
-  }
-}, [trainedModelData, handleCloseModal])
+  useEffect(() => {
+    if (trainedModelData !== undefined) {
+      handleCloseModal();
+    }
+  }, [trainedModelData, handleCloseModal])
 
-console.log("trained model data:", trainedModelData);
+  console.log("trained model data:", trainedModelData);
 
-function handleConfirm() {
+  function handleConfirm() {
     retrainModel();
-}
+  }
 
-return (
+  return (
     <Modal show={showConfirmRetrainModelModal}>
       <Modal.Header closeButton>
         <Modal.Title>Confirm Retrain Segment Prediction</Modal.Title>
@@ -52,39 +51,46 @@ return (
         <Col className="px-2 py-2">
           <Row>
             <p>
-              Are you sure you would like to retrain your segment prediction model? 
-              All {numberOfRecordsUsedInTraining} segment details gathered from the Segment Sniper will be used to retrain 
-              the model. This cannot be undone and the segment prediction feature will be 
+              Are you sure you would like to retrain your segment prediction model?
+              All {numberOfRecordsUsedInTraining} segment details gathered from the Segment Sniper will be used to retrain
+              the model. This cannot be undone and the segment prediction feature will be
               unavailable while the model is training.
             </p>
-            </Row>
+          </Row>
         </Col>
       </Modal.Body>
       <Modal.Footer>
         <Row className="justify-content-end">
           <Col className="col-auto ml-auto">
-            {isLoading ? (
-              <>
-                <Button variant="secondary" className={`me-1 `}>
-                  <Spinner
-                    as="span"
-                    variant="light"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    animation="border"
-                  />
+            <div style={{ display: 'inline-block', width: '100%' }}>
+              {isLoading ? (
+                <>
+                  <Button
+                    variant="secondary"
+                    className={`me-1 `}
+                    style={{ width: '100%' }}>
+                    {isLoading ? (
+                      <Spinner
+                        as="span"
+                        variant="light"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        animation="border"
+                      />
+                    ) : <span style={{ visibility: 'hidden' }}>RETRAIN</span>}
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="primary"
+                  onClick={() => handleConfirm()}
+                  style={{ width: '100%' }}
+                >
+                  RETRAIN
                 </Button>
-              </>
-            ) : (
-              <Button
-                variant="primary"
-                onClick={() => handleConfirm()}
-               //className={`${styles.deleteAccountButton}`}
-              >
-                RETRAIN
-              </Button>
-            )}
+              )}
+            </div>
           </Col>
           <Col className="col-auto">
             <Button
