@@ -51,7 +51,7 @@ namespace SegmentSniper.MachineLearning
         }
 
 
-        //method to update the trained model if sufficient new segment effort recrods exist.
+        //add new method to update the trained model if sufficient new segment effort recrods exist.
 
         private IDataView ConvertToIDataView(List<ML_SegmentDataRecord> trainingData)
         {
