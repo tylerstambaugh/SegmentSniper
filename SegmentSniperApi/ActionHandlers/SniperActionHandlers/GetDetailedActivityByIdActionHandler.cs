@@ -7,6 +7,7 @@ using StravaApiClient.Services.Activity;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
+    [Obsolete]
     public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
     {
         private readonly ISegmentSniperDbContext _context;

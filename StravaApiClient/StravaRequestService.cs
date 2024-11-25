@@ -2,6 +2,7 @@
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
 
 namespace StravaApiClient
@@ -50,6 +51,12 @@ namespace StravaApiClient
         public Task<StarSegmentContract.Result> StarSegment(StarSegmentContract contract)
         {
             var service = new StarSegment(_client);
+            return service.ExecuteAsync(contract);
+        }
+
+        public Task<GetGearByIdContract.Result> GetEquipmentById(GetGearByIdContract contract)
+        {
+            var service = new GetEquipmentById(_client);
             return service.ExecuteAsync(contract);
         }
     }

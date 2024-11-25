@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Token\**" />
+    <EmbeddedResource Remove="Models\Token\**" />
+    <None Remove="Models\Token\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
@@ -14,10 +20,6 @@
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Token\" />
   </ItemGroup>
 
 </Project>
