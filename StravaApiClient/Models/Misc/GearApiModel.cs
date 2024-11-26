@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using SegmentSniper.Models.Models.Garage;
 
 namespace StravaApiClient.Models.Misc
 {
@@ -32,14 +33,6 @@ namespace StravaApiClient.Models.Misc
         public FrameType FrameType { get; set; }
         public string Description { get; set; }
 
-    }
-
-    public enum FrameType
-    {
-        None,
-        MTB = 1,
-        Road = 2,
-        Gravel = 3,
     }
 }
 

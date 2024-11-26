@@ -17,7 +17,7 @@ namespace SegmentSniper.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -377,6 +377,96 @@ namespace SegmentSniper.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
+                {
+                    b.Property<string>("BikeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("DistanceLogged")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("FrameType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BikeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bikes");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BikeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InstallDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("MilesLogged")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("MilesUntilReplaceReminder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ReplaceAtMiles")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RetiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BikeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Equipment");
+                });
+
             modelBuilder.Entity("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", b =>
                 {
                     b.Property<int>("Id")
@@ -677,6 +767,36 @@ namespace SegmentSniper.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Equiment.Bike", "Bike")
+                        .WithMany()
+                        .HasForeignKey("BikeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bike");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", b =>
