@@ -17,8 +17,4 @@
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Garage\" />
-  </ItemGroup>
-
 </Project>
