@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useTokenDataStore from "../../../../stores/useTokenStore";
 import useRefreshTokenQuery from "../../../../hooks/Api/Auth/useRefreshTokenQuery";
+import { useGetLogout } from "../../../../hooks/Api/Auth/useGetLogout";
+import { useResetAllStores } from "../../../../hooks/resetAllStores";
+import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 
 type AutoLogoutModalProps = {
   showModal: boolean;
@@ -21,6 +24,8 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
   const timeRemaining = expirationTime - currentTime;
   const [timer, setTimer] = useState(Math.floor(timeRemaining / 1000));
   const { refetch: refetchToken } = useRefreshTokenQuery();
+  const logout = useGetLogout();
+  const resetAllStores = useResetAllStores();
 
   const handleClose = async () => { setShow(false), await refetchToken(); };
   const handleLogoutButton = () => {
@@ -35,8 +40,26 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
 
     if (timeRemaining <= 0) {
       clearInterval(intervalRef.current!);
-      navigate(`/${AppRoutes.InactiveLogout}`);
-      setShow(false);
+      const revokeTokenAsync = async () => {
+        try {
+          await logout.mutateAsync().then(() =>
+            resetAllStores()
+          );
+        } catch (error) {
+          if (logout.error instanceof Error) {
+            CustomToast({
+              message: "Error logging out",
+              error: `Error: ${logout.error.message}`,
+              type: "error",
+            });
+          }
+        }
+      };
+
+      revokeTokenAsync().then(() => {
+        navigate(`/${AppRoutes.InactiveLogout}`)
+        setShow(false);
+      });
     }
 
     return () => {
@@ -44,6 +67,7 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
         clearInterval(intervalRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining]);
 
   const minutesRemaining = Math.floor(
