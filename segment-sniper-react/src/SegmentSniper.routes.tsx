@@ -27,6 +27,7 @@ import ProfileMain from "./components/Organisms/Profile/ProfileMain";
 import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
+import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 
 interface Props {
   defaultPage?: string;
@@ -72,7 +73,7 @@ export default function Routes({ defaultPage }: Props) {
           />
           <Route
             path={AppRoutes.InactiveLogout}
-            element={<Logout inactive={true} />}
+            element={<AutoLoggedOut />}
           />
           <Route path={AppRoutes.About} element={<About />} />
           <Route
