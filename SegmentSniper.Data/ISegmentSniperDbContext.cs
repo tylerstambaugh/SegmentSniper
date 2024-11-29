@@ -22,6 +22,8 @@ namespace SegmentSniper.Data
         DbSet<Bike> Bikes { get; set; }
         DbSet<Equipment> Equipment { get; set; }
 
+        DbSet<BikeActivity> BikeActivities { get; set; }
+
         int SaveChanges();
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

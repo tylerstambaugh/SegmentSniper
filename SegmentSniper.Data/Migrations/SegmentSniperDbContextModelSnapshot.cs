@@ -419,6 +419,33 @@ namespace SegmentSniper.Data.Migrations
                     b.ToTable("Bikes");
                 });
 
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.BikeActivity", b =>
+                {
+                    b.Property<Guid>("BikeActivityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ActivityDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ActivityMiles")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BikeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StravaActivityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BikeActivityId");
+
+                    b.HasIndex("BikeId");
+
+                    b.ToTable("BikeActivities");
+                });
+
             modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
                 {
                     b.Property<string>("Id")
@@ -778,6 +805,17 @@ namespace SegmentSniper.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.BikeActivity", b =>
+                {
+                    b.HasOne("SegmentSniper.Data.Entities.Equiment.Bike", "Bike")
+                        .WithMany()
+                        .HasForeignKey("BikeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bike");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
