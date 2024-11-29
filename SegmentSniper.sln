@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Models", "Seg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.Tests", "SegmentSniper.Tests\SegmentSniper.Tests.csproj", "{F1302796-52AB-4214-9C90-73E6E006FCD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.MachineLearning", "SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj", "{62E165CD-35E6-41FC-8623-DD92EDA1AB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SegmentSniper.MachineLearning", "SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj", "{62E165CD-35E6-41FC-8623-DD92EDA1AB87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentSniper.GraphQL", "SegmentSniper.GraphQL\SegmentSniper.GraphQL.csproj", "{D4B1C42D-D33E-4FE0-9108-D78E1DF7F69A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{62E165CD-35E6-41FC-8623-DD92EDA1AB87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E165CD-35E6-41FC-8623-DD92EDA1AB87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62E165CD-35E6-41FC-8623-DD92EDA1AB87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4B1C42D-D33E-4FE0-9108-D78E1DF7F69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4B1C42D-D33E-4FE0-9108-D78E1DF7F69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4B1C42D-D33E-4FE0-9108-D78E1DF7F69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4B1C42D-D33E-4FE0-9108-D78E1DF7F69A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

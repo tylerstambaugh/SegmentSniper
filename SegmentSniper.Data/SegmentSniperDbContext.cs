@@ -26,6 +26,7 @@ namespace SegmentSniper.Data
         public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
         public virtual DbSet<Bike> Bikes { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<BikeActivity> BikeActivities { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
