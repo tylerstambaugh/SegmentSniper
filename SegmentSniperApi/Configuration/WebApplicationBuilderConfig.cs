@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
+using GraphQL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -260,12 +261,16 @@ namespace SegmentSniper.Api.Configuration
 
             ServiceRegistrations.RegisterServices(builder.Services);
 
+            #region GraphQl
+            //just a lot of
+            //builder.Services.AddGraphQL();
+            //research tonight
+
+
+            #endregion
+
             return builder;
         }
 
-        private static void ConfigureLogging(string? connectionString)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
