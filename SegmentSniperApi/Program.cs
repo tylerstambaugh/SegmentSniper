@@ -61,6 +61,9 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
 
     app.MapControllers();
 
+    app.UseGraphQL();
+    app.UseGraphQLGraphiQL("/graphiql");
+
     if (env.IsDevelopment())
     {
         app.UseExceptionHandler(
