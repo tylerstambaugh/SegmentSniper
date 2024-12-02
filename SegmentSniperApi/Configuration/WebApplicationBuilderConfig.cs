@@ -2,6 +2,8 @@
 using Azure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
 using GraphQL;
+using GraphQL.MicrosoftDI;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -262,11 +264,24 @@ namespace SegmentSniper.Api.Configuration
             ServiceRegistrations.RegisterServices(builder.Services);
 
             #region GraphQl
-            //just a lot of
-            //builder.Services.AddGraphQL();
-            //research tonight
+     //       builder.Services.AddSingleton<ISchema, MySchema>(services =>
+     //new MySchema(new SelfActivatingServiceProvider(services)));
 
+            //builder.Services.AddGraphQL(options =>
+            //{
+            //    options.EnableMetrics = true; // Enable GraphQL query metrics
+            //})
+            //.AddSystemTextJson(); // Use System.Text.Json for serialization
 
+    //            .AddGraphQL(options =>
+    //             {
+    //                 options.AddErrorInfoProvider(o => o.ExposeExceptionDetails = builder.Environment.IsDevelopment());
+    //                 options.AddSchema<BikeReviewSchema>();
+    //                 options.AddGraphTypes(Assembly.GetExecutingAssembly());
+    //                 options.AddDataLoader();
+    //                 options.AddSystemTextJson();
+    //             }
+    //);
             #endregion
 
             return builder;

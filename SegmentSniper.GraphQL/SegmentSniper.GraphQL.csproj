@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Mutations\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
+    <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
   </ItemGroup>
 
 </Project>
