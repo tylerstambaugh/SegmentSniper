@@ -11,6 +11,7 @@ using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
+using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
@@ -119,6 +120,10 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISaveSegmentPredictionTrainingData, SaveSegmentPredictionTrainingData>();
             services.AddScoped<ISegmentPredictionDataProcessor, SegmentPredictionDataProcessor>();
             services.AddScoped<ISaveSegmentPredictionRegressionMetrics, SaveSegmentPredictionRegressionMetrics>();
+
+            //Garage Services
+            services.AddScoped<IGetBikeById, GetBikeById>();
+            services.AddScoped<IAddBike, AddBike>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();

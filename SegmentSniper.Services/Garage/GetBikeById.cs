@@ -1,12 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using SegmentSniper.Data;
+using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
-    internal class GetBikeById
+    public class GetBikeById : IGetBikeById
     {
+        private readonly ISegmentSniperDbContext _segmentSniperDbContext;
+
+        public GetBikeById(ISegmentSniperDbContext segmentSniperDbContext)
+        {
+            _segmentSniperDbContext = segmentSniperDbContext;
+        }
+
+        public async Task<GetBikeByIdContract.Result> ExecuteAsync(GetBikeByIdContract contract)
+        {
+
+            ValidateContract(contract);
+
+            var bike = await _segmentSniperDbContext.Bikes.FindAsync(contract.BikeId);
+
+            if (bike != null)
+            {
+                var returnModel = new BikeModel
+                {
+                    BikeId = bike.BikeId,
+                    Name = bike.Name,
+                    IsPrimary = bike.IsPrimary,
+                    Description = bike.Description,
+                    BrandName = bike.BrandName,
+                    ModelName = bike.ModelName,
+                    DistanceLogged = bike.DistanceLogged,
+                    FrameType = Enum.Parse<FrameType>(bike.FrameType),
+                    UserId = bike.UserId,
+                };
+
+                return new GetBikeByIdContract.Result(returnModel);
+            }
+            else
+            {
+                return new GetBikeByIdContract.Result(null);
+            }
+            
+
+        }
+
+        private void ValidateContract(GetBikeByIdContract contract)
+        {
+            if (contract == null)
+            {
+                throw new ArgumentNullException(nameof(contract));
+            }
+
+            if (contract.BikeId == null)
+            {
+                throw new ArgumentNullException($"{nameof(contract.BikeId)} cannot be null");
+            }
+        }
     }
 }
