@@ -12,6 +12,8 @@ using Microsoft.OpenApi.Models;
 using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
+using SegmentSniper.GraphQL;
+using SegmentSniper.GraphQL.Types;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Net;
@@ -264,24 +266,16 @@ namespace SegmentSniper.Api.Configuration
             ServiceRegistrations.RegisterServices(builder.Services);
 
             #region GraphQl
-     //       builder.Services.AddSingleton<ISchema, MySchema>(services =>
-     //new MySchema(new SelfActivatingServiceProvider(services)));
 
-            //builder.Services.AddGraphQL(options =>
-            //{
-            //    options.EnableMetrics = true; // Enable GraphQL query metrics
-            //})
-            //.AddSystemTextJson(); // Use System.Text.Json for serialization
-
-    //            .AddGraphQL(options =>
-    //             {
-    //                 options.AddErrorInfoProvider(o => o.ExposeExceptionDetails = builder.Environment.IsDevelopment());
-    //                 options.AddSchema<BikeReviewSchema>();
-    //                 options.AddGraphTypes(Assembly.GetExecutingAssembly());
-    //                 options.AddDataLoader();
-    //                 options.AddSystemTextJson();
-    //             }
-    //);
+            builder.Services.AddGraphQL(options =>
+                 {
+                     options.AddErrorInfoProvider(o => o.ExposeExceptionDetails = builder.Environment.IsDevelopment());
+                     options.AddSchema<GraphQlSchema>();
+                     options.AddGraphTypes(typeof(BikeTypeDef).Assembly);
+                     options.AddDataLoader();
+                     options.AddSystemTextJson();
+                 }
+             );
             #endregion
 
             return builder;

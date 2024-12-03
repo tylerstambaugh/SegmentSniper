@@ -35,6 +35,30 @@ namespace SegmentSniper.GraphQL.Queries
                     return bikeModel;
                 })
             });
+
+            AddField(new FieldType
+            {
+                Name = "byUserId",
+                Description = "Retrieve all bikes for a user",
+                Type = typeof(BikeTypeDef),
+                Arguments = new QueryArguments(
+                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The Id of the iser" }
+                ),
+                Resolver = new FuncFieldResolver<object>(async context =>
+                {
+                    var service = context.RequestServices.GetRequiredService<IGetAllBikesByUserId>();
+                    var userId = context.GetArgument<string>("userId");
+
+                    var bikeModels = await service.ExecuteAsync(new GetAllBikesByUserIdContract(userId));
+
+                    if (bikeModels == null)
+                    {
+                        throw new ExecutionError($"User with ID '{context.GetArgument<string>("userId")}' not found.");
+                    }
+
+                    return bikeModels;
+                })
+            });
         }
 
     }

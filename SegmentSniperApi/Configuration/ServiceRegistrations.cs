@@ -1,10 +1,12 @@
-﻿using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
+﻿using GraphQL.Types;
+using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
+using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Admin;
 using SegmentSniper.Services.AuthServices;
@@ -28,6 +30,10 @@ namespace SegmentSniper.Api.Configuration
     {
         public static void RegisterServices(IServiceCollection services)
         {
+
+            //graphql
+            services.AddScoped<ISchema, GraphQlSchema>();
+
             // auth action handlers
             services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
             services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
@@ -123,6 +129,7 @@ namespace SegmentSniper.Api.Configuration
 
             //Garage Services
             services.AddScoped<IGetBikeById, GetBikeById>();
+            services.AddScoped<IGetAllBikesByUserId, GetAllBikesByUserId>();
             services.AddScoped<IAddBike, AddBike>();
 
             //adapters:
