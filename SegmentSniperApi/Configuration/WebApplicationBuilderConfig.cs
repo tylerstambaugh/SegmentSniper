@@ -2,8 +2,7 @@
 using Azure.Identity;
 using Duende.IdentityServer.EntityFramework.Options;
 using GraphQL;
-using GraphQL.MicrosoftDI;
-using GraphQL.Types;
+using GraphQL.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,6 @@ using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.GraphQL;
-using SegmentSniper.GraphQL.Types;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Net;
@@ -125,7 +123,12 @@ namespace SegmentSniper.Api.Configuration
 
             serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
+                options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
+            });
+            
 
             builder.Services.AddMemoryCache();
 
@@ -190,6 +193,41 @@ namespace SegmentSniper.Api.Configuration
                 });
             #endregion
 
+            #region GraphQl
+            var authorizationSettings = new AuthorizationSettings();
+            authorizationSettings.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
+            authorizationSettings.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
+
+            builder.Services.AddSingleton(authorizationSettings);
+
+            builder.Services.AddGraphQL(options =>
+            {
+                options.AddErrorInfoProvider(o => o.ExposeExceptionDetails = builder.Environment.IsDevelopment());
+                options.AddSchema<GraphQlSchema>();
+                options.AddGraphTypes(typeof(GraphQlSchema).Assembly);
+                options.AddDataLoader();
+                options.AddSystemTextJson();
+                options.AddAuthorization(options =>
+                {
+                    options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
+                    options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
+                });
+                //options.AddErrorInfoProvider(opt =>
+                //{
+                //    opt.ExposeExceptionDetails = builder.Environment.IsDevelopment();
+                //    opt.(err =>
+                //    {
+                //        if (err is AuthorizationError)
+                //        {
+                //            return new ExecutionError("You are not authorized to perform this action.");
+                //        }
+                //        return err;
+                //    });
+                //});
+
+            }
+             );
+            #endregion
 
             #region API
             builder.Services.AddCors(options =>
@@ -265,18 +303,6 @@ namespace SegmentSniper.Api.Configuration
 
             ServiceRegistrations.RegisterServices(builder.Services);
 
-            #region GraphQl
-
-            builder.Services.AddGraphQL(options =>
-                 {
-                     options.AddErrorInfoProvider(o => o.ExposeExceptionDetails = builder.Environment.IsDevelopment());
-                     options.AddSchema<GraphQlSchema>();
-                     options.AddGraphTypes(typeof(BikeTypeDef).Assembly);
-                     options.AddDataLoader();
-                     options.AddSystemTextJson();
-                 }
-             );
-            #endregion
 
             return builder;
         }

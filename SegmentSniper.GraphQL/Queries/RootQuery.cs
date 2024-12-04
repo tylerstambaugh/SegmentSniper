@@ -9,7 +9,7 @@ public class RootQuery : ObjectGraphType
     {
         AddField(new FieldType
         {
-            Name = "bikes",
+            Name = "Bikes",
             Description = "Bike related queries",
             Type = typeof(BikeQueries),
             Resolver = new FuncFieldResolver<object>(_ => serviceProvider.GetRequiredService<BikeQueries>())
