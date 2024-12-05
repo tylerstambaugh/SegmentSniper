@@ -4,6 +4,7 @@ using Duende.IdentityServer.EntityFramework.Options;
 using GraphQL;
 using GraphQL.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -194,11 +195,6 @@ namespace SegmentSniper.Api.Configuration
             #endregion
 
             #region GraphQl
-            var authorizationSettings = new AuthorizationSettings();
-            authorizationSettings.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
-            authorizationSettings.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
-
-            builder.Services.AddSingleton(authorizationSettings);
 
             builder.Services.AddGraphQL(options =>
             {
@@ -212,21 +208,24 @@ namespace SegmentSniper.Api.Configuration
                     options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
                     options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
                 });
-                //options.AddErrorInfoProvider(opt =>
-                //{
-                //    opt.ExposeExceptionDetails = builder.Environment.IsDevelopment();
-                //    opt.(err =>
-                //    {
-                //        if (err is AuthorizationError)
-                //        {
-                //            return new ExecutionError("You are not authorized to perform this action.");
-                //        }
-                //        return err;
-                //    });
-                //});
+
+                options.AddErrorInfoProvider(opt =>
+                {
+                    opt.ExposeExceptionDetails = builder.Environment.IsDevelopment();
+                    opt.(err =>
+                    {
+                        if (err is AuthorizationError)
+                        {
+                            return new ExecutionError("You are not authorized to perform this action.");
+                        }
+                        return err;
+                    });
+                });
+
 
             }
              );
+
             #endregion
 
             #region API
@@ -307,5 +306,25 @@ namespace SegmentSniper.Api.Configuration
             return builder;
         }
 
+    }
+
+    public class CustomAuthorizationHandler : IExceptionHandler
+    {
+        public Task<ExecutionError> HandleAsync(ResolveFieldContext context, Exception exception)
+        {
+            if (exception is UnauthorizedAccessException)
+            {
+                // Return a custom ExecutionError with your message
+                return Task.FromResult(new ExecutionError("You are not authorized to perform this action."));
+            }
+
+            // Handle other exceptions as needed
+            return Task.FromResult(new ExecutionError("Something bad happened, mmmkay."));
+        }
+
+        public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
