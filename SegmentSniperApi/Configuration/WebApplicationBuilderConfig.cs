@@ -209,18 +209,37 @@ namespace SegmentSniper.Api.Configuration
                     options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
                 });
 
-                options.AddErrorInfoProvider(opt =>
-                {
-                    opt.ExposeExceptionDetails = builder.Environment.IsDevelopment();
-                    opt.(err =>
-                    {
-                        if (err is AuthorizationError)
-                        {
-                            return new ExecutionError("You are not authorized to perform this action.");
-                        }
-                        return err;
-                    });
-                });
+
+                //options.AddErrorInfoProvider(errorInfoProvider =>
+                //{
+                //    errorInfoProvider.ExposeExceptionDetails = builder.Environment.IsDevelopment(); // Expose details in development
+
+                //    // Customize error information based on specific error types
+                //    errorInfoProvider.UseCustomErrors(error =>
+                //    {
+                //        if (error is ExecutionError)
+                //        {
+                //            // Modify the error message or add additional information
+                //            error.Message = "A custom error message";
+                //            error.Extensions.Add("customField", "customValue");
+                //        }
+
+                //        return error;
+                //    });
+                //});
+
+                //options.AddErrorInfoProvider(opt =>
+                //{
+                //    opt.ExposeExceptionDetails = builder.Environment.IsDevelopment();
+                //    opt.(err =>
+                //    {
+                //        if (err is AuthorizationError)
+                //        {
+                //            return new ExecutionError("You are not authorized to perform this action.");
+                //        }
+                //        return err;
+                //    });
+                //});
 
 
             }
