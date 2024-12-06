@@ -143,5 +143,8 @@ namespace StravaApiClient.Models.Activity
 
         [JsonProperty("available_zones")]
         public List<object> AvailableZones { get; set; }
+
+        [JsonProperty("gear")]
+        public SummaryGearApiModel Gear { get; init; }
     }
 }

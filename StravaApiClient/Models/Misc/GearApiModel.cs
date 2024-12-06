@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using SegmentSniper.Models.Models.Garage;
+using System.Text.Json.Serialization;
 
 namespace StravaApiClient.Models.Misc
 {
@@ -22,6 +23,34 @@ namespace StravaApiClient.Models.Misc
         [JsonProperty("distance")]
         public long Distance { get; set; }
     }
+
+    public class SummaryGearApiModel
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("primary")]
+        public bool Primary { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("nickname")]
+        public string Nickname { get; set; }
+
+        [JsonPropertyName("resource_state")]
+        public int ResourceState { get; set; }
+
+        [JsonPropertyName("retired")]
+        public bool Retired { get; set; }
+
+        [JsonPropertyName("distance")]
+        public long Distance { get; set; }
+
+        [JsonPropertyName("converted_distance")]
+        public double ConvertedDistance { get; set; }
+    }
+
 
     public class DetailedGearApiModel
     {
