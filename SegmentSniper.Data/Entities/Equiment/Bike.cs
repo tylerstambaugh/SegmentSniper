@@ -21,6 +21,8 @@ namespace SegmentSniper.Data.Entities.Equiment
         public string ModelName { get; set; }
         public string FrameType { get; set; }
         public decimal DistanceLogged { get; set; }
+
+        public DateTime DateAdded { get; set; }
     }
 }
 
