@@ -77,7 +77,8 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.PreferPerceivedExertion, opt => opt.MapFrom(src => src.PreferPerceivedExertion))
                 .ForMember(dest => dest.SegmentEfforts, opt => opt.MapFrom(src => src.SegmentEfforts))
                 .ForMember(dest => dest.PrivateNote, opt => opt.MapFrom(src => src.PrivateNote))
-                .ForMember(dest => dest.AvailableZones, opt => opt.MapFrom(src => src.AvailableZones));
+                .ForMember(dest => dest.AvailableZones, opt => opt.MapFrom(src => src.AvailableZones))
+                .ForMember(dest => dest.SummaryGear, opt => opt.MapFrom(src => src.Gear));
 
 
             CreateMap<DetailedActivityApiModel, SummaryActivity>()
@@ -94,6 +95,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.AchievementCount, opt => opt.MapFrom(src => src.AchievementCount))
                 .ForMember(dest => dest.AthleteCount, opt => opt.MapFrom(src => src.AthleteCount))
                 .ForMember(dest => dest.Map, opt => opt.MapFrom(src => src.Map));
+                
 
 
             CreateMap<DetailedSegmentApiModel, DetailedSegment>()
@@ -150,6 +152,8 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
 
             CreateMap<SummarySegmentApiModel, SummarySegment>();
             CreateMap<DetailedSegment, DetailedSegmentUIModel>();
+
+            CreateMap<SummaryGear, SummaryGearApiModel>();
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
             CreateMap<AthleteSegmentStats, AthleteSegmentStatsUiModel>();

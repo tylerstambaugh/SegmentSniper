@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
+using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Services.Garage;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
@@ -12,12 +14,14 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
+        private readonly IAddBike _addBikeService;
         private readonly IMapper _mapper;
 
-        public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper)
+        public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IAddBike addBikeService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
+            _addBikeService = addBikeService;
             _mapper = mapper;
         }
 
@@ -36,7 +40,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
 
-                    List<DetailedActivity> returnList = new List<DetailedActivity> { activity };
+                    var bikeToUpsert = GetBikeToUpsert(activity);
+
+                    _addBikeService.Execute(new AddBikeContract { Bike = bikeToUpsert });
 
                     return new GetDetailedActivityByIdRequest.Response
                     {
@@ -53,6 +59,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ApplicationException("Something went wrong 'handling the request");
             }
+        }
+
+        private BikeModel GetBikeToUpsert(DetailedActivity activity)
+        {
+            return new BikeModel
+            {
+                BikeId = activity.SummaryGear.Id,
+                Name = activity.SummaryGear.Name,
+                DistanceLogged = (decimal)activity.SummaryGear.ConvertedDistance,
+
+
+            };
         }
 
         private void ValidateRequest(GetDetailedActivityByIdRequest request)
