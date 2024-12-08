@@ -10,6 +10,7 @@ using StravaApiClient;
 using IdentityModel;
 using SegmentSniper.Data.Enums;
 using Serilog;
+using SegmentSniper.Services.Garage;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
@@ -66,7 +67,6 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     foreach (SummaryActivity activity in listOfSummaryActivities)
                     {
                         var detailedActivityResult = _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(activity.Id)).Result;
-                        //need to add / update bike(s) here
                         var detailedActivity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(detailedActivityResult.DetailedActivity);
                         listOfDetailedActivities.Add(detailedActivity);
                     }

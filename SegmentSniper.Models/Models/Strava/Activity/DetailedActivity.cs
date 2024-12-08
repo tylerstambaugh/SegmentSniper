@@ -34,6 +34,7 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         public string Visibility { get; set; }
         public bool Flagged { get; set; }
         public string GearId { get; set; }
+        public SummaryGear SummaryGear { get; set; }
         public List<double> StartLatlng { get; set; }
         public List<double> EndLatlng { get; set; }
         public double AverageSpeed { get; set; }
