@@ -153,7 +153,14 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             CreateMap<SummarySegmentApiModel, SummarySegment>();
             CreateMap<DetailedSegment, DetailedSegmentUIModel>();
 
-            CreateMap<SummaryGear, SummaryGearApiModel>();
+            CreateMap<SummaryGearApiModel, SummaryGear>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Primary, opt => opt.MapFrom(src => src.Primary))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Nickname, opt => opt.MapFrom(src => src.Nickname))
+                .ForMember(dest => dest.ResourceState, opt => opt.MapFrom(src => src.ResourceState))
+                .ForMember(dest => dest.Retired, opt => opt.MapFrom(src => src.Retired))
+                .ForMember(dest => dest.MetersLogged, opt => opt.MapFrom(src => src.Distance));
 
             CreateMap<AthleteSegmentStatsApiModel, AthleteSegmentStats>();
             CreateMap<AthleteSegmentStats, AthleteSegmentStatsUiModel>();

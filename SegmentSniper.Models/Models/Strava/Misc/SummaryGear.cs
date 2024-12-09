@@ -16,7 +16,7 @@ namespace SegmentSniper.Models.Models.Strava.Misc
 
         public bool Retired { get; set; }
 
-        public long Distance { get; set; }
+        public long MetersLogged { get; set; }
 
         public double ConvertedDistance { get; set; }
     }
