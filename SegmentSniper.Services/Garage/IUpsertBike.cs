@@ -2,7 +2,7 @@
 
 namespace SegmentSniper.Services.Garage
 {
-    public interface IAddBike
+    public interface IUpsertBike
     {
         AddBikeContract.Result Execute(AddBikeContract contrect);
     }

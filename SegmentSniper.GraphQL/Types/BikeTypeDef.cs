@@ -36,7 +36,7 @@ namespace SegmentSniper.GraphQL.Types
             Field(b => b.FrameType, type: typeof(IntGraphType))
                  .Description("Int representation of the frame type of the bike, maps to FrameTypeEnum");
 
-            Field(b => b.DistanceLogged, type: typeof(DecimalGraphType))
+            Field(b => b.MetersLogged, type: typeof(DecimalGraphType))
                 .Description("How many miles have been logged on the bike");
 
         }

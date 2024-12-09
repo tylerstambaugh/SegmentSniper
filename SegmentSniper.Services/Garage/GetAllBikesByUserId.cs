@@ -25,7 +25,7 @@ namespace SegmentSniper.Services.Garage
                 Description = b.Description,
                 BrandName = b.BrandName,
                 ModelName = b.ModelName,
-                DistanceLogged = b.DistanceLogged,
+                MetersLogged = b.MetersLogged,
                 FrameType = Enum.Parse<FrameType>(b.FrameType),
                 UserId = b.UserId,
             }).ToList();

@@ -4,11 +4,11 @@ using Serilog;
 
 namespace SegmentSniper.Services.Garage
 {
-    public class AddBike : IAddBike
+    public class UpsertBike : IUpsertBike
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public AddBike(ISegmentSniperDbContext segmentSniperDbContext)
+        public UpsertBike(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
@@ -21,7 +21,7 @@ namespace SegmentSniper.Services.Garage
             {
                 var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.BikeId == contract.Bike.BikeId).FirstOrDefault();
 
-                if (existingBike != null)
+                if (existingBike == null)
                 {
                     var bikeToAdd = new Bike
                     {
@@ -32,7 +32,7 @@ namespace SegmentSniper.Services.Garage
                         BrandName = contract.Bike.BrandName,
                         ModelName = contract.Bike.ModelName,
                         FrameType = contract.Bike.FrameType.ToString(),
-                        DistanceLogged = (decimal)contract.Bike.DistanceLogged,
+                        MetersLogged = (double)contract.Bike.MetersLogged,
                         DateAdded = DateTime.Now,
                     };
 
@@ -86,16 +86,16 @@ namespace SegmentSniper.Services.Garage
                     }
 
 
-                    if (existingBike.DistanceLogged != contract.Bike.DistanceLogged)
+                    if (existingBike.MetersLogged != contract.Bike.MetersLogged)
                     {
-                        existingBike.DistanceLogged = (decimal)contract.Bike.DistanceLogged;
+                        existingBike.MetersLogged = (double)contract.Bike.MetersLogged;
                         isUpdated = true;
                     }
 
                     if (isUpdated)
                     {
                         _segmentSniperDbContext.Bikes.Update(existingBike);
-                        _segmentSniperDbContext.SaveChanges(); // Persist changes to the database
+                        _segmentSniperDbContext.SaveChanges();
                     }
 
                     return new AddBikeContract.Result { BikeId = existingBike.BikeId };
@@ -104,7 +104,7 @@ namespace SegmentSniper.Services.Garage
             }
             catch (Exception ex)
             {
-                Log.Debug($"Error savingbike data data: {ex.Message}");
+                Log.Debug($"Error saving bike data: {ex.Message}");
                 throw new ApplicationException("Error adding bike to garage", ex);
             }
 
@@ -124,11 +124,6 @@ namespace SegmentSniper.Services.Garage
             if (string.IsNullOrEmpty(contract.Bike.UserId))
             {
                 throw new ArgumentNullException(nameof(contract.Bike.UserId));
-            }
-
-            if (_segmentSniperDbContext.Bikes.Where(b => b.BikeId == contract.Bike.BikeId).Any())
-            {
-                throw new ApplicationException("Bikes already exists in users garage");
             }
         }
     }

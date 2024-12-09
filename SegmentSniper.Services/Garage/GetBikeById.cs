@@ -30,7 +30,7 @@ namespace SegmentSniper.Services.Garage
                     Description = bike.Description,
                     BrandName = bike.BrandName,
                     ModelName = bike.ModelName,
-                    DistanceLogged = bike.DistanceLogged,
+                    MetersLogged = bike.MetersLogged,
                     FrameType = Enum.Parse<FrameType>(bike.FrameType),
                     UserId = bike.UserId,
                 };

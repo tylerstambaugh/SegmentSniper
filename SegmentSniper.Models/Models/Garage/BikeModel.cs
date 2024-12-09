@@ -10,7 +10,7 @@
             public string? BrandName { get; set; }
             public string? ModelName { get; set; }
             public FrameType? FrameType { get; set; }
-            public decimal? DistanceLogged { get; set; }
+            public double? MetersLogged { get; set; }
         
     }
 
