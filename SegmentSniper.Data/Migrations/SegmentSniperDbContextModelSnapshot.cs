@@ -393,15 +393,15 @@ namespace SegmentSniper.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("DistanceLogged")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("FrameType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("bit");
+
+                    b.Property<double>("MetersLogged")
+                        .HasColumnType("float");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
@@ -431,12 +431,12 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<DateTime>("ActivityDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ActivityMiles")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("BikeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("DistanceInMeters")
+                        .HasColumnType("float");
 
                     b.Property<string>("StravaActivityId")
                         .IsRequired()

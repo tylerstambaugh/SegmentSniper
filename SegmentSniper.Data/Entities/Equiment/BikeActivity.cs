@@ -20,6 +20,6 @@ namespace SegmentSniper.Data.Entities.Equiment
         [Required]
         public DateTime ActivityDate { get; set; }
         [Required]
-        public decimal ActivityMiles { get; set; }
+        public double DistanceInMeters { get; set; }
     }
 }
