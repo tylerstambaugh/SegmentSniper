@@ -1,5 +1,4 @@
 ﻿using StravaApiClient.Models.Activity;
-using StravaApiClient.Models.Segment;
 
 namespace StravaApiClient.Services.Activity
 {
@@ -16,7 +15,7 @@ namespace StravaApiClient.Services.Activity
         {
             ValidateContract(contract);
 
-            var apiResponse =  await _stravaRequestClient.GetAsync<DetailedActivityApiModel>($"activities/{contract.ActivityId}");
+            var apiResponse = await _stravaRequestClient.GetAsync<DetailedActivityApiModel>($"activities/{contract.ActivityId}");
 
             return new GetDetailedActivityByIdContract.Result()
             {
@@ -27,7 +26,7 @@ namespace StravaApiClient.Services.Activity
         public void ValidateContract(GetDetailedActivityByIdContract contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
-            
+
             if (contract.ActivityId == null) throw new ArgumentNullException($"{nameof(contract.ActivityId)}");
         }
     }
