@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Equiment;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -15,7 +16,30 @@ namespace SegmentSniper.Services.Garage
         {
             ValidateContract(contract);
 
-            throw new NotImplementedException();
+            var existingBikeActivity = _segmentSniperDbContext.BikeActivities.Where(b => b.StravaActivityId == contract.StravaActivityId).FirstOrDefault();
+
+            if(existingBikeActivity != null)
+            {
+                var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.BikeId == contract.BikeId).FirstOrDefault();
+                    if (existingBike != null)
+                    {   
+                        var bikeActivityToAdd = new BikeActivity
+                        {
+                            StravaActivityId = contract.StravaActivityId,
+                            BikeId = contract.BikeId,
+                            DistanceInMeters = contract.DistanceInMeters,
+                            ActivityDate = contract.ActivityDate,
+                        };
+                        _segmentSniperDbContext.BikeActivities.Add(bikeActivityToAdd);
+                        var success = await _segmentSniperDbContext.SaveChangesAsync() == 1;
+
+                        return new AddBikeActivityContract.Result
+                        {
+                            Success = success
+                        };
+                    }                
+            }
+            throw new ArgumentException("BikeActivity already exists.");
         }
 
         private void ValidateContract(AddBikeActivityContract contract)
@@ -32,9 +56,9 @@ namespace SegmentSniper.Services.Garage
             {
                 throw new ArgumentNullException(nameof(contract.DistanceInMeters));
             }
-            if (string.IsNullOrEmpty(contract.ActivityId))
+            if (string.IsNullOrEmpty(contract.StravaActivityId))
             {
-                throw new ArgumentNullException(nameof(contract.ActivityId));
+                throw new ArgumentNullException(nameof(contract.StravaActivityId));
             }
             if (contract.ActivityDate == null)
             {

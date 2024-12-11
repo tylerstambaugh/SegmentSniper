@@ -131,6 +131,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetBikeById, GetBikeById>();
             services.AddScoped<IGetAllBikesByUserId, GetAllBikesByUserId>();
             services.AddScoped<IUpsertBike, UpsertBike>();
+            services.AddScoped<IAddBikeActivity, AddBikeActivity>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
