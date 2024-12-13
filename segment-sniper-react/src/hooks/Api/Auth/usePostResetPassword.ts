@@ -1,11 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
 import postResetPassword, {
   ResetPasswordRequest,
   ResetPasswordResponse,
-} from "../../../services/Api/Auth/postResetPassword";
+} from '../../../services/Api/Auth/postResetPassword';
 
 export const usePostResetPassword = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -14,7 +14,7 @@ export const usePostResetPassword = () => {
 
   async function trigger(request: ResetPasswordRequest) {
     const contract: ApiContract<ResetPasswordRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
     };
 

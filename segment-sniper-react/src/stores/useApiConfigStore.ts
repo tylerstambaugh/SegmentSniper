@@ -13,25 +13,29 @@ const devtoolOptions = {
 };
 
 export type ApiConfig = {
-  baseUrl: string;
+  baseRestApiUrl: string;
+  baseGraphqlUrl: string;
 };
 
-const baseApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+// const baseRestApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+// const baseGraphqlUrl = import.meta.env.VITE_SEGMENT_SNIPER_GRAPHQL_URL;
 const useApiConfigStore = create<ApiConfigStore>()(
   immer(
     devtools(
       persist((set) => {
-        const baseApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+        const baseRestApiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
+        const baseGraphqlUrl = import.meta.env.VITE_SEGMENT_SNIPER_GRAPHQL_URL;
         const initialApiConfigState: ApiConfig = {
-          baseUrl: baseApiUrl || 'https://localhost:44351/api',
+          baseRestApiUrl: baseRestApiUrl || 'https://localhost:44351/api',
+          baseGraphqlUrl: baseGraphqlUrl || 'https://localhost44351/graphql',
         };
 
         return {
           apiConfig: initialApiConfigState,
-          setTokenData: (apiConfig: ApiConfig) =>
-            set((state) => {
-              state.apiConfig = apiConfig;
-            }),
+          // setTokenData: (apiConfig: ApiConfig) =>
+          //   set((state) => {
+          //     state.apiConfig = apiConfig;
+          //   }),
         };
       }, persistOptions),
       devtoolOptions

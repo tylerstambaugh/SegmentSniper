@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useProfileStore from "../../../stores/useProfileStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useProfileStore from '../../../stores/useProfileStore';
 import postUpdateEmailAddress, {
   UpdateEmailAddressRequest,
-} from "../../../services/Api/Profile/postUpdateEmailAddress";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import useUserStore from "../../../stores/useUserStore";
+} from '../../../services/Api/Profile/postUpdateEmailAddress';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import useUserStore from '../../../stores/useUserStore';
 
 export const usePostUpdateEmailAddress = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -23,7 +23,7 @@ export const usePostUpdateEmailAddress = () => {
 
   async function trigger(request: UpdateEmailAddressRequest) {
     const contract: ApiContract<UpdateEmailAddressRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
       token: accessToken!,
     };

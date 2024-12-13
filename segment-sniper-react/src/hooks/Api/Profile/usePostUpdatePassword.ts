@@ -1,10 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
 import postUpdatePassword, {
   UpdatePasswordRequest,
-} from "../../../services/Api/Profile/postUpdatePassword";
+} from '../../../services/Api/Profile/postUpdatePassword';
 
 export const usePostUpdatePassword = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
@@ -14,7 +14,7 @@ export const usePostUpdatePassword = () => {
   );
   async function trigger(request: UpdatePasswordRequest) {
     const contract: ApiContract<UpdatePasswordRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
       token: accessToken!,
     };

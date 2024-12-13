@@ -26,7 +26,7 @@ const useRefreshTokenQuery = () => {
     if (tokenData?.refreshToken && tokenData?.accessToken) {
       try {
         const tokenDataResponse = await postRefreshToken({
-          baseUrl: apiConfig!.baseUrl,
+          baseUrl: apiConfig!.baseRestApiUrl,
           request: {
             refreshToken: tokenData.refreshToken,
             accessToken: tokenData.accessToken,

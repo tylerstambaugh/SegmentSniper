@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useUserStore from "../../../stores/useUserStore";
-import getUsers from "../../../services/Api/Admin/getUsers";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { useEffect } from "react";
+import { useQuery } from '@tanstack/react-query';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useUserStore from '../../../stores/useUserStore';
+import getUsers from '../../../services/Api/Admin/getUsers';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import { useEffect } from 'react';
 
 const useGetUsersQuery = () => {
   const setUsers = useUserStore((state) => state.setUsers);
@@ -14,14 +14,14 @@ const useGetUsersQuery = () => {
 
   const query = useQuery({
     queryFn: getUsersQuery,
-    queryKey: ["users"],
+    queryKey: ['users'],
   });
 
   async function getUsersQuery() {
     const usersResponse = await getUsers({
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       abortController,
-      token: tokenData?.accessToken!,
+      token: tokenData?.accessToken ?? '',
     });
 
     setUsers(usersResponse.users);

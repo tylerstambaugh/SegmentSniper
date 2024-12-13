@@ -17,7 +17,7 @@ export const usePostLogin = () => {
 
   async function trigger(request: LoginRequest) {
     const contract: ApiContract<LoginRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
     };
 

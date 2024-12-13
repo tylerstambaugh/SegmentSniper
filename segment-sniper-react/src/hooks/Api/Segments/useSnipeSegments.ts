@@ -1,12 +1,12 @@
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import getSnipeSegmentsList, {
   SnipeSegmentsRequest,
   SnipeSegmentsResponse,
-} from "../../../services/Api/Segment/getSnipeSegmentsList";
-import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
-import { useMutation } from "@tanstack/react-query";
+} from '../../../services/Api/Segment/getSnipeSegmentsList';
+import useSnipeSegmentsListStore from '../../../stores/useSnipeSegmentsListStore';
+import { useMutation } from '@tanstack/react-query';
 
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -29,7 +29,7 @@ export const useSnipeSegments = () => {
 
   async function trigger(request: SnipeSegmentsRequest) {
     const contract: ApiContract<SnipeSegmentsRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: accessToken!,
       request: request,
     };

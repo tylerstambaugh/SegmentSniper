@@ -1,14 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
 import patchUpdateUserFistName, {
   UpdateUserFirstNameRequest,
-} from "../../../services/Api/Profile/patchUpdateUserFirstName";
-import useProfileStore from "../../../stores/useProfileStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import { useState } from "react";
-import useUserStore from "../../../stores/useUserStore";
-import { ProfileResponse } from "../../../services/Api/Profile/getProfile";
+} from '../../../services/Api/Profile/patchUpdateUserFirstName';
+import useProfileStore from '../../../stores/useProfileStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import { useState } from 'react';
+import useUserStore from '../../../stores/useUserStore';
+import { ProfileResponse } from '../../../services/Api/Profile/getProfile';
 
 export const usePatchUpdateUserFirstName = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -27,7 +27,7 @@ export const usePatchUpdateUserFirstName = () => {
 
   async function trigger(request: UpdateUserFirstNameRequest) {
     const contract: ApiContract<UpdateUserFirstNameRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
       token: token!,
     };

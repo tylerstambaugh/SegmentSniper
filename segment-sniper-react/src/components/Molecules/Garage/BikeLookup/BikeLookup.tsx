@@ -22,14 +22,8 @@ export const BikeLookup = () => {
 
     const validationSchema = yup
         .object({
-            activityName: yup
-                .string()
-                .nullable()
-                .when(["startDate", "endDate"], ([startDate, endDate], schema) => {
-                    return startDate === null && endDate === null
-                        ? schema.required("Must provide name or dates")
-                        : schema;
-                }),
+            bikeId: yup
+                .string().required()
         })
 
     const formik = useFormik<BikeLookupForm>({
@@ -72,7 +66,7 @@ export const BikeLookup = () => {
                                 onChange={(e) => {
                                     formik.setFieldValue("bikeId", e)
                                 }}
-                                className={`${styles.bikeLookupInput}`}
+                                className={`${styles.bikeIdInput}`}
                             />
                             <Form.Control.Feedback type="invalid">
                                 {formik.errors.bikeId as FormikErrors<string>}

@@ -1,14 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { DateTime } from "luxon";
-import { ActivityTypes } from "../../../enums/ActivityTypes";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import useActivityListStore from "../../../stores/useActivityListStore";
+import { useMutation } from '@tanstack/react-query';
+import { DateTime } from 'luxon';
+import { ActivityTypes } from '../../../enums/ActivityTypes';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import useActivityListStore from '../../../stores/useActivityListStore';
 import getActivityList, {
   ActivityListLookupRequest,
   ActivityListLookupResponse,
-} from "../../../services/Api/Activity/getActivityList";
+} from '../../../services/Api/Activity/getActivityList';
 
 export const useHandleActivitySearch = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -21,7 +21,7 @@ export const useHandleActivitySearch = () => {
 
   async function trigger(request: ActivityListLookupRequest) {
     const contract: ApiContract<ActivityListLookupRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: tokenData?.accessToken!,
       request: request,
     };
