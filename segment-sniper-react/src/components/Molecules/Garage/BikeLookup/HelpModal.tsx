@@ -18,19 +18,17 @@ export const BikeLookupHelpModal = (props: BikeLookupHelpModalProps) => {
                 onHide={props.handleClose}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Activity Search</Modal.Title>
+                    <Modal.Title>Bike Id</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className={styles.helpModalBody}>
                     <Col className="px-2">
                         <Row>
                             <p className={styles.helpModalSubTitle}>
-                                Searching can be performed by activity name, dates, or name
-                                and dates.
+                                Looking up a bike by it's Strava Id
                             </p>
                             <ul>
                                 <li className="pb-1">
-                                    Searching by name alone will query the last 6 months of
-                                    activities for activities that contain the search key(s).
+                                    You can find the ID of your bike on the Strava Gear page.
                                 </li>
                             </ul>
                         </Row>

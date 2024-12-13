@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
+import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
 import postSendPasswordResetEmail, {
   SendPasswordResetEmailRequest,
   SendPasswordResetEmailResponse,
-} from "../../../services/Api/Auth/postSendPasswordResetEmail";
+} from '../../../services/Api/Auth/postSendPasswordResetEmail';
 
 export const usePostSendPasswordResetEmail = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -18,7 +18,7 @@ export const usePostSendPasswordResetEmail = () => {
 
   async function trigger(request: SendPasswordResetEmailRequest) {
     const contract: ApiContract<SendPasswordResetEmailRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: accessToken!,
       abortController: abortController,
       request: request,

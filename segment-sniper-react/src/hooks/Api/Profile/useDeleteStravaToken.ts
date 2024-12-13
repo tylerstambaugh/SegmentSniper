@@ -1,10 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
-import deleteStravaToken from "../../../services/Api/Profile/deleteStravaToken";
-import useProfileStore from "../../../stores/useProfileStore";
-import useUserStore from "../../../stores/useUserStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
+import deleteStravaToken from '../../../services/Api/Profile/deleteStravaToken';
+import useProfileStore from '../../../stores/useProfileStore';
+import useUserStore from '../../../stores/useUserStore';
 
 export const useDeleteStravaToken = () => {
   const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
@@ -22,7 +22,7 @@ export const useDeleteStravaToken = () => {
   );
   async function trigger() {
     const contract: ApiContract = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: accessToken!,
     };
 

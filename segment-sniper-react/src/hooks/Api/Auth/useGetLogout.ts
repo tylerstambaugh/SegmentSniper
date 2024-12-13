@@ -1,11 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
 import getLogout, {
   RevokeUserTokenResponse,
-} from "../../../services/Api/Auth/getLogout";
-import useTokenDataStore from "../../../stores/useTokenStore";
+} from '../../../services/Api/Auth/getLogout';
+import useTokenDataStore from '../../../stores/useTokenStore';
 
 export const useGetLogout = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -14,7 +14,7 @@ export const useGetLogout = () => {
 
   async function trigger() {
     const contract: ApiContract = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: tokenData?.accessToken!,
     };
 

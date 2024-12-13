@@ -23,7 +23,7 @@ export const usePostPredictSegment = () => {
 
   async function trigger(request: SegmentPredictionRequest) {
     const contract: ApiContract<SegmentPredictionRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       request: request,
       token: accessToken!,
     };

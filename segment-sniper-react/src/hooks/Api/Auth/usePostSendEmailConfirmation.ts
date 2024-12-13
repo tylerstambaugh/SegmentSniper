@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
-import useTokenDataStore from "../../../stores/useTokenStore";
+import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
+import useTokenDataStore from '../../../stores/useTokenStore';
 import postSendEmailConfirmation, {
   SendEmailConfirmationCodeRequest,
   SendEmailConfirmationCodeResponse,
-} from "../../../services/Api/Auth/postSendEmailConfirmationCode";
-import { useEffect } from "react";
+} from '../../../services/Api/Auth/postSendEmailConfirmationCode';
+import { useEffect } from 'react';
 
 export const usePostSendEmailConfirmation = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -18,7 +18,7 @@ export const usePostSendEmailConfirmation = () => {
 
   async function trigger(request: SendEmailConfirmationCodeRequest) {
     const contract: ApiContract<SendEmailConfirmationCodeRequest> = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: accessToken!,
       abortController: abortController,
       request: request,

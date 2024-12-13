@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import useProfileStore from "../../../stores/useProfileStore";
-import { ApiContract } from "../../../services/Api/ApiCommon/ApiContract";
-import useApiConfigStore from "../../../stores/useApiConfigStore";
+import { useQuery } from '@tanstack/react-query';
+import useProfileStore from '../../../stores/useProfileStore';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import useApiConfigStore from '../../../stores/useApiConfigStore';
 import getProfile, {
   ProfileResponse,
-} from "../../../services/Api/Profile/getProfile";
-import useTokenDataStore from "../../../stores/useTokenStore";
+} from '../../../services/Api/Profile/getProfile';
+import useTokenDataStore from '../../../stores/useTokenStore';
 
 export const useGetProfileQuery = () => {
   const setProfileData = useProfileStore((state) => state.setProfileData);
@@ -13,7 +13,7 @@ export const useGetProfileQuery = () => {
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const { data, isLoading, isError, error } = useQuery({
     queryFn: triggerQuery,
-    queryKey: ["profile"],
+    queryKey: ['profile'],
     refetchOnMount: true,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -23,14 +23,14 @@ export const useGetProfileQuery = () => {
 
   async function triggerQuery() {
     const contract: ApiContract = {
-      baseUrl: apiConfig!.baseUrl,
+      baseUrl: apiConfig!.baseRestApiUrl,
       token: tokenData?.accessToken ?? '',
       abortController,
     };
 
     const response: ProfileResponse = await getProfile(contract);
 
-    if (!response.profileData) throw new Error("No profile data found");
+    if (!response.profileData) throw new Error('No profile data found');
     // setProfile(response.profileData);
     setProfileData(response.profileData);
     return response.profileData;
