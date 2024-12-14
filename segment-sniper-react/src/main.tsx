@@ -13,9 +13,16 @@ import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ErrorBoundary from './components/ErrorBoundary';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClientProvider } from './services/Api/ApolloClient';
 
-const client = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -23,33 +30,35 @@ root.render(
   <>
 
     <ErrorBoundary>
-      <QueryClientProvider client={client}>
-        <Router>
-          <InitializeApp>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <AuthenticatedUserMonitor />
-            <Header />
-            <Routes />
-            <Footer />
-          </InitializeApp>
-        </Router>
-        <Toaster
-          toastOptions={{
-            success: {
-              duration: 3000,
-              style: {
-                background: 'green',
+      <ApolloClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <InitializeApp>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <AuthenticatedUserMonitor />
+              <Header />
+              <Routes />
+              <Footer />
+            </InitializeApp>
+          </Router>
+          <Toaster
+            toastOptions={{
+              success: {
+                duration: 3000,
+                style: {
+                  background: 'green',
+                },
               },
-            },
-            error: {
-              duration: 5000,
-              style: {
-                background: '#fd2c60',
+              error: {
+                duration: 5000,
+                style: {
+                  background: '#fd2c60',
+                },
               },
-            },
-          }}
-        />
-      </QueryClientProvider>
+            }}
+          />
+        </QueryClientProvider>
+      </ApolloClientProvider>
     </ErrorBoundary>
   </>
 );
