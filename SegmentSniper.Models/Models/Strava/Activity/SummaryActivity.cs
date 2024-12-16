@@ -32,5 +32,8 @@ namespace SegmentSniper.Models.Models.Strava.Activity
         [JsonProperty("map")]
         public MapModel Map { get; set; }
 
+        [JsonProperty("gear_id")]
+        public string GearId { get; set; }
+
     }
 }

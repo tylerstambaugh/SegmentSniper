@@ -11,6 +11,7 @@ using IdentityModel;
 using SegmentSniper.Data.Enums;
 using Serilog;
 using SegmentSniper.Services.Garage;
+using SegmentSniper.Data.Migrations;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
@@ -20,14 +21,29 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IMapper _mapper;
         private readonly IActivityAdapter _activityAdapter;
+        private readonly IGetAllBikesByUserId _getAllBikesByUserId;
+        private readonly IGetAllBikeActivitiesByBikeId _getAllBikeActivitiesByBikeId;
+        private readonly IAddBikeActivity _addBikeActivity;
+        private readonly IUpsertBike _upsertBike;
         private readonly int maxActivityResults = 200;
 
-        public GetActivityListActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IMapper mapper, IActivityAdapter activityAdapter)
+        public GetActivityListActionHandler(
+            ISegmentSniperDbContext context,
+            IStravaRequestService stravaRequestService,
+            IMapper mapper, IActivityAdapter activityAdapter,
+            IGetAllBikesByUserId getAllBikesByUserId,
+            IGetAllBikeActivitiesByBikeId getAllBikeActivitiesByBikeId,
+            IAddBikeActivity addBikeActivity,
+            IUpsertBike upsertBike)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
             _mapper = mapper;
             _activityAdapter = activityAdapter;
+            _getAllBikesByUserId = getAllBikesByUserId;
+            _getAllBikeActivitiesByBikeId = getAllBikeActivitiesByBikeId;
+            _addBikeActivity = addBikeActivity;
+            _upsertBike = upsertBike;
         }
 
         public async Task<GetActivityListRequest.Response> HandleAsync(GetActivityListRequest request)
@@ -51,6 +67,10 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysRange.StartDateUnix, daysRange.EndDateUnix, maxActivityResults));
 
                         listOfSummaryActivities = response.SummaryActivities;
+
+
+                    UpdateGarage(listOfSummaryActivities, request.UserId);
+
 
                         if (parsedActivity != ActivityTypeEnum.ActivityType.All)
                         {
@@ -78,7 +98,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
 
-                    Log.Debug($"Activity Search");
+                    //Log.Debug($"Activity Search");
 
 
                     return new GetActivityListRequest.Response { ActivityList = activityList };
@@ -87,12 +107,35 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 catch (Exception ex)
                 {
                     //do something different here instead of throwing the exception. log it and return null?
+                    Log.Error($"GetActivityDetails error: {ex.Message}");
                     throw new ApplicationException($"GetActivityListError \n Details: {ex.Message}");
                 }
             }
             else
             {
                 throw new ApplicationException("Invalid or missing Strava Authorization");
+            }
+        }
+
+        private async Task UpdateGarage(List<SummaryActivity> listOfSummaryActivities, string userId)
+        {
+            //for each summary activity
+            //check to see if bike exists, add it if it doesn't
+            //create bikeActivity record for each activityId that doesn't have bikeActivity record
+
+            var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
+            foreach(SummaryActivity summaryActivity in listOfSummaryActivities)
+            {
+                if(existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
+                {
+                    //need to check if the bikeActivity exists and create it if not
+                }
+                else
+                {
+                    //need to get the bikeDetails, persist them
+                    //and add the bikeActivity                    
+                }
+
             }
         }
 
