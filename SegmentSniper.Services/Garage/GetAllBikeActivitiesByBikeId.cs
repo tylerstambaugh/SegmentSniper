@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Models.Garage;
 
@@ -13,28 +14,25 @@ namespace SegmentSniper.Services.Garage
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public GetAllBikeActivitiesByUserIdContract.Result Execute(GetAllBikeActivitiesByUserIdContract contract)
+        public async Task<GetAllBikeActivitiesByBikeIdContract.Result> ExecuteAsync(GetAllBikeActivitiesByBikeIdContract contract)
         {
             ValidateContract(contract);
 
-            var existingBikeActivities = _segmentSniperDbContext.BikeActivities.Where(b => b.BikeId == contract.BikeId);
-            List<BikeActivityModel> returnModels = new List<BikeActivityModel>();
-
-            foreach (BikeActivity bikeActivity in existingBikeActivities)
-            {
-                returnModels.Add(new BikeActivityModel
+            var existingBikeActivities = await _segmentSniperDbContext.BikeActivities
+                .Where(b => b.BikeId == contract.BikeId)
+                .Select(b => new BikeActivityModel
                 {
-                    BikeId = bikeActivity.BikeId,
-                    StravaActivityId = bikeActivity.StravaActivityId,
-                    ActivityDate = bikeActivity.ActivityDate,
-                    DistanceInMeters = bikeActivity.DistanceInMeters,
-                });
-            }
+                    UserId = b.UserId,
+                    BikeId = b.BikeId,
+                    StravaActivityId = b.StravaActivityId,
+                    ActivityDate = b.ActivityDate,
+                    DistanceInMeters = b.DistanceInMeters,
+                }).ToListAsync();            
 
-            return new GetAllBikeActivitiesByUserIdContract.Result(returnModels);
+            return new GetAllBikeActivitiesByBikeIdContract.Result(existingBikeActivities);
         }
 
-        private void ValidateContract(GetAllBikeActivitiesByUserIdContract contract)
+        private void ValidateContract(GetAllBikeActivitiesByBikeIdContract contract)
         {
            if(contract is null)
             {

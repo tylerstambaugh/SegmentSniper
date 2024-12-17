@@ -3,11 +3,11 @@ using StravaApiClient.Models.Misc;
 
 namespace StravaApiClient.Services.Gear
 {
-    public class GetEquipmentById : IGetEquipmentById
+    public class GetGearById : IGetGearById
     {
         private readonly IStravaRequestClient _stravaRequestClient;
 
-        public GetEquipmentById(IStravaRequestClient stravaRequestClient)
+        public GetGearById(IStravaRequestClient stravaRequestClient)
         {
             _stravaRequestClient = stravaRequestClient;
         }
@@ -23,7 +23,7 @@ namespace StravaApiClient.Services.Gear
         private void ValidateContract(GetGearByIdContract contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
-            if (contract.GearId == null) throw new ArgumentException("Segment Id must be provided", nameof(contract.GearId));
+            if (string.IsNullOrEmpty(contract.GearId)) throw new ArgumentException("Gear Id must be provided", nameof(contract.GearId));
         }
     }
 }

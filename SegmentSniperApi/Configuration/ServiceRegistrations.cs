@@ -22,6 +22,7 @@ using StravaApiClient;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services;
 using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
 
 namespace SegmentSniper.Api.Configuration
@@ -118,6 +119,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
+            services.AddScoped<IGetGearById,  GetGearById>();
 
             //ML Services
             services.AddScoped<IGetSegmentPredictionTrainingData, GetSegmentPredictionTrainingData>();
@@ -133,6 +135,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IUpsertBike, UpsertBike>();
             services.AddScoped<IAddBikeActivity, AddBikeActivity>();
             services.AddScoped<IGetAllBikeActivitiesByBikeId, GetAllBikeActivitiesByBikeId>();
+            services.AddScoped<IGetAllBikeActivitiesByUserId, GetAllBikeActivitiesByUserId>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();

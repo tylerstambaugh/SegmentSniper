@@ -54,9 +54,9 @@ namespace StravaApiClient
             return service.ExecuteAsync(contract);
         }
 
-        public Task<GetGearByIdContract.Result> GetEquipmentById(GetGearByIdContract contract)
+        public Task<GetGearByIdContract.Result> GetGearById(GetGearByIdContract contract)
         {
-            var service = new GetEquipmentById(_client);
+            var service = new GetGearById(_client);
             return service.ExecuteAsync(contract);
         }
     }
