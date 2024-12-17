@@ -1,4 +1,5 @@
 ﻿using StravaApiClient.Services.Activity;
+using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
 
 namespace StravaApiClient
@@ -11,6 +12,7 @@ namespace StravaApiClient
 
         Task<GetDetailedSegmentByIdContract.Result> GetDetailedSegmentById(GetDetailedSegmentByIdContract contract);
         Task<StarSegmentContract.Result> StarSegment(StarSegmentContract contract);
+        Task<GetGearByIdContract.Result> GetGearById(GetGearByIdContract contract);
 
         string RefreshToken { get; set;  }
         string UserId { get; set; }

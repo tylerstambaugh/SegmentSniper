@@ -2,15 +2,19 @@
 
 namespace StravaApiClient.Services.Gear
 {
-    public interface IGetEquipmentById
+    public interface IGetGearById
     {
         Task<GetGearByIdContract.Result> ExecuteAsync(GetGearByIdContract contract);
     }
 
     public class GetGearByIdContract
     {
+        public GetGearByIdContract(string gearId)
+        {
+            GearId = gearId;
+        }
 
-        public int GearId { get; init; }
+        public string GearId { get; init; }
         public class Result
         {
             public required DetailedGearApiModel DetailedGearApiModel { get; init; }

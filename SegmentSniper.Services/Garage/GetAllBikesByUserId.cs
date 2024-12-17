@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
@@ -17,18 +18,21 @@ namespace SegmentSniper.Services.Garage
 
             ValidateContract(contract);
 
-            var returnList = _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId).Select(b => new BikeModel
-            {
-                BikeId = b.BikeId,
-                Name = b.Name,
-                IsPrimary = b.IsPrimary,
-                Description = b.Description,
-                BrandName = b.BrandName,
-                ModelName = b.ModelName,
-                MetersLogged = b.MetersLogged,
-                FrameType = Enum.Parse<FrameType>(b.FrameType),
-                UserId = b.UserId,
-            }).ToList();
+            var returnList = await _segmentSniperDbContext.Bikes
+                .Where(b => b.UserId == contract.UserId)
+                .Select(b => new BikeModel
+                {
+                    BikeId = b.BikeId,
+                    Name = b.Name,
+                    IsPrimary = b.IsPrimary,
+                    Description = b.Description,
+                    BrandName = b.BrandName,
+                    ModelName = b.ModelName,
+                    MetersLogged = b.MetersLogged,
+                    FrameType = Enum.Parse<FrameType>(b.FrameType),
+                    UserId = b.UserId,
+                })
+                .ToListAsync();
 
             return new GetAllBikesByUserIdContract.Result(returnList);
         }

@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
+using IdentityModel;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Enums;
+using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.UIModels.Activity;
 using SegmentSniper.Services.Common.Adapters;
-using static SegmentSniper.Data.Enums.ActivityTypeEnum;
+using SegmentSniper.Services.Garage;
+using Serilog;
+using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
-using StravaApiClient;
-using IdentityModel;
-using SegmentSniper.Data.Enums;
-using Serilog;
-using SegmentSniper.Services.Garage;
-using SegmentSniper.Data.Migrations;
+using StravaApiClient.Services.Gear;
+using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
@@ -22,7 +23,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly IMapper _mapper;
         private readonly IActivityAdapter _activityAdapter;
         private readonly IGetAllBikesByUserId _getAllBikesByUserId;
-        private readonly IGetAllBikeActivitiesByBikeId _getAllBikeActivitiesByBikeId;
+        private readonly IGetAllBikeActivitiesByUserId _getAllBikeActivitiesByUserId;
         private readonly IAddBikeActivity _addBikeActivity;
         private readonly IUpsertBike _upsertBike;
         private readonly int maxActivityResults = 200;
@@ -32,7 +33,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             IStravaRequestService stravaRequestService,
             IMapper mapper, IActivityAdapter activityAdapter,
             IGetAllBikesByUserId getAllBikesByUserId,
-            IGetAllBikeActivitiesByBikeId getAllBikeActivitiesByBikeId,
+            IGetAllBikeActivitiesByUserId getAllBikeActivitiesByUserId,
             IAddBikeActivity addBikeActivity,
             IUpsertBike upsertBike)
         {
@@ -41,7 +42,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             _mapper = mapper;
             _activityAdapter = activityAdapter;
             _getAllBikesByUserId = getAllBikesByUserId;
-            _getAllBikeActivitiesByBikeId = getAllBikeActivitiesByBikeId;
+            _getAllBikeActivitiesByUserId = getAllBikeActivitiesByUserId;
             _addBikeActivity = addBikeActivity;
             _upsertBike = upsertBike;
         }
@@ -64,24 +65,24 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     List<SummaryActivity> listOfSummaryActivities = new List<SummaryActivity>();
 
-                        var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysRange.StartDateUnix, daysRange.EndDateUnix, maxActivityResults));
+                    var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysRange.StartDateUnix, daysRange.EndDateUnix, maxActivityResults));
 
-                        listOfSummaryActivities = response.SummaryActivities;
-
-
-                    UpdateGarage(listOfSummaryActivities, request.UserId);
+                    listOfSummaryActivities = response.SummaryActivities;
 
 
-                        if (parsedActivity != ActivityTypeEnum.ActivityType.All)
-                        {
-                            listOfSummaryActivities = listOfSummaryActivities
-                            .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
-                        }
+                    await UpdateGarage(listOfSummaryActivities, request.UserId);
 
-                        if (request.ActivityName != null)
-                        {
-                            listOfSummaryActivities = listOfSummaryActivities.Where(n => n.Name.ToLower().Contains(request.ActivityName.ToLower())).ToList();                 
-                        }
+
+                    if (parsedActivity != ActivityTypeEnum.ActivityType.All)
+                    {
+                        listOfSummaryActivities = listOfSummaryActivities
+                        .Where(sa => sa.Type == request.ActivityType.ToString()).ToList();
+                    }
+
+                    if (request.ActivityName != null)
+                    {
+                        listOfSummaryActivities = listOfSummaryActivities.Where(n => n.Name.ToLower().Contains(request.ActivityName.ToLower())).ToList();
+                    }
                     List<DetailedActivity> listOfDetailedActivities = new List<DetailedActivity>();
 
                     foreach (SummaryActivity activity in listOfSummaryActivities)
@@ -124,25 +125,45 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             //create bikeActivity record for each activityId that doesn't have bikeActivity record
 
             var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
-            foreach(SummaryActivity summaryActivity in listOfSummaryActivities)
+            var userBikeActivities = await _getAllBikeActivitiesByUserId.ExecuteAsync(contract: new GetAllBikeActivitiesByUserIdContract(userId));
+            foreach (SummaryActivity summaryActivity in listOfSummaryActivities)
             {
-                if(existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
+                if (existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
                 {
                     //need to check if the bikeActivity exists and create it if not
+                    var bikeActivity = userBikeActivities.BikeActivities.Any(ba => ba.StravaActivityId == summaryActivity.Id);
+                    if (bikeActivity == null)
+                    {
+                        await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
+                            new BikeActivityModel
+                            {
+                                StravaActivityId = summaryActivity.Id,
+                                UserId = userId,
+                                BikeId = summaryActivity.GearId,
+                                ActivityDate = summaryActivity.StartDate,
+                                DistanceInMeters = summaryActivity.Distance,
+
+                            })
+                        );
+                    }
                 }
                 else
                 {
                     //need to get the bikeDetails, persist them
-                    //and add the bikeActivity                    
+                    var bikeToAdd = _stravaRequestService.GetGearById(new GetGearByIdContract(summaryActivity.GearId));
+                    //adapt the bike
+                    //await _upsertBike.Execute(new AddBikeActivityContract())
+                    //and add the bikeActivity
+                    
                 }
 
             }
         }
 
         private DaysAndPagesContract.Result GetDaysRange(DaysAndPagesContract contract)
-        {            
-            long startDateUnix = contract.StartDate?.AddHours(-5).ToEpochTime() ??  DateTime.UtcNow.AddDays(-180).ToEpochTime();
-            long endDateUnix = contract.EndDate?.AddDays(1).ToEpochTime() ??  DateTime.UtcNow.AddDays(1).ToEpochTime();
+        {
+            long startDateUnix = contract.StartDate?.AddHours(-5).ToEpochTime() ?? DateTime.UtcNow.AddDays(-180).ToEpochTime();
+            long endDateUnix = contract.EndDate?.AddDays(1).ToEpochTime() ?? DateTime.UtcNow.AddDays(1).ToEpochTime();
 
             return new DaysAndPagesContract.Result
             {
@@ -157,7 +178,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            if(string.IsNullOrWhiteSpace(request.UserId))
+            if (string.IsNullOrWhiteSpace(request.UserId))
             {
                 throw new ArgumentNullException("User Id cannot be null");
             }

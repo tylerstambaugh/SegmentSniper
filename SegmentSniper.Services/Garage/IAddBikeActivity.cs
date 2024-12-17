@@ -1,4 +1,6 @@
-﻿namespace SegmentSniper.Services.Garage
+﻿using SegmentSniper.Models.Models.Garage;
+
+namespace SegmentSniper.Services.Garage
 {
     public interface IAddBikeActivity
     {
@@ -8,10 +10,12 @@
 
     public class AddBikeActivityContract
     {
-        public required string StravaActivityId { get; set; }
-        public double DistanceInMeters { get; set; }
-        public required string BikeId { get; set; }
-        public required DateTime ActivityDate { get; set; }
+        public AddBikeActivityContract(BikeActivityModel bikeActivity)
+        {
+            BikeActivity = bikeActivity;
+        }
+
+        public BikeActivityModel BikeActivity { get; set; }
 
         public  class Result
         {
