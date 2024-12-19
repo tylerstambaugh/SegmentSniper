@@ -4,7 +4,7 @@ namespace SegmentSniper.Services.Garage
 {
     public interface IGetAllBikeActivitiesByUserId
     {
-        Task<GetAllBikeActivitiesByUserIdContract.Result> ExecuteAsync(GetAllBikeActivitiesByUserIdContract contract)
+        Task<GetAllBikeActivitiesByUserIdContract.Result> ExecuteAsync(GetAllBikeActivitiesByUserIdContract contract);
     }
 
     public class GetAllBikeActivitiesByUserIdContract

@@ -132,7 +132,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 {
                     //need to check if the bikeActivity exists and create it if not
                     var bikeActivity = userBikeActivities.BikeActivities.Any(ba => ba.StravaActivityId == summaryActivity.Id);
-                    if (bikeActivity == null)
+                    if (!bikeActivity)
                     {
                         await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
                             new BikeActivityModel
@@ -149,12 +149,51 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 }
                 else
                 {
-                    //need to get the bikeDetails, persist them
-                    var bikeToAdd = _stravaRequestService.GetGearById(new GetGearByIdContract(summaryActivity.GearId));
+                    //need to get the bikeDetails,
+                    var bikeApiModelResult = await _stravaRequestService.GetGearById(new GetGearByIdContract(summaryActivity.GearId));
+                    var bikeApiModel = bikeApiModelResult.DetailedGearApiModel;
                     //adapt the bike
-                    //await _upsertBike.Execute(new AddBikeActivityContract())
+                    var bikeToAdd = new BikeModel
+                    {
+                        BikeId = bikeApiModel.Id,
+                        UserId = userId,
+                        Name = "need to add this to the api model",
+                        BrandName = bikeApiModel.BrandName,
+                        ModelName = bikeApiModel.ModelName,
+                        Description = bikeApiModel.Description,
+                        FrameType = bikeApiModel.FrameType,
+                        MetersLogged = bikeApiModel.Distance
+                    };
+
+                    //persist the bike
+                    var bikeAdded = await _upsertBike.ExecuteAsync(new AddBikeContract
+                    {
+                        Bike = bikeToAdd
+                    });
+
+                    if (string.IsNullOrEmpty(bikeAdded.BikeId))
+                    {
+                        Log.Error("Failed to add GearId: {GearId} from GetActivityListHandler.", bikeApiModel.Id);
+                    }
+
                     //and add the bikeActivity
+                    var bikeActivity = userBikeActivities.BikeActivities.Any(ba => ba.StravaActivityId == summaryActivity.Id);
                     
+                    var bikeActivityAdded = await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
+                        new BikeActivityModel
+                        {
+                            StravaActivityId = summaryActivity.Id,
+                            UserId = userId,
+                            BikeId = summaryActivity.GearId,
+                            ActivityDate = summaryActivity.StartDate,
+                            DistanceInMeters = summaryActivity.Distance,
+
+                        })
+                    );
+                    if(!bikeActivityAdded.Success)
+                    {
+                        Log.Error("Failed to add bikeActivity {ActivityId} from GetActivityListHandler.", summaryActivity.Id);
+                    }
                 }
 
             }

@@ -1,5 +1,6 @@
 ﻿using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -14,21 +15,21 @@ namespace SegmentSniper.Services.Garage
 
         public async Task<AddBikeActivityContract.Result> ExecuteAsync(AddBikeActivityContract contract)
         {
-            ValidateContract(contract);
-
-            var existingBikeActivity = _segmentSniperDbContext.BikeActivities.Where(b => b.StravaActivityId == contract.StravaActivityId).FirstOrDefault();
+            ValidateContract(contract.BikeActivity);
+            var bikeActivity = contract.BikeActivity;
+            var existingBikeActivity = _segmentSniperDbContext.BikeActivities.Where(b => b.StravaActivityId == bikeActivity.StravaActivityId).FirstOrDefault();
 
             if(existingBikeActivity != null)
             {
-                var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.BikeId == contract.BikeId).FirstOrDefault();
+                var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.BikeId == bikeActivity.BikeId).FirstOrDefault();
                     if (existingBike != null)
                     {   
                         var bikeActivityToAdd = new BikeActivity
                         {
-                            StravaActivityId = contract.StravaActivityId,
-                            BikeId = contract.BikeId,
-                            DistanceInMeters = contract.DistanceInMeters,
-                            ActivityDate = contract.ActivityDate,
+                            StravaActivityId = bikeActivity.StravaActivityId,
+                            BikeId = bikeActivity.BikeId,
+                            DistanceInMeters = bikeActivity.DistanceInMeters,
+                            ActivityDate = bikeActivity.ActivityDate,
                         };
                         _segmentSniperDbContext.BikeActivities.Add(bikeActivityToAdd);
                         var success = await _segmentSniperDbContext.SaveChangesAsync() == 1;
@@ -42,31 +43,31 @@ namespace SegmentSniper.Services.Garage
             throw new ArgumentException("BikeActivity already exists.");
         }
 
-        private void ValidateContract(AddBikeActivityContract contract)
+        private void ValidateContract(BikeActivityModel bikeActivity)
         {
-            if (contract == null)
+            if (bikeActivity == null)
             {
-                throw new ArgumentNullException(nameof(contract));
+                throw new ArgumentNullException(nameof(bikeActivity));
             }
-            if (string.IsNullOrEmpty(contract.BikeId))
+            if (string.IsNullOrEmpty(bikeActivity.BikeId))
             {
-                throw new ArgumentNullException(nameof(contract.BikeId));
+                throw new ArgumentNullException(nameof(bikeActivity.BikeId));
             }
-            if (contract.DistanceInMeters <= 0)
+            if (bikeActivity.DistanceInMeters <= 0)
             {
-                throw new ArgumentNullException(nameof(contract.DistanceInMeters));
+                throw new ArgumentNullException(nameof(bikeActivity.DistanceInMeters));
             }
-            if (string.IsNullOrEmpty(contract.StravaActivityId))
+            if (string.IsNullOrEmpty(bikeActivity.StravaActivityId))
             {
-                throw new ArgumentNullException(nameof(contract.StravaActivityId));
+                throw new ArgumentNullException(nameof(bikeActivity.StravaActivityId));
             }
-            if (contract.ActivityDate == null)
+            if (bikeActivity.ActivityDate == null)
             {
-                throw new ArgumentNullException(nameof(contract.ActivityDate));
+                throw new ArgumentNullException(nameof(bikeActivity.ActivityDate));
             }
-            if (contract.ActivityDate > DateTime.UtcNow)
+            if (bikeActivity.ActivityDate > DateTime.UtcNow)
             {
-                throw new ArgumentOutOfRangeException(nameof(contract.ActivityDate), "Date must be today or in the past");
+                throw new ArgumentOutOfRangeException(nameof(bikeActivity.ActivityDate), "Date must be today or in the past");
             }
 
         }
