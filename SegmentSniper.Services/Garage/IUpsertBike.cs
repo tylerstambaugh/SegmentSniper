@@ -4,7 +4,7 @@ namespace SegmentSniper.Services.Garage
 {
     public interface IUpsertBike
     {
-        AddBikeContract.Result Execute(AddBikeContract contrect);
+       Task <AddBikeContract.Result> ExecuteAsync(AddBikeContract contrect);
     }
 
     public class AddBikeContract

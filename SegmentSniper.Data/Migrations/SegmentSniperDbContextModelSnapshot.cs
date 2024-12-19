@@ -442,9 +442,15 @@ namespace SegmentSniper.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("BikeActivityId");
 
                     b.HasIndex("BikeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BikeActivities");
                 });
@@ -818,7 +824,15 @@ namespace SegmentSniper.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Bike");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>

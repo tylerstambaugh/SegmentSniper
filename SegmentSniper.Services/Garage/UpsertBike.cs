@@ -13,7 +13,7 @@ namespace SegmentSniper.Services.Garage
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public AddBikeContract.Result Execute(AddBikeContract contract)
+        public async Task<AddBikeContract.Result> ExecuteAsync(AddBikeContract contract)
         {
             ValidateContract(contract);
 
@@ -37,7 +37,7 @@ namespace SegmentSniper.Services.Garage
                     };
 
                     _segmentSniperDbContext.Bikes.Add(bikeToAdd);
-                    if (_segmentSniperDbContext.SaveChanges() == 1)
+                    if (await _segmentSniperDbContext.SaveChangesAsync() == 1)
                         return new AddBikeContract.Result
                         { BikeId = bikeToAdd.BikeId };
                     else
@@ -95,7 +95,7 @@ namespace SegmentSniper.Services.Garage
                     if (isUpdated)
                     {
                         _segmentSniperDbContext.Bikes.Update(existingBike);
-                        _segmentSniperDbContext.SaveChanges();
+                        await _segmentSniperDbContext.SaveChangesAsync();
                     }
 
                     return new AddBikeContract.Result { BikeId = existingBike.BikeId };
