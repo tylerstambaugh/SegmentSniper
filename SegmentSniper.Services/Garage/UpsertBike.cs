@@ -26,6 +26,7 @@ namespace SegmentSniper.Services.Garage
                     var bikeToAdd = new Bike
                     {
                         BikeId = contract.Bike.BikeId ?? Guid.NewGuid().ToString(),
+                        UserId = contract.Bike.UserId,
                         IsPrimary = contract.Bike.IsPrimary,
                         Name = contract.Bike.Name,
                         Description = contract.Bike.Description,

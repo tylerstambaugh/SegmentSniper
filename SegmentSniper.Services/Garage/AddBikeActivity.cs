@@ -19,13 +19,14 @@ namespace SegmentSniper.Services.Garage
             var bikeActivity = contract.BikeActivity;
             var existingBikeActivity = _segmentSniperDbContext.BikeActivities.Where(b => b.StravaActivityId == bikeActivity.StravaActivityId).FirstOrDefault();
 
-            if(existingBikeActivity != null)
+            if(existingBikeActivity == null)
             {
                 var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.BikeId == bikeActivity.BikeId).FirstOrDefault();
                     if (existingBike != null)
                     {   
                         var bikeActivityToAdd = new BikeActivity
                         {
+                            UserId = bikeActivity.UserId,
                             StravaActivityId = bikeActivity.StravaActivityId,
                             BikeId = bikeActivity.BikeId,
                             DistanceInMeters = bikeActivity.DistanceInMeters,

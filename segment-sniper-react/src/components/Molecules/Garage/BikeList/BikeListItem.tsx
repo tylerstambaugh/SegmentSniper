@@ -1,5 +1,5 @@
 import { Col, Container, Row } from 'react-bootstrap';
-import { FrameType } from '../../../../enums/frameTypes';
+import { FrameType } from '../../../../enums/FrameTypes';
 
 export type BikeListItemProps = {
     id: string;

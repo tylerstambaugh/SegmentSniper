@@ -2,6 +2,7 @@
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.MachineLearning;
+using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Models.Models.Strava.Activity;
 using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
@@ -191,6 +192,15 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
                 .ForMember(dest => dest.NumberOfSegmentsUsedInModelTraining, opt => opt.MapFrom(src => src.NumberOfSegmentsUsedInModelTraining));
+
+            CreateMap<DetailedGearApiModel, BikeModel>()
+                 .ForMember(dest => dest.FrameType, opt => opt.MapFrom(src =>
+                    Enum.IsDefined(typeof(FrameType), src.FrameType)
+                    ? (FrameType)src.FrameType
+                    : (FrameType?)null))
+                 .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.Id))
+                 .ForMember(dest => dest.MetersLogged, opt => opt.MapFrom(src => src.Distance));
+            
         }
     }
 }
