@@ -10,8 +10,10 @@ using SegmentSniper.Services.Garage;
 using Serilog;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
+using StravaApiClient.Models.Misc;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
+using static GraphQL.Instrumentation.Metrics;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -29,7 +31,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private readonly int maxActivityResults = 200;
 
         public GetActivityListActionHandler(
-            ISegmentSniperDbContext context,
+            ISegmentSniperDbContext context,            
             IStravaRequestService stravaRequestService,
             IMapper mapper, IActivityAdapter activityAdapter,
             IGetAllBikesByUserId getAllBikesByUserId,
@@ -153,18 +155,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     var bikeApiModelResult = await _stravaRequestService.GetGearById(new GetGearByIdContract(summaryActivity.GearId));
                     var bikeApiModel = bikeApiModelResult.DetailedGearApiModel;
                     //adapt the bike
-                    var bikeToAdd = new BikeModel
-                    {
-                        BikeId = bikeApiModel.Id,
-                        UserId = userId,
-                        Name = "need to add this to the api model",
-                        BrandName = bikeApiModel.BrandName,
-                        ModelName = bikeApiModel.ModelName,
-                        Description = bikeApiModel.Description,
-                        FrameType = bikeApiModel.FrameType,
-                        MetersLogged = bikeApiModel.Distance
-                    };
-
+                    var bikeToAdd = _mapper.Map<DetailedGearApiModel, BikeModel>(bikeApiModel);
+                    bikeToAdd.UserId = userId;
                     //persist the bike
                     var bikeAdded = await _upsertBike.ExecuteAsync(new AddBikeContract
                     {
@@ -184,7 +176,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         {
                             StravaActivityId = summaryActivity.Id,
                             UserId = userId,
-                            BikeId = summaryActivity.GearId,
+                            BikeId = bikeAdded.BikeId,
                             ActivityDate = summaryActivity.StartDate,
                             DistanceInMeters = summaryActivity.Distance,
 
