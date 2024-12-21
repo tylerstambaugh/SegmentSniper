@@ -253,7 +253,11 @@ namespace SegmentSniper.Api.Configuration
                 options.AddPolicy("AllowReactApp",
                     corsBuilder =>
                     {
-                        corsBuilder.WithOrigins("https://localhost:6767", "https://localhost:6768", "https://127.0.0.1:6767", "https://127.0.0.1:6768")
+                        corsBuilder.WithOrigins(
+                            "https://localhost:6767", "https://localhost:6768",
+                            "https://127.0.0.1:6767", "https://127.0.0.1:6768",
+                            "http://localhost:6767", "http://localhost:6768",
+                            "http://127.0.0.1:6767", "http://127.0.0.1:6768")
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });

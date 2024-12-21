@@ -1,0 +1,12 @@
+query GetBikesByUserId($userId: ID!) {
+  Bikes {
+    byUserId(userId: $userId) {
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+    }
+  }
+}
