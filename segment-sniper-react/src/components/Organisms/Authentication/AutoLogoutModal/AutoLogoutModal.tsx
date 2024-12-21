@@ -19,63 +19,73 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
     (state) => state.tokenData?.expiration
   );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const currentTime = new Date().getTime();
   const expirationTime = new Date(tokenExpiration || "").getTime();
-  const timeRemaining = expirationTime - currentTime;
-  const [timer, setTimer] = useState(Math.floor(timeRemaining / 1000));
+  const [timer, setTimer] = useState(
+    Math.floor((expirationTime - Date.now()) / 1000)
+  );
   const { refetch: refetchToken } = useRefreshTokenQuery();
   const logout = useGetLogout();
   const resetAllStores = useResetAllStores();
+  const logoutCalledRef = useRef(false); // Track if logout has already been triggered
 
-  const handleClose = async () => { setShow(false), await refetchToken(); };
+  const handleClose = async () => {
+    setShow(false);
+    await refetchToken();
+  };
+
   const handleLogoutButton = () => {
     handleClose();
     navigate(`/${AppRoutes.Logout}`);
   };
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setTimer(timeRemaining - 1000);
-    }, 1000);
+    if (timer <= 0) {
+      // Clear the interval and handle logout when timer reaches 0
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
 
-    if (timeRemaining <= 0) {
-      clearInterval(intervalRef.current!);
-      const revokeTokenAsync = async () => {
-        try {
-          await logout.mutateAsync().then(() =>
-            resetAllStores()
-          );
-        } catch (error) {
-          if (logout.error instanceof Error) {
-            CustomToast({
-              message: "Error logging out",
-              error: `Error: ${logout.error.message}`,
-              type: "error",
-            });
+      if (!logoutCalledRef.current) {
+        logoutCalledRef.current = true; // Set the flag to prevent multiple calls
+
+        const revokeTokenAsync = async () => {
+          try {
+            await logout.mutateAsync();
+            resetAllStores();
+            navigate(`/${AppRoutes.InactiveLogout}`);
+            setShow(false);
+          } catch (error) {
+            if (logout.error instanceof Error) {
+              CustomToast({
+                message: "Error logging out",
+                error: `Error: ${logout.error.message}`,
+                type: "error",
+              });
+            }
           }
-        }
-      };
+        };
 
-      revokeTokenAsync().then(() => {
-        navigate(`/${AppRoutes.InactiveLogout}`)
-        setShow(false);
-      });
+        revokeTokenAsync();
+      }
+
+      return; // Exit the effect early to avoid setting up the interval again.
     }
+
+    intervalRef.current = setInterval(() => {
+      setTimer((prev) => Math.max(prev - 1, 0)); // Prevent timer from going below 0
+    }, 1000);
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRemaining]);
+  }, [timer]); // Keep only the necessary dependencies
 
-  const minutesRemaining = Math.floor(
-    (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
-  );
+  const minutesRemaining = Math.floor(timer / 60);
   const formattedMinutes =
     minutesRemaining < 10 ? `0${minutesRemaining}` : minutesRemaining;
-  const secondsRemaining = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+  const secondsRemaining = timer % 60;
   const formattedSeconds =
     secondsRemaining < 10 ? `0${secondsRemaining}` : secondsRemaining;
 

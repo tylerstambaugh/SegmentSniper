@@ -1,5 +1,5 @@
 query GetBikesByUserId($userId: ID!) {
-  Bikes {
+  bikes {
     byUserId(userId: $userId) {
       bikeId
       name
