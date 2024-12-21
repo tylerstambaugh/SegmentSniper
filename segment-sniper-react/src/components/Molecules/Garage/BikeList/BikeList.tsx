@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useQuery, gql } from '@apollo/client';
 import { BikeListItem } from './BikeListItem';
-//import { GetBikesByUserId } from '../GraphQl/Bikes.graphql'
+import GetBikeByUserId from '../GraphQl/Bikes.graphql';
+import useUserStore from '../../../../stores/useUserStore';
 
 type Bike = {
     bikeId: string;
@@ -19,43 +20,37 @@ type GetBikesByUserIdResponse = {
     };
 };
 
-const GET_BIKES_BY_USER_ID = gql`
-  query GetBikesByUserId($userId: ID!) {
-    Bikes {
-      byUserId(userId: $userId) {
-        bikeId
-        name
-        brandName
-        modelName
-        frameType
-        metersLogged
-      }
-    }
-  }
-`;
 
-export const BikeList = ({ userId }: { userId: string }) => {
-    const { data, loading, error } = useQuery<GetBikesByUserIdResponse>(GET_BIKES_BY_USER_ID, {
-        variables: { userId },
-    });
+
+export const BikeList = () => {
+    const userId = useUserStore((state) => state.user?.id)
+    const { data, loading, error } = useQuery<GetBikesByUserIdResponse>(GetBikeByUserId, { variables: { userId } });
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) {
+        console.log("GetBikesByUserId query error: ", error);
+        return <p>Error: {error.message}</p>;
+    }
 
+    const bikes = data?.Bikes?.byUserId || [];
     return (
         <>
-            {data?.Bikes?.byUserId?.map((bike) => (
-                <div key={bike.bikeId}>
-                    <BikeListItem
-                        id={bike.bikeId}
-                        name={bike.name}
-                        brandName={bike.brandName}
-                        modelName={bike.modelName}
-                        frameType={bike.frameType}
-                        distanceInMeters={bike.metersLogged}
-                    />
-                </div>
-            ))}
+            {bikes && bikes.length > 0 ? (
+                bikes.map((bike) => (
+                    <div key={bike.bikeId}>
+                        <BikeListItem
+                            id={bike.bikeId}
+                            name={bike.name}
+                            brandName={bike.brandName}
+                            modelName={bike.modelName}
+                            frameType={bike.frameType}
+                            distanceInMeters={bike.metersLogged}
+                        />
+                    </div>
+                ))
+            ) : (
+                <h4>Bike list is emppty</h4>
+            )}
         </>
     );
 };

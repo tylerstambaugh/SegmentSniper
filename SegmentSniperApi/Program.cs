@@ -25,13 +25,13 @@ app.Run();
 void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
 {
     // Create a scope to resolve the SegmentSniperDbContext
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+    //using (var scope = app.Services.CreateScope())
+    //{
+    //    var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
 
-        // Ensure database is created
-       //context.Database.EnsureCreated();
-    }
+    //    // Ensure database is created
+    //   //context.Database.EnsureCreated();
+    //}
 
 
     // Configure the HTTP request pipeline
@@ -53,11 +53,17 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
+  
     app.UseCors("AllowReactApp");
 
     app.UseIdentityServer();
     app.UseAuthentication();
     app.UseAuthorization();
+
+    //app.UseEndpoints(endpoints =>
+    //{
+    //    endpoints.MapGraphQL("/graphql"); // Ensure the path matches your endpoint
+    //});
 
     app.MapControllers();
 
