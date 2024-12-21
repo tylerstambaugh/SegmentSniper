@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { useQuery, gql } from '@apollo/client';
 import { BikeListItem } from './BikeListItem';
+//import { GetBikesByUserId } from '../GraphQl/Bikes.graphql'
 
 type Bike = {
     bikeId: string;

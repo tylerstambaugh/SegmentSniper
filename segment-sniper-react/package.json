@@ -8,10 +8,12 @@
     "tsc": "tsc --noEmit --watch",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && graphql-codegen",
+    "generate:watch": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && graphql-codegen --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.12.3",
+    "@apollo/client": "^3.12.4",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
@@ -28,7 +30,7 @@
     "bootstrap-icons": "^1.10.5",
     "formik": "^2.4.3",
     "google-map-react": "^2.2.1",
-    "graphql": "^16.9.0",
+    "graphql": "^16.10.0",
     "immer": "^10.0.2",
     "luxon": "^3.4.4",
     "react": "^18.3.1",
@@ -48,6 +50,8 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.3",
+    "@parcel/watcher": "^2.5.0",
     "@tanstack/eslint-plugin-query": "^4.36.1",
     "@types/googlemaps": "^3.43.3",
     "@types/luxon": "^3.3.5",
@@ -66,6 +70,8 @@
     "sass": "^1.70.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-graphql-codegen": "^3.4.4",
+    "vite-plugin-graphql-loader": "^4.0.4",
     "vite-plugin-mkcert": "^1.16.0"
   }
 }

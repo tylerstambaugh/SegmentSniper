@@ -61,7 +61,7 @@ export const BikeLookup = () => {
                                 type="text"
                                 placeholder="Bike Id:"
                                 value={formik.values.bikeId ?? ""}
-                                name="activityName"
+                                name="bikeId"
                                 isInvalid={!!formik.errors.bikeId}
                                 onChange={(e) => {
                                     formik.setFieldValue("bikeId", e)
