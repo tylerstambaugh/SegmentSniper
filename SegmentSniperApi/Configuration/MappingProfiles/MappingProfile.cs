@@ -199,7 +199,13 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                     ? (FrameType)src.FrameType
                     : (FrameType?)null))
                  .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.Id))
-                 .ForMember(dest => dest.MetersLogged, opt => opt.MapFrom(src => src.Distance));
+                 .ForMember(dest => dest.MetersLogged, opt => opt.MapFrom(src => src.Distance))
+                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.Trim()))
+                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description.Trim()))
+                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName.Trim()))
+                 .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.ModelName.Trim()));
+
+
             
         }
     }
