@@ -1,21 +1,25 @@
 export enum FrameType {
-  MTB = 'MTB',
-  Corss = 'Cross',
-  Road = 'Road',
-  TimeTrail = 'Time Trail',
-  Gravel = 'Grabel',
-  Ebike = 'E-Bike',
-  Other = 'Other',
+  NONE = 0,
+  MTB = 1,
+  CROSS = 2,
+  ROAD = 3,
+  TIMETRIAL = 4,
+  GRAVEL = 5,
+  EBIKE = 6,
+  OTHER = 7,
 }
 
-// public enum FrameType
-// {
-//     None,
-//     MTB = 1,
-//     Cross = 2,
-//     Road = 3,
-//     TimeTrial = 4,
-//     Gravel = 5,
-//     Ebike = 6,
-//     Other = 7
-// }
+export const FrameTypeToString = (frameType: number): string => {
+  const mapping: { [key in FrameType]: string } = {
+    [FrameType.NONE]: 'None',
+    [FrameType.MTB]: 'Mountain Bike',
+    [FrameType.CROSS]: 'Cross',
+    [FrameType.ROAD]: 'Road',
+    [FrameType.TIMETRIAL]: 'Time Trial',
+    [FrameType.GRAVEL]: 'Gravel',
+    [FrameType.EBIKE]: 'E-Bike',
+    [FrameType.OTHER]: 'Other',
+  };
+
+  return mapping[frameType as FrameType] || 'Unknown';
+};
