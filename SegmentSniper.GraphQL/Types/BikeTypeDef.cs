@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.Resolvers;
+using GraphQL.Types;
 using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Models.Garage;
 
@@ -33,13 +34,26 @@ namespace SegmentSniper.GraphQL.Types
             Field(b => b.ModelName, type: typeof(StringGraphType))
                  .Description("Themodel of the bike");
 
-            Field(b => b.FrameType, type: typeof(StringGraphType))
-                 .Description("Int representation of the frame type of the bike, maps to FrameTypeEnum");
+            AddField(new FieldType
+            {
+                Name = "frameType",
+                Description = "Int representation of the frame type of the bike, maps to FrameTypeEnum",
+                Type = typeof(IntGraphType),
+                Resolver = new FuncFieldResolver<BikeModel, int>(context => (int)context.Source.FrameType)
+            });
 
             Field(b => b.MetersLogged, type: typeof(DecimalGraphType))
                 .Description("How many miles have been logged on the bike");
 
         }
+    }
 
+    public sealed class FrameTypeEnumType : EnumerationGraphType<FrameType>
+    {
+        public FrameTypeEnumType()
+        {
+            Name = "FrameTypeEnum";
+            Description = "The type of bike frame.";
+        }
     }
 }

@@ -7,12 +7,7 @@ export default function GarageMenu() {
 
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <p> This is going to be the gear wear log entry. </p>
-                </Col>
-            </Row>
+        <Container className="pt-2">
             <Row>
                 <Col>
                     <h2>Your Bikes</h2>
