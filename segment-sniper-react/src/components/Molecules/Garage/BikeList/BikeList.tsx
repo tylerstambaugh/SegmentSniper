@@ -32,9 +32,6 @@ export const BikeList = () => {
     }
 
     const bikes = data?.bikes?.byUserId || [];
-    console.log("data", data);
-
-    console.log("bikes:", bikes);
 
     return (
         <>
