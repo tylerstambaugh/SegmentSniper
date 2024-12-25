@@ -1,5 +1,6 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { FrameType } from '../../../../enums/FrameTypes';
+import styles from "./BikeList.module.scss";
 
 export type BikeListItemProps = {
     id: string;
@@ -20,40 +21,36 @@ export const BikeListItem = ({
 }: BikeListItemProps) => {
     return (
         <>
-            <Container>
+            <Container >
                 <Row>
-                    <Col>
-                        <p>Bike Id</p>
-                    </Col>
-                    <Col>
-                        <p>Name</p>
-                    </Col>
-                    <Col>
-                        <p>Brand</p>
-                    </Col>
-                    <Col>
-                        <p>Model</p>
-                    </Col>
-                    <Col>
-                        <p>Type</p>
-                    </Col>
-                    <Col>
-                        <p>Bike Id</p>
-                    </Col>
-                    <Col>
-                        <p>Distance</p>
-                    </Col>
+                    <Col className={styles.cardLabel}> <p>Bike Id</p></Col>
+                    <Col ><p>{id}</p></Col>
                 </Row>
                 <Row>
-                    <Col><p>{id}</p></Col>
-                    <Col><p>{name}</p></Col>
+                    <Col className={styles.cardLabel}><p>Brand</p></Col>
                     <Col><p>{brandName}</p></Col>
-                    <Col><p>{modelName}</p></Col>
-                    <Col><p>{frameType}</p></Col>
-                    <Col><p>{distanceInMeters}</p></Col>
-
                 </Row>
-            </Container>
+                <Row>
+                    <Col className={styles.cardLabel}><p>Model</p></Col>
+                    <Col><p>{modelName}</p></Col>
+                </Row>
+                <Row>
+                    <Col className={styles.cardLabel}><p>Type</p></Col>
+                    <Col><p>{frameType}</p></Col>
+                </Row>
+                <Row>
+                    <Col className={styles.cardLabel}><p>Odometer</p></Col>
+                    <Col><p>{distanceInMeters}</p></Col>
+                </Row>
+                <Row>
+                    <Col className='d-flex justify-content-center pb-3'>
+                        <Button>
+                            Details
+                        </Button>
+                    </Col>
+                </Row>
+
+            </Container >
         </>
     );
 };

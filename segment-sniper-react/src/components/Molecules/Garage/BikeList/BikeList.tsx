@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useQuery, gql } from '@apollo/client';
 import { BikeListItem } from './BikeListItem';
 import GetBikeByUserId from '../GraphQl/Bikes.graphql';
@@ -35,45 +35,41 @@ export const BikeList = () => {
 
     return (
         <>
-            {bikes && bikes.length > 0 ? (
-                bikes.map((bike) => (
-                    <Card>
-                        <Card.Title>
-                            <h4>Your Bikes</h4>
-                        </Card.Title>
-                        <div key={bike.bikeId}>
-                            <BikeListItem
-                                id={bike.bikeId}
-                                name={bike.name}
-                                brandName={bike.brandName}
-                                modelName={bike.modelName}
-                                frameType={FrameTypeToString(bike.frameType)}
-                                distanceInMeters={bike.metersLogged}
-                            />
-                        </div>
-                    </Card>
-                ))
-            ) : (
-                <>
-                    <Row className=''>
-                        <Col>
-                            <h4>There are no bikes in your garage</h4>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Button>
-                                Import Bikes
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button>
-                                Manually Add Bike
-                            </Button>
-                        </Col>
-                    </Row>
-                </>
-            )}
+            <Container className='p-2 d-flex flex-column flex-md-row justify-content-between'>
+                {bikes && bikes.length > 0 ? (
+                    bikes.map((bike) => (
+                        <Container className='pb-3'>
+                            <Row xs={12} lg={4} className='d-flex'>
+                                <Card className="shadow">
+                                    <Col className='d-flex justify-content-center'>
+                                        <Card.Title>
+                                            <h4>{bike.name}</h4>
+                                        </Card.Title>
+                                    </Col>
+                                    <div key={bike.bikeId} className='d-flex justify-content-center'>
+                                        <BikeListItem
+                                            id={bike.bikeId}
+                                            name={bike.name}
+                                            brandName={bike.brandName}
+                                            modelName={bike.modelName}
+                                            frameType={FrameTypeToString(bike.frameType)}
+                                            distanceInMeters={bike.metersLogged}
+                                        />
+                                    </div>
+                                </Card>
+                            </Row>
+                        </Container>
+                    ))
+                ) : (
+                    <>
+                        <Row className=''>
+                            <Col>
+                                <h4>There are no bikes in your garage</h4>
+                            </Col>
+                        </Row>
+                    </>
+                )}
+            </Container>
         </>
     );
 };

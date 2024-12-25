@@ -11,10 +11,6 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mutations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="GraphQL" Version="8.2.1" />
   </ItemGroup>
 
