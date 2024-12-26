@@ -35,6 +35,7 @@ export const BikeList = () => {
 
     return (
         <>
+            {/* probably taking the night off */}
             <Container className='p-2 d-flex flex-column flex-md-row justify-content-between'>
                 {bikes && bikes.length > 0 ? (
                     bikes.map((bike) => (
