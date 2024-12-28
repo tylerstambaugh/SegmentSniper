@@ -5,6 +5,9 @@ import { BikeListItem } from './BikeListItem';
 import GetBikeByUserId from '../GraphQl/Bikes.graphql';
 import useUserStore from '../../../../stores/useUserStore';
 import { FrameType, FrameTypeToString } from '../../../../enums/FrameTypes';
+import styles from "./BikeList.module.scss";
+import _ from 'lodash';
+
 
 type Bike = {
     bikeId: string;
@@ -33,31 +36,35 @@ export const BikeList = () => {
 
     const bikes = data?.bikes?.byUserId || [];
 
+    const sortedBikes = _.sortBy(bikes, ['metersLogged']).reverse();
+
     return (
         <>
-            {/* probably taking the night off */}
+            {/*      */}
             <Container className='p-2 d-flex flex-column flex-md-row justify-content-between'>
                 {bikes && bikes.length > 0 ? (
-                    bikes.map((bike) => (
+                    sortedBikes.map((bike) => (
                         <Container className='pb-3'>
-                            <Row xs={12} lg={4} className='d-flex'>
-                                <Card className="shadow">
-                                    <Col className='d-flex justify-content-center'>
-                                        <Card.Title>
-                                            <h4>{bike.name}</h4>
-                                        </Card.Title>
-                                    </Col>
-                                    <div key={bike.bikeId} className='d-flex justify-content-center'>
-                                        <BikeListItem
-                                            id={bike.bikeId}
-                                            name={bike.name}
-                                            brandName={bike.brandName}
-                                            modelName={bike.modelName}
-                                            frameType={FrameTypeToString(bike.frameType)}
-                                            distanceInMeters={bike.metersLogged}
-                                        />
-                                    </div>
-                                </Card>
+                            <Row className='justify-content-around'>
+                                <Col lg={6}>
+                                    <Card className="shadow">
+                                        <Col className='justify-content-center'>
+                                            <Card.Title className={styles.bikeCardTitle}>
+                                                <h4>{bike.name}</h4>
+                                            </Card.Title>
+                                        </Col>
+                                        <div key={bike.bikeId} className='justify-content-center'>
+                                            <BikeListItem
+                                                id={bike.bikeId}
+                                                name={bike.name}
+                                                brandName={bike.brandName}
+                                                modelName={bike.modelName}
+                                                frameType={FrameTypeToString(bike.frameType)}
+                                                distanceInMeters={bike.metersLogged}
+                                            />
+                                        </div>
+                                    </Card>
+                                </Col>
                             </Row>
                         </Container>
                     ))
