@@ -16,12 +16,12 @@ export default function GarageMenu() {
             </Row>
 
             <Row>
-                <Col>
+                <Col className="d-flex justify-content-center">
                     <Button>
                         Import Bikes
                     </Button>
                 </Col>
-                <Col>
+                <Col className="d-flex justify-content-center">
                     <Button>
                         Manually Add Bike
                     </Button>

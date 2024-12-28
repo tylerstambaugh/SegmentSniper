@@ -22,28 +22,28 @@ export const BikeListItem = ({
     return (
         <>
             <Container >
-                <Row>
-                    <Col className={styles.cardLabel}> <p>Bike Id</p></Col>
-                    <Col ><p>{id}</p></Col>
+                <Row className={styles.bikeDataRow}>
+                    <Col className={styles.cardLabel}> Bike Id</Col>
+                    <Col >{id}</Col>
                 </Row>
-                <Row>
-                    <Col className={styles.cardLabel}><p>Brand</p></Col>
-                    <Col><p>{brandName}</p></Col>
+                <Row className={styles.bikeDataRow}>
+                    <Col className={styles.cardLabel}>Brand</Col>
+                    <Col>{brandName}</Col>
                 </Row>
-                <Row>
-                    <Col className={styles.cardLabel}><p>Model</p></Col>
-                    <Col><p>{modelName}</p></Col>
+                <Row className={styles.bikeDataRow}>
+                    <Col className={styles.cardLabel}>Model</Col>
+                    <Col>{modelName}</Col>
                 </Row>
-                <Row>
-                    <Col className={styles.cardLabel}><p>Type</p></Col>
-                    <Col><p>{frameType}</p></Col>
+                <Row className={styles.bikeDataRow}>
+                    <Col className={styles.cardLabel}>Type</Col>
+                    <Col>{frameType}</Col>
                 </Row>
-                <Row>
-                    <Col className={styles.cardLabel}><p>Odometer</p></Col>
-                    <Col><p>{distanceInMeters}</p></Col>
+                <Row className={styles.bikeDataRow}>
+                    <Col className={styles.cardLabel}>Odometer</Col>
+                    <Col>{distanceInMeters}</Col>
                 </Row>
-                <Row>
-                    <Col className='d-flex justify-content-center pb-3'>
+                <Row className={styles.bikeDataRow}>
+                    <Col className='d-flex justify-content-center pb-2 pt-1'>
                         <Button>
                             Details
                         </Button>
