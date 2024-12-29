@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useQuery, gql } from '@apollo/client';
 import { BikeListItem } from './BikeListItem';
@@ -6,7 +5,7 @@ import GetBikeByUserId from '../GraphQl/Bikes.graphql';
 import useUserStore from '../../../../stores/useUserStore';
 import { FrameType, FrameTypeToString } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
-import _ from 'lodash';
+import sortBy from 'lodash/sortBy';
 
 
 type Bike = {
@@ -36,14 +35,14 @@ export const BikeList = () => {
 
     const bikes = data?.bikes?.byUserId || [];
 
-    const sortedBikes = _.sortBy(bikes, ['metersLogged']).reverse();
+    const sortedBikes = sortBy(bikes, ['metersLogged']).reverse();
 
     return (
         <>
             {/*      */}
             <Container className='p-2 d-flex flex-column flex-md-row justify-content-between'>
                 {bikes && bikes.length > 0 ? (
-                    sortedBikes.map((bike) => (
+                    sortedBikes.map((bike: Bike) => (
                         <Container className='pb-3'>
                             <Row className='justify-content-around'>
                                 <Col lg={6}>
