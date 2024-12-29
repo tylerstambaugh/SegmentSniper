@@ -30,7 +30,7 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
 
   const handleClose = async () => {
     setShow(false);
-    clearInterval(intervalRef.current);
+    clearInterval(intervalRef.current!);
     await refetchToken();
   };
 

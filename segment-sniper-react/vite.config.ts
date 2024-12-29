@@ -20,5 +20,8 @@ export default ({ mode }) => {
       },
     },
     plugins: [react(), mkcert(), graphqlLoader(), codegen()],
+    optimizeDeps: {
+      include: ['lodash'],
+    },
   });
 };
