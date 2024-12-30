@@ -73,11 +73,11 @@ jobs:
         run: dotnet ef database update --project ./SegmentSniper.Data.csproj --context SegmentSniperDbContext
 
       - name: Verify migration success
-          run: |
-            if [ ! -f "__EFMigrationsHistory" ]; then
-              echo "EF Migrations failed."
-              exit 1
-            fi
+        run: |
+          if [ ! -f "__EFMigrationsHistory" ]; then
+            echo "EF Migrations failed."
+            exit 1
+          fi
 
       - name: Publish .NET app
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
