@@ -1,6 +1,5 @@
 ﻿using GraphQL.Resolvers;
 using GraphQL.Types;
-using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.GraphQL.Types
@@ -44,6 +43,9 @@ namespace SegmentSniper.GraphQL.Types
 
             Field(b => b.MetersLogged, type: typeof(DecimalGraphType))
                 .Description("How many miles have been logged on the bike");
+
+            Field(b => b.Equipment, type: typeof(ListGraphType<EquipmentTypeDef>))
+                .Description("List of equipment on the bike.");
 
         }
     }

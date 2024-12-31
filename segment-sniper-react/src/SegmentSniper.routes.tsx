@@ -148,6 +148,14 @@ export default function Routes({ defaultPage }: Props) {
               </PrivateRoute>
             }
           />
+          <Route
+            path={AppRoutes.BikeDetails}
+            element={
+              <PrivateRoute userRoles={[UserRole.User]}>
+                <GarageMenu />
+              </PrivateRoute>
+            }
+          />
         </Route>
       </RRRoutes>
     </>

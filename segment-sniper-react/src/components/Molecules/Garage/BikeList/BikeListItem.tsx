@@ -4,7 +4,6 @@ import styles from "./BikeList.module.scss";
 
 export type BikeListItemProps = {
     id: string;
-    name: string;
     brandName: string;
     modelName: string;
     frameType: string;
@@ -13,7 +12,6 @@ export type BikeListItemProps = {
 
 export const BikeListItem = ({
     id,
-    name,
     brandName,
     modelName,
     frameType,
@@ -54,3 +52,5 @@ export const BikeListItem = ({
         </>
     );
 };
+
+export default BikeListItem;
