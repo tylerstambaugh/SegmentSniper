@@ -20,4 +20,5 @@ export enum AppRoutes {
   ActivityDetails = 'snipe/activity-details',
   SnipedSegments = 'snipe/sniped-segments',
   Garage = 'garage',
+  BikeDetails = 'garage/bike-details/:bikeId',
 }

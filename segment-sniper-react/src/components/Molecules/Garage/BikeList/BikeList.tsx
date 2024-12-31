@@ -6,16 +6,7 @@ import useUserStore from '../../../../stores/useUserStore';
 import { FrameType, FrameTypeToString } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
 import sortBy from 'lodash/sortBy';
-
-
-type Bike = {
-    bikeId: string;
-    brandName: string;
-    frameType: number;
-    metersLogged: number;
-    modelName: string;
-    name: string;
-};
+import { Bike } from '../../../../models/Garage/Bike';
 
 type GetBikesByUserIdResponse = {
     bikes: {
@@ -55,7 +46,6 @@ export const BikeList = () => {
                                         <div key={bike.bikeId} className='justify-content-center'>
                                             <BikeListItem
                                                 id={bike.bikeId}
-                                                name={bike.name}
                                                 brandName={bike.brandName}
                                                 modelName={bike.modelName}
                                                 frameType={FrameTypeToString(bike.frameType)}

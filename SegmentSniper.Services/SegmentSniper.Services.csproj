@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
-    <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
   </ItemGroup>
 
 </Project>
