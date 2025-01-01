@@ -1,6 +1,8 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { FrameType } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
+import { AppRoutes } from '../../../../enums/AppRoutes';
+import { useNavigate } from 'react-router-dom';
 
 export type BikeListItemProps = {
     id: string;
@@ -17,6 +19,7 @@ export const BikeListItem = ({
     frameType,
     distanceInMeters,
 }: BikeListItemProps) => {
+    const navigate = useNavigate();
     return (
         <>
             <Container >
@@ -42,7 +45,12 @@ export const BikeListItem = ({
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className='d-flex justify-content-center pb-2 pt-1'>
-                        <Button>
+                        <Button
+                            className='d-flex justify-content-center'
+                            onClick={() => {
+                                navigate(`/${AppRoutes.BikeDetails}\\${id}`);
+                            }}
+                        >
                             Details
                         </Button>
                     </Col>

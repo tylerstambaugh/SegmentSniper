@@ -28,6 +28,7 @@ import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
 import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
+import BikeDetails from "./pages/Garage/BikeDetails";
 
 interface Props {
   defaultPage?: string;
@@ -152,7 +153,7 @@ export default function Routes({ defaultPage }: Props) {
             path={AppRoutes.BikeDetails}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
-                <GarageMenu />
+                <BikeDetails />
               </PrivateRoute>
             }
           />
