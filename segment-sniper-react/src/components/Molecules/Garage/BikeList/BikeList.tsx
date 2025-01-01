@@ -38,20 +38,22 @@ export const BikeList = () => {
                             <Row className='justify-content-around'>
                                 <Col lg={6}>
                                     <Card className="shadow">
-                                        <Col className='justify-content-center'>
-                                            <Card.Title className={styles.bikeCardTitle}>
-                                                <h4>{bike.name}</h4>
-                                            </Card.Title>
-                                        </Col>
-                                        <div key={bike.bikeId} className='justify-content-center'>
-                                            <BikeListItem
-                                                id={bike.bikeId}
-                                                brandName={bike.brandName}
-                                                modelName={bike.modelName}
-                                                frameType={FrameTypeToString(bike.frameType)}
-                                                distanceInMeters={bike.metersLogged}
-                                            />
-                                        </div>
+                                        <Row>
+                                            <Col className='justify-content-center'>
+                                                <Card.Title className={styles.bikeCardTitle}>
+                                                    <h4>{bike.name}</h4>
+                                                </Card.Title>
+                                            </Col>
+                                            <div key={bike.bikeId} className='justify-content-center'>
+                                                <BikeListItem
+                                                    id={bike.bikeId}
+                                                    brandName={bike.brandName}
+                                                    modelName={bike.modelName}
+                                                    frameType={FrameTypeToString(bike.frameType)}
+                                                    distanceInMeters={bike.metersLogged}
+                                                />
+                                            </div>
+                                        </Row>
                                     </Card>
                                 </Col>
                             </Row>
