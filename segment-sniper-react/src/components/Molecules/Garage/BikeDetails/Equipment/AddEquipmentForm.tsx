@@ -1,14 +1,15 @@
 import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
 export type AddEquipmentFormProps = {
     show: boolean;
+    handleSubmit: (values: AddEquipmentFormValues) => void;
     onClose: () => void
 }
 
-interface AddEquipmentForm {
+export interface AddEquipmentFormValues {
     name: string;
     description: string;
     milesLogged: number;
@@ -19,10 +20,10 @@ interface AddEquipmentForm {
     milesUntilReplaceReminder: number;
 }
 
-const AddEquipmentFormUI = ({ show, onClose }: AddEquipmentFormProps) => {
+const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormProps) => {
     const [validated, setValidated] = useState(false);
 
-    const initialValues: AddEquipmentForm = {
+    const initialValues: AddEquipmentFormValues = {
         name: '',
         description: '',
         milesLogged: 0,
@@ -44,16 +45,16 @@ const AddEquipmentFormUI = ({ show, onClose }: AddEquipmentFormProps) => {
         milesUntilReplaceReminder: Yup.number().required('Required'),
     })
 
-    const formik = useFormik<AddEquipmentForm>({
+    const formik = useFormik<AddEquipmentFormValues>({
         initialValues: initialValues,
         validationSchema: validationSchema,
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: (values) => {
-            console.log(values)
+            setValidated(true);
+            handleSubmit(values)
         }
     })
-    //not todat, busy new year
     return (
         <Modal show={show} onHide={onClose} className="shadow">
             <Modal.Header closeButton>

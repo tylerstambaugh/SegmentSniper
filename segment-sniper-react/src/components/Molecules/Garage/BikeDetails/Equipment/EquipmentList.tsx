@@ -1,7 +1,7 @@
 import { Button, Container, Row } from "react-bootstrap";
 import { Equipment } from "../../../../../models/Garage/Equipment";
 import EquipmentListItem from "./EquipmentListItem";
-import AddEquipmentForm from "./AddEquipmentForm";
+import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
 import { useState } from "react";
 
 
@@ -12,6 +12,10 @@ type EquipmentListProps = {
 const EquipmentList = ({ equipment }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
 
+    const handleSubmit = (values: AddEquipmentFormValues) => {
+        console.log("submitting values", values);
+
+    }
 
     const handleClosedAddEquipmentForm = () => {
         setShowAddEquipmentForm(false);
@@ -19,7 +23,7 @@ const EquipmentList = ({ equipment }: EquipmentListProps) => {
     return (
 
         <Container>
-            <AddEquipmentForm show={showAddEquipmentForm} onClose={handleClosedAddEquipmentForm} />
+            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleSubmit} onClose={handleClosedAddEquipmentForm} />
             {equipment && equipment.length > 0 ? (
                 equipment.map((equipment) => (
                     <div key={equipment.id}>

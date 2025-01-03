@@ -12,39 +12,30 @@ namespace SegmentSniper.GraphQL.Types
             Name = nameof(EquipmentModel);
             Description = "A piece of equipment belonging to a bike";
 
-            Field(e => e.Id, type: typeof(IntGraphType))
-                .Description("The Id of the piece of equipment");
-
-            Field(e => e.BikeId, type: typeof(StringGraphType))
-                .Description("The Id of the bike the quipment is on");
-
-            Field(e => e.UserId, type: typeof(StringGraphType))
-                 .Description("The Id of the owner of the quipment");
-
-            Field(e => e.Name, type: typeof(StringGraphType))
-                 .Description("The hame of the piece of equipment");
-
-            Field(e => e.Description, type: typeof(StringGraphType))
-                    .Description("The description of the piece of equipment");
-
-            Field(e => e.MilesLogged, type: typeof(DecimalGraphType))
-                    .Description("The Id of the piece of equipment");
-
-            Field(e => e.InstallDate, type: typeof(DateTimeGraphType))
-                    .Description("The date the equipment was installed");
-
-            Field(e => e.RetiredDate, type: typeof(DateTimeGraphType))
-                    .Description("The date the equipment was retired");
-
-            Field(e => e.Price, type: typeof(DecimalGraphType))
-                    .Description("The amount paid for the equipment");
-
-            Field(e => e.ReplaceAtMiles, type: typeof(IntGraphType))
-                    .Description("The sum total of miles that the equipment should be replaced");
-
-            Field(e => e.MilesUntilReplaceReminder, type: typeof(IntGraphType))
-                    .Description("A configurable number of miles until ReplaceAtMiles is achieved at which point a reminder will be sent to replace the equipment");
-
+            Field<NonNullGraphType<StringGraphType>>("name").Description("The name of the piece of equipment");
+            Field<StringGraphType>("description").Description("The description of the piece of equipment");
+            Field<DecimalGraphType>("price").Description("The amount paid for the equipment");
+            Field<DateTimeGraphType>("installDate").Description("The date the equipment was installed");
+            Field<DateTimeGraphType>("retiredDate").Description("The date the equipment was retired");
+            Field<DecimalGraphType>("milesLogged").Description("The miles logged on the equipment");
+            Field<IntGraphType>("replaceAtMiles").Description("The sum total of miles that the equipment should be replaced");
+            Field<IntGraphType>("milesUntilReplaceReminder").Description("Miles until a reminder to replace the equipment is sent");
         }
+    }
+
+    public class EquipmentInputType : InputObjectGraphType<EquipmentModel>
+    {
+        public EquipmentInputType()
+        {
+            Name = "EquipmentInput";
+            Field(e => e.Name).Description("The name of the equipment.");
+            Field(e => e.Description).Description("The description of the equipment.");
+            Field(e => e.Price).Description("The price of the equipment.");
+            Field(e => e.InstallDate).Description("The installation date of the equipment.");
+            Field(e => e.RetiredDate).Description("The date the equipment was retired");
+            Field(e => e.MilesLogged).Description("The miles logged on the equipment");
+            Field(e => e.ReplaceAtMiles).Description("The sum total of miles that the equipment should be replaced");
+            Field(e => e.MilesUntilReplaceReminder).Description(("Miles until a reminder to replace the equipment is sent"));
+            }
     }
 }
