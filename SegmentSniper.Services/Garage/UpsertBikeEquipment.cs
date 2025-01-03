@@ -1,12 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SegmentSniper.Data;
 
 namespace SegmentSniper.Services.Garage
 {
-    internal class UpsertBikeEquipment
+    public class UpsertBikeEquipment : IUpsertBikeEquipment
     {
+        private readonly ISegmentSniperDbContext _context;
+
+        public UpsertBikeEquipment(ISegmentSniperDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<UpsertBikeEquipmentContract.Result> ExecuteAsync(UpsertBikeEquipmentContract contract)
+        {
+            ValidateContract(contract);
+
+            throw new NotImplementedException();
+        }
+
+        private void ValidateContract(UpsertBikeEquipmentContract contract)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

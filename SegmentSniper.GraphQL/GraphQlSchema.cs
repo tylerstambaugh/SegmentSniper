@@ -8,6 +8,7 @@ namespace SegmentSniper.GraphQL
         public GraphQlSchema(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Query = serviceProvider.GetRequiredService<RootQuery>();
+            Mutation = serviceProvider.GetRequiredService<RootMutation>();
         }
     }
 }
