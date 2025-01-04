@@ -53,6 +53,11 @@ namespace SegmentSniper.Data
 
             // Ignore the SegmentSniperLog table by its name
             modelBuilder.Entity<SegmentSniperLogEntity>().ToTable("SegmentSniperLog", t => t.ExcludeFromMigrations());
+
+            modelBuilder.Entity<Bike>()
+           .HasMany(b => b.Equipment) // A Bike has many Equipment
+           .WithOne(e => e.Bike)      // Each Equipment belongs to one Bike
+           .HasForeignKey(e => e.BikeId); // Equipment's foreign key is BikeId
         }
 
         // Define a dummy entity class for the log table

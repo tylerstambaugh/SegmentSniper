@@ -456,7 +456,7 @@ namespace SegmentSniper.Data.Migrations
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("EquipmentId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BikeId")
@@ -464,10 +464,9 @@ namespace SegmentSniper.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("InstallDate")
+                    b.Property<DateTime?>("InstallDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("MilesLogged")
@@ -486,14 +485,14 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<int>("ReplaceAtMiles")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RetiredDate")
+                    b.Property<DateTime?>("RetiredDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("EquipmentId");
 
                     b.HasIndex("BikeId");
 
@@ -837,7 +836,7 @@ namespace SegmentSniper.Data.Migrations
             modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
                 {
                     b.HasOne("SegmentSniper.Data.Entities.Equiment.Bike", "Bike")
-                        .WithMany()
+                        .WithMany("Equipment")
                         .HasForeignKey("BikeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -906,6 +905,11 @@ namespace SegmentSniper.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
+                {
+                    b.Navigation("Equipment");
                 });
 #pragma warning restore 612, 618
         }
