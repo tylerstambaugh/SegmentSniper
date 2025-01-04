@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.MachineLearning;
@@ -206,7 +207,30 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                  .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.ModelName.Trim()));
 
 
-            
+            //Garage Mappings:
+            CreateMap<Bike, BikeModel>()
+                .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.FrameType, opt => opt.MapFrom(src => src.FrameType))
+                .ForMember(dest => dest.MetersLogged, opt => opt.MapFrom(src => src.MetersLogged))
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName))
+                .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.ModelName))
+                .ForMember(dest => dest.IsPrimary, opt => opt.MapFrom(src => src.IsPrimary))
+                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment));
+
+            CreateMap<Equipment, EquipmentModel>()
+                .ForMember(dest => dest.EquipmentId, opt => opt.MapFrom(src => src.EquipmentId))
+                .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.InstallDate, opt => opt.MapFrom(src => src.InstallDate))
+                .ForMember(dest => dest.MilesLogged, opt => opt.MapFrom(src => src.MilesLogged))
+                .ForMember(dest => dest.ReplaceAtMiles, opt => opt.MapFrom(src => src.ReplaceAtMiles))
+                .ForMember(dest => dest.MilesUntilReplaceReminder, opt => opt.MapFrom(src => src.MilesUntilReplaceReminder));
+
         }
     }
 }

@@ -23,6 +23,7 @@ namespace SegmentSniper.Data.Entities.Equiment
         public double MetersLogged { get; set; }
 
         public DateTime DateAdded { get; set; }
+        public ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
     }
 }
 
