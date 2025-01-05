@@ -13,11 +13,11 @@ namespace SegmentSniper.GraphQL.Queries
         {
             AddField(new FieldType
             {
-                Name = "byId",
+                Name = "byBikeId",
                 Description = "Retrieve a bike by its Id",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id", Description = "The ID of the bike" }
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The ID of the bike" }
                 ),
                 Resolver = new FuncFieldResolver<object>(async context =>
                 {

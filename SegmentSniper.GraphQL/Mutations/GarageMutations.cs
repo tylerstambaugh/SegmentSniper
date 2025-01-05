@@ -55,6 +55,8 @@ namespace SegmentSniper.GraphQL.Mutations
 
                     var result = await service.ExecuteAsync(new UpsertBikeEquipmentContract
                     {
+                        UserId = userId,
+                        BikeId = bikeId,
                         Equipment = equipment,
                     });
 

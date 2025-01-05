@@ -1,7 +1,9 @@
 schema:
   - https://localhost:44351/graphql:
+      # customFetch: ../../../../src/utils/custom-fetch.js
       headers:
         GraphQL-Require-Preflight: true
+
 documents: 'src/**/*.graphql' # Path to GraphQL operations
 generates:
   src/graphql/generated.ts: # Output file
@@ -13,3 +15,4 @@ config:
   withHooks: true
   withHOC: false
   withComponent: false
+  # customFetch: ../../../../src/utils/custom-fetch.js

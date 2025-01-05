@@ -9,8 +9,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && graphql-codegen",
-    "generate:watch": "set NODE_TLS_REJECT_UNAUTHORIZED=0 && graphql-codegen --watch"
+    "generate": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen",
+    "generate:watch": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.12.4",
@@ -19,6 +19,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@mapbox/polyline": "^1.2.1",
     "@sandstack/neuron": "^0.0.0-alpha.0.70",
     "@tanstack/react-query": "^4.35.0",
@@ -35,6 +36,7 @@
     "immer": "^10.0.2",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
+    "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.8.0",
     "react-bs-datatable": "^3.12.0",
@@ -68,6 +70,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
     "babel-plugin-lodash": "^3.3.4",
+    "cross-env": "^7.0.3",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
