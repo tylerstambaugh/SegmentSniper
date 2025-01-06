@@ -11,7 +11,7 @@
             public string? ModelName { get; set; }
             public FrameType? FrameType { get; set; }
             public double? MetersLogged { get; set; }
-            public List<EquipmentModel> Equipment { get; set; }        
+        public List<EquipmentModel> Equipment { get; set; } = new List<EquipmentModel>();
     }
 
     public enum FrameType

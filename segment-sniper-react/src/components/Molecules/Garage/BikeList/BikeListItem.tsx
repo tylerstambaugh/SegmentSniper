@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 export type BikeListItemProps = {
     id: string;
-    brandName: string;
-    modelName: string;
-    frameType: string;
+    brandName?: string;
+    modelName?: string;
+    frameType?: string;
     distanceInMeters: number;
 };
 
