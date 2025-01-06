@@ -7,6 +7,15 @@ query GetBikesByUserId($userId: ID!) {
       modelName
       frameType
       metersLogged
+      equipment {
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
     }
   }
 }
