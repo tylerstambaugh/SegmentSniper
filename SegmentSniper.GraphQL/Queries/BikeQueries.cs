@@ -22,17 +22,17 @@ namespace SegmentSniper.GraphQL.Queries
                 Resolver = new FuncFieldResolver<object>(async context =>
                 {
                     var service = context.RequestServices.GetRequiredService<IGetBikeById>();
-                    var bikeModel = await service.ExecuteAsync(new GetBikeByIdContract
+                    var result = await service.ExecuteAsync(new GetBikeByIdContract
                     {
-                        BikeId = context.GetArgument<string>("id")
+                        BikeId = context.GetArgument<string>("bikeId")
                     });
 
-                    if (bikeModel == null)
+                    if (result == null)
                     {
                         throw new ExecutionError($"Bike with ID '{context.GetArgument<string>("id")}' not found.");
                     }
 
-                    return bikeModel;
+                    return result.Bike;
                 })
             });
 

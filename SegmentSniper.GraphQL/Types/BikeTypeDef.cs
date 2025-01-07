@@ -12,8 +12,8 @@ namespace SegmentSniper.GraphQL.Types
             Name = nameof(BikeModel);
             Description = "A bike in the collection";
 
-            Field(b => b.BikeId, type: typeof(StringGraphType))
-                .Description("Id of the bike");
+            Field(b => b.BikeId, type: typeof(NonNullGraphType<StringGraphType>))
+                .Description("Id of the bike");            
 
             Field(b => b.UserId, type: typeof(StringGraphType))
                 .Description("The UserId of the bike owner");

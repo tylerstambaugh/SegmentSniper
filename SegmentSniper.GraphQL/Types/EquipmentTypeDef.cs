@@ -12,6 +12,7 @@ namespace SegmentSniper.GraphQL.Types
             Name = nameof(EquipmentModel);
             Description = "A piece of equipment belonging to a bike";
 
+            Field<NonNullGraphType<IdGraphType>>("id").Description("The id of the piece of equipment");
             Field<NonNullGraphType<StringGraphType>>("name").Description("The name of the piece of equipment");
             Field<StringGraphType>("description").Description("The description of the piece of equipment");
             Field<DecimalGraphType>("price").Description("The amount paid for the equipment");

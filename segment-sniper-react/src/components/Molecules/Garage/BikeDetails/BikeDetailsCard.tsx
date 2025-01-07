@@ -1,10 +1,11 @@
 import { Card } from "react-bootstrap";
-import { Bike } from "../../../../models/Garage/Bike";
 import EquipmentList from "./Equipment/EquipmentList";
+import { BikeModel } from "../../../../graphql/generated";
+import _ from "lodash";
 
 
 type BikeDetailsCardProps = {
-    bike: Bike | undefined;
+    bike: BikeModel;
 }
 
 const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
@@ -16,7 +17,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Text>
                     {bike?.description}
                 </Card.Text>
-                <EquipmentList equipment={bike?.equipment} />
+                <EquipmentList equipment={_.compact(bike?.equipment) ?? []} />
             </Card.Body>
         </Card>
     )

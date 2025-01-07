@@ -1,8 +1,8 @@
 import { Col, Row } from "react-bootstrap";
-import { Equipment } from "../../../../../models/Garage/Equipment";
+import { EquipmentModel } from "../../../../../graphql/generated";
 
 type EquipmentListItemProps = {
-    item: Equipment;
+    item: EquipmentModel;
 }
 
 
@@ -20,10 +20,10 @@ const EquipmentListItem = ({ item }: EquipmentListItemProps) => {
                 {item.milesLogged}
             </Col>
             <Col>
-                {item.installDate.toISOString()}
+                {item.installDate}
             </Col>
             <Col>
-                {item.retiredDate.toISOString()}
+                {item.retiredDate}
             </Col>
             <Col>
                 {item.price}

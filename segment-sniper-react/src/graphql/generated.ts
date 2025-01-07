@@ -28,15 +28,15 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  DateTime: { input: any; output: any };
-  Decimal: { input: any; output: any };
+  DateTime: { input: string; output: string };
+  Decimal: { input: number; output: number };
 };
 
 /** A bike in the collection */
 export type BikeModel = {
   __typename?: 'BikeModel';
   /** Id of the bike */
-  bikeId?: Maybe<Scalars['String']['output']>;
+  bikeId: Scalars['String']['output'];
   /** The brand of the bike */
   brandName?: Maybe<Scalars['String']['output']>;
   /** A description of the bike */
@@ -97,6 +97,8 @@ export type EquipmentModel = {
   __typename?: 'EquipmentModel';
   /** The description of the piece of equipment */
   description?: Maybe<Scalars['String']['output']>;
+  /** The id of the piece of equipment */
+  id: Scalars['ID']['output'];
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
   /** The miles logged on the equipment */
@@ -146,21 +148,22 @@ export type GetBikeByIdQuery = {
     __typename?: 'BikeQueries';
     byBikeId?: {
       __typename?: 'BikeModel';
-      bikeId?: string | null;
+      bikeId: string;
       name?: string | null;
       brandName?: string | null;
       modelName?: string | null;
       frameType?: number | null;
-      metersLogged?: any | null;
+      metersLogged?: number | null;
       equipment?: Array<{
         __typename?: 'EquipmentModel';
+        id: string;
         name: string;
         description?: string | null;
-        milesLogged?: any | null;
-        price?: any | null;
-        installDate?: any | null;
+        milesLogged?: number | null;
+        price?: number | null;
+        installDate?: string | null;
         replaceAtMiles?: number | null;
-        retiredDate?: any | null;
+        retiredDate?: string | null;
       } | null> | null;
     } | null;
   } | null;
@@ -176,21 +179,22 @@ export type GetBikesByUserIdQuery = {
     __typename?: 'BikeQueries';
     byUserId?: Array<{
       __typename?: 'BikeModel';
-      bikeId?: string | null;
+      bikeId: string;
       name?: string | null;
       brandName?: string | null;
       modelName?: string | null;
       frameType?: number | null;
-      metersLogged?: any | null;
+      metersLogged?: number | null;
       equipment?: Array<{
         __typename?: 'EquipmentModel';
+        id: string;
         name: string;
         description?: string | null;
-        milesLogged?: any | null;
-        price?: any | null;
-        installDate?: any | null;
+        milesLogged?: number | null;
+        price?: number | null;
+        installDate?: string | null;
         replaceAtMiles?: number | null;
-        retiredDate?: any | null;
+        retiredDate?: string | null;
       } | null> | null;
     } | null> | null;
   } | null;
@@ -207,6 +211,7 @@ export const GetBikeByIdDocument = gql`
         frameType
         metersLogged
         equipment {
+          id
           name
           description
           milesLogged
@@ -303,6 +308,7 @@ export const GetBikesByUserIdDocument = gql`
         frameType
         metersLogged
         equipment {
+          id
           name
           description
           milesLogged
