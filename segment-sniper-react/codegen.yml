@@ -15,4 +15,8 @@ config:
   withHooks: true
   withHOC: false
   withComponent: false
+  scalars:
+    DateTime: 'string'
+    Decimal: 'number'
+    Int: 'number'
   # customFetch: ../../../../src/utils/custom-fetch.js

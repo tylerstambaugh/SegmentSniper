@@ -8,6 +8,7 @@ query GetBikeById($bikeId: ID!) {
       frameType
       metersLogged
       equipment {
+        id
         name
         description
         milesLogged

@@ -9,7 +9,7 @@ export type BikeListItemProps = {
     brandName?: string;
     modelName?: string;
     frameType?: string;
-    distanceInMeters: number;
+    distanceInMeters?: number;
 };
 
 export const BikeListItem = ({

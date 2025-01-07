@@ -38,11 +38,11 @@ export const BikeList = () => {
                                             </Col>
                                             <div key={bike.bikeId} className='justify-content-center'>
                                                 <BikeListItem
-                                                    id={bike.bikeId}
+                                                    id={bike.bikeId ?? "N/A"}
                                                     brandName={bike.brandName ?? "N/A"}
                                                     modelName={bike.modelName ?? "N/A"}
                                                     frameType={FrameTypeToString(bike.frameType ?? 0) ?? FrameType.NONE}
-                                                    distanceInMeters={bike.metersLogged}
+                                                    distanceInMeters={bike.metersLogged ?? 0}
                                                 />
                                             </div>
                                         </Row>

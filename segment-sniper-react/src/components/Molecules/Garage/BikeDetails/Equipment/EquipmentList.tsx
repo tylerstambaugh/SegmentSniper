@@ -1,12 +1,12 @@
 import { Button, Container, Row } from "react-bootstrap";
-import { Equipment } from "../../../../../models/Garage/Equipment";
 import EquipmentListItem from "./EquipmentListItem";
 import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
 import { useState } from "react";
+import { EquipmentModel } from "../../../../../graphql/generated";
 
 
 type EquipmentListProps = {
-    equipment: Equipment[] | undefined;
+    equipment: EquipmentModel[] | [];
 }
 
 const EquipmentList = ({ equipment }: EquipmentListProps) => {
