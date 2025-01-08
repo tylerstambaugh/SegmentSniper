@@ -2,6 +2,7 @@ import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { useState } from "react";
+import CurrencyInput from 'react-currency-input-field';
 
 export type AddEquipmentFormProps = {
     show: boolean;
@@ -62,58 +63,114 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
             </Modal.Header>
             <Modal.Body>
                 <Col>
-                    <Row>
-                        <Form name="addEquipmentForm" onSubmit={formik.handleSubmit}>
+                    <Form name="addEquipmentForm" onSubmit={formik.handleSubmit}>
+                        <Row>
                             <Form.Group controlId="name" className="mb-3">
                                 <Form.Label className="mb-1">Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter name" required />
+                                <Form.Control type="text" required
+                                    onChange={(e) => formik.setFieldValue("name", e.target.value)} />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.name as FormikErrors<string>}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group controlId="description">
-                                <Form.Label >Description</Form.Label>
-                                <Form.Control type="text" placeholder="Enter description" />
+                        </Row>
+                        <Row>
+                            <Form.Group controlId="description" className="mb-3">
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control type="text"
+                                    onChange={(e) => formik.setFieldValue("description", e.target.value)} />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.description as FormikErrors<string>}
+                                </Form.Control.Feedback>
                             </Form.Group>
-                            <Form.Group controlId="milesLogged">
-                                <Form.Label>Miles Logged</Form.Label>
-                                <Form.Control type="number" placeholder="Enter miles logged" />
-                            </Form.Group>
-                            <Form.Group controlId="installDate">
-                                <Form.Label>Install Date</Form.Label>
-                                <Form.Control type="date" required />
-                            </Form.Group>
-                            <Form.Group controlId="retiredDate">
-                                <Form.Label>Retired Date</Form.Label>
-                                <Form.Control type="date" />
-                            </Form.Group>
-                            <Form.Group controlId="price">
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="number" placeholder="Enter price" />
-                            </Form.Group>
-                            <Form.Group controlId="replaceAtMiles">
-                                <Form.Label>Replace At Miles</Form.Label>
-                                <Form.Control type="number" placeholder="Enter replace at miles" />
-                            </Form.Group>
-                            <Form.Group controlId="milesUntilReplaceReminder">
-                                <Form.Label>Miles Until Replace Reminder</Form.Label>
-                                <Form.Control type="number" placeholder="Enter miles until replace reminder" />
-                            </Form.Group>
-                            <Row className="justify-content-around">
-                                <Col>
-                                    <Button variant="secondary" onClick={() => formik.resetForm()}>
-                                        Reset
-                                    </Button>
-                                </Col>
-                                <Col>
-                                    <Button variant="primary" type="submit">
-                                        Submit
-                                    </Button>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="installDate" className="mb-3">
+                                    <Form.Label>Install Date</Form.Label>
+                                    <Form.Control type="date" required
+                                        onChange={(e) => formik.setFieldValue("installDate", e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.installDate as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="retiredDate" className="mb-3">
+                                    <Form.Label>Retired Date</Form.Label>
+                                    <Form.Control type="date"
+                                        onChange={(e) => formik.setFieldValue("retireDate", e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.retiredDate as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="milesLogged" className="mb-3">
+                                    <Form.Label>Miles Logged</Form.Label>
+                                    <Form.Control type="number"
+                                        onChange={(e) => formik.setFieldValue("milesLogged", e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.milesLogged as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="price" className="mb-3">
+                                    <Form.Label>Price</Form.Label>
+                                    <CurrencyInput
+                                        id="input-price"
+                                        name="Price"
+                                        value={formik.values.price ?? 0}
+                                        onValueChange={(e) => formik.setFieldValue("price", e)}
+                                        intlConfig={{ locale: 'en-US', currency: 'USD' }}
+                                        decimalScale={2}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.price as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="replaceAtMiles" className="mb-3">
+                                    <Form.Label>Replace At</Form.Label>
+                                    <Form.Control type="number" placeholder="Miles"
+                                        onChange={(e) => formik.setFieldValue("replaceAtMiles", e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.replaceAtMiles as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="milesUntilReplaceReminder" className="mb-3">
+                                    <Form.Label>Remind At</Form.Label>
+                                    <Form.Control type="number" placeholder="Miles"
+                                        onChange={(e) => formik.setFieldValue("milesUntilReplaceReminder", e.target.value)} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.milesUntilReplaceReminder as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
 
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Row>
+                        <Row className="justify-content-between">
+                            <Col>
+                                <Button variant="secondary" onClick={() => formik.resetForm()}>
+                                    Reset
+                                </Button>
+                            </Col>
+                            <Col className="justify-content-center">
+                                <Button variant="primary" type="submit">
+                                    Submit
+                                </Button>
+
+                            </Col>
+                        </Row>
+                    </Form>
                 </Col>
             </Modal.Body>
         </Modal>
