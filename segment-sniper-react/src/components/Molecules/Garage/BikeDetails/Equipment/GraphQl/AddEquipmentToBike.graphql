@@ -1,0 +1,21 @@
+mutation AddEquipmentToBike(
+  $bikeId: ID!
+  $equipment: EquipmentInput!
+  $userId: ID!
+) {
+  addEquipmentToBike(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
+    id
+    name
+    equipment {
+      id
+      name
+      description
+      installDate
+      milesLogged
+      milesUntilReplaceReminder
+      price
+      replaceAtMiles
+      retiredDate
+    }
+  }
+}
