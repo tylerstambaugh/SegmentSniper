@@ -7,13 +7,15 @@ import { EquipmentModel } from "../../../../../graphql/generated";
 
 type EquipmentListProps = {
     equipment: EquipmentModel[] | [];
-    handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
 }
 
-const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListProps) => {
+const EquipmentList = ({ equipment }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
 
+    const handleSubmit = (values: AddEquipmentFormValues) => {
+        console.log("submitting values", values);
 
+    }
 
     const handleClosedAddEquipmentForm = () => {
         setShowAddEquipmentForm(false);
@@ -21,7 +23,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
     return (
 
         <Container>
-            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} />
+            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleSubmit} onClose={handleClosedAddEquipmentForm} />
             {equipment && equipment.length > 0 ? (
                 equipment.map((equipment) => (
                     <div key={equipment.id}>

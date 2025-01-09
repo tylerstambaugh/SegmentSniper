@@ -48,7 +48,7 @@ export const BikeListItem = ({
                         <Button
                             className='d-flex justify-content-center'
                             onClick={() => {
-                                navigate(`/${AppRoutes.BikeDetails.replace(':bikeId', id)}`);
+                                navigate(`/${AppRoutes.BikeDetails}\\${id}`);
                             }}
                         >
                             Details
