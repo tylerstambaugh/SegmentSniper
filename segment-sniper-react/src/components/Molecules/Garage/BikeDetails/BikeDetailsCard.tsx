@@ -2,13 +2,15 @@ import { Card } from "react-bootstrap";
 import EquipmentList from "./Equipment/EquipmentList";
 import { BikeModel } from "../../../../graphql/generated";
 import _ from "lodash";
+import { AddEquipmentFormValues } from "./Equipment/AddEquipmentForm";
 
 
 type BikeDetailsCardProps = {
     bike: BikeModel;
+    handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
 }
 
-const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
+const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit }: BikeDetailsCardProps) => {
     return (
         <Card>
             <Card.Body>
@@ -17,7 +19,9 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Text>
                     {bike?.description}
                 </Card.Text>
-                <EquipmentList equipment={_.compact(bike?.equipment) ?? []} />
+                <EquipmentList
+                    equipment={_.compact(bike?.equipment) ?? []}
+                    handleAddEquipmentSubmit={handleAddEquipmentSubmit} />
             </Card.Body>
         </Card>
     )

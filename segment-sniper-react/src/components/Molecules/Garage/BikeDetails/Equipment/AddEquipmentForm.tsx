@@ -3,6 +3,7 @@ import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
+import { log } from "node:console";
 
 export type AddEquipmentFormProps = {
     show: boolean;
@@ -52,6 +53,10 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: (values) => {
+            console.log("formik errors", formik.errors);
+            console.log("formik values", formik.values);
+
+
             setValidated(true);
             handleSubmit(values)
         }
