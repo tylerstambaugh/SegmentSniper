@@ -87,7 +87,7 @@ export type EquipmentModel = {
   /** The description of the piece of equipment */
   description?: Maybe<Scalars['String']['output']>;
   /** The id of the piece of equipment */
-  id: Scalars['ID']['output'];
+  equipmentId: Scalars['ID']['output'];
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
   /** The miles logged on the equipment */
@@ -128,21 +128,79 @@ export type RootQuery = {
   bikes?: Maybe<BikeQueries>;
 };
 
+export type AddEquipmentToBikeMutationVariables = Exact<{
+  bikeId: Scalars['ID']['input'];
+  equipment: EquipmentInput;
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type AddEquipmentToBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', addEquipmentToBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+
 export type GetBikeByIdQueryVariables = Exact<{
   bikeId: Scalars['ID']['input'];
 }>;
 
 
-export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', id: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type GetBikesByUserIdQueryVariables = Exact<{
   userId: Scalars['ID']['input'];
 }>;
 
 
-export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', id: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 
+export const AddEquipmentToBikeDocument = gql`
+    mutation AddEquipmentToBike($bikeId: ID!, $equipment: EquipmentInput!, $userId: ID!) {
+  garage {
+    addEquipmentToBike(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
+      bikeId
+      name
+      equipment {
+        equipmentId
+        name
+        description
+        installDate
+        milesLogged
+        milesUntilReplaceReminder
+        price
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}
+    `;
+export type AddEquipmentToBikeMutationFn = Apollo.MutationFunction<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>;
+
+/**
+ * __useAddEquipmentToBikeMutation__
+ *
+ * To run a mutation, you first call `useAddEquipmentToBikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddEquipmentToBikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addEquipmentToBikeMutation, { data, loading, error }] = useAddEquipmentToBikeMutation({
+ *   variables: {
+ *      bikeId: // value for 'bikeId'
+ *      equipment: // value for 'equipment'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAddEquipmentToBikeMutation(baseOptions?: Apollo.MutationHookOptions<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>(AddEquipmentToBikeDocument, options);
+      }
+export type AddEquipmentToBikeMutationHookResult = ReturnType<typeof useAddEquipmentToBikeMutation>;
+export type AddEquipmentToBikeMutationResult = Apollo.MutationResult<AddEquipmentToBikeMutation>;
+export type AddEquipmentToBikeMutationOptions = Apollo.BaseMutationOptions<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>;
 export const GetBikeByIdDocument = gql`
     query GetBikeById($bikeId: ID!) {
   bikes {
@@ -154,7 +212,7 @@ export const GetBikeByIdDocument = gql`
       frameType
       metersLogged
       equipment {
-        id
+        equipmentId
         name
         description
         milesLogged
@@ -211,7 +269,7 @@ export const GetBikesByUserIdDocument = gql`
       frameType
       metersLogged
       equipment {
-        id
+        equipmentId
         name
         description
         milesLogged

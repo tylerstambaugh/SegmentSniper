@@ -3,19 +3,25 @@ mutation AddEquipmentToBike(
   $equipment: EquipmentInput!
   $userId: ID!
 ) {
-  addEquipmentToBike(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
-    id
-    name
-    equipment {
-      id
+  garage {
+    addEquipmentToBike(
+      bikeId: $bikeId
+      equipment: $equipment
+      userId: $userId
+    ) {
+      bikeId
       name
-      description
-      installDate
-      milesLogged
-      milesUntilReplaceReminder
-      price
-      replaceAtMiles
-      retiredDate
+      equipment {
+        equipmentId
+        name
+        description
+        installDate
+        milesLogged
+        milesUntilReplaceReminder
+        price
+        replaceAtMiles
+        retiredDate
+      }
     }
   }
 }

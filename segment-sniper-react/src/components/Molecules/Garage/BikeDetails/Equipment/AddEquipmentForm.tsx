@@ -3,7 +3,7 @@ import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
-import { log } from "node:console";
+import { DateTime } from "luxon";
 
 export type AddEquipmentFormProps = {
     show: boolean;
@@ -15,8 +15,8 @@ export interface AddEquipmentFormValues {
     name: string;
     description: string;
     milesLogged: number;
-    installDate: Date;
-    retiredDate: Date;
+    installDate: DateTime | null;
+    retiredDate: DateTime | null;
     price: number;
     replaceAtMiles: number;
     milesUntilReplaceReminder: number;
@@ -29,8 +29,8 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
         name: '',
         description: '',
         milesLogged: 0,
-        installDate: new Date(),
-        retiredDate: new Date(),
+        installDate: null,
+        retiredDate: null,
         price: 0,
         replaceAtMiles: 0,
         milesUntilReplaceReminder: 0,
@@ -40,8 +40,10 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
         name: Yup.string().required('Required'),
         description: Yup.string().required('Required'),
         milesLogged: Yup.number().required('Required'),
-        installDate: Yup.date().required('Required'),
-        retiredDate: Yup.date().required('Required'),
+        installDate: Yup.date().nullable()
+            .max(new Date(), "Date must be in the past"),
+        retiredDate: Yup.date().nullable()
+            .max(new Date(), "Date must be in the past"),
         price: Yup.number().required('Required'),
         replaceAtMiles: Yup.number().required('Required'),
         milesUntilReplaceReminder: Yup.number().required('Required'),
@@ -93,8 +95,15 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                             <Col>
                                 <Form.Group controlId="installDate" className="mb-3">
                                     <Form.Label>Install Date</Form.Label>
-                                    <Form.Control type="date" required
-                                        onChange={(e) => formik.setFieldValue("installDate", e.target.value)} />
+                                    <Form.Control type="date"
+                                        onChange={(e) => {
+                                            const newDate = DateTime.fromFormat(
+                                                e.target.value,
+                                                "yyyy-MM-dd"
+                                            );
+                                            formik.setFieldValue("installDate", newDate)
+                                        }
+                                        } />
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.installDate as FormikErrors<string>}
                                     </Form.Control.Feedback>
@@ -104,7 +113,14 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                                 <Form.Group controlId="retiredDate" className="mb-3">
                                     <Form.Label>Retired Date</Form.Label>
                                     <Form.Control type="date"
-                                        onChange={(e) => formik.setFieldValue("retireDate", e.target.value)} />
+                                        onChange={(e) => {
+                                            const newDate = DateTime.fromFormat(
+                                                e.target.value,
+                                                "yyyy-MM-dd"
+                                            );
+                                            formik.setFieldValue("retireDate", newDate)
+                                        }
+                                        } />
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.retiredDate as FormikErrors<string>}
                                     </Form.Control.Feedback>

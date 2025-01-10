@@ -24,7 +24,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
             <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} />
             {equipment && equipment.length > 0 ? (
                 equipment.map((equipment) => (
-                    <div key={equipment.id}>
+                    <div key={equipment.equipmentId}>
                         <Row>
                             <EquipmentListItem item={equipment} />
                         </Row>

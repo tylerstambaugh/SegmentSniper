@@ -40,8 +40,8 @@ const BikeDetails = () => {
             name: values.name,
             description: values.description,
             milesLogged: values.milesLogged,
-            installDate: values.installDate.toISOString(),
-            retiredDate: values.retiredDate.toISOString(),
+            installDate: values.installDate?.toISODate() ?? null,
+            retiredDate: values.retiredDate?.toISODate() ?? null,
             price: values.price,
             replaceAtMiles: values.replaceAtMiles,
             milesUntilReplaceReminder: values.milesUntilReplaceReminder
