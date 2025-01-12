@@ -6,6 +6,7 @@ import { AddEquipmentFormValues } from "../../components/Molecules/Garage/BikeDe
 import { useAddEquipmentToBikeMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useAddEquipmentToBike";
 import { EquipmentInput } from "../../graphql/generated";
 import useUserStore from "../../stores/useUserStore";
+import { useEffect } from "react";
 
 const BikeDetails = () => {
     const { bikeId } = useParams<{ bikeId: string }>();
@@ -34,6 +35,13 @@ const BikeDetails = () => {
         return <p>Bike details not found</p>;
     }
 
+    // useEffect(() => {
+    //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
+    //         // Redirect to login or show an error message
+    //         console.error('User is not authorized. Please log in.');
+    //     }
+    // }, [addEquipmentError]);
+
     function handleAddEquipmentSubmit(values: AddEquipmentFormValues) {
 
         const equipmentInput: EquipmentInput = {
@@ -53,7 +61,6 @@ const BikeDetails = () => {
                 userId: user?.id ?? '', // Replace with actual user ID
             },
         });
-        console.log("Add equipment form submitted with values: ", equipmentInput);
     }
 
     return (
