@@ -104,7 +104,6 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                                             formik.setFieldValue("installDate", newDate)
                                         }
                                         } />
-                                        //not today, I moved across the state.
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.installDate as FormikErrors<string>}
                                     </Form.Control.Feedback>

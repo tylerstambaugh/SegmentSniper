@@ -10,8 +10,9 @@ export function useAddEquipmentToBikeMutation(
     { garage: RootMutation['garage'] },
     GarageMutationsAddEquipmentToBikeArgs
   >
+  
 ) {
-  const options = { ...baseOptions };
+  const options = { ...baseOptions,  };
   return Apollo.useMutation<
     { garage: RootMutation['garage'] },
     GarageMutationsAddEquipmentToBikeArgs
