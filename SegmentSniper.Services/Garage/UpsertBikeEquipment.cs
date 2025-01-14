@@ -140,7 +140,15 @@ namespace SegmentSniper.Services.Garage
 
         private void ValidateContract(UpsertBikeEquipmentContract contract)
         {
-            throw new NotImplementedException();
+            if (contract == null)
+            {
+                throw new ArgumentNullException(nameof(contract));
+            }
+
+            if (string.IsNullOrEmpty(contract.UserId))
+            {
+                throw new ArgumentNullException(nameof(contract.UserId));
+            }
         }
     }
 }
