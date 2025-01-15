@@ -100,7 +100,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                                             const newDate = DateTime.fromFormat(
                                                 e.target.value,
                                                 "yyyy-MM-dd"
-                                            );
+                                            ).toISODate();
                                             formik.setFieldValue("installDate", newDate)
                                         }
                                         } />
@@ -117,7 +117,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                                             const newDate = DateTime.fromFormat(
                                                 e.target.value,
                                                 "yyyy-MM-dd"
-                                            );
+                                            ).toISODate();
                                             formik.setFieldValue("retireDate", newDate)
                                         }
                                         } />
@@ -145,7 +145,10 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                                         id="input-price"
                                         name="Price"
                                         value={formik.values.price ?? 0}
-                                        onValueChange={(e) => formik.setFieldValue("price", e)}
+                                        onValueChange={(value) => {
+                                            const numericValue = parseFloat(value ?? "0.00") || 0;
+                                            formik.setFieldValue("price", numericValue);
+                                        }}
                                         intlConfig={{ locale: 'en-US', currency: 'USD' }}
                                         decimalScale={2}
                                     />

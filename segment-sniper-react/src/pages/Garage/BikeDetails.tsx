@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { Card, Container } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import BikeDetailsCard from "../../components/Molecules/Garage/BikeDetails/BikeDetailsCard";
 import { useGetBikeByIdQuery } from "../../components/Molecules/Garage/GraphQl/useGetBikeById";
 import { AddEquipmentFormValues } from "../../components/Molecules/Garage/BikeDetails/Equipment/AddEquipmentForm";
@@ -7,11 +7,12 @@ import { useAddEquipmentToBikeMutation } from "../../components/Molecules/Garage
 import { EquipmentInput } from "../../graphql/generated";
 import useUserStore from "../../stores/useUserStore";
 import { useEffect } from "react";
+import { AppRoutes } from "../../enums/AppRoutes";
 
 const BikeDetails = () => {
     const { bikeId } = useParams<{ bikeId: string }>();
     const user = useUserStore((state) => state.user);
-
+    const navigate = useNavigate();
     const {
         data: bikeData,
         loading: bikeLoading,
@@ -65,6 +66,10 @@ const BikeDetails = () => {
 
     return (
         <Container>
+            <Col className="mb-1 ps-1">
+
+                <Button onClick={() => navigate(`/${AppRoutes.Garage}`)}>Back</Button>
+            </Col>
             <BikeDetailsCard bike={bike} handleAddEquipmentSubmit={handleAddEquipmentSubmit} />
         </Container>
     );
