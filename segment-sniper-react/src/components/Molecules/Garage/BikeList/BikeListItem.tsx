@@ -3,6 +3,7 @@ import { FrameType } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
 import { AppRoutes } from '../../../../enums/AppRoutes';
 import { useNavigate } from 'react-router-dom';
+import { useConversionHelpers } from '../../../../hooks/useConversionHelpers';
 
 export type BikeListItemProps = {
     id: string;
@@ -20,6 +21,7 @@ export const BikeListItem = ({
     distanceInMeters,
 }: BikeListItemProps) => {
     const navigate = useNavigate();
+    const convert = useConversionHelpers();
     return (
         <>
             <Container >
@@ -41,7 +43,7 @@ export const BikeListItem = ({
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className={styles.cardLabel}>Odometer</Col>
-                    <Col>{distanceInMeters}</Col>
+                    <Col>{convert.ConvertMetersToMiles(distanceInMeters)} miles</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className='d-flex justify-content-center pb-2 pt-1'>
