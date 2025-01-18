@@ -40,7 +40,6 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
   };
 
   useEffect(() => {
-    console.log("timer", timer);
 
     if (timer <= 0) {
       // Clear the interval and handle logout when timer reaches 0
@@ -77,7 +76,6 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
 
     intervalRef.current = setInterval(() => {
       const newTimer = Math.max(timer - 1, 0);
-      console.log("newTimer", newTimer);
       setTimer((prev) => Math.max(prev - 1, 0)); // Prevent timer from going below 0
     }, 1000);
 
