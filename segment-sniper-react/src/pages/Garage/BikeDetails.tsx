@@ -8,6 +8,7 @@ import { EquipmentInput } from "../../graphql/generated";
 import useUserStore from "../../stores/useUserStore";
 import { useEffect } from "react";
 import { AppRoutes } from "../../enums/AppRoutes";
+import { DateTime } from "luxon";
 
 const BikeDetails = () => {
     const { bikeId } = useParams<{ bikeId: string }>();
@@ -43,23 +44,31 @@ const BikeDetails = () => {
     //     }
     // }, [addEquipmentError]);
 
-    function handleAddEquipmentSubmit(values: AddEquipmentFormValues) {
+    async function handleAddEquipmentSubmit(values: AddEquipmentFormValues) {
+
+        const installDate = values.installDate
+            ? DateTime.fromISO(values.installDate as unknown as string).toISODate()
+            : null;
+
+        const retiredDate = values.retiredDate
+            ? DateTime.fromISO(values.retiredDate as unknown as string).toISODate()
+            : null;
 
         const equipmentInput: EquipmentInput = {
             name: values.name,
             description: values.description,
-            milesLogged: values.milesLogged,
-            installDate: values.installDate?.toISODate() ?? null,
-            retiredDate: values.retiredDate?.toISODate() ?? null,
-            price: values.price,
-            replaceAtMiles: values.replaceAtMiles,
-            milesUntilReplaceReminder: values.milesUntilReplaceReminder
+            milesLogged: values.milesLogged ?? 0,
+            installDate: installDate,
+            retiredDate: retiredDate,
+            price: values.price ?? 0,
+            replaceAtMiles: values.replaceAtMiles ?? 0,
+            milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0
         }
         addEquipmentToBike({
             variables: {
                 bikeId: bike!.bikeId,
-                equipment: equipmentInput, // Assuming `values` match `EquipmentInput` structure
-                userId: user?.id ?? '', // Replace with actual user ID
+                equipment: equipmentInput,
+                userId: user?.id ?? '',
             },
         });
     }
