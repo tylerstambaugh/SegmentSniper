@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
@@ -7,10 +9,12 @@ namespace SegmentSniper.Services.Garage
     public class GetBikeById : IGetBikeById
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
+        private readonly IMapper _mapper;
 
-        public GetBikeById(ISegmentSniperDbContext segmentSniperDbContext)
+        public GetBikeById(ISegmentSniperDbContext segmentSniperDbContext, IMapper mapper)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
+            _mapper = mapper;
         }
 
         public async Task<GetBikeByIdContract.Result> ExecuteAsync(GetBikeByIdContract contract)
@@ -18,24 +22,16 @@ namespace SegmentSniper.Services.Garage
 
             ValidateContract(contract);
 
-            var bike = await _segmentSniperDbContext.Bikes.FindAsync(contract.BikeId);
+            var bike = _segmentSniperDbContext.Bikes
+                      .Where(b => b.BikeId == contract.BikeId)
+                      .Include(b => b.Equipment)
+                      .FirstOrDefault();
 
             if (bike != null)
             {
-                var returnModel = new BikeModel
-                {
-                    BikeId = bike.BikeId,
-                    Name = bike.Name,
-                    IsPrimary = bike.IsPrimary,
-                    Description = bike.Description,
-                    BrandName = bike.BrandName,
-                    ModelName = bike.ModelName,
-                    MetersLogged = bike.MetersLogged,
-                    FrameType = Enum.Parse<FrameType>(bike.FrameType),
-                    UserId = bike.UserId,
-                };
+                var bikeToReturn = _mapper.Map<BikeModel>(bike);
 
-                return new GetBikeByIdContract.Result(returnModel);
+                return new GetBikeByIdContract.Result(bikeToReturn);
             }
             else
             {

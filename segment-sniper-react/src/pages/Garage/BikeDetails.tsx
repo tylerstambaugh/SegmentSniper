@@ -47,11 +47,11 @@ const BikeDetails = () => {
     async function handleAddEquipmentSubmit(values: AddEquipmentFormValues) {
 
         const installDate = values.installDate
-            ? DateTime.fromISO(values.installDate as unknown as string).toISODate()
+            ? DateTime.fromISO(values.installDate as unknown as string).toISO()
             : null;
 
         const retiredDate = values.retiredDate
-            ? DateTime.fromISO(values.retiredDate as unknown as string).toISODate()
+            ? DateTime.fromISO(values.retiredDate as unknown as string).toISO()
             : null;
 
         const equipmentInput: EquipmentInput = {
