@@ -1,5 +1,6 @@
 import { Col, Row } from "react-bootstrap";
 import { EquipmentModel } from "../../../../../graphql/generated";
+import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
@@ -8,6 +9,7 @@ type EquipmentListItemProps = {
 
 const EquipmentListItem = ({ item }: EquipmentListItemProps) => {
 
+    const timeFormatter = useTimeFormatConverter();
     return (
         <Row>
             <Col>
@@ -20,10 +22,10 @@ const EquipmentListItem = ({ item }: EquipmentListItemProps) => {
                 {item.milesLogged}
             </Col>
             <Col>
-                {item.installDate}
+                {timeFormatter.convertStringToFormattedDateTime(item.installDate as string)}
             </Col>
             <Col>
-                {item.retiredDate}
+                {timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}
             </Col>
             <Col>
                 {item.price}
