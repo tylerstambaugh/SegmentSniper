@@ -1,8 +1,10 @@
-import { Button, Container, Row } from "react-bootstrap";
+import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import EquipmentListItem from "./EquipmentListItem";
 import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
 import { useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
+import styles from "./Equipment.module.scss";
+import AboutAuthor from "../../../../Organisms/About/AboutAuthor";
 
 
 type EquipmentListProps = {
@@ -22,7 +24,23 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
 
         <Container>
             <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} />
-            {equipment && equipment.length > 0 ? (
+            <p className={styles.equipmentHeading}>Equipment</p>
+            <Row className='pt-3 p-1'>
+                <Col md={8} className="mb-2 mx-auto">
+                    <Accordion style={{ backgroundColor: '#f0f0f0' }}>
+                        {equipment && equipment.length > 0 ? (
+                            equipment.map((equipment, index) => (
+                                <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
+                                    <Accordion.Header>{equipment.name}</Accordion.Header>
+                                    <Accordion.Body>
+                                        <EquipmentListItem item={equipment} />
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            ))) : (<></>)}
+                    </Accordion>
+                </Col>
+            </Row>
+            {/* {equipment && equipment.length > 0 ? (
                 equipment.map((equipment) => (
                     <div key={equipment.equipmentId}>
                         <Row>
@@ -33,7 +51,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
 
             ) : (
                 <p>No equipment found</p>
-            )}
+            )} */}
             <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
         </Container>
     )

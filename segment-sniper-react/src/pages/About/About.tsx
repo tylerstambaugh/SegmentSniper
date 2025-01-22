@@ -4,10 +4,6 @@ import AboutSegmentSniper from '../../components/Organisms/About/AboutSegmentSni
 import AboutSegmentTimePredictor from '../../components/Organisms/About/AboutSegmentTimePredictor';
 import AboutGarage from '../../components/Organisms/About/AboutGarage';
 
-export type AboutPageComponentProps = {
-  collapsed: boolean;
-};
-
 function About() {
   return (
     <Row className='pt-3 p-1'>
