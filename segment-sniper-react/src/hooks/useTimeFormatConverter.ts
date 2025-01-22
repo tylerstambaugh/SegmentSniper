@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { MAX_DATE_TIME } from '../Constants/timeConstant';
 
 export const useTimeFormatConverter = () => {
   function timeStringToNumericValue(timeString: string): number {
@@ -37,10 +38,10 @@ export const useTimeFormatConverter = () => {
     return DateTime.fromISO(dateString);
   }
 
-  function convertStringToFormattedDateTime(dateString: string): string {
+  function convertStringToMediumFormattedDateTime(dateString: string): string {
     const date = DateTime.fromISO(dateString);
 
-    if (date === null || date === undefined || date === DateTime.max())
+    if (date === null || date === undefined || date.year === MAX_DATE_TIME.year)
       return 'N/A';
     return date.toLocaleString(DateTime.DATE_MED);
   }
@@ -49,6 +50,6 @@ export const useTimeFormatConverter = () => {
     timeStringToNumericValue,
     numericTimeToString,
     convertStringToDateTime,
-    convertStringToFormattedDateTime,
+    convertStringToFormattedDateTime: convertStringToMediumFormattedDateTime,
   };
 };

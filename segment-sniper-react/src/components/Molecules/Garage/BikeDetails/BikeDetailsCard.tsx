@@ -1,8 +1,9 @@
-import { Card } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import EquipmentList from "./Equipment/EquipmentList";
 import { BikeModel } from "../../../../graphql/generated";
 import _ from "lodash";
 import { AddEquipmentFormValues } from "./Equipment/AddEquipmentForm";
+import { useConversionHelpers } from "../../../../hooks/useConversionHelpers";
 
 
 type BikeDetailsCardProps = {
@@ -11,13 +12,16 @@ type BikeDetailsCardProps = {
 }
 
 const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit }: BikeDetailsCardProps) => {
+    const convert = useConversionHelpers();
     return (
         <Card>
             <Card.Body>
                 <Card.Title>{bike?.name ?? "Bike Not Found"}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{bike?.brandName ?? "No data"} {bike?.modelName}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">{bike?.brandName ?? "No data"} {bike?.modelName} - {convert.ConvertMetersToMiles(bike?.metersLogged ?? 0)} miles</Card.Subtitle>
                 <Card.Text>
-                    {bike?.description}
+                    <Row>
+                        {bike?.description}
+                    </Row>
                 </Card.Text>
                 <EquipmentList
                     equipment={_.compact(bike?.equipment) ?? []}
