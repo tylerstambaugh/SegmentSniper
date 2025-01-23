@@ -5,6 +5,7 @@ import { useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import AboutAuthor from "../../../../Organisms/About/AboutAuthor";
+import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 
 
 type EquipmentListProps = {
@@ -14,8 +15,7 @@ type EquipmentListProps = {
 
 const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
-
-
+    const timeFormatter = useTimeFormatConverter();
 
     const handleClosedAddEquipmentForm = () => {
         setShowAddEquipmentForm(false);
@@ -31,7 +31,9 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                         {equipment && equipment.length > 0 ? (
                             equipment.map((equipment, index) => (
                                 <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
-                                    <Accordion.Header>{equipment.name}</Accordion.Header>
+                                    <Accordion.Header>
+                                        {equipment.name}: Installed {timeFormatter.convertStringToFormattedDateTime(equipment?.installDate ?? "")} / {equipment.milesLogged} miles
+                                    </Accordion.Header>
                                     <Accordion.Body>
                                         <EquipmentListItem item={equipment} />
                                     </Accordion.Body>
