@@ -128,8 +128,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
             var userBikeActivities = await _getAllBikeActivitiesByUserId.ExecuteAsync(contract: new GetAllBikeActivitiesByUserIdContract(userId));
-            foreach (SummaryActivity summaryActivity in listOfSummaryActivities)
-            {
+            foreach (var summaryActivity in listOfSummaryActivities.Where(sa => sa.GearId != null))
+            {             
                 if (existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
                 {
                     //need to check if the bikeActivity exists and create it if not

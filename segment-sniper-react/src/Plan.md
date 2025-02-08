@@ -1,7 +1,8 @@
-implement roles based features
+implement roles / permissions around features
 
-refactor sniping UI
+- add ability to refresh whole garage (look at last ~6 mos. of Strava activities and rebuild bikes)
 
-update forgot password
-
-add delete account
+- add ability to send reminder after event (date passed / mileage exceeded)
+  - have a serverless function operate on a timer to inspect the mileage/dates
+  - need to find way to mark reminders as being sent
+  - need to be able to reset reminder?
