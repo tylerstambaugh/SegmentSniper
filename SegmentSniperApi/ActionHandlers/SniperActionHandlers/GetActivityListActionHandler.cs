@@ -128,7 +128,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
             var userBikeActivities = await _getAllBikeActivitiesByUserId.ExecuteAsync(contract: new GetAllBikeActivitiesByUserIdContract(userId));
-            foreach (var summaryActivity in listOfSummaryActivities.Where(sa => sa.GearId != null))
+            foreach (var summaryActivity in listOfSummaryActivities.Where(sa => sa.GearId != null && sa.Type == ActivityType.Ride.ToString()))
             {             
                 if (existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
                 {

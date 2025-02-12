@@ -25,8 +25,8 @@ export const BikeList = () => {
             {/*      */}
             <Container className='p-2 d-flex flex-column flex-md-row justify-content-between'>
                 {bikes && bikes.length > 0 ? (
-                    sortedBikes.map((bike) => bike && (
-                        <Container className='pb-3'>
+                    sortedBikes.map((bike, index) => bike && (
+                        <Container className='pb-3' key={`${bike.bikeId}+${index}`}>
                             <Row className='justify-content-around'>
                                 <Col lg={6}>
                                     <Card className="shadow">
