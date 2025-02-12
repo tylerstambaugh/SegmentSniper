@@ -4,7 +4,6 @@ import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
 import { useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
-import AboutAuthor from "../../../../Organisms/About/AboutAuthor";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 
 
@@ -38,7 +37,12 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                                         <EquipmentListItem item={equipment} />
                                     </Accordion.Body>
                                 </Accordion.Item>
-                            ))) : (<></>)}
+                            ))) : (
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>
+                                    No equipment found
+                                </Accordion.Header>
+                            </Accordion.Item>)}
                     </Accordion>
                 </Col>
             </Row>
