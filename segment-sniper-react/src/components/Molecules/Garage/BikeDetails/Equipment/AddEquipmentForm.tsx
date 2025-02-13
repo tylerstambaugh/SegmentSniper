@@ -45,7 +45,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
             .max(new Date(), "Date must be in the past"),
         retiredDate: Yup.date().nullable()
             .max(new Date(), "Date must be in the past"),
-        price: Yup.number(),
+        price: Yup.number().nullable(),
         replaceAtMiles: Yup.number(),
         milesUntilReplaceReminder: Yup.number(),
     })
@@ -74,7 +74,12 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                             <Form.Group controlId="name" className="mb-3">
                                 <Form.Label className="mb-1">Name</Form.Label>
                                 <Form.Control type="text" required value={formik.values.name}
-                                    onChange={(e) => formik.setFieldValue("name", e.target.value)} />
+                                    onChange={(e) => {
+                                        formik.setFieldValue("name", e.target.value);
+                                        console.log("errors", formik.errors)
+                                    }
+
+                                    } />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.name as FormikErrors<string>}
                                 </Form.Control.Feedback>
