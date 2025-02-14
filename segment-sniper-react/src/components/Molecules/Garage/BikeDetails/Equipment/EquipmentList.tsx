@@ -31,7 +31,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                             equipment.map((equipment, index) => (
                                 <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
                                     <Accordion.Header>
-                                        {equipment.name}: Installed {timeFormatter.convertStringToFormattedDateTime(equipment?.installDate ?? "")} / {equipment.milesLogged} miles
+                                        {equipment.name}
                                     </Accordion.Header>
                                     <Accordion.Body>
                                         <EquipmentListItem item={equipment} />
