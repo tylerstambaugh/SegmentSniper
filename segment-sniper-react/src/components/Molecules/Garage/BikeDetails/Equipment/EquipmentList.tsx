@@ -46,18 +46,6 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                     </Accordion>
                 </Col>
             </Row>
-            {/* {equipment && equipment.length > 0 ? (
-                equipment.map((equipment) => (
-                    <div key={equipment.equipmentId}>
-                        <Row>
-                            <EquipmentListItem item={equipment} />
-                        </Row>
-                    </div>
-                ))
-
-            ) : (
-                <p>No equipment found</p>
-            )} */}
             <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
         </Container>
     )
