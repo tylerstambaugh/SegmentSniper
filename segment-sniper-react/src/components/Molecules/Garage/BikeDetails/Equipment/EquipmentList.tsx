@@ -31,7 +31,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                             equipment.map((equipment, index) => (
                                 <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
                                     <Accordion.Header>
-                                        {equipment.name}: Installed {timeFormatter.convertStringToFormattedDateTime(equipment?.installDate ?? "")} / {equipment.milesLogged} miles
+                                        {equipment.name}
                                     </Accordion.Header>
                                     <Accordion.Body>
                                         <EquipmentListItem item={equipment} />
@@ -46,18 +46,6 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                     </Accordion>
                 </Col>
             </Row>
-            {/* {equipment && equipment.length > 0 ? (
-                equipment.map((equipment) => (
-                    <div key={equipment.equipmentId}>
-                        <Row>
-                            <EquipmentListItem item={equipment} />
-                        </Row>
-                    </div>
-                ))
-
-            ) : (
-                <p>No equipment found</p>
-            )} */}
             <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
         </Container>
     )

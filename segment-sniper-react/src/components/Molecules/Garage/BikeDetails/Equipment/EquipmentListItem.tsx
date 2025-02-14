@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
@@ -12,41 +12,50 @@ const EquipmentListItem = ({ item }: EquipmentListItemProps) => {
 
     const timeFormatter = useTimeFormatConverter();
     return (
-        <Row>
-            <Col>
+        <Col>
+            <Row>
+                <Col className={styles.equipmentLabel}>Name</Col>
+                <Col>{item.name}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Description</Col>
+                <Col>{item.description ?? "No description"}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Mileage</Col>
+                <Col>{item.milesLogged}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Installed on</Col>
+                <Col>{timeFormatter.convertStringToFormattedDateTime(item.installDate as string)}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Retired on</Col>
+                <Col>{timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Price </Col>
+                <Col>${item.price}</Col>
+            </Row>
+            <Row>
+                <Col className={styles.equipmentLabel}>Replace at </Col>
+                <Col>{item.replaceAtMiles} miles</Col>
+            </Row>
+            {item.milesUntilReplaceReminder && item.milesUntilReplaceReminder > 0 && (
                 <Row>
-
-                    <Col>
-                        <Row className={styles.equipmentLabel}>
-                            Name
-                        </Row>
-                        <Row>
-
-                            {item.name}
-                        </Row>
-                    </Col>
-                    <Col>
-                        {item.description ?? "No description"}
-                    </Col>
-                    <Col>
-                        {item.milesLogged}
-                    </Col>
+                    <Col className={styles.equipmentLabel}>Reminder </Col>
+                    <Col>{item.milesUntilReplaceReminder} miles</Col>
                 </Row>
-                <Row>
-
-                    <Col>
-                        {timeFormatter.convertStringToFormattedDateTime(item.installDate as string)}
-                    </Col>
-                    <Col>
-                        {timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}
-                    </Col>
-                    <Col>
-                        {item.price}
-                    </Col>
-                </Row>
-            </Col>
-
-        </Row>
+            )}
+            <Row>
+                <Col>
+                    <Button>Edit</Button>
+                </Col>
+                <Col>
+                    <Button>Retire</Button>
+                </Col>
+            </Row>
+        </Col>
     )
 }
 
