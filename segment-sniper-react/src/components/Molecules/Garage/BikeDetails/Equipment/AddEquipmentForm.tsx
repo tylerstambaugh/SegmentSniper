@@ -10,6 +10,8 @@ export type AddEquipmentFormProps = {
     show: boolean;
     handleSubmit: (values: AddEquipmentFormValues) => void;
     onClose: () => void
+    isEdit: boolean;
+    editValues?: AddEquipmentFormValues;
 }
 
 export interface AddEquipmentFormValues {
@@ -23,7 +25,7 @@ export interface AddEquipmentFormValues {
     milesUntilReplaceReminder?: number | null;
 }
 
-const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormProps) => {
+const AddEquipmentFormUI = ({ show, handleSubmit, onClose, isEdit, editValues }: AddEquipmentFormProps) => {
     const [validated, setValidated] = useState(false);
 
     const initialValues: AddEquipmentFormValues = {
@@ -73,7 +75,10 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                         <Row>
                             <Form.Group controlId="name" className="mb-3">
                                 <Form.Label className="mb-1">Name</Form.Label>
-                                <Form.Control type="text" required value={formik.values.name}
+                                <Form.Control
+                                    type="text"
+                                    required
+                                    value={isEdit ? editValues?.name : formik.values.name}
                                     onChange={(e) => {
                                         formik.setFieldValue("name", e.target.value);
                                         console.log("errors", formik.errors)
@@ -88,7 +93,9 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                         <Row>
                             <Form.Group controlId="description" className="mb-3">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" value={formik.values.description}
+                                <Form.Control
+                                    type="text"
+                                    value={formik.values.description}
                                     onChange={(e) => formik.setFieldValue("description", e.target.value)} />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.description as FormikErrors<string>}
@@ -99,7 +106,8 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose }: AddEquipmentFormPro
                             <Col>
                                 <Form.Group controlId="installDate" className="mb-3">
                                     <Form.Label>Install Date</Form.Label>
-                                    <Form.Control type="date"
+                                    <Form.Control
+                                        type="date"
                                         value={formik.values.installDate?.toISODate() ?? ""}
                                         onChange={(e) => {
                                             const newDate = DateTime.fromFormat(
