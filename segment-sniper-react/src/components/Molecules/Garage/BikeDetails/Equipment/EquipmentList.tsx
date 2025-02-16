@@ -14,15 +14,18 @@ type EquipmentListProps = {
 
 const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
+    const [isEditEquipment, setIsEditEquipment] = useState<boolean>(false);
+    const [selectedEquipment, setSelectedEquipment] = useState<EquipmentModel | null>(null);
     const timeFormatter = useTimeFormatConverter();
 
     const handleClosedAddEquipmentForm = () => {
         setShowAddEquipmentForm(false);
     }
+
     return (
 
         <Container>
-            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} />
+            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} isEdit={isEditEquipment} />
             <p className={styles.equipmentHeading}>Equipment</p>
             <Row className='pt-3 p-1'>
                 <Col md={8} className="mb-2 mx-auto">
@@ -34,7 +37,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                                         {equipment.name}
                                     </Accordion.Header>
                                     <Accordion.Body>
-                                        <EquipmentListItem item={equipment} />
+                                        <EquipmentListItem item={equipment} setIsEditEquipment={setIsEditEquipment} />
                                     </Accordion.Body>
                                 </Accordion.Item>
                             ))) : (
