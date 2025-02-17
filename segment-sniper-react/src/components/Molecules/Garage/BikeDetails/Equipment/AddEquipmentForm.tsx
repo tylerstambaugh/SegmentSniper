@@ -5,13 +5,13 @@ import { useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
 import { DateTime } from "luxon";
 import { valueFromAST } from "graphql";
+import { Maybe } from "graphql/jsutils/Maybe";
 
 export type AddEquipmentFormProps = {
     show: boolean;
     handleSubmit: (values: AddEquipmentFormValues) => void;
     onClose: () => void
-    isEdit: boolean;
-    editValues?: AddEquipmentFormValues;
+    editEquipment?: Maybe<AddEquipmentFormValues>;
 }
 
 export interface AddEquipmentFormValues {
@@ -25,18 +25,18 @@ export interface AddEquipmentFormValues {
     milesUntilReplaceReminder?: number | null;
 }
 
-const AddEquipmentFormUI = ({ show, handleSubmit, onClose, isEdit, editValues }: AddEquipmentFormProps) => {
+const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddEquipmentFormProps) => {
     const [validated, setValidated] = useState(false);
 
     const initialValues: AddEquipmentFormValues = {
-        name: '',
-        description: '',
-        milesLogged: undefined,
-        installDate: null,
-        retiredDate: null,
-        price: null,
-        replaceAtMiles: undefined,
-        milesUntilReplaceReminder: undefined,
+        name: editEquipment?.name ?? '',
+        description: editEquipment?.description ?? '',
+        milesLogged: editEquipment?.milesLogged ?? undefined,
+        installDate: editEquipment?.installDate ?? null,
+        retiredDate: editEquipment?.retiredDate ?? null,
+        price: editEquipment?.price ?? null,
+        replaceAtMiles: editEquipment?.replaceAtMiles ?? undefined,
+        milesUntilReplaceReminder: editEquipment?.milesUntilReplaceReminder ?? undefined,
     }
 
     const validationSchema = Yup.object({
@@ -78,7 +78,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, isEdit, editValues }:
                                 <Form.Control
                                     type="text"
                                     required
-                                    value={isEdit ? editValues?.name : formik.values.name}
+                                    value={formik.values.name}
                                     onChange={(e) => {
                                         formik.setFieldValue("name", e.target.value);
                                         console.log("errors", formik.errors)

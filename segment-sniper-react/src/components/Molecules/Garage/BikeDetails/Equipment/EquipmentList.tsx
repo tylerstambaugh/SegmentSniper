@@ -1,10 +1,10 @@
 import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import EquipmentListItem from "./EquipmentListItem";
 import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
-import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
+import { DateTime } from "luxon";
 
 
 type EquipmentListProps = {
@@ -14,18 +14,43 @@ type EquipmentListProps = {
 
 const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
-    const [isEditEquipment, setIsEditEquipment] = useState<boolean>(false);
+    const [editEquipmentId, setEditEquipmentId] = useState<string | null>();
     const [selectedEquipment, setSelectedEquipment] = useState<EquipmentModel | null>(null);
-    const timeFormatter = useTimeFormatConverter();
 
     const handleClosedAddEquipmentForm = () => {
+        setSelectedEquipment(null);
+        setEditEquipmentId(null);
         setShowAddEquipmentForm(false);
     }
+
+    function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): AddEquipmentFormValues {
+        return {
+            name: selectedEquipment.name,
+            description: selectedEquipment.description ?? "",
+            milesLogged: selectedEquipment.milesLogged,
+            installDate: selectedEquipment.installDate ? DateTime.fromISO(selectedEquipment.installDate) : null,
+            retiredDate: selectedEquipment.retiredDate ? DateTime.fromISO(selectedEquipment.retiredDate) : null,
+            price: selectedEquipment.price,
+            replaceAtMiles: selectedEquipment.replaceAtMiles,
+            milesUntilReplaceReminder: selectedEquipment.milesUntilReplaceReminder
+        }
+    }
+
+
+    useEffect(() => {
+        if (editEquipmentId) {
+            setSelectedEquipment(equipment.find(equipment => equipment.equipmentId === editEquipmentId) ?? null);
+        }
+    }, [editEquipmentId])
 
     return (
 
         <Container>
-            <AddEquipmentForm show={showAddEquipmentForm} handleSubmit={handleAddEquipmentSubmit} onClose={handleClosedAddEquipmentForm} isEdit={isEditEquipment} />
+            <AddEquipmentForm
+                show={showAddEquipmentForm || selectedEquipment !== null}
+                handleSubmit={handleAddEquipmentSubmit}
+                onClose={handleClosedAddEquipmentForm}
+                editEquipment={(editEquipmentId && selectedEquipment) ? adaptEquipmentModelToEquipmentFormValues(selectedEquipment) : undefined} />
             <p className={styles.equipmentHeading}>Equipment</p>
             <Row className='pt-3 p-1'>
                 <Col md={8} className="mb-2 mx-auto">
@@ -37,7 +62,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
                                         {equipment.name}
                                     </Accordion.Header>
                                     <Accordion.Body>
-                                        <EquipmentListItem item={equipment} setIsEditEquipment={setIsEditEquipment} />
+                                        <EquipmentListItem item={equipment} setEditEquipmentId={setEditEquipmentId} />
                                     </Accordion.Body>
                                 </Accordion.Item>
                             ))) : (
