@@ -5,11 +5,11 @@ import styles from "./Equipment.module.scss";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
-    setIsEditEquipment: (isEdit: boolean) => void;
+    setEditEquipmentId: (editEquipmentId: string) => void;
 }
 
 
-const EquipmentListItem = ({ item, setIsEditEquipment }: EquipmentListItemProps) => {
+const EquipmentListItem = ({ item, setEditEquipmentId }: EquipmentListItemProps) => {
 
     const timeFormatter = useTimeFormatConverter();
     return (
@@ -50,7 +50,7 @@ const EquipmentListItem = ({ item, setIsEditEquipment }: EquipmentListItemProps)
             )}
             <Row className="justify-content-between">
                 <Col>
-                    <Button onClick={() => setIsEditEquipment(true)}>Edit</Button>
+                    <Button onClick={() => setEditEquipmentId(item.equipmentId)}>Edit</Button>
                 </Col>
                 <Col>
                     <Button className={styles.retire_button}>Retire</Button>
