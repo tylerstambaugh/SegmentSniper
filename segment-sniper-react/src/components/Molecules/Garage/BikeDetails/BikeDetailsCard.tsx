@@ -9,9 +9,10 @@ import { useConversionHelpers } from "../../../../hooks/useConversionHelpers";
 type BikeDetailsCardProps = {
     bike: BikeModel;
     handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
+    handleRetireEquipment: (equipmentId: string) => void;
 }
 
-const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit }: BikeDetailsCardProps) => {
+const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit, handleRetireEquipment }: BikeDetailsCardProps) => {
     const convert = useConversionHelpers();
     return (
         <Card>
@@ -25,7 +26,8 @@ const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit }: BikeDetailsCardProp
                 </Card.Text>
                 <EquipmentList
                     equipment={_.compact(bike?.equipment) ?? []}
-                    handleAddEquipmentSubmit={handleAddEquipmentSubmit} />
+                    handleAddEquipmentSubmit={handleAddEquipmentSubmit}
+                    handleRetireEquipment={handleRetireEquipment} />
             </Card.Body>
         </Card>
     )
