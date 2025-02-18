@@ -2,14 +2,19 @@ import { Button, Col, Row } from "react-bootstrap";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
+import { useState } from "react";
+import { EquipmentModalState } from "./EquipmentList";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
-    setEditEquipmentId: (editEquipmentId: string) => void;
+    setModalState: (modalState: EquipmentModalState) => void;
+    handleRetireEquipment?: (equipmentId: string) => void;
 }
 
 
-const EquipmentListItem = ({ item, setEditEquipmentId }: EquipmentListItemProps) => {
+
+const EquipmentListItem = ({ item, setModalState, handleRetireEquipment }: EquipmentListItemProps) => {
+
 
     const timeFormatter = useTimeFormatConverter();
     return (
@@ -50,10 +55,18 @@ const EquipmentListItem = ({ item, setEditEquipmentId }: EquipmentListItemProps)
             )}
             <Row className="justify-content-between">
                 <Col>
-                    <Button onClick={() => setEditEquipmentId(item.equipmentId)}>Edit</Button>
+                    <Button
+                        onClick={() => setModalState({ type: "addEdit", item: item })}>
+                        Edit
+                    </Button>
                 </Col>
                 <Col>
-                    <Button className={styles.retire_button}>Retire</Button>
+                    <Button
+                        className={styles.retire_button}
+                        onClick={() => setModalState({ type: "retire", item: item })}>
+
+                        Retire
+                    </Button>
                 </Col>
             </Row>
         </Col>

@@ -5,23 +5,35 @@ import { useEffect, useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
+import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
+import RetireEquipmentModal from "./RetireEquipmentModal";
 
 
 type EquipmentListProps = {
     equipment: EquipmentModel[] | [];
     handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
+    handleRetireEquipment: (equipmentId: string) => void;
 }
 
-const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListProps) => {
+export type EquipmentModalState =
+    | { type: "none" }
+    | { type: "retire", item: EquipmentModel }
+    | { type: "addEdit", item: EquipmentModel };
+
+
+
+const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipment }: EquipmentListProps) => {
     const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
     const [editEquipmentId, setEditEquipmentId] = useState<string | null>();
     const [selectedEquipment, setSelectedEquipment] = useState<EquipmentModel | null>(null);
 
-    const handleClosedAddEquipmentForm = () => {
-        setSelectedEquipment(null);
-        setEditEquipmentId(null);
-        setShowAddEquipmentForm(false);
+    const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
+
+    const handleClosedModal = () => {
+        setModalState({ type: "none" });
     }
+
+
 
     function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): AddEquipmentFormValues {
         return {
@@ -37,44 +49,88 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit }: EquipmentListPro
     }
 
 
-    useEffect(() => {
-        if (editEquipmentId) {
-            setSelectedEquipment(equipment.find(equipment => equipment.equipmentId === editEquipmentId) ?? null);
-        }
-    }, [editEquipmentId])
+    // useEffect(() => {
+    //     if (editEquipmentId) {
+    //         setSelectedEquipment(equipment.find(equipment => equipment.equipmentId === editEquipmentId) ?? null);
+    //     }
+    // }, [editEquipmentId])
 
     return (
 
         <Container>
-            <AddEquipmentForm
-                show={showAddEquipmentForm || selectedEquipment !== null}
-                handleSubmit={handleAddEquipmentSubmit}
-                onClose={handleClosedAddEquipmentForm}
-                editEquipment={(editEquipmentId && selectedEquipment) ? adaptEquipmentModelToEquipmentFormValues(selectedEquipment) : undefined} />
-            <p className={styles.equipmentHeading}>Equipment</p>
-            <Row className='pt-3 p-1'>
-                <Col md={8} className="mb-2 mx-auto">
-                    <Accordion style={{ backgroundColor: '#f0f0f0' }}>
-                        {equipment && equipment.length > 0 ? (
-                            equipment.map((equipment, index) => (
-                                <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
-                                    <Accordion.Header>
-                                        {equipment.name}
-                                    </Accordion.Header>
-                                    <Accordion.Body>
-                                        <EquipmentListItem item={equipment} setEditEquipmentId={setEditEquipmentId} />
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            ))) : (
-                            <Accordion.Item eventKey="0">
-                                <Accordion.Header>
-                                    No equipment found
-                                </Accordion.Header>
-                            </Accordion.Item>)}
-                    </Accordion>
-                </Col>
-            </Row>
-            <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
+            <Col>
+                <Row>
+
+                    <AddEquipmentForm
+                        show={modalState.type === "addEdit"}
+                        handleSubmit={handleAddEquipmentSubmit}
+                        onClose={handleClosedModal}
+                        editEquipment={modalState.type === "addEdit" ? adaptEquipmentModelToEquipmentFormValues(modalState.item!) : undefined}
+                    />
+                    <RetireEquipmentModal
+                        show={modalState.type === "retire"}
+                        onClose={handleClosedModal}
+                        item={modalState.type === "retire" ? modalState.item : null}
+                        handleRetireEquipment={handleRetireEquipment}
+                    />
+                    <p className={styles.equipmentHeading}>Equipment</p>
+                    <Row className='pt-3 p-1'>
+                        <Col md={8} className="mb-2 mx-auto">
+                            <Accordion style={{ backgroundColor: '#f0f0f0' }}>
+                                {equipment && equipment.length > 0 ? (
+                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!) === MAX_DATE_TIME)
+                                        .map((equipment, index) => (
+                                            <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
+                                                <Accordion.Header>
+                                                    {equipment.name}
+                                                </Accordion.Header>
+                                                <Accordion.Body>
+                                                    <EquipmentListItem
+                                                        item={equipment}
+                                                        setModalState={setModalState}
+                                                        handleRetireEquipment={handleRetireEquipment} />
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        ))) : (
+                                    <Accordion.Item eventKey="0">
+                                        <Accordion.Header>
+                                            No equipment found
+                                        </Accordion.Header>
+                                    </Accordion.Item>)}
+                            </Accordion>
+                        </Col>
+                    </Row>
+                    <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
+                </Row>
+                <Row>
+                    <p className={styles.equipmentHeading}>Retired Equipment</p>
+                    <Row className='pt-3 p-1'>
+                        <Col md={8} className="mb-2 mx-auto">
+                            <Accordion style={{ backgroundColor: '#f0f0f0' }}>
+                                {equipment && equipment.length > 0 ? (
+                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!) !== MAX_DATE_TIME)
+                                        .map((equipment, index) => (
+                                            <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
+                                                <Accordion.Header>
+                                                    {equipment.name}
+                                                </Accordion.Header>
+                                                <Accordion.Body>
+                                                    <EquipmentListItem
+                                                        item={equipment}
+                                                        setModalState={setModalState} />
+                                                </Accordion.Body>
+                                            </Accordion.Item>
+                                        ))) : (
+                                    <Accordion.Item eventKey="0">
+                                        <Accordion.Header>
+                                            No retired equipment
+                                        </Accordion.Header>
+                                    </Accordion.Item>)}
+                            </Accordion>
+                        </Col>
+                    </Row>
+                </Row>
+            </Col>
         </Container>
     )
 }
