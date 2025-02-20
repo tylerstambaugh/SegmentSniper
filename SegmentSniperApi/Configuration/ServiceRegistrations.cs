@@ -14,6 +14,7 @@ using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;
+using SegmentSniper.Services.Garage.Equipment;
 using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
@@ -138,6 +139,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetAllBikeActivitiesByUserId, GetAllBikeActivitiesByUserId>();
             services.AddScoped<IUpdateGarage,  UpdateGarage>();
             services.AddScoped<IUpsertBikeEquipment, UpsertBikeEquipment>();
+            services.AddScoped<IRetireBikeEquipment, RetireBikeEquipment>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
