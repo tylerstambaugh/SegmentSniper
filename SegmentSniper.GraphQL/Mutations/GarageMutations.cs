@@ -64,6 +64,34 @@ namespace SegmentSniper.GraphQL.Mutations
 
                 })
             }).AuthorizeWithPolicy("UserPolicy");
+
+            AddField(new FieldType
+            {
+                Name = "RetireEquipmentOnBike",
+                Type = typeof(BikeTypeDef),
+                Arguments = new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." },
+                    new QueryArgument<NonNullGraphType<DateGraphType>> { Name = "retireDate", Description = "The date the equipment is to be retired." }
+                ),
+                Resolver = new FuncFieldResolver<BikeModel>(async context =>
+                {
+                    var userId = context.GetArgument<string>("userId");
+                    var bikeId = context.GetArgument<string>("bikeId");
+                    var equipmentId = context.GetArgument<string>("equipmentId");
+                    var retireDate = context.GetArgument<DateTime>("retireDate");
+                    var service = context.RequestServices.GetRequiredService<IRetireBikeEquipment>();
+                    var result = await service.ExecuteAsync(new RetireBikeEquipmentContract
+                    {
+                        UserId = userId,
+                        BikeId = bikeId,
+                        EquipmentId = equipmentId,
+                        RetireDate = retireDate
+                    });
+                    return result.BikeModel;
+                })
+            });
         }
     }
 }
