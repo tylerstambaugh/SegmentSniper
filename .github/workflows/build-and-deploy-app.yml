@@ -1,5 +1,4 @@
-name: Build and Deploy ASP.Net Core app with React and EF Migrations to Azure Web App
-
+name: Build and Deploy Segment Sniper
 env:
   AZURE_WEBAPP_NAME: as-segmentsniper-api-eastus-dev
   AZURE_WEBAPP_PACKAGE_PATH: '.'
