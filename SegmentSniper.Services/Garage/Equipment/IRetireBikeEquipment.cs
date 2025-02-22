@@ -12,7 +12,7 @@ namespace SegmentSniper.Services.Garage.Equipment
         public string UserId { get; set; }
         public string BikeId { get; set; }
         public DateTime RetireDate { get; set; }
-        public EquipmentModel Equipment { get; set; }
+        public string EquipmentId { get; set; }
         public class Result
         {
             public BikeModel BikeModel { get; set; }
