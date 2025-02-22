@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SegmentSniper.GraphQL.Types;
 using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Services.Garage;
+using SegmentSniper.Services.Garage.Equipment;
 
 namespace SegmentSniper.GraphQL.Mutations
 {

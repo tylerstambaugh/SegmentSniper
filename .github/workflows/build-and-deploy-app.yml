@@ -71,12 +71,18 @@ jobs:
           DOTNET_ROOT: ${{ env.DOTNET_ROOT }}
         run: dotnet ef database update --project ./SegmentSniper.Data.csproj --context SegmentSniperDbContext
 
+      # - name: Verify migration success
+      #   run: |
+      #     if [ ! -f "__EFMigrationsHistory" ]; then
+      #       echo "EF Migrations failed."
+      #       exit 1
+      #     fi
+
       - name: Verify migration success
         run: |
-          if [ ! -f "__EFMigrationsHistory" ]; then
-            echo "EF Migrations failed."
-            exit 1
-          fi
+          sqlcmd -S ${{ secrets.DB_SERVER }} -d ${{ secrets.DB_NAME }} -U ${{ secrets.DB_USER }} -P ${{ secrets.DB_PASSWORD }} -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
+        shell: bash
+
 
       - name: Publish .NET app
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
