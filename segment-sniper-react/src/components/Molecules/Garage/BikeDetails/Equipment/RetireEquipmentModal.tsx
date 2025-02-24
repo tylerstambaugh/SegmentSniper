@@ -2,12 +2,13 @@ import { Button, Col, Modal, Row } from "react-bootstrap"
 import { EquipmentModel } from "../../../../../graphql/generated"
 import { Maybe } from "graphql/jsutils/Maybe"
 import { DateTime } from "luxon"
+import { RetireBikeEquipmentValues } from "../../../../../pages/Garage/BikeDetails"
 
 type RetireEquipmentModalProps = {
     show: boolean
     item: Maybe<EquipmentModel>
     onClose: () => void
-    handleRetireEquipment: (equipmentId: string) => void
+    handleRetireEquipment: (values: RetireBikeEquipmentValues) => void
 }
 
 const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: RetireEquipmentModalProps) => {
@@ -28,7 +29,7 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                             <Button onClick={() => onClose}>Cancel</Button>
                         </Col>
                         <Col>
-                            <Button onClick={() => handleRetireEquipment(item?.equipmentId ?? "")}>Retire</Button>
+                            <Button onClick={() => handleRetireEquipment({ equipmentId: item?.equipmentId ?? "" })}>Retire</Button>
                         </Col>
                     </Row>
                 </Col>

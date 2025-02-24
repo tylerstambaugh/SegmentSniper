@@ -4,11 +4,19 @@ import BikeDetailsCard from "../../components/Molecules/Garage/BikeDetails/BikeD
 import { useGetBikeByIdQuery } from "../../components/Molecules/Garage/GraphQl/useGetBikeById";
 import { AddEquipmentFormValues } from "../../components/Molecules/Garage/BikeDetails/Equipment/AddEquipmentForm";
 import { useAddEquipmentToBikeMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useAddEquipmentToBike";
-import { EquipmentInput } from "../../graphql/generated";
+import { EquipmentInput, Maybe } from "../../graphql/generated";
 import useUserStore from "../../stores/useUserStore";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { DateTime } from "luxon";
+import { useRetireBikeEquipmentMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useRetireBikeQuipment";
 
+
+export interface RetireBikeEquipmentValues {
+    bikeId: string;
+    equipmentId: string;
+    userId: string;
+    retireDate: Maybe<DateTime>;
+}
 const BikeDetails = () => {
     const { bikeId } = useParams<{ bikeId: string }>();
     const user = useUserStore((state) => state.user);
@@ -23,6 +31,11 @@ const BikeDetails = () => {
         addEquipmentToBike,
         { data: addEquipmentData, loading: addEquipmentLoading, error: addEquipmentError }
     ] = useAddEquipmentToBikeMutation();
+
+    const [retireBikeEquipment,
+        { data: retireBikeQuipmentData,
+            loading: retieBikeQuipmentLoading,
+            error: retireBikeQuipmentError }] = useRetireBikeEquipmentMutation();
 
     if (bikeLoading || addEquipmentLoading) return <p>Loading...</p>;
     if (bikeError || addEquipmentError) {
@@ -72,8 +85,16 @@ const BikeDetails = () => {
         });
     }
 
-    async function handleRetireEquipemtn(equipmentId: string) {
+    async function handleRetireEquipment(values: RetireBikeEquipmentValues) {
 
+        retireBikeEquipment({
+            variables: {
+                bikeId: values.bikeId,
+                equipmentId: values.equipmentId,
+                userId: user?.id ?? '',
+                retireDate: values.retireDate?.toISO() ?? ""
+            }
+        })
     }
 
     return (
@@ -85,7 +106,7 @@ const BikeDetails = () => {
             <BikeDetailsCard
                 bike={bike}
                 handleAddEquipmentSubmit={handleAddEquipmentSubmit}
-                handleRetireEquipment={handleRetireEquipemtn} />
+                handleRetireEquipment={handleRetireEquipment} />
         </Container>
     );
 };

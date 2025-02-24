@@ -1,0 +1,30 @@
+mutation RetireBikeEquipment(
+  $bikeId: ID!
+  $equipmentId: ID!!
+  $userId: ID!
+) {
+  garage {
+    retireBikeQuipment(
+      bikeId: $bikeId
+      equipmentId: $equipmentId
+      userId: $userId
+    ) {
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}
