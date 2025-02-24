@@ -7,12 +7,13 @@ import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
 import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
 import RetireEquipmentModal from "./RetireEquipmentModal";
+import { RetireBikeEquipmentValues } from "../../../../../pages/Garage/BikeDetails";
 
 
 type EquipmentListProps = {
     equipment: EquipmentModel[] | [];
     handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
-    handleRetireEquipment: (equipmentId: string) => void;
+    handleRetireEquipment: (values: RetireBikeEquipmentValues) => void;
 }
 
 export type EquipmentModalState =

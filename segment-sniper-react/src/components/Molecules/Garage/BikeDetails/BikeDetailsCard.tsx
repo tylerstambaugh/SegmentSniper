@@ -4,12 +4,13 @@ import { BikeModel } from "../../../../graphql/generated";
 import _ from "lodash";
 import { AddEquipmentFormValues } from "./Equipment/AddEquipmentForm";
 import { useConversionHelpers } from "../../../../hooks/useConversionHelpers";
+import { RetireBikeEquipmentValues } from "../../../../pages/Garage/BikeDetails";
 
 
 type BikeDetailsCardProps = {
     bike: BikeModel;
     handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
-    handleRetireEquipment: (equipmentId: string) => void;
+    handleRetireEquipment: (values: RetireBikeEquipmentValues) => void;
 }
 
 const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit, handleRetireEquipment }: BikeDetailsCardProps) => {

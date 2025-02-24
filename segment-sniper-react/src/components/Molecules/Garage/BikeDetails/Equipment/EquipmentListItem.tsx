@@ -2,13 +2,13 @@ import { Button, Col, Row } from "react-bootstrap";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
-import { useState } from "react";
 import { EquipmentModalState } from "./EquipmentList";
+import { RetireBikeEquipmentValues } from "../../../../../pages/Garage/BikeDetails";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
     setModalState: (modalState: EquipmentModalState) => void;
-    handleRetireEquipment?: (equipmentId: string) => void;
+    handleRetireEquipment?: (values: RetireBikeEquipmentValues) => void;
 }
 
 
