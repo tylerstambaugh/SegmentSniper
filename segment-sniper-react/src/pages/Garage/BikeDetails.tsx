@@ -11,11 +11,14 @@ import { DateTime } from "luxon";
 import { useRetireBikeEquipmentMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useRetireBikeQuipment";
 
 
-export interface RetireBikeEquipmentValues {
-    bikeId: string;
+export interface RetireBikeEquipmentBase {
     equipmentId: string;
-    userId: string;
     retireDate: Maybe<DateTime>;
+}
+
+export interface RetireBikeEquipmentValues extends RetireBikeEquipmentBase {
+    bikeId: string;
+    userId: string;
 }
 const BikeDetails = () => {
     const { bikeId } = useParams<{ bikeId: string }>();
@@ -85,11 +88,11 @@ const BikeDetails = () => {
         });
     }
 
-    async function handleRetireEquipment(values: RetireBikeEquipmentValues) {
+    async function handleRetireEquipment(values: RetireBikeEquipmentBase) {
 
         retireBikeEquipment({
             variables: {
-                bikeId: values.bikeId,
+                bikeId: bike!.bikeId,
                 equipmentId: values.equipmentId,
                 userId: user?.id ?? '',
                 retireDate: values.retireDate?.toISO() ?? ""
