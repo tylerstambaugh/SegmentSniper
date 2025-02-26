@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import RetireBikeEquipment from './RetireBikeQuipment.graphql';
+import RetireBikeEquipment from './RetireBikeEquipment.graphql';
 import {
   RootMutation,
   GarageMutationsRetireEquipmentOnBikeArgs,
