@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { GoogleMap, LoadScript, Polyline, Marker } from "@react-google-maps/api";
-import useAppConfigStore from "../../../../stores/useAppConfigStore";
 import { decode } from "@mapbox/polyline";
 import { StravaMap } from "../../../../models/StravaMap";
 
@@ -10,12 +9,9 @@ type ActivityMapProps = {
   endLatlng?: number[];
 };
 
-const mapContainerStyle = { height: "100%", width: "100%" };
+const mapContainerStyle = { minHeight: "250px", height: "100%", width: "100%" };
 
 const ActivityMap: React.FC<ActivityMapProps> = (props) => {
-  const googleMapsApiKey = useAppConfigStore(
-    (state) => state.appConfig?.googleMapsApiKey
-  );
 
   const mapRef = useRef<google.maps.Map | null>(null);
 
@@ -33,7 +29,7 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     if (props.startLatlng && props.startLatlng.length >= 2) {
       return { lat: props.startLatlng[0], lng: props.startLatlng[1] };
     }
-    return { lat: 0, lng: 0 }; // Fallback
+    return { lat: 0, lng: 0 };
   }, [props.startLatlng]);
 
   const onLoad = (map: google.maps.Map) => {
@@ -51,6 +47,13 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
       center={center}
       zoom={11}
       onLoad={onLoad}
+      options={{
+        mapTypeControl: false,
+        mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR, // or `DROPDOWN_MENU`
+          position: google.maps.ControlPosition.TOP_RIGHT, // Customize position
+        },
+      }}
     >
       {polylinePath.length > 0 && (
         <Polyline path={polylinePath} options={{ strokeColor: "#FF0000" }} />

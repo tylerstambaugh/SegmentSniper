@@ -6,6 +6,7 @@ import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { RetireBikeEquipmentBase } from "../../../../../pages/Garage/BikeDetails"
 import { useState } from "react"
+import styles from "./Equipment.module.scss"
 
 type RetireEquipmentModalProps = {
     show: boolean
@@ -46,15 +47,17 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
             </Modal.Header>
             <Modal.Body>
                 <Col>
-                    <Row>
+                    <Row className="justify-content-center">
                         {`When would you like to retire ${item?.name}?`}
                     </Row>
                     <Form>
-                        <Row>
-                            <Col>
-                                <Form.Group controlId="retireDate" className="mb-3">
-                                    <Form.Label>Retire Date</Form.Label>
+                        <Row className="justify-content-center">
+                            <Col sm={6}>
+
+                                <Form.Group controlId="retireDate" className="mb-3 d-flex">
                                     <Form.Control
+
+                                        name="retireDate"
                                         type="date"
                                         value={formik.values.retireDate?.toISODate() ?? ""}
                                         onChange={(e) => {
@@ -71,7 +74,7 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className={styles.modal_button_row}>
                             <Col>
                                 <Button onClick={() => onClose}>Cancel</Button>
                             </Col>
@@ -83,7 +86,7 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                         </Row>
                     </Form>
                 </Col>
-            </Modal.Body>'
+            </Modal.Body>
         </Modal>
     )
 }

@@ -19,42 +19,31 @@ type EquipmentListProps = {
 export type EquipmentModalState =
     | { type: "none" }
     | { type: "retire", item: EquipmentModel }
-    | { type: "addEdit", item: EquipmentModel };
+    | { type: "addEdit", item?: EquipmentModel };
 
 
 
 const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipment }: EquipmentListProps) => {
-    const [showAddEquipmentForm, setShowAddEquipmentForm] = useState<boolean>(false);
-    const [editEquipmentId, setEditEquipmentId] = useState<string | null>();
-    const [selectedEquipment, setSelectedEquipment] = useState<EquipmentModel | null>(null);
 
     const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
 
     const handleClosedModal = () => {
+
         setModalState({ type: "none" });
     }
 
-
-
     function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): AddEquipmentFormValues {
         return {
-            name: selectedEquipment.name,
-            description: selectedEquipment.description ?? "",
-            milesLogged: selectedEquipment.milesLogged,
-            installDate: selectedEquipment.installDate ? DateTime.fromISO(selectedEquipment.installDate) : null,
-            retiredDate: selectedEquipment.retiredDate ? DateTime.fromISO(selectedEquipment.retiredDate) : null,
-            price: selectedEquipment.price,
-            replaceAtMiles: selectedEquipment.replaceAtMiles,
-            milesUntilReplaceReminder: selectedEquipment.milesUntilReplaceReminder
+            name: selectedEquipment?.name,
+            description: selectedEquipment?.description ?? "",
+            milesLogged: selectedEquipment?.milesLogged,
+            installDate: selectedEquipment?.installDate ? DateTime.fromISO(selectedEquipment.installDate) : null,
+            retiredDate: selectedEquipment?.retiredDate ? DateTime.fromISO(selectedEquipment.retiredDate) : null,
+            price: selectedEquipment?.price,
+            replaceAtMiles: selectedEquipment?.replaceAtMiles,
+            milesUntilReplaceReminder: selectedEquipment?.milesUntilReplaceReminder
         }
     }
-
-
-    // useEffect(() => {
-    //     if (editEquipmentId) {
-    //         setSelectedEquipment(equipment.find(equipment => equipment.equipmentId === editEquipmentId) ?? null);
-    //     }
-    // }, [editEquipmentId])
 
     return (
 
@@ -74,12 +63,12 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                         item={modalState.type === "retire" ? modalState.item : null}
                         handleRetireEquipment={handleRetireEquipment}
                     />
-                    <p className={styles.equipmentHeading}>Equipment</p>
+                    <p className={styles.equipmentHeading}>Active Equipment</p>
                     <Row className='pt-3 p-1'>
                         <Col md={8} className="mb-2 mx-auto">
                             <Accordion style={{ backgroundColor: '#f0f0f0' }}>
                                 {equipment && equipment.length > 0 ? (
-                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!) === MAX_DATE_TIME)
+                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!).year === MAX_DATE_TIME.year)
                                         .map((equipment, index) => (
                                             <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
                                                 <Accordion.Header>
@@ -101,7 +90,9 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                             </Accordion>
                         </Col>
                     </Row>
-                    <Button onClick={() => setShowAddEquipmentForm(true)}>Add Equipment</Button>
+                    <Row sm={5} className="justify-content-center">
+                        <Button onClick={() => setModalState({ type: "addEdit" })}>Add Equipment</Button>
+                    </Row>
                 </Row>
                 <Row>
                     <p className={styles.equipmentHeading}>Retired Equipment</p>
@@ -109,7 +100,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                         <Col md={8} className="mb-2 mx-auto">
                             <Accordion style={{ backgroundColor: '#f0f0f0' }}>
                                 {equipment && equipment.length > 0 ? (
-                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!) !== MAX_DATE_TIME)
+                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year)
                                         .map((equipment, index) => (
                                             <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
                                                 <Accordion.Header>
