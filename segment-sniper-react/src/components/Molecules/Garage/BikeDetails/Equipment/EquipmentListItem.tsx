@@ -3,17 +3,15 @@ import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
 import { EquipmentModalState } from "./EquipmentList";
-import { RetireBikeEquipmentValues } from "../../../../../pages/Garage/BikeDetails";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
     setModalState: (modalState: EquipmentModalState) => void;
-    handleRetireEquipment?: (values: RetireBikeEquipmentValues) => void;
 }
 
 
 
-const EquipmentListItem = ({ item, setModalState, handleRetireEquipment }: EquipmentListItemProps) => {
+const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => {
 
 
     const timeFormatter = useTimeFormatConverter();
@@ -64,7 +62,6 @@ const EquipmentListItem = ({ item, setModalState, handleRetireEquipment }: Equip
                     <Button
                         className={styles.retire_button}
                         onClick={() => setModalState({ type: "retire", item: item })}>
-
                         Retire
                     </Button>
                 </Col>
@@ -74,17 +71,3 @@ const EquipmentListItem = ({ item, setModalState, handleRetireEquipment }: Equip
 }
 
 export default EquipmentListItem
-
-// export type Equipment = {
-//     id: string;
-//     bikeId: string;
-//     userId: string;
-//     name: string;
-//     description?: string;
-//     milesLogged: number;
-//     installDate: Date;
-//     retiredDate: Date;
-//     price: number;
-//     replaceAtMiles: number;
-//     milesUntilReplaceReminder: number;
-// };

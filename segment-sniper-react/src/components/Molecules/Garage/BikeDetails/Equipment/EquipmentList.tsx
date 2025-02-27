@@ -1,13 +1,15 @@
 import { Accordion, Button, Col, Container, Row } from "react-bootstrap";
 import EquipmentListItem from "./EquipmentListItem";
 import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
 import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
 import RetireEquipmentModal from "./RetireEquipmentModal";
 import { RetireBikeEquipmentBase } from "../../../../../pages/Garage/BikeDetails";
+import _ from "lodash";
+import { EquipmentAccodion } from "./EquipmentAccordion";
 
 
 type EquipmentListProps = {
@@ -45,6 +47,9 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
         }
     }
 
+    const activeEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year === MAX_DATE_TIME.year);
+    const retiredEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year);
+
     return (
 
         <Container>
@@ -65,30 +70,9 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                     />
                     <p className={styles.equipmentHeading}>Active Equipment</p>
                     <Row className='pt-3 p-1'>
-                        <Col md={8} className="mb-2 mx-auto">
-                            <Accordion style={{ backgroundColor: '#f0f0f0' }}>
-                                {equipment && equipment.length > 0 ? (
-                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!).year === MAX_DATE_TIME.year)
-                                        .map((equipment, index) => (
-                                            <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
-                                                <Accordion.Header>
-                                                    {equipment.name}
-                                                </Accordion.Header>
-                                                <Accordion.Body>
-                                                    <EquipmentListItem
-                                                        item={equipment}
-                                                        setModalState={setModalState}
-                                                        handleRetireEquipment={handleRetireEquipment} />
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                        ))) : (
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header>
-                                            No equipment found
-                                        </Accordion.Header>
-                                    </Accordion.Item>)}
-                            </Accordion>
-                        </Col>
+                        <EquipmentAccodion
+                            equipment={activeEquipment}
+                            setModalState={setModalState} />
                     </Row>
                     <Row sm={5} className="justify-content-center">
                         <Button onClick={() => setModalState({ type: "addEdit" })}>Add Equipment</Button>
@@ -97,29 +81,9 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                 <Row>
                     <p className={styles.equipmentHeading}>Retired Equipment</p>
                     <Row className='pt-3 p-1'>
-                        <Col md={8} className="mb-2 mx-auto">
-                            <Accordion style={{ backgroundColor: '#f0f0f0' }}>
-                                {equipment && equipment.length > 0 ? (
-                                    equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year)
-                                        .map((equipment, index) => (
-                                            <Accordion.Item eventKey={index.toString()} key={equipment.equipmentId}>
-                                                <Accordion.Header>
-                                                    {equipment.name}
-                                                </Accordion.Header>
-                                                <Accordion.Body>
-                                                    <EquipmentListItem
-                                                        item={equipment}
-                                                        setModalState={setModalState} />
-                                                </Accordion.Body>
-                                            </Accordion.Item>
-                                        ))) : (
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header>
-                                            No retired equipment
-                                        </Accordion.Header>
-                                    </Accordion.Item>)}
-                            </Accordion>
-                        </Col>
+                        <EquipmentAccodion
+                            equipment={retiredEquipment}
+                            setModalState={setModalState} />
                     </Row>
                 </Row>
             </Col>
