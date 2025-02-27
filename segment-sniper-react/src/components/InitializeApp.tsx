@@ -45,7 +45,6 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
     };
 
     initializeApp();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Trigger token refresh on navigation
