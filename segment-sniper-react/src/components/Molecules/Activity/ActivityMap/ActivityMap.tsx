@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GoogleMap, Polyline, Marker } from "@react-google-maps/api";
 import { decode } from "@mapbox/polyline";
 import { StravaMap } from "../../../../models/StravaMap";
@@ -13,7 +13,27 @@ const mapContainerStyle = { minHeight: "250px", height: "100%", width: "100%" };
 
 const ActivityMap: React.FC<ActivityMapProps> = (props) => {
 
-  // const mapRef = useRef<google.maps.Map | null>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsVisible(entry.isIntersecting);
+    });
+
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      observer.observe(currentContainer);
+    }
+
+    return () => {
+      if (currentContainer) {
+        observer.unobserve(currentContainer);
+      }
+    };
+  }, []);
+
 
   const polylinePath = useMemo(() => {
     if (props.stravaMap.polyLine) {
@@ -34,42 +54,46 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
   }, [props.startLatlng]);
 
   const onLoad = (map: google.maps.Map) => {
-    // if (!mapRef.current) {
-    //   mapRef.current = map;
+    if (!mapRef.current) {
+      mapRef.current = map;
 
-    if (polylinePath.length > 0) {
-      const bounds = new window.google.maps.LatLngBounds();
-      polylinePath.forEach(({ lat, lng }) => bounds.extend(new google.maps.LatLng(lat, lng)));
-      map.fitBounds(bounds);
+      if (polylinePath.length > 0) {
+        const bounds = new window.google.maps.LatLngBounds();
+        polylinePath.forEach(({ lat, lng }) => bounds.extend(new google.maps.LatLng(lat, lng)));
+        map.fitBounds(bounds);
+      }
     }
-
   };
 
 
   return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      center={center}
-      zoom={11}
-      onLoad={onLoad}
-      options={{
-        mapTypeControl: false,
-        mapTypeControlOptions: {
-          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR, // or `DROPDOWN_MENU`
-          position: google.maps.ControlPosition.TOP_RIGHT, // Customize position
-        },
-      }}
-    >
-      {polylinePath.length > 0 && (
-        <Polyline path={polylinePath} options={{ strokeColor: "#FF0000" }} />
+    <div ref={containerRef}>
+      {isVisible && (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={11}
+          onLoad={onLoad}
+          options={{
+            mapTypeControl: false,
+            mapTypeControlOptions: {
+              style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR, // or `DROPDOWN_MENU`
+              position: google.maps.ControlPosition.TOP_RIGHT, // Customize position
+            },
+          }}
+        >
+          {polylinePath.length > 0 && (
+            <Polyline path={polylinePath} options={{ strokeColor: "#FF0000" }} />
+          )}
+          {props.startLatlng && props.startLatlng.length >= 2 && (
+            <Marker position={{ lat: props.startLatlng[0], lng: props.startLatlng[1] }} label="S" />
+          )}
+          {props.endLatlng && props.endLatlng.length >= 2 && (
+            <Marker position={{ lat: props.endLatlng[0], lng: props.endLatlng[1] }} label="E" />
+          )}
+        </GoogleMap>
       )}
-      {props.startLatlng && props.startLatlng.length >= 2 && (
-        <Marker position={{ lat: props.startLatlng[0], lng: props.startLatlng[1] }} label="S" />
-      )}
-      {props.endLatlng && props.endLatlng.length >= 2 && (
-        <Marker position={{ lat: props.endLatlng[0], lng: props.endLatlng[1] }} label="E" />
-      )}
-    </GoogleMap>
+    </div>
   );
 };
 
