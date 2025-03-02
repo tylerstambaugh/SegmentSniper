@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Col, Row } from 'react-bootstrap';
 import PrevArrow from '../../../Atoms/Slider/PrevArrow';
 import NextArrow from '../../../Atoms/Slider/NextArrow';
+import { debounce } from 'lodash';
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
@@ -50,19 +51,23 @@ const SnipeSegmentCardCarousel = ({
     );
   };
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
+  // const checkScreenSize = useCallback(
+  //   debounce(() => {
+  //     setIsSmallScreen(window.innerWidth < 768);
+  //   }, 200),
+  //   []
+  // );
 
-    checkScreenSize();
+  // useEffect(() => {
+  //   checkScreenSize();
 
-    window.addEventListener('resize', checkScreenSize);
+  //   window.addEventListener("resize", checkScreenSize);
 
-    return () => {
-      window.removeEventListener('resize', checkScreenSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", checkScreenSize);
+  //     checkScreenSize.cancel();
+  //   };
+  // }, [checkScreenSize]);
 
   return (
     <>

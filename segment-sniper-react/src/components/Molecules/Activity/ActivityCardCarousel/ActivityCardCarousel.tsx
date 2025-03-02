@@ -4,9 +4,10 @@ import "slick-carousel/slick/slick-theme.css";
 import useActivityListStore from "../../../../stores/useActivityListStore";
 import ActivityCard from "../ActivityCard/ActivityCard";
 import { Col, Container, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NextArrow from "../../../Atoms/Slider/NextArrow";
 import PrevArrow from "../../../Atoms/Slider/PrevArrow";
+import { debounce } from "lodash";
 
 const ActivityCardCarousel = () => {
   const [activityList] = useActivityListStore((state) => [state.activityList]);
@@ -15,7 +16,7 @@ const ActivityCardCarousel = () => {
   const settings: Settings = {
     dots: false,
     centerMode: false,
-    adaptiveHeight: true,
+    adaptiveHeight: false,
     infinite: true,
     speed: 300,
     slidesToShow: 1,
@@ -24,21 +25,28 @@ const ActivityCardCarousel = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     className: "slider-container",
+
+
   };
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
+  // const checkScreenSize = useCallback(
+  //   debounce(() => {
+  //     setIsSmallScreen(window.innerWidth < 768);
+  //   }, 200),
+  //   []
+  // );
 
-    checkScreenSize();
+  // useEffect(() => {
+  //   checkScreenSize();
 
-    window.addEventListener("resize", checkScreenSize);
+  //   window.addEventListener("resize", checkScreenSize);
 
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", checkScreenSize);
+  //     checkScreenSize.cancel();
+  //   };
+  // }, [checkScreenSize]);
+
 
   return (
     <>

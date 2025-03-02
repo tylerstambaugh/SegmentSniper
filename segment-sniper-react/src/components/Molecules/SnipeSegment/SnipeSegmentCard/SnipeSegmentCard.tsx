@@ -81,6 +81,7 @@ const SnipeSegmentCard = ({
   );
 
   const linkToSegmentOnStrava: string = `https://www.strava.com/segments/${snipeSegment.segmentId}`;
+  console.log('snipeSegment', snipeSegment);
 
   return (
     <Col className="py-2 px-2">
@@ -92,7 +93,7 @@ const SnipeSegmentCard = ({
                 <Link to={linkToSegmentOnStrava} target='blank'>{snipeSegment.name}</Link>
 
                 {(!leaderTypeQom && snipeSegment.secondsFromKom === 0) ||
-                (leaderTypeQom && snipeSegment.secondsFromQom === 0) ? (
+                  (leaderTypeQom && snipeSegment.secondsFromQom === 0) ? (
                   <FontAwesomeIcon icon={crown} className="ps-2" />
                 ) : (
                   <></>
@@ -164,8 +165,8 @@ const SnipeSegmentCard = ({
                           ? snipeSegment.prSecondsFromKom
                           : snipeSegment.timeFromKom
                         : comparePrTime
-                        ? snipeSegment.prSecondsFromQom
-                        : snipeSegment.timeFromQom}
+                          ? snipeSegment.prSecondsFromQom
+                          : snipeSegment.timeFromQom}
                     </p>
                   </Col>
                 </Row>
@@ -182,8 +183,8 @@ const SnipeSegmentCard = ({
                           ? `${snipeSegment.prPercentageFromKom}%`
                           : `${snipeSegment.percentageFromKom}% `
                         : comparePrTime
-                        ? `${snipeSegment.prPercentageFromQom}%`
-                        : `${snipeSegment.percentageFromQom}%`}
+                          ? `${snipeSegment.prPercentageFromQom}%`
+                          : `${snipeSegment.percentageFromQom}%`}
                     </p>
                   </Col>
                 </Row>
