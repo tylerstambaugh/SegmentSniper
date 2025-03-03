@@ -16,7 +16,7 @@ const ActivityCardCarousel = () => {
   const settings: Settings = {
     dots: false,
     centerMode: false,
-    adaptiveHeight: false,
+    adaptiveHeight: true,
     infinite: true,
     speed: 300,
     slidesToShow: 1,
@@ -25,27 +25,27 @@ const ActivityCardCarousel = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     className: "slider-container",
-
+    lazyLoad: "ondemand",
 
   };
 
-  // const checkScreenSize = useCallback(
-  //   debounce(() => {
-  //     setIsSmallScreen(window.innerWidth < 768);
-  //   }, 200),
-  //   []
-  // );
+  const checkScreenSize = useCallback(
+    debounce(() => {
+      setIsSmallScreen(window.innerWidth < 768);
+    }, 200),
+    []
+  );
 
-  // useEffect(() => {
-  //   checkScreenSize();
+  useEffect(() => {
+    checkScreenSize();
 
-  //   window.addEventListener("resize", checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-  //   return () => {
-  //     window.removeEventListener("resize", checkScreenSize);
-  //     checkScreenSize.cancel();
-  //   };
-  // }, [checkScreenSize]);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+      checkScreenSize.cancel();
+    };
+  }, [checkScreenSize]);
 
 
   return (
