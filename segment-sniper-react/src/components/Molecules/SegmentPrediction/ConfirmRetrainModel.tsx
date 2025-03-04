@@ -36,8 +36,6 @@ const ConfirmRretainSegmentPredictionModelModal = ({
     }
   }, [trainedModelData, handleCloseModal])
 
-  console.log("trained model data:", trainedModelData);
-
   function handleConfirm() {
     retrainModel();
   }

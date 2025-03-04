@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import NextArrow from "../../../Atoms/Slider/NextArrow";
 import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 import { debounce } from "lodash";
+import React from "react";
 
 const ActivityCardCarousel = () => {
   const [activityList] = useActivityListStore((state) => [state.activityList]);
@@ -21,13 +22,14 @@ const ActivityCardCarousel = () => {
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: !isSmallScreen,
+    arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    // nextArrow: <button>Next</button>,
+    // prevArrow: <button>Prev</button>,
     className: "slider-container",
-    lazyLoad: "ondemand",
-
   };
+
 
   const checkScreenSize = useCallback(
     debounce(() => {
@@ -66,20 +68,23 @@ const ActivityCardCarousel = () => {
             <Col>
               <Slider
                 {...settings}
-                beforeChange={(oldIndex, newIndex) =>
-                  setActivityIndex(newIndex)
+                beforeChange={(oldIndex, newIndex) => {
+                  setActivityIndex(() => newIndex);
+                }
                 }
                 className={
                   activityList.length > 1 ? "d-flex px-3" : "d-inline px-3"
                 }
               >
                 {activityList.map((activity, index) => (
-                  <ActivityCard
-                    key={activity.activityId}
-                    activity={activity}
-                    isActivitySearchResults={true}
-                    mapShown={true}
-                  />
+                  index === activityIndex ? (
+                    <ActivityCard
+                      key={activity.activityId}
+                      activity={activity}
+                      isActivitySearchResults={true}
+                      mapShown={true}
+                    />
+                  ) : <></>
                 ))}
               </Slider>
             </Col>
@@ -98,4 +103,4 @@ const ActivityCardCarousel = () => {
   );
 };
 
-export default ActivityCardCarousel;
+export default React.memo(ActivityCardCarousel);

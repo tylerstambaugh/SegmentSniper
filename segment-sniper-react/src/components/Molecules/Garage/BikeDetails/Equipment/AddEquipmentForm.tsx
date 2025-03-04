@@ -58,8 +58,6 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values) => {
-            console.log("formik errors", formik.errors);
-            console.log("formik values", formik.values);
             setValidated(true);
             await handleSubmit(values)
         }
@@ -81,7 +79,6 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                     value={formik.values.name}
                                     onChange={(e) => {
                                         formik.setFieldValue("name", e.target.value);
-                                        console.log("errors", formik.errors)
                                     }
 
                                     } />
@@ -114,8 +111,6 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                                 e.target.value,
                                                 "yyyy-MM-dd"
                                             );
-                                            console.log("newDate", newDate);
-
                                             formik.setFieldValue("installDate", newDate)
                                         }
                                         } />

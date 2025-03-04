@@ -34,8 +34,6 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values) => {
-            console.log("formik errors", formik.errors);
-            console.log("formik values", formik.values);
             setValidated(true);
             await handleRetireEquipment(values)
         }
