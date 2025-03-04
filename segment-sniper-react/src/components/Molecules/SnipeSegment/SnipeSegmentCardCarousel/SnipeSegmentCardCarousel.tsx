@@ -51,23 +51,23 @@ const SnipeSegmentCardCarousel = ({
     );
   };
 
-  // const checkScreenSize = useCallback(
-  //   debounce(() => {
-  //     setIsSmallScreen(window.innerWidth < 768);
-  //   }, 200),
-  //   []
-  // );
+  const checkScreenSize = useCallback(
+    debounce(() => {
+      setIsSmallScreen(window.innerWidth < 768);
+    }, 200),
+    []
+  );
 
-  // useEffect(() => {
-  //   checkScreenSize();
+  useEffect(() => {
+    checkScreenSize();
 
-  //   window.addEventListener("resize", checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-  //   return () => {
-  //     window.removeEventListener("resize", checkScreenSize);
-  //     checkScreenSize.cancel();
-  //   };
-  // }, [checkScreenSize]);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+      checkScreenSize.cancel();
+    };
+  }, [checkScreenSize]);
 
   return (
     <>
@@ -79,16 +79,18 @@ const SnipeSegmentCardCarousel = ({
                 <Slider
                   {...settings}
                   beforeChange={(oldIndex, newIndex) =>
-                    setSegmentIndex(newIndex)
+                    setSegmentIndex(() => newIndex)
                   }
                   className="d-flex"
                 >
                   {snipeSegmentList.map((snipeSegment, index) => (
-                    <SnipeSegmentCard
-                      key={uuidv4()}
-                      snipeSegment={snipeSegment}
-                      leaderTypeQom={leaderTypeQom}
-                    />
+                    index === segmentIndex ? (
+                      <SnipeSegmentCard
+                        key={uuidv4()}
+                        snipeSegment={snipeSegment}
+                        leaderTypeQom={leaderTypeQom}
+                      />
+                    ) : (<></>)
                   ))}
                 </Slider>
               </Col>

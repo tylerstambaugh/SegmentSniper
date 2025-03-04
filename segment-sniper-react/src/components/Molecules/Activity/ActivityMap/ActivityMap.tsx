@@ -65,7 +65,6 @@ const ActivityMap: React.FC<ActivityMapProps> = (props) => {
     }
   };
 
-
   return (
     <div ref={containerRef}>
       {isVisible && (

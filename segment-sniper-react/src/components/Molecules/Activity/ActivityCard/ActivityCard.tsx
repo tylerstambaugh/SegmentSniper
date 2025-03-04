@@ -8,6 +8,7 @@ import ActivityMap from "../ActivityMap/ActivityMap";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./ActivityCard.module.scss";
+import React from "react";
 
 type ActivityCardProps = {
   activity: ActivityListItem;
@@ -126,4 +127,4 @@ const ActivityCard = ({
   );
 };
 
-export default ActivityCard;
+export default React.memo(ActivityCard);

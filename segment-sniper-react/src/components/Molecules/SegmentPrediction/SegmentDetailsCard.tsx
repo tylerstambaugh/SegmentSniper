@@ -49,10 +49,6 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
     }
   }
 
-  useEffect(() => {
-    console.log('segment details:', segmentDetails);
-  }, [segmentDetails]);
-
   return (
     <>
       {segmentDetails ? (
@@ -130,7 +126,7 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
                         </Col>
                       </Row>
                     </Col>
-                  
+
                     <Col className="p-0" md={12} lg={6}>
                       <ActivityMap
                         stravaMap={segmentDetails.map!}
