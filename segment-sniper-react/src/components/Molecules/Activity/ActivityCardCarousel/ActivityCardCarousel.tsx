@@ -25,8 +25,8 @@ const ActivityCardCarousel = () => {
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    // nextArrow: <button>Next</button>,
-    // prevArrow: <button>Prev</button>,
+    swipeToSlide: true,
+
     className: "slider-container",
   };
 

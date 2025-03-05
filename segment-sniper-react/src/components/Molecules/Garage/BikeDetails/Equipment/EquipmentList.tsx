@@ -69,7 +69,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                         handleRetireEquipment={handleRetireEquipment}
                     />
                     <p className={styles.equipmentHeading}>Active Equipment</p>
-                    <Row className='pt-3 p-1'>
+                    <Row className='pt-1 p-1'>
                         <EquipmentAccodion
                             equipment={activeEquipment}
                             setModalState={setModalState} />
@@ -80,14 +80,14 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                 </Row>
                 <Row>
                     <p className={styles.equipmentHeading}>Retired Equipment</p>
-                    <Row className='pt-3 p-1'>
+                    <Row className='pt-1 p-1'>
                         <EquipmentAccodion
                             equipment={retiredEquipment}
                             setModalState={setModalState} />
                     </Row>
                 </Row>
             </Col>
-        </Container>
+        </Container >
     )
 }
 
