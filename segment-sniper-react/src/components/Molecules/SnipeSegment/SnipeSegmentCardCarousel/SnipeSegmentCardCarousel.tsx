@@ -35,6 +35,7 @@ const SnipeSegmentCardCarousel = ({
     arrows: !isSmallScreen,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    swipeToSlide: true,
   };
 
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
