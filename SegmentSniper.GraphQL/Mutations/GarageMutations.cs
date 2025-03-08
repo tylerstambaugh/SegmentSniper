@@ -15,27 +15,26 @@ namespace SegmentSniper.GraphQL.Mutations
         {
             Name = "GarageMutations";
 
-            //// Define the updateGarage mutation
-            //AddField(new FieldType
-            //{
-            //    Name = "updateGarage",
-            //    Type = typeof(BooleanGraphType), // The return type of the mutation
-            //    Arguments = new QueryArguments(
-            //        new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
-            //    ),
-            //    Resolver = new FuncFieldResolver<bool>(context =>
-            //    {
-            //        // Retrieve the userId from the request arguments
-            //        var userId = context.GetArgument<string>("userId");
+            // Define the updateGarage mutation
+            AddField(new FieldType
+            {
+                Name = "UpdateGarage",
+                Type = typeof(ListGraphType<BikeTypeDef>),
+                Arguments = new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
+                ),
+                Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
+                {                    
+                    var userId = context.GetArgument<string>("userId");
 
-            //        // Call the UpdateGarage action handler
-            //      //  updateGarage.ExecuteAsync(new UpdateGarageContract(userId));
+                    var service = context.RequestServices.GetRequiredService<IUpdateGarage>();
+                    
+                    var result = await service.ExecuteAsync(new UpdateGarageContract(userId));
 
-            //        // Return true to indicate success
-            //        return true;
-            //    }),
-            //    Description = "Updates the bikes in the user's garage."
-            //}).AuthorizeWithPolicy("UserPolicy");
+                    return result.Bikes;
+                }),
+                Description = "Updates the bikes in the user's garage."
+            }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {

@@ -1,4 +1,6 @@
-﻿namespace SegmentSniper.Services.Garage
+﻿using SegmentSniper.Models.Models.Garage;
+
+namespace SegmentSniper.Services.Garage
 {
     public interface IUpdateGarage
     {
@@ -16,12 +18,12 @@
 
         public class Result
         {
-            public Result(bool success)
+            public Result(List<BikeModel> bikes)
             {
-                Success = success;
+                Bikes = bikes;
             }
 
-            public bool Success { get; set; }
+            public List<BikeModel> Bikes { get; set; }
         }
     }
 }

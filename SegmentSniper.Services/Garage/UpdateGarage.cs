@@ -1,5 +1,6 @@
 ﻿using IdentityModel;
 using SegmentSniper.Data;
+using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -16,10 +17,10 @@ namespace SegmentSniper.Services.Garage
         {
             ValidateContract(contract);
 
-            var existingBike = _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId);
+            var existingBikes = _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId);
             var existingBikeActivies = _segmentSniperDbContext.BikeActivities.Where(b => b.UserId == contract.UserId);
 
-            throw new NotImplementedException();
+            return new UpdateGarageContract.Result(new List<BikeModel>());
         }
 
         private void ValidateContract(UpdateGarageContract contract)
