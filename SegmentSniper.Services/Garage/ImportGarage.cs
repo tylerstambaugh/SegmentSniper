@@ -4,26 +4,26 @@ using SegmentSniper.Models.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
-    public class UpdateGarage : IUpdateGarage
+    public class ImportGarage : IImportGarage
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public UpdateGarage(ISegmentSniperDbContext segmentSniperDbContext)
+        public ImportGarage(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<UpdateGarageContract.Result> ExecuteAsync(UpdateGarageContract contract)
+        public async Task<ImportGarageContract.Result> ExecuteAsync(ImportGarageContract contract)
         {
             ValidateContract(contract);
 
             var existingBikes = _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId);
             var existingBikeActivies = _segmentSniperDbContext.BikeActivities.Where(b => b.UserId == contract.UserId);
 
-            return new UpdateGarageContract.Result(new List<BikeModel>());
+            return new ImportGarageContract.Result(new List<BikeModel>());
         }
 
-        private void ValidateContract(UpdateGarageContract contract)
+        private void ValidateContract(ImportGarageContract contract)
         {
             if (contract == null)
             {

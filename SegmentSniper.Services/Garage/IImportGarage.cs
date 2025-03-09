@@ -2,19 +2,22 @@
 
 namespace SegmentSniper.Services.Garage
 {
-    public interface IUpdateGarage
+    public interface IImportGarage
     {
-        Task<UpdateGarageContract.Result> ExecuteAsync(UpdateGarageContract contract);
+        Task<ImportGarageContract.Result> ExecuteAsync(ImportGarageContract contract);
     }
 
-    public class UpdateGarageContract
+    public class ImportGarageContract
     {
-        public UpdateGarageContract(string userId)
+        public ImportGarageContract(string userId, List<BikeModel> bikes)
         {
             UserId = userId;
+
+            Bikes = bikes;
         }
 
         public string UserId { get; }
+        public List<BikeModel> Bikes { get; set; }
 
         public class Result
         {
