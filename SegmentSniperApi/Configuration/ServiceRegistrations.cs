@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
+using SegmentSniper.Api.ActionHandlers.GarageActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
@@ -75,6 +76,9 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
             services.AddScoped<IRemoveUserActionHandler, RemoveUserActionHandler>();
 
+            //garage actionhandlers
+            services.AddScoped<IImportGarageActionHandler, ImportGarageActionHandler>();
+
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();
             services.AddScoped<IRevokeToken, RevokeToken>();
@@ -137,7 +141,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IAddBikeActivity, AddBikeActivity>();
             services.AddScoped<IGetAllBikeActivitiesByBikeId, GetAllBikeActivitiesByBikeId>();
             services.AddScoped<IGetAllBikeActivitiesByUserId, GetAllBikeActivitiesByUserId>();
-            services.AddScoped<IUpdateGarage,  UpdateGarage>();
+            services.AddScoped<IImportGarage,  ImportGarage>();
             services.AddScoped<IUpsertBikeEquipment, UpsertBikeEquipment>();
             services.AddScoped<IRetireBikeEquipment, RetireBikeEquipment>();
 

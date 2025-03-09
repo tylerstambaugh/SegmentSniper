@@ -16,25 +16,25 @@ namespace SegmentSniper.GraphQL.Mutations
             Name = "GarageMutations";
 
             // Define the updateGarage mutation
-            AddField(new FieldType
-            {
-                Name = "UpdateGarage",
-                Type = typeof(ListGraphType<BikeTypeDef>),
-                Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
-                ),
-                Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
-                {                    
-                    var userId = context.GetArgument<string>("userId");
+            //AddField(new FieldType
+            //{
+            //    Name = "ImportGarage",
+            //    Type = typeof(ListGraphType<BikeTypeDef>),
+            //    Arguments = new QueryArguments(
+            //        new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
+            //    ),
+            //    Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
+            //    {                    
+            //        var userId = context.GetArgument<string>("userId");
 
-                    var service = context.RequestServices.GetRequiredService<IUpdateGarage>();
+            //        var service = context.RequestServices.GetRequiredService<IImportGarageActionHandler>();
                     
-                    var result = await service.ExecuteAsync(new UpdateGarageContract(userId));
+            //        var result = await service.ExecuteAsync(new ImportGarageContract(userId));
 
-                    return result.Bikes;
-                }),
-                Description = "Updates the bikes in the user's garage."
-            }).AuthorizeWithPolicy("UserPolicy");
+            //        return result.Bikes;
+            //    }),
+            //    Description = "Updates the bikes in the user's garage."
+            //}).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {
