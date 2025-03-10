@@ -67,6 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
     <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
     <ProjectReference Include="..\SegmentSniper.GraphQL\SegmentSniper.GraphQL.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />

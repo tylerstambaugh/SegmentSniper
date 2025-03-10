@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿
+
+using AutoMapper;
 using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
@@ -8,7 +10,7 @@ using StravaApiClient.Models.Misc;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 
-namespace SegmentSniper.Api.ActionHandlers.GarageActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
 {
     public class ImportGarageActionHandler : IImportGarageActionHandler
     {

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿
+
 using SegmentSniper.Models.Models.Garage;
 
-namespace SegmentSniper.Api.ActionHandlers.GarageActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
 {
     public interface IImportGarageActionHandler
     {
