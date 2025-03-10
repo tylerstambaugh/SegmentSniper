@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
   </ItemGroup>

@@ -2,6 +2,7 @@
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
+using SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers;
 using SegmentSniper.GraphQL.Types;
 using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Services.Garage;
@@ -16,25 +17,25 @@ namespace SegmentSniper.GraphQL.Mutations
             Name = "GarageMutations";
 
             // Define the updateGarage mutation
-            //AddField(new FieldType
-            //{
-            //    Name = "ImportGarage",
-            //    Type = typeof(ListGraphType<BikeTypeDef>),
-            //    Arguments = new QueryArguments(
-            //        new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
-            //    ),
-            //    Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
-            //    {                    
-            //        var userId = context.GetArgument<string>("userId");
+            AddField(new FieldType
+            {
+                Name = "ImportGarage",
+                Type = typeof(ListGraphType<BikeTypeDef>),
+                Arguments = new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
+                ),
+                Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
+                {
+                    var userId = context.GetArgument<string>("userId");
 
-            //        var service = context.RequestServices.GetRequiredService<IImportGarageActionHandler>();
-                    
-            //        var result = await service.ExecuteAsync(new ImportGarageContract(userId));
+                    var service = context.RequestServices.GetRequiredService<IImportGarageActionHandler>();
 
-            //        return result.Bikes;
-            //    }),
-            //    Description = "Updates the bikes in the user's garage."
-            //}).AuthorizeWithPolicy("UserPolicy");
+                    var result = await service.ExecuteAsync(new ImportGarageRequest(userId));
+
+                    return result.Bikes;
+                }),
+                Description = "Updates the bikes in the user's garage."
+            }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {
