@@ -40,35 +40,35 @@ const SnipeSegmentCardCarousel = ({
 
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
 
-  const goToPrevSlide = () => {
-    setSegmentIndex((prevIndex) =>
-      prevIndex > 0 ? prevIndex - 1 : snipeSegmentList.length - 1
-    );
-  };
+  // const goToPrevSlide = () => {
+  //   setSegmentIndex((prevIndex) =>
+  //     prevIndex > 0 ? prevIndex - 1 : snipeSegmentList.length - 1
+  //   );
+  // };
 
-  const goToNextSlide = () => {
-    setSegmentIndex((prevIndex) =>
-      prevIndex < snipeSegmentList.length - 1 ? prevIndex + 1 : 0
-    );
-  };
+  // const goToNextSlide = () => {
+  //   setSegmentIndex((prevIndex) =>
+  //     prevIndex < snipeSegmentList.length - 1 ? prevIndex + 1 : 0
+  //   );
+  // };
 
-  const checkScreenSize = useCallback(
-    debounce(() => {
-      setIsSmallScreen(window.innerWidth < 768);
-    }, 200),
-    []
-  );
+  // const checkScreenSize = useCallback(
+  //   debounce(() => {
+  //     setIsSmallScreen(window.innerWidth < 768);
+  //   }, 200),
+  //   []
+  // );
 
-  useEffect(() => {
-    checkScreenSize();
+  // useEffect(() => {
+  //   checkScreenSize();
 
-    window.addEventListener("resize", checkScreenSize);
+  //   window.addEventListener("resize", checkScreenSize);
 
-    return () => {
-      window.removeEventListener("resize", checkScreenSize);
-      checkScreenSize.cancel();
-    };
-  }, [checkScreenSize]);
+  //   return () => {
+  //     window.removeEventListener("resize", checkScreenSize);
+  //     checkScreenSize.cancel();
+  //   };
+  // }, [checkScreenSize]);
 
   return (
     <>

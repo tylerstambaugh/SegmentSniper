@@ -84,6 +84,9 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         //refactor this into the service that saves the ML_SegmentEffort. Use automapper.
         private ML_SegmentEffort CreateMlSegmentEffort(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
         {
+            try
+            {
+
             return new ML_SegmentEffort
             {
                 UserId = _userId,
@@ -105,10 +108,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 StarCount = detailedSegment.StarCount,
                 PrRank = dse.PrRank,                
             };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         private SnipeSegment CreateSnipeSegmentFromDetails(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
         {
+            try
+            {
+
             XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
             int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
@@ -155,6 +166,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             };
 
             return snipeSegment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         //convert all of these into a helpers class
