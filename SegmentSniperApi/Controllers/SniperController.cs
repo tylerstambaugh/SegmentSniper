@@ -70,31 +70,6 @@ namespace SegmentSniper.Api.Controllers
                 return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
         }
 
-
-        [HttpPost]
-        [Authorize]
-        [Route("snipeSegments")]
-        public async Task<IActionResult> SnipeSegments([FromBody] SegmentSniperContract contract)
-        {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var request = new SnipeSegmentsRequest
-            {
-                UserId = userId,
-                ActivityId = contract.ActivityId,
-                SecondsFromKom = contract.SecondsOff,
-                PercentageFromKom = contract.PercentageOff,
-                UseQom = contract.UseQom,
-            };
-
-            var returnList = await _snipeSegmentsActionHandler.Handle(request);
-
-            if (returnList != null)
-                return Ok(returnList);
-            else
-                return StatusCode(421, "Unable to snipe segments.");
-        }
-
-
         [HttpPost]
         [Authorize]
         [Route("starSegment/{segmentId}")]

@@ -143,7 +143,7 @@ html {
 
 .customSlider {
   /* max width of your slider */
-  max-width: 100px;
+  max-width: 500px;
   /* Optional: Only If you want to center your slider in the page */
   /* margin: auto; */
   padding-bottom: 2rem;
