@@ -5,6 +5,8 @@ import { UserRole } from "../../../enums/Roles";
 import useUserStore from "../../../stores/useUserStore";
 import { AppRoutes } from "../../../enums/AppRoutes";
 
+import type { JSX } from "react";
+
 type Props = {
   children: JSX.Element;
   userRoles?: Array<UserRole>;

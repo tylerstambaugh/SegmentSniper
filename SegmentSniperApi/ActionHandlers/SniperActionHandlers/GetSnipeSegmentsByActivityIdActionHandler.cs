@@ -86,28 +86,27 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             try
             {
-
-            return new ML_SegmentEffort
-            {
-                UserId = _userId,
-                StravaSegmentEffortId = dse.SegmentEffortId,
-                StravaSegmentId = detailedSegment.SegmentId,
-                SegmentName = detailedSegment.Name,
-                ElapsedTime = dse.ElapsedTime,
-                SegmentPrTime = detailedSegment.AthleteSegmentStats.PrElapsedTime,
-                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
-                AverageSpeed = CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
-                ElevationGain = detailedSegment.TotalElevationGain,
-                AverageGrade = detailedSegment.AverageGrade,
-                MaximumGrade = detailedSegment.MaximumGrade,
-                AverageHeartRate = dse.AverageHeartrate,
-                KomTime = GetTimeFromString(detailedSegment.Xoms.Kom),
-                QomTime = GetTimeFromString(detailedSegment.Xoms.Qom),
-                AthleteCount = detailedSegment.AthleteCount,
-                EffortCount = detailedSegment.EffortCount,
-                StarCount = detailedSegment.StarCount,
-                PrRank = dse.PrRank,                
-            };
+                return new ML_SegmentEffort
+                {
+                    UserId = _userId,
+                    StravaSegmentEffortId = dse.SegmentEffortId,
+                    StravaSegmentId = detailedSegment.SegmentId,
+                    SegmentName = detailedSegment.Name,
+                    ElapsedTime = dse.ElapsedTime,
+                    SegmentPrTime = detailedSegment.AthleteSegmentStats.PrElapsedTime,
+                    Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
+                    AverageSpeed = CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
+                    ElevationGain = detailedSegment.TotalElevationGain,
+                    AverageGrade = detailedSegment.AverageGrade,
+                    MaximumGrade = detailedSegment.MaximumGrade,
+                    AverageHeartRate = dse.AverageHeartrate,
+                    KomTime = GetTimeFromString(detailedSegment.Xoms.Kom),
+                    QomTime = GetTimeFromString(detailedSegment.Xoms.Qom),
+                    AthleteCount = detailedSegment.AthleteCount,
+                    EffortCount = detailedSegment.EffortCount,
+                    StarCount = detailedSegment.StarCount,
+                    PrRank = dse.PrRank,                
+                };
             }
             catch (Exception ex)
             {
@@ -120,52 +119,52 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             try
             {
 
-            XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
+                XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
-            int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
-            int prPercentageOffKom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
-            int percentageOffQom = (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
-            int prPercentageOffQom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
+                int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
+                int prPercentageOffKom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
+                int percentageOffQom = (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
+                int prPercentageOffQom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
 
-            int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
-            int prSecondsOffKom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime;
-            int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
-            int prSecondsOffQom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime;
+                int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
+                int prSecondsOffKom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime;
+                int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
+                int prSecondsOffQom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime;
 
-            SnipeSegment snipeSegment = new SnipeSegment
-            {
-                ActivityId = dse.ActivityId,
-                DetailedSegmentEffort = dse,
-                SegmentId = dse.SummarySegment.Id,
-                Name = dse.Name,
-                KomTime = ConvertTimeInSeconds(xomsTime.KomTime),
-                QomTime = ConvertTimeInSeconds(xomsTime.QomTime),
-                PercentageFromKom = percentageOffKom,
-                PercentageFromQom = percentageOffQom,
-                PrPercentageFromKom = prPercentageOffKom,
-                PrPercentageFromQom = prPercentageOffQom,
-                TimeFromKom = ConvertTimeInSeconds(secondsOffKom),
-                TimeFromQom = ConvertTimeInSeconds(secondsOffQom),
-                SecondsFromKom = secondsOffKom,
-                SecondsFromQom = secondsOffQom,
-                PrSecondsFromKom = ConvertTimeInSeconds(prSecondsOffKom),
-                PrSecondsFromQom = ConvertTimeInSeconds(prSecondsOffQom),
-                ActivityType = detailedSegment.ActivityType,
-                Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
-                Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
-                CreatedAt = detailedSegment.CreatedAt,
-                Map = detailedSegment.Map,
-                EffortCount = detailedSegment.EffortCount,
-                AthleteCount = detailedSegment.AthleteCount,
-                Starred = detailedSegment.Starred,
-                StarCount = detailedSegment.StarCount,
-                AthleteSegmentStats = _mapper.Map<AthleteSegmentStats, AthleteSegmentStatsUiModel>(detailedSegment.AthleteSegmentStats),
-                Xoms = detailedSegment.Xoms,
-                LocalLegend = detailedSegment.LocalLegend,
-                Heading = HeadingCalculator.CalculateBearing(dse.SummarySegment.StartLatlng, dse.SummarySegment.EndLatlng),
-            };
+                SnipeSegment snipeSegment = new SnipeSegment
+                {
+                    ActivityId = dse.ActivityId,
+                    DetailedSegmentEffort = dse,
+                    SegmentId = dse.SummarySegment.Id,
+                    Name = dse.Name,
+                    KomTime = ConvertTimeInSeconds(xomsTime.KomTime),
+                    QomTime = ConvertTimeInSeconds(xomsTime.QomTime),
+                    PercentageFromKom = percentageOffKom,
+                    PercentageFromQom = percentageOffQom,
+                    PrPercentageFromKom = prPercentageOffKom,
+                    PrPercentageFromQom = prPercentageOffQom,
+                    TimeFromKom = ConvertTimeInSeconds(secondsOffKom),
+                    TimeFromQom = ConvertTimeInSeconds(secondsOffQom),
+                    SecondsFromKom = secondsOffKom,
+                    SecondsFromQom = secondsOffQom,
+                    PrSecondsFromKom = ConvertTimeInSeconds(prSecondsOffKom),
+                    PrSecondsFromQom = ConvertTimeInSeconds(prSecondsOffQom),
+                    ActivityType = detailedSegment.ActivityType,
+                    Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
+                    Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
+                    CreatedAt = detailedSegment.CreatedAt,
+                    Map = detailedSegment.Map,
+                    EffortCount = detailedSegment.EffortCount,
+                    AthleteCount = detailedSegment.AthleteCount,
+                    Starred = detailedSegment.Starred,
+                    StarCount = detailedSegment.StarCount,
+                    AthleteSegmentStats = _mapper.Map<AthleteSegmentStats, AthleteSegmentStatsUiModel>(detailedSegment.AthleteSegmentStats),
+                    Xoms = detailedSegment.Xoms,
+                    LocalLegend = detailedSegment.LocalLegend,
+                    Heading = HeadingCalculator.CalculateBearing(dse.SummarySegment.StartLatlng, dse.SummarySegment.EndLatlng),
+                };
 
-            return snipeSegment;
+                return snipeSegment;
             }
             catch (Exception ex)
             {
