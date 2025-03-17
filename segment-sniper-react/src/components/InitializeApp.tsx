@@ -6,6 +6,7 @@ import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguratio
 import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
 import { CustomToast } from "./Molecules/Toast/CustomToast";
 import useTokenDataStore from "../stores/useTokenStore";
+import { ClientConfigurationResponse } from "../services/Api/getClientConfiguration";
 
 interface InitializeComponentProps {
   children: ReactNode;
@@ -25,7 +26,7 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        const appConfigData = await getClientConfig.mutateAsync();
+        const appConfigData: ClientConfigurationResponse = await getClientConfig.mutateAsync() as ClientConfigurationResponse;
 
         setAppConfig({
           clientId: appConfigData?.stravaApiClientId ?? "",
