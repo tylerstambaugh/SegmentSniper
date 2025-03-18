@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import RetireBikeEquipment from './RetireBikeEquipment.graphql';
+import RetireEquipmentOnBike from './RetireBikeEquipment.graphql';
 import {
   RootMutation,
   GarageMutationsRetireEquipmentOnBikeArgs,
@@ -15,5 +15,5 @@ export function useRetireBikeEquipmentMutation(
   return Apollo.useMutation<
     { garage: RootMutation['garage'] },
     GarageMutationsRetireEquipmentOnBikeArgs
-  >(RetireBikeEquipment, options);
+  >(RetireEquipmentOnBike, options);
 }

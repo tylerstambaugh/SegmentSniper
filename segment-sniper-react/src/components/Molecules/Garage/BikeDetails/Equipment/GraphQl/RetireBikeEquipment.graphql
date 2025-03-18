@@ -1,4 +1,4 @@
-mutation RetireBikeEquipment(
+mutation RetireEquipmentOnBike(
   $bikeId: ID!
   $equipmentId: ID!
   $userId: ID!

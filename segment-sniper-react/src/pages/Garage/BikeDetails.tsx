@@ -8,7 +8,7 @@ import { EquipmentInput, Maybe } from "../../graphql/generated";
 import useUserStore from "../../stores/useUserStore";
 import { AppRoutes } from "../../enums/AppRoutes";
 import { DateTime } from "luxon";
-import { useRetireBikeEquipmentMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useRetireBikeQuipment";
+import { useRetireBikeEquipmentMutation } from "../../components/Molecules/Garage/BikeDetails/Equipment/GraphQl/useRetireBikeEquipment";
 
 
 export interface RetireBikeEquipmentBase {
@@ -36,9 +36,9 @@ const BikeDetails = () => {
     ] = useAddEquipmentToBikeMutation();
 
     const [retireBikeEquipment,
-        { data: retireBikeQuipmentData,
-            loading: retieBikeQuipmentLoading,
-            error: retireBikeQuipmentError }] = useRetireBikeEquipmentMutation();
+        { data: retireBikeEquipmentData,
+            loading: retieBikeEquipmentLoading,
+            error: retireBikeEquipmentError }] = useRetireBikeEquipmentMutation();
 
     if (bikeLoading || addEquipmentLoading) return <p>Loading...</p>;
     if (bikeError || addEquipmentError) {

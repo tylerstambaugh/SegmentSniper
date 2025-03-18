@@ -12,18 +12,17 @@ export const usePostStarSegment = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutation = useMutation({
+    mutationFn: async (request: StarSegmentRequest) => {
+      const contract: ApiContract<StarSegmentRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+        request: request,
+      };
 
-  async function trigger(request: StarSegmentRequest) {
-    const contract: ApiContract<StarSegmentRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-      request: request,
-    };
+      return postStarSegment(contract);
+    },
+  });
 
-    const response = await postStarSegment(contract);
-    return response;
-  }
-
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutation;
 };

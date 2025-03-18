@@ -22,7 +22,7 @@ const SnipeSegmentCard = ({
   snipeSegment,
   leaderTypeQom,
 }: SnipedSegmentCardProps) => {
-  const starSegment = usePostStarSegment();
+  const { mutateAsync, isLoading, isError, error, data } = usePostStarSegment();
   const convertTime = useTimeFormatConverter();
   const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
     state.setQueriedSnipeSegmentsList,
@@ -41,12 +41,12 @@ const SnipeSegmentCard = ({
 
   async function handleStarButtonClick() {
     try {
-      const response = await starSegment.mutateAsync({
+      const response = await mutateAsync({
         segmentId: snipeSegment.segmentId!,
         star: !snipeSegment.starred,
       });
 
-      if (!starSegment.isError && !starSegment.isLoading && response !== null) {
+      if (!isError && !isLoading && response !== null) {
         setQueriedSnipeSegmentsList((prevList: SnipeSegmentListItem[]) =>
           updateSegmentEffortStarred(
             prevList,
@@ -56,10 +56,10 @@ const SnipeSegmentCard = ({
         );
       }
     } catch (error) {
-      if (starSegment.error instanceof Error) {
+      if (error instanceof Error) {
         CustomToast({
           message: 'Star failed',
-          error: `Error: ${starSegment.error.message}`,
+          error: `Error: ${error.message}`,
           type: 'error',
         });
       } else {
@@ -232,7 +232,7 @@ const SnipeSegmentCard = ({
           </Col>
         </Card.Body>
         <Card.Footer className="d-flex justify-content-center align-items-center">
-          {starSegment.isLoading ? (
+          {isLoading ? (
             <Button
               type="submit"
               variant="secondary"

@@ -154,7 +154,7 @@ export type AddEquipmentToBikeMutationVariables = Exact<{
 
 export type AddEquipmentToBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', addEquipmentToBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
-export type RetireBikeEquipmentMutationVariables = Exact<{
+export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
@@ -162,7 +162,7 @@ export type RetireBikeEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type RetireBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', retireEquipmentOnBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type RetireEquipmentOnBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', retireEquipmentOnBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type GetBikeByIdQueryVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -228,8 +228,8 @@ export function useAddEquipmentToBikeMutation(baseOptions?: Apollo.MutationHookO
 export type AddEquipmentToBikeMutationHookResult = ReturnType<typeof useAddEquipmentToBikeMutation>;
 export type AddEquipmentToBikeMutationResult = Apollo.MutationResult<AddEquipmentToBikeMutation>;
 export type AddEquipmentToBikeMutationOptions = Apollo.BaseMutationOptions<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>;
-export const RetireBikeEquipmentDocument = gql`
-    mutation RetireBikeEquipment($bikeId: ID!, $equipmentId: ID!, $userId: ID!, $retireDate: Date!) {
+export const RetireEquipmentOnBikeDocument = gql`
+    mutation RetireEquipmentOnBike($bikeId: ID!, $equipmentId: ID!, $userId: ID!, $retireDate: Date!) {
   garage {
     retireEquipmentOnBike(
       bikeId: $bikeId
@@ -257,20 +257,20 @@ export const RetireBikeEquipmentDocument = gql`
   }
 }
     `;
-export type RetireBikeEquipmentMutationFn = Apollo.MutationFunction<RetireBikeEquipmentMutation, RetireBikeEquipmentMutationVariables>;
+export type RetireEquipmentOnBikeMutationFn = Apollo.MutationFunction<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>;
 
 /**
- * __useRetireBikeEquipmentMutation__
+ * __useRetireEquipmentOnBikeMutation__
  *
- * To run a mutation, you first call `useRetireBikeEquipmentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRetireBikeEquipmentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useRetireEquipmentOnBikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRetireEquipmentOnBikeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [retireBikeEquipmentMutation, { data, loading, error }] = useRetireBikeEquipmentMutation({
+ * const [retireEquipmentOnBikeMutation, { data, loading, error }] = useRetireEquipmentOnBikeMutation({
  *   variables: {
  *      bikeId: // value for 'bikeId'
  *      equipmentId: // value for 'equipmentId'
@@ -279,13 +279,13 @@ export type RetireBikeEquipmentMutationFn = Apollo.MutationFunction<RetireBikeEq
  *   },
  * });
  */
-export function useRetireBikeEquipmentMutation(baseOptions?: Apollo.MutationHookOptions<RetireBikeEquipmentMutation, RetireBikeEquipmentMutationVariables>) {
+export function useRetireEquipmentOnBikeMutation(baseOptions?: Apollo.MutationHookOptions<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RetireBikeEquipmentMutation, RetireBikeEquipmentMutationVariables>(RetireBikeEquipmentDocument, options);
+        return Apollo.useMutation<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>(RetireEquipmentOnBikeDocument, options);
       }
-export type RetireBikeEquipmentMutationHookResult = ReturnType<typeof useRetireBikeEquipmentMutation>;
-export type RetireBikeEquipmentMutationResult = Apollo.MutationResult<RetireBikeEquipmentMutation>;
-export type RetireBikeEquipmentMutationOptions = Apollo.BaseMutationOptions<RetireBikeEquipmentMutation, RetireBikeEquipmentMutationVariables>;
+export type RetireEquipmentOnBikeMutationHookResult = ReturnType<typeof useRetireEquipmentOnBikeMutation>;
+export type RetireEquipmentOnBikeMutationResult = Apollo.MutationResult<RetireEquipmentOnBikeMutation>;
+export type RetireEquipmentOnBikeMutationOptions = Apollo.BaseMutationOptions<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>;
 export const GetBikeByIdDocument = gql`
     query GetBikeById($bikeId: ID!) {
   bikes {
