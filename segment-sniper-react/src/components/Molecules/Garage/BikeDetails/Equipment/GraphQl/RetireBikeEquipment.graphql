@@ -1,9 +1,15 @@
-mutation RetireBikeEquipment($bikeId: ID!, $equipmentId: ID!, $userId: ID!) {
+mutation RetireEquipmentOnBike(
+  $bikeId: ID!
+  $equipmentId: ID!
+  $userId: ID!
+  $retireDate: Date!
+) {
   garage {
-    retireBikeQuipment(
+    retireEquipmentOnBike(
       bikeId: $bikeId
       equipmentId: $equipmentId
       userId: $userId
+      retireDate: $retireDate
     ) {
       bikeId
       name
