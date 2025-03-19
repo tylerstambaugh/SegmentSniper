@@ -4,6 +4,7 @@ import useTokenDataStore from '../../../stores/useTokenStore';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import postStarSegment, {
   StarSegmentRequest,
+  StarSegmentResponse,
 } from '../../../services/Api/Segment/postStarSegment';
 
 export const usePostStarSegment = () => {
@@ -12,7 +13,7 @@ export const usePostStarSegment = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const mutation = useMutation({
+  const mutation = useMutation<StarSegmentResponse, Error, StarSegmentRequest>({
     mutationFn: async (request: StarSegmentRequest) => {
       const contract: ApiContract<StarSegmentRequest> = {
         baseUrl: apiConfig!.baseRestApiUrl,

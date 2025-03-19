@@ -174,7 +174,7 @@ const ActivityDetails = () => {
         <Row>
           <Col>
             <SnipeSegmentsCardList
-              snipeListLoading={snipeSegments.isLoading}
+              snipeListLoading={snipeSegments.isPending}
               filtering={filtering}
               segmentList={queriedSnipeSegmentList}
               leaderTypeQom={filterOptions?.leaderTypeQom}

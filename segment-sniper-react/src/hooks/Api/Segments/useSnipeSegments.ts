@@ -10,39 +10,38 @@ import { useMutation } from '@tanstack/react-query';
 
 export const useSnipeSegments = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const [
-    snipeSegmentsList,
-    appendSnipeSegmentList,
-    setSnipeSegment,
-    setSnipedSegmentsList,
-  ] = useSnipeSegmentsListStore((state) => [
-    state.snipeSegmentsList,
-    state.appendSnipeSegmentList,
-    state.setSnipeSegment,
-    state.setSnipeSegmentsList,
-  ]);
+  const [snipeSegmentsList, setSnipeSegment, setSnipedSegmentsList] =
+    useSnipeSegmentsListStore((state) => [
+      state.snipeSegmentsList,
+      state.setSnipeSegment,
+      state.setSnipeSegmentsList,
+    ]);
   const accessToken = useTokenDataStore(
     (state) => state.tokenData?.accessToken
   );
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutation = useMutation<
+    SnipeSegmentsRequest,
+    Error,
+    SnipeSegmentsResponse
+  >({
+    mutationFn: async (request: SnipeSegmentsRequest) => {
+      const contract: ApiContract<SnipeSegmentsRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+        request: request,
+      };
 
-  async function trigger(request: SnipeSegmentsRequest) {
-    const contract: ApiContract<SnipeSegmentsRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-      request: request,
-    };
+      const response: SnipeSegmentsResponse = await getSnipeSegmentsList(
+        contract
+      );
 
-    const response: SnipeSegmentsResponse = await getSnipeSegmentsList(
-      contract
-    );
+      snipeSegmentsList.length === 0
+        ? setSnipedSegmentsList(response.snipedSegments)
+        : response.snipedSegments.map((s) => setSnipeSegment(s));
 
-    snipeSegmentsList.length === 0
-      ? setSnipedSegmentsList(response.snipedSegments)
-      : response.snipedSegments.map((s) => setSnipeSegment(s));
-
-    return response.snipedSegments;
-  }
-  return { mutateAsync, isLoading, isError, error, data };
+      return response;
+    },
+  });
+  return mutation;
 };
