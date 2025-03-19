@@ -22,7 +22,7 @@ const SnipeSegmentCard = ({
   snipeSegment,
   leaderTypeQom,
 }: SnipedSegmentCardProps) => {
-  const { mutateAsync, isLoading, isError, error, data } = usePostStarSegment();
+  const { mutateAsync, isPending, isError } = usePostStarSegment();
   const convertTime = useTimeFormatConverter();
   const [setQueriedSnipeSegmentsList] = useSnipeSegmentsListStore((state) => [
     state.setQueriedSnipeSegmentsList,
@@ -46,7 +46,7 @@ const SnipeSegmentCard = ({
         star: !snipeSegment.starred,
       });
 
-      if (!isError && !isLoading && response !== null) {
+      if (!isError && !isPending && response !== null) {
         setQueriedSnipeSegmentsList((prevList: SnipeSegmentListItem[]) =>
           updateSegmentEffortStarred(
             prevList,
@@ -232,7 +232,7 @@ const SnipeSegmentCard = ({
           </Col>
         </Card.Body>
         <Card.Footer className="d-flex justify-content-center align-items-center">
-          {isLoading ? (
+          {isPending ? (
             <Button
               type="submit"
               variant="secondary"
