@@ -19,7 +19,6 @@ import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem"
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
-  const snipeSegments = useSnipeSegments();
   const [activityList, setSelectedActivityId, selectedActivityId] =
     useActivityListStore((state) => [
       state.activityList,
@@ -55,30 +54,36 @@ const ActivityDetails = () => {
     navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
 
+  const { data: snipeSegmentsData, isLoading, error } = useSnipeSegments({ activityId: selectedActivityId });
+
+
   useEffect(() => {
+    // Only run this effect when the selectedActivityId changes
     const fetchSnipeSegments = async () => {
       try {
-        await snipeSegments.mutateAsync({
-          activityId: selectedActivityId!,
-        });
+        if (!isLoading && !error && snipeSegmentsData) {
+          // If the query was successful, filter the snipe segments
+          setQueriedSnipeSegmentList(
+            snipeSegmentsData.snipedSegments.filter(
+              (s) => s.activityId === selectedActivityId
+            )
+          );
+          handleSorting.Sort("date", snipeSegmentsData.snipedSegments);
+        }
       } catch (error) {
         toast.error(`Error fetching snipe segments: ${error}`);
       }
     };
 
+    // Trigger fetching logic only when there's no existing snipe segment for the selectedActivityId
     if (
       !Array.isArray(snipeSegmentList) ||
-      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
-        .length === 0
+      snipeSegmentList.filter((s) => s.activityId === selectedActivityId).length === 0
     ) {
       fetchSnipeSegments();
     }
+  }, [selectedActivityId, snipeSegmentsData, isLoading, error, snipeSegmentList, setQueriedSnipeSegmentList, handleSorting]);
 
-    setQueriedSnipeSegmentList(
-      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
-    );
-    handleSorting.Sort("date", queriedSnipeSegmentList);
-  }, [selectedActivityId]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
     const segmentList = snipeSegmentList.filter(
@@ -128,6 +133,7 @@ const ActivityDetails = () => {
     setFiltering(false);
   }
 
+  //TODO
   useEffect(() => {
     setQueriedSnipeSegmentList(
       snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
@@ -174,7 +180,7 @@ const ActivityDetails = () => {
         <Row>
           <Col>
             <SnipeSegmentsCardList
-              snipeListLoading={snipeSegments.isPending}
+              snipeListLoading={isLoading}
               filtering={filtering}
               segmentList={queriedSnipeSegmentList}
               leaderTypeQom={filterOptions?.leaderTypeQom}

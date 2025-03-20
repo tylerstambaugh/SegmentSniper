@@ -1,14 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
 import useTokenDataStore from '../../../stores/useTokenStore';
-import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import getSnipeSegmentsList, {
   SnipeSegmentsRequest,
   SnipeSegmentsResponse,
 } from '../../../services/Api/Segment/getSnipeSegmentsList';
 import useSnipeSegmentsListStore from '../../../stores/useSnipeSegmentsListStore';
-import { useMutation } from '@tanstack/react-query';
+import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 
-export const useSnipeSegments = () => {
+export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const [snipeSegmentsList, setSnipeSegment, setSnipedSegmentsList] =
     useSnipeSegmentsListStore((state) => [
@@ -20,28 +20,30 @@ export const useSnipeSegments = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const mutation = useMutation<
-    SnipeSegmentsRequest,
-    Error,
-    SnipeSegmentsResponse
-  >({
-    mutationFn: async (request: SnipeSegmentsRequest) => {
+  const query = useQuery<SnipeSegmentsResponse, Error>({
+    queryKey: ['snipeSegments', request], // Cache key based on request
+    queryFn: async () => {
+      if (!apiConfig || !accessToken)
+        throw new Error('Missing API config or token');
+
       const contract: ApiContract<SnipeSegmentsRequest> = {
-        baseUrl: apiConfig!.baseRestApiUrl,
-        token: accessToken!,
-        request: request,
+        baseUrl: apiConfig.baseRestApiUrl,
+        token: accessToken,
+        request: request, // Use request passed into the hook
       };
 
-      const response: SnipeSegmentsResponse = await getSnipeSegmentsList(
-        contract
-      );
+      const response = await getSnipeSegmentsList(contract);
 
-      snipeSegmentsList.length === 0
-        ? setSnipedSegmentsList(response.snipedSegments)
-        : response.snipedSegments.map((s) => setSnipeSegment(s));
+      if (snipeSegmentsList.length === 0) {
+        setSnipedSegmentsList(response.snipedSegments);
+      } else {
+        response.snipedSegments.forEach((s) => setSnipeSegment(s));
+      }
 
       return response;
     },
+    enabled: !!apiConfig && !!accessToken, // Ensures the query only runs when config and token are available
   });
-  return mutation;
+
+  return query;
 };
