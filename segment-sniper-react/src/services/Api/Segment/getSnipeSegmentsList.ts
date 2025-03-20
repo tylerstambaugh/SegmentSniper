@@ -1,10 +1,10 @@
-import { SnipeSegmentListItem } from "../../../models/Segment/SnipeSegmentListItem";
-import { ApiContract } from "../ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet, apiPost } from "../BaseApiService";
+import { SnipeSegmentListItem } from '../../../models/Segment/SnipeSegmentListItem';
+import { ApiContract } from '../ApiCommon/ApiContract';
+import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
+import { apiGet } from '../BaseApiService';
 
 export type SnipeSegmentsRequest = {
-  activityId?: string;
+  activityId?: string | null;
 };
 
 export type SnipeSegmentsResponse = {

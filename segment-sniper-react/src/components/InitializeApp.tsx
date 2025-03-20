@@ -18,35 +18,60 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   const googleMapsApiKey = useAppConfigStore((state) => state.appConfig?.googleMapsApiKey);
   const isAuthenticated = useTokenDataStore((state) => state.isAuthenticated);
 
-  const getClientConfig = useGetClientConfiguration();
+  const { data: appConfigData, isLoading, isError, error } = useGetClientConfiguration();
   const location = useLocation();
   const [apiKeyLoaded, setApiKeyLoaded] = useState(false);
 
-  // Fetch app configuration on mount
   useEffect(() => {
     const initializeApp = async () => {
-      try {
-        const appConfigData: ClientConfigurationResponse = await getClientConfig.mutateAsync() as ClientConfigurationResponse;
+      if (isLoading) return; // Don't proceed while loading
+      if (isError && error instanceof Error) {
+        CustomToast({
+          message: "Error initializing app",
+          error: `Error: ${error.message}`,
+          type: "error",
+        });
+        return;
+      }
 
+      if (appConfigData) {
         setAppConfig({
           clientId: appConfigData?.stravaApiClientId ?? "",
           googleMapsApiKey: appConfigData?.googleMapsApiKey ?? "",
         });
-
         setApiKeyLoaded(true);
-      } catch (error) {
-        if (error instanceof Error) {
-          CustomToast({
-            message: "Error initializing app",
-            error: `Error: ${error.message}`,
-            type: "error",
-          });
-        }
       }
     };
 
     initializeApp();
-  }, []);
+  }, [isLoading, isError, error, appConfigData, setAppConfig]);
+
+
+  // Fetch app configuration on mount
+  // useEffect(() => {
+  //   const initializeApp = async () => {
+  //     try {
+  //       const appConfigData: ClientConfigurationResponse = await getClientConfig.mutateAsync() as ClientConfigurationResponse;
+
+  //       setAppConfig({
+  //         clientId: appConfigData?.stravaApiClientId ?? "",
+  //         googleMapsApiKey: appConfigData?.googleMapsApiKey ?? "",
+  //       });
+
+  //       setApiKeyLoaded(true);
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         CustomToast({
+  //           message: "Error initializing app",
+  //           error: `Error: ${error.message}`,
+  //           type: "error",
+  //         });
+  //       }
+  //     }
+  //   };
+
+  //   initializeApp();
+  // }, []);
 
   // Trigger token refresh on navigation
   useEffect(() => {
