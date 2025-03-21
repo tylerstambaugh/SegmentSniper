@@ -6,7 +6,6 @@ import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguratio
 import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
 import { CustomToast } from "./Molecules/Toast/CustomToast";
 import useTokenDataStore from "../stores/useTokenStore";
-import { ClientConfigurationResponse } from "../services/Api/getClientConfiguration";
 
 interface InitializeComponentProps {
   children: ReactNode;

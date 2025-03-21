@@ -10,9 +10,12 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
-  const { data, isLoading, isError, error } = useQuery(
-    ['segmentPredictionTrainedModelData'],
-    async () => {
+  const { data, isLoading, isError, error } = useQuery<
+    SegmentPredictionTrainedModelResponse,
+    Error
+  >({
+    queryKey: ['segmentPredictionTrainedModelData'],
+    queryFn: async () => {
       const contract: ApiContract = {
         baseUrl: apiConfig!.baseRestApiUrl,
         token: tokenData?.accessToken ?? '',
@@ -29,15 +32,10 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
         response.segmentPredictionTrainingDataUiModel.hasTrainedSegmentPredictionModel =
           true;
       }
-      return response.segmentPredictionTrainingDataUiModel;
+      return response;
     },
-    {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    }
-  );
+    enabled: !!apiConfig && !!tokenData?.accessToken,
+  });
 
   return { data, isLoading, isError, error };
 };

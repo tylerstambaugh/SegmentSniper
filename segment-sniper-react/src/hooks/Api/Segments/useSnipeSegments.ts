@@ -21,7 +21,7 @@ export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
   );
 
   const query = useQuery<SnipeSegmentsResponse, Error>({
-    queryKey: ['snipeSegments', request], // Cache key based on request
+    queryKey: ['snipeSegments', request],
     queryFn: async () => {
       if (!apiConfig || !accessToken)
         throw new Error('Missing API config or token');
@@ -29,7 +29,7 @@ export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
       const contract: ApiContract<SnipeSegmentsRequest> = {
         baseUrl: apiConfig.baseRestApiUrl,
         token: accessToken,
-        request: request, // Use request passed into the hook
+        request: request,
       };
 
       const response = await getSnipeSegmentsList(contract);
@@ -42,7 +42,7 @@ export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
 
       return response;
     },
-    enabled: !!apiConfig && !!accessToken, // Ensures the query only runs when config and token are available
+    enabled: !!apiConfig && !!accessToken,
   });
 
   return query;
