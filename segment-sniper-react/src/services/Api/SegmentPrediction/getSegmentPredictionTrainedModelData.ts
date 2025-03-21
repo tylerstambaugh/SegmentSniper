@@ -1,14 +1,15 @@
-
-import { SegmentPredictionTrainingDataUiModel } from "../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel";
-import { ApiContract } from "../ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "../BaseApiService";
+import { SegmentPredictionTrainingDataUiModel } from '../../../models/SegmentPrediction/SegmentPredictionTrainingDataUiModel';
+import { ApiContract } from '../ApiCommon/ApiContract';
+import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
+import { apiGet } from '../BaseApiService';
 
 export type SegmentPredictionTrainedModelResponse = {
-    segmentPredictionTrainingDataUiModel: SegmentPredictionTrainingDataUiModel | null | undefined;
+  segmentPredictionTrainingDataUiModel: SegmentPredictionTrainingDataUiModel | null;
 };
 
-export default async function getSegmentPredictionTrainedModelData(contract: ApiContract) {
+export default async function getSegmentPredictionTrainedModelData(
+  contract: ApiContract
+) {
   try {
     const response = apiGet<SegmentPredictionTrainedModelResponse>(
       `${contract.baseUrl}/segmentPrediction/getTrainedModelMetaData`,
