@@ -32,7 +32,7 @@ const DeleteAccountConfirmationModal = ({
 }: DeleteAccountModalProps) => {
   const [validated, setValidated] = useState(false);
   const emailAddress = useProfileStore((state) => state.profileData?.email);
-  const { mutateAsync: deleteAccount, isLoading } = useDeleteAccount();
+  const { mutateAsync: deleteAccount, isPending } = useDeleteAccount();
   const navigate = useNavigate();
 
   const validationSchema = yup.object({
@@ -135,7 +135,7 @@ const DeleteAccountConfirmationModal = ({
       <Modal.Footer>
         <Row className="justify-content-end">
           <Col className="col-auto ml-auto">
-            {isLoading ? (
+            {isPending ? (
               <>
                 <Button variant="secondary" className={`me-1 `}>
                   <Spinner
