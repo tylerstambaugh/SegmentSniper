@@ -1,7 +1,7 @@
-import { ProfileData } from "../../../models/Profile/ProfileData";
-import { ApiContract } from "../ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "../BaseApiService";
+import { ProfileData } from '../../../models/Profile/ProfileData';
+import { ApiContract } from '../ApiCommon/ApiContract';
+import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
+import { apiGet } from '../BaseApiService';
 
 export type ProfileResponse = {
   profileData: ProfileData;

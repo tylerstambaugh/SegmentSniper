@@ -31,7 +31,6 @@ export const useGetProfileQuery = () => {
     const response: ProfileResponse = await getProfile(contract);
 
     if (!response.profileData) throw new Error('No profile data found');
-    // setProfile(response.profileData);
     setProfileData(response.profileData);
     return response.profileData;
   }

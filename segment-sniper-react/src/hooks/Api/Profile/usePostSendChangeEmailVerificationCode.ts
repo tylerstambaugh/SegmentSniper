@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useProfileStore from '../../../stores/useProfileStore';
 import postSendChangeEmailVerificationCode, {
   sendChangeEmailVerificationCodeRequest,
 } from '../../../services/Api/Profile/postSendChangeEmailVerificationCode';
@@ -13,17 +12,23 @@ export const usePostSendChangeEmailVerificationCode = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutation = useMutation<
+    void,
+    Error,
+    sendChangeEmailVerificationCodeRequest
+  >({
+    mutationFn: async (request: sendChangeEmailVerificationCodeRequest) => {
+      if (apiConfig && accessToken) {
+        const contract: ApiContract<sendChangeEmailVerificationCodeRequest> = {
+          baseUrl: apiConfig!.baseRestApiUrl,
+          request: request,
+          token: accessToken!,
+        };
 
-  async function trigger(request: sendChangeEmailVerificationCodeRequest) {
-    const contract: ApiContract<sendChangeEmailVerificationCodeRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-      token: accessToken!,
-    };
+        await postSendChangeEmailVerificationCode(contract);
+      }
+    },
+  });
 
-    await postSendChangeEmailVerificationCode(contract);
-  }
-
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutation;
 };
