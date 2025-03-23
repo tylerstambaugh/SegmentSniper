@@ -6,6 +6,7 @@ import postStarSegment, {
   StarSegmentRequest,
   StarSegmentResponse,
 } from '../../../services/Api/Segment/postStarSegment';
+import { Maybe } from '../../../graphql/generated';
 
 export const usePostStarSegment = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -13,15 +14,22 @@ export const usePostStarSegment = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const mutation = useMutation<StarSegmentResponse, Error, StarSegmentRequest>({
+  const mutation = useMutation<
+    Maybe<StarSegmentResponse>,
+    Error,
+    StarSegmentRequest
+  >({
     mutationFn: async (request: StarSegmentRequest) => {
-      const contract: ApiContract<StarSegmentRequest> = {
-        baseUrl: apiConfig!.baseRestApiUrl,
-        token: accessToken!,
-        request: request,
-      };
+      if (apiConfig && accessToken) {
+        const contract: ApiContract<StarSegmentRequest> = {
+          baseUrl: apiConfig!.baseRestApiUrl,
+          token: accessToken!,
+          request: request,
+        };
 
-      return postStarSegment(contract);
+        return await postStarSegment(contract);
+      }
+      return null;
     },
   });
 
