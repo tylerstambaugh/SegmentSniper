@@ -27,7 +27,7 @@ const EmailAddress = ({ editMode, changeEditMode }: EmailAddressProps) => {
 
   const {
     handle: handleSendChangeEmailVerificationCode,
-    isLoading: handleSendEmailVerificationCodeIsLoading,
+    isPending: handleSendEmailVerificationCodeIsLoading,
     error: handleSendEmailVerificationCodeError,
   } = useHandleSendChangeEmailVerificationCode();
 
