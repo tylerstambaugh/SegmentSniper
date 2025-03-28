@@ -1,8 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-
 import useTokenDataStore from '../../../stores/useTokenStore';
 import postVerifyEmailConfirmationCode, {
   VerifyEmailConfirmationCodeRequest,
@@ -15,20 +13,27 @@ export const usePostCheckEmailVerificationCode = () => {
     (state) => state.tokenData?.accessToken
   );
   const abortController = new AbortController();
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutation = useMutation<
+    VerifyEmailConfirmationCodeResponse,
+    Error,
+    VerifyEmailConfirmationCodeRequest
+  >({
+    mutationFn: async (request: VerifyEmailConfirmationCodeRequest) => {
+      if (!apiConfig || !accessToken) {
+        throw new Error('API config or access token is not available');
+      }
 
-  async function trigger(request: VerifyEmailConfirmationCodeRequest) {
-    const contract: ApiContract<VerifyEmailConfirmationCodeRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-      abortController: abortController,
-      request: request,
-    };
+      const contract: ApiContract<VerifyEmailConfirmationCodeRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+        abortController: abortController,
+        request: request,
+      };
 
-    const response: VerifyEmailConfirmationCodeResponse =
-      await postVerifyEmailConfirmationCode(contract);
-    return response;
-  }
-
-  return { mutateAsync, isLoading, isError, error, data };
+      const response: VerifyEmailConfirmationCodeResponse =
+        await postVerifyEmailConfirmationCode(contract);
+      return response;
+    },
+  });
+  return mutation;
 };
