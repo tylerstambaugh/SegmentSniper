@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import getUserHasStravaToken from '../../../services/Api/Auth/getUserHasStravaToken';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
 import useUserStore from '../../../stores/useUserStore';
@@ -10,12 +10,21 @@ export const useGetUserHasStravaToken = () => {
   const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: triggerQuery,
+    queryKey: ['hasStravaToken'],
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
 
-  async function trigger() {
+  const abortController = new AbortController();
+
+  async function triggerQuery() {
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseRestApiUrl,
-      token: tokenData?.accessToken!,
+      token: tokenData?.accessToken ?? '',
+      abortController,
     };
 
     const response = await getUserHasStravaToken(contract);
@@ -23,5 +32,5 @@ export const useGetUserHasStravaToken = () => {
     setUser({ ...user, hasStravaTokenData: response.hasStravaToken });
   }
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return { data, isLoading, isError, error };
 };
