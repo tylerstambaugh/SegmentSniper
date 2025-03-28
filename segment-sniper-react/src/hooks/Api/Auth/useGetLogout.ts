@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
@@ -10,17 +10,18 @@ import useTokenDataStore from '../../../stores/useTokenStore';
 export const useGetLogout = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(
-    trigger,
-    {
-      retry: false, // Disables retry on failure
-    }
-  );
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: trigger,
+    queryKey: ['logout'],
+    refetchOnMount: false,
+  });
 
+  const abortController = new AbortController();
   async function trigger() {
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseRestApiUrl,
       token: tokenData?.accessToken ?? '',
+      abortController,
     };
 
     const response: RevokeUserTokenResponse = await getLogout(contract);
@@ -28,5 +29,5 @@ export const useGetLogout = () => {
     return response;
   }
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return { data, isLoading, isError, error };
 };
