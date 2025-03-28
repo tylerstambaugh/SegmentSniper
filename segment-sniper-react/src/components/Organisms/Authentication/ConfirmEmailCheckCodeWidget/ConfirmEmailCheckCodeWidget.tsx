@@ -1,13 +1,14 @@
 import { Row, Col, Spinner, Container, Button, Card } from "react-bootstrap";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useUserStore from "../../../../stores/useUserStore";
 import { useEffect, useState } from "react";
 import useTokenDataStore, { TokenData } from "../../../../stores/useTokenStore";
-import { usePostCheckEmailVerificationCode } from "../../../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
+
 import { VerifyEmailConfirmationCodeRequest } from "../../../../services/Api/Auth/postVerifyEmailConfirmationCode";
 import useRefreshTokenQuery from "../../../../hooks/Api/Auth/useRefreshTokenQuery";
 import { CustomToast } from "../../../Molecules/Toast/CustomToast";
+import { usePostCheckEmailVerificationCode } from "../../../../hooks/Api/Auth/usePostCheckEmailVerificationCode";
 
 export default function ConfirmEmailCheckCodeWidget() {
   const setUser = useUserStore((state) => state.setUser);
@@ -19,7 +20,6 @@ export default function ConfirmEmailCheckCodeWidget() {
       state.setIsAuthenticated,
     ]);
   const checkVerificationCode = usePostCheckEmailVerificationCode();
-  const [confirmationCode, setConfirmationCode] = useState<string>("");
   const [verificationComplete, setVerificationComplete] = useState(false);
   const location = useLocation();
 
@@ -34,18 +34,18 @@ export default function ConfirmEmailCheckCodeWidget() {
       try {
         const fetchData = async () => {
           const now = new Date();
-          let tempTokenData: TokenData = {
+          const tempTokenData: TokenData = {
             accessToken: accessToken,
             refreshToken: cleanedRefreshToken,
             expiration: new Date(now.getTime() + 5 * 60 * 1000),
           };
           setTokenDateStore(tempTokenData);
-          let request: VerifyEmailConfirmationCodeRequest = {
+          const request: VerifyEmailConfirmationCodeRequest = {
             confirmationToken: confirmationToken,
             accessToken: accessToken ?? "",
             refreshToken: tokenDataStore?.refreshToken ?? cleanedRefreshToken,
           };
-          const response = await checkVerificationCode
+          await checkVerificationCode
             .mutateAsync(request)
             .then((res) => {
               setUser(res.userData);
