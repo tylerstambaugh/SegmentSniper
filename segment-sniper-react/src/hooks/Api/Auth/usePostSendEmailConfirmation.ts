@@ -6,34 +6,34 @@ import postSendEmailConfirmation, {
   SendEmailConfirmationCodeRequest,
   SendEmailConfirmationCodeResponse,
 } from '../../../services/Api/Auth/postSendEmailConfirmationCode';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export const usePostSendEmailConfirmation = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const accessToken = useTokenDataStore(
     (state) => state.tokenData?.accessToken
   );
-  const abortController = new AbortController();
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const abortController = useMemo(() => new AbortController(), []);
+  const mutation = useMutation({
+    mutationFn: async (request: SendEmailConfirmationCodeRequest) => {
+      const contract: ApiContract<SendEmailConfirmationCodeRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+        abortController: abortController,
+        request: request,
+      };
+      const response: SendEmailConfirmationCodeResponse =
+        await postSendEmailConfirmation(contract);
 
-  async function trigger(request: SendEmailConfirmationCodeRequest) {
-    const contract: ApiContract<SendEmailConfirmationCodeRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-      abortController: abortController,
-      request: request,
-    };
-    const response: SendEmailConfirmationCodeResponse =
-      await postSendEmailConfirmation(contract);
-
-    return response;
-  }
+      return response;
+    },
+  });
 
   useEffect(() => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [abortController]);
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutation;
 };

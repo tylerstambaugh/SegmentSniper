@@ -1,8 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useUserStore from "../../../../stores/useUserStore";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { AppRoutes } from "../../../../enums/AppRoutes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePostSendEmailConfirmation } from "../../../../hooks/Api/Auth/usePostSendEmailConfirmation";
 import useTokenDataStore from "../../../../stores/useTokenStore";
 import { SendEmailConfirmationCodeRequest } from "../../../../services/Api/Auth/postSendEmailConfirmationCode";
@@ -11,16 +11,15 @@ export default function ConfirmEmailSendCodeWidget() {
   const user = useUserStore((state) => state.user);
   const [clickedConfirmEmail, setClickedConfirmEmail] = useState(false);
   const [resentEmail, setResentEmail] = useState(false);
-  const [resendEmailCount, setResendEmailCount] = useState(0);
 
   const tokenData = useTokenDataStore((state) => state.tokenData);
   const sendEmail = usePostSendEmailConfirmation();
 
   async function handleClickConfirmEmail() {
     setClickedConfirmEmail(true);
-    let request: SendEmailConfirmationCodeRequest = {
-      accessToken: tokenData?.accessToken!,
-      refreshToken: tokenData?.refreshToken!,
+    const request: SendEmailConfirmationCodeRequest = {
+      accessToken: tokenData?.accessToken ?? "",
+      refreshToken: tokenData?.refreshToken ?? "",
     };
     await sendEmail.mutateAsync(request);
   }
@@ -92,7 +91,7 @@ export default function ConfirmEmailSendCodeWidget() {
                     <Col>
                       <p>Waited long enough and didn't receive it?</p>
 
-                      {sendEmail.isLoading ? (
+                      {sendEmail.isPending ? (
                         <Button
                           type="submit"
                           variant="secondary"

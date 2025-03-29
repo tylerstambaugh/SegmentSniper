@@ -70,17 +70,17 @@ export default function ResetPasswordWidget() {
       confirmPassword: null,
     },
     onSubmit: async (values: ResetPasswordForm) => {
-      let passwordResetRequest: ResetPasswordRequest = {
+      const passwordResetRequest: ResetPasswordRequest = {
         passwordResetToken: cleanedPasswordResetToken ?? "",
         userId: queryStringUserId ?? "",
         newPassword: values.password ?? "",
       };
 
-      let response = await resetPassword.mutateAsync(passwordResetRequest);
+      const response = await resetPassword.mutateAsync(passwordResetRequest);
       if (response.success) {
         setPasswordResetSuccess(true);
       } else {
-        let error = resetPassword.error;
+        const error = resetPassword.error;
         if (error instanceof Error) {
           CustomToast({
             message: "Reset password failed",
@@ -251,9 +251,8 @@ export default function ResetPasswordWidget() {
                         onClick={toggleConfirmPasswordVisibility}
                       >
                         <i
-                          className={`bi bi-eye${
-                            showConfirmPassword ? "" : "-slash"
-                          }`}
+                          className={`bi bi-eye${showConfirmPassword ? "" : "-slash"
+                            }`}
                         />
                       </div>
                     </div>
@@ -265,7 +264,7 @@ export default function ResetPasswordWidget() {
                 <Row className="d-flex justify-content-around text-center">
                   <Col>
                     <div className="d-grid">
-                      {resetPassword.isLoading ? (
+                      {resetPassword.isPending ? (
                         <Button
                           type="submit"
                           variant="secondary"
