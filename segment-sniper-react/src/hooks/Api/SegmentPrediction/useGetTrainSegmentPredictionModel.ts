@@ -11,7 +11,7 @@ export const useGetTrainSegmentPredictionModel = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const { data, isLoading, isError, error } = useQuery<
+  const { data, isLoading, isError, error, refetch } = useQuery<
     SegmentPredictionTrainedModelResponse,
     Error
   >({
@@ -30,12 +30,10 @@ export const useGetTrainSegmentPredictionModel = () => {
 
       if (!response.segmentPredictionTrainingDataUiModel)
         throw new Error('Failure to train model');
-      // setProfile(response.profileData);
-      //setProfileData(response.profileData);
       return response;
     },
-    enabled: !!apiConfig && !!accessToken,
+    enabled: false,
   });
 
-  return { data, isLoading, isError, error };
+  return { data, isLoading, isError, error, refetch };
 };
