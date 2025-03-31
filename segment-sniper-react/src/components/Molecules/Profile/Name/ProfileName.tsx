@@ -22,7 +22,7 @@ const ProfileName: React.FC<ProfileNameProps> = ({
   changeEditMode,
 }) => {
   const [profile] = useProfileStore((state) => [state.profileData]);
-  const { handle: handleUpdateFirstName, isLoading: updateFirstNameIsLoading } =
+  const { handle: handleUpdateFirstName, isPending: updateFirstNameIsLoading } =
     useHandleUpdateFirstName();
   const [validated, setValidated] = useState(false);
 

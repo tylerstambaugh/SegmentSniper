@@ -19,20 +19,19 @@ export const usePostUpdateEmailAddress = () => {
     state.setUser,
   ]);
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutate = useMutation<void, Error, UpdateEmailAddressRequest>({
+    mutationFn: async (request: UpdateEmailAddressRequest) => {
+      const contract: ApiContract<UpdateEmailAddressRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        request: request,
+        token: accessToken!,
+      };
 
-  async function trigger(request: UpdateEmailAddressRequest) {
-    const contract: ApiContract<UpdateEmailAddressRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-      token: accessToken!,
-    };
-
-    await postUpdateEmailAddress(contract).then((res) => {
-      setProfileData(res.profileData);
-      setCurrentUser({ ...currentUser, emailAddress: res.profileData.email });
-    });
-  }
-
-  return { mutateAsync, isLoading, isError, error, data };
+      await postUpdateEmailAddress(contract).then((res) => {
+        setProfileData(res.profileData);
+        setCurrentUser({ ...currentUser, emailAddress: res.profileData.email });
+      });
+    },
+  });
+  return mutate;
 };

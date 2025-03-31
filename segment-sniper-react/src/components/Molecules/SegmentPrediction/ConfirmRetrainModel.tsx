@@ -18,7 +18,7 @@ const ConfirmRretainSegmentPredictionModelModal = ({
 }: ConfirmRetrainSegmentPredictionModelModalProps) => {
 
 
-  const { mutateAsync: retrainModel, data: trainedModelData, isLoading, error: retrainModelError } = useGetTrainSegmentPredictionModel()
+  const { refetch: retrainModel, data: trainedModelData, isLoading, error: retrainModelError } = useGetTrainSegmentPredictionModel()
 
   useEffect(() => {
     if (retrainModelError instanceof Error) {
