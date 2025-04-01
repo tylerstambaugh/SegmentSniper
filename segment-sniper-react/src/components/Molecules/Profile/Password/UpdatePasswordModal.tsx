@@ -33,7 +33,7 @@ const UpdatePasswordModal = ({
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [validated, setValidated] = useState(false);
 
-  const { handle: updatePassword, isLoading } = useHandleUpdatePassword();
+  const { handle: updatePassword, isPending } = useHandleUpdatePassword();
 
   const validationSchema = yup.object({
     currentPassword: yup
@@ -133,9 +133,8 @@ const UpdatePasswordModal = ({
                           onClick={toggleCurrentPasswordVisibility}
                         >
                           <i
-                            className={`bi bi-eye${
-                              currentPasswordVisible ? "" : "-slash"
-                            }`}
+                            className={`bi bi-eye${currentPasswordVisible ? "" : "-slash"
+                              }`}
                           />
                         </div>
                       </div>
@@ -168,9 +167,8 @@ const UpdatePasswordModal = ({
                           onClick={toggleNewPasswordVisibility}
                         >
                           <i
-                            className={`bi bi-eye${
-                              newPasswordVisible ? "" : "-slash"
-                            }`}
+                            className={`bi bi-eye${newPasswordVisible ? "" : "-slash"
+                              }`}
                           />
                         </div>
                       </div>
@@ -208,9 +206,8 @@ const UpdatePasswordModal = ({
                           onClick={toggleConfirmPasswordVisibility}
                         >
                           <i
-                            className={`bi bi-eye${
-                              confirmPasswordVisible ? "" : "-slash"
-                            }`}
+                            className={`bi bi-eye${confirmPasswordVisible ? "" : "-slash"
+                              }`}
                           />
                         </div>
                       </div>
@@ -228,7 +225,7 @@ const UpdatePasswordModal = ({
       <Modal.Footer>
         <Row className="justify-content-end">
           <Col className="col-auto ml-auto">
-            {isLoading ? (
+            {isPending ? (
               <>
                 <Button
                   variant="secondary"

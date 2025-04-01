@@ -11,7 +11,7 @@ const RevokeStravaTokenConfirmationModal = ({
   showRevokeStravaTokenConfirmModal,
   handleCloseModal,
 }: RevokeStravaTokenConfirmationModalProps) => {
-  const { handle: revokeStravaToken, isLoading } = useHandleDeleteStravaToken();
+  const { handle: revokeStravaToken, isPending } = useHandleDeleteStravaToken();
 
   function handleConfirmClick() {
     revokeStravaToken().then(() => handleCloseModal);
@@ -36,7 +36,7 @@ const RevokeStravaTokenConfirmationModal = ({
       <Modal.Footer>
         <Row className="justify-content-end">
           <Col className="col-auto ml-auto">
-            {isLoading ? (
+            {isPending ? (
               <>
                 <Button
                   variant="secondary"
