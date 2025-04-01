@@ -7,7 +7,6 @@ import useProfileStore from '../../../stores/useProfileStore';
 import useUserStore from '../../../stores/useUserStore';
 
 export const useDeleteStravaToken = () => {
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const [profileData, setProfileData] = useProfileStore((state) => [
     state.profileData,
@@ -20,24 +19,27 @@ export const useDeleteStravaToken = () => {
   const accessToken = useTokenDataStore(
     (state) => state.tokenData?.accessToken
   );
-  async function trigger() {
-    const contract: ApiContract = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-    };
 
-    const response = await deleteStravaToken(contract);
-    if (response.success) {
-      setProfileData({
-        ...profileData!,
-        stravaRefreshToken: null,
-        stravaTokenExpiresAt: null,
-      });
+  const mutate = useMutation({
+    mutationFn: async () => {
+      const contract: ApiContract = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+      };
 
-      setUserData({ ...userData, hasStravaTokenData: false });
-    }
-    return response;
-  }
+      const response = await deleteStravaToken(contract);
+      if (response.success) {
+        setProfileData({
+          ...profileData!,
+          stravaRefreshToken: null,
+          stravaTokenExpiresAt: null,
+        });
 
-  return { mutateAsync, isLoading, isError, error, data };
+        setUserData({ ...userData, hasStravaTokenData: false });
+      }
+      return response;
+    },
+  });
+
+  return mutate;
 };

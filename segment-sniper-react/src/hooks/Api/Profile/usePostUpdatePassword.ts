@@ -7,21 +7,22 @@ import postUpdatePassword, {
 } from '../../../services/Api/Profile/postUpdatePassword';
 
 export const usePostUpdatePassword = () => {
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const accessToken = useTokenDataStore(
     (state) => state.tokenData?.accessToken
   );
-  async function trigger(request: UpdatePasswordRequest) {
-    const contract: ApiContract<UpdatePasswordRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-      token: accessToken!,
-    };
+  const mutate = useMutation({
+    mutationFn: async (request: UpdatePasswordRequest) => {
+      const contract: ApiContract<UpdatePasswordRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        request: request,
+        token: accessToken!,
+      };
 
-    const response = await postUpdatePassword(contract);
-    return response;
-  }
+      const response = await postUpdatePassword(contract);
+      return response;
+    },
+  });
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutate;
 };
