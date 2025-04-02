@@ -1,5 +1,5 @@
 import { Row, Col, Card, Form, Button, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -11,7 +11,6 @@ import { CustomToast } from "../../../Molecules/Toast/CustomToast";
 export default function ForgotPasswordWidget() {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
-  const [emailAddress, setEmailAddress] = useState("");
   const sendPasswordResetEmail = usePostSendPasswordResetEmail();
   const [emailSent, setEmailSent] = useState(false);
 
@@ -135,7 +134,6 @@ export default function ForgotPasswordWidget() {
                               "emailAddress",
                               e.target.value
                             );
-                            setEmailAddress(e.target.value);
                           }}
                           onBlur={formik.handleBlur}
                         />
@@ -145,7 +143,7 @@ export default function ForgotPasswordWidget() {
                       </Form.Group>
 
                       <div className="d-grid">
-                        {sendPasswordResetEmail.isLoading ? (
+                        {sendPasswordResetEmail.isPending ? (
                           <Button
                             type="submit"
                             variant="secondary"
@@ -165,7 +163,7 @@ export default function ForgotPasswordWidget() {
                             type="submit"
                             variant="primary"
                             className={"me-1 primary-rounded-button "}
-                            disabled={sendPasswordResetEmail.isLoading}
+                            disabled={sendPasswordResetEmail.isPending}
                           >
                             Reset
                           </Button>

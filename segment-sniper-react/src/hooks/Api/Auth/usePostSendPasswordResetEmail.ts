@@ -14,26 +14,29 @@ export const usePostSendPasswordResetEmail = () => {
     (state) => state.tokenData?.accessToken
   );
   const abortController = new AbortController();
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutate = useMutation<
+    SendPasswordResetEmailResponse,
+    Error,
+    SendPasswordResetEmailRequest
+  >({
+    mutationFn: async (request: SendPasswordResetEmailRequest) => {
+      const contract: ApiContract<SendPasswordResetEmailRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        token: accessToken!,
+        abortController: abortController,
+        request: request,
+      };
+      const response: SendPasswordResetEmailResponse =
+        await postSendPasswordResetEmail(contract);
 
-  async function trigger(request: SendPasswordResetEmailRequest) {
-    const contract: ApiContract<SendPasswordResetEmailRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      token: accessToken!,
-      abortController: abortController,
-      request: request,
-    };
-    const response: SendPasswordResetEmailResponse =
-      await postSendPasswordResetEmail(contract);
-
-    return response;
-  }
-
+      return response;
+    },
+  });
   useEffect(() => {
     return () => {
       abortController.abort();
     };
-  }, []);
+  });
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutate;
 };
