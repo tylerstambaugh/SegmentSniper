@@ -238,7 +238,7 @@ export default function RegisterWidget() {
                     </Button>
                   </Col>
                   <Col>
-                    {registerUser.isLoading ? (
+                    {registerUser.isPending ? (
                       <Button
                         type="submit"
                         variant="secondary"

@@ -13,20 +13,20 @@ export const usePostLogin = () => {
   ]);
   const [setUser] = useUserStore((state) => [state.setUser]);
 
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
+  const mutate = useMutation<void, Error, LoginRequest>({
+    mutationFn: async (request: LoginRequest) => {
+      const contract: ApiContract<LoginRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        request: request,
+      };
 
-  async function trigger(request: LoginRequest) {
-    const contract: ApiContract<LoginRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-    };
+      await postLogin(contract).then(async (res) => {
+        setUser(res.userData);
+        await setTokenData(res.tokenData);
+        if (res.tokenData.accessToken !== null) setIsAuthenticated(true);
+      });
+    },
+  });
 
-    await postLogin(contract).then(async (res) => {
-      setUser(res.userData);
-      await setTokenData(res.tokenData);
-      if (res.tokenData.accessToken !== null) setIsAuthenticated(true);
-    });
-  }
-
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutate;
 };
