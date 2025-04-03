@@ -9,27 +9,28 @@ import postRegisterUser, {
 } from '../../../services/Api/Auth/postRegisterUser';
 
 export const usePostRegisterUser = () => {
-  const { mutateAsync, isLoading, isError, error, data } = useMutation(trigger);
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
 
   const [setUser] = useUserStore((state) => [state.setUser]);
 
-  async function trigger(request: RegisterUserRequest) {
-    const contract: ApiContract<RegisterUserRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-    };
+  const mutate = useMutation<void, Error, RegisterUserRequest>({
+    mutationFn: async (request: RegisterUserRequest) => {
+      const contract: ApiContract<RegisterUserRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        request: request,
+      };
 
-    const response: RegisterUserResponse = await postRegisterUser(contract);
+      const response: RegisterUserResponse = await postRegisterUser(contract);
 
-    const registeredUser: User = {
-      id: response.id,
-      firstName: response.firstName,
-      emailAddress: response.emailAddress,
-    };
+      const registeredUser: User = {
+        id: response.id,
+        firstName: response.firstName,
+        emailAddress: response.emailAddress,
+      };
 
-    setUser(registeredUser);
-  }
+      setUser(registeredUser);
+    },
+  });
 
-  return { mutateAsync, isLoading, isError, error, data };
+  return mutate;
 };

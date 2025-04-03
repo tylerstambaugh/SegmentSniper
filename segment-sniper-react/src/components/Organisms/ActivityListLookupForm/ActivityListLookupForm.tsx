@@ -243,7 +243,7 @@ function ActivityListLookupForm() {
                       </Button>
                     </Col>
                     <Col>
-                      {handleActivitySearch.isLoading ? (
+                      {handleActivitySearch.isPending ? (
                         <Button
                           variant="secondary"
                           className={"me-1"}
@@ -262,7 +262,7 @@ function ActivityListLookupForm() {
                         <Button
                           type="submit"
                           variant="primary"
-                          disabled={handleActivitySearch.isLoading}
+                          disabled={handleActivitySearch.isPending}
                         >
                           Search
                         </Button>
