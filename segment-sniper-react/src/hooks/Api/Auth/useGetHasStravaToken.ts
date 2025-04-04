@@ -10,7 +10,7 @@ export const useGetUserHasStravaToken = () => {
   const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
   const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, refetch, isLoading, isError, error } = useQuery({
     queryFn: triggerQuery,
     queryKey: ['hasStravaToken'],
     refetchOnMount: true,
@@ -30,7 +30,8 @@ export const useGetUserHasStravaToken = () => {
     const response = await getUserHasStravaToken(contract);
 
     setUser({ ...user, hasStravaTokenData: response.hasStravaToken });
+    return response.hasStravaToken;
   }
 
-  return { data, isLoading, isError, error };
+  return { data, refetch, isLoading, isError, error };
 };
