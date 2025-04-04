@@ -10,7 +10,7 @@ import useTokenDataStore from '../../../stores/useTokenStore';
 export const useGetLogout = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, refetch, isLoading, isError, error } = useQuery({
     queryFn: trigger,
     queryKey: ['logout'],
     refetchOnMount: false,
@@ -29,5 +29,5 @@ export const useGetLogout = () => {
     return response;
   }
 
-  return { data, isLoading, isError, error };
+  return { data, refetch, isLoading, isError, error };
 };

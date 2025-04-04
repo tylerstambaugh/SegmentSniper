@@ -18,10 +18,14 @@ export default function LogoutWidget({ inactive }: { inactive: boolean }) {
   useEffect(() => {
     const revokeTokenAsync = async () => {
       try {
-        await logout.mutateAsync().then(() =>
+        if (logout.data !== null) {
           resetAllStores()
-        );
-      } catch (error) {
+        } else {
+          await logout.refetch();
+        }
+      }
+
+      catch (error) {
         if (logout.error instanceof Error) {
           CustomToast({
             message: "Error logging out",

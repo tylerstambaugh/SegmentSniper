@@ -12,18 +12,17 @@ export default function Dashboard() {
   const checkUserHasTokenData = useGetUserHasStravaToken();
   const navigate = useNavigate();
 
-  async function checkUserHasTokenDataFunc() {
-    await checkUserHasTokenData.mutateAsync();
-  }
-
+  //TODO: REMOVE THIS - mebbe
   useEffect(() => {
     if (!user?.hasStravaTokenData) {
-      checkUserHasTokenDataFunc();
+      checkUserHasTokenData.refetch();
     }
-  }, []);
+  }, [checkUserHasTokenData, user?.hasStravaTokenData]);
 
   useEffect(() => {
-    if (checkUserHasTokenData.error !== null) {
+    if (!checkUserHasTokenData.isLoading && checkUserHasTokenData.error !== null) {
+      console.log("Error checking Strava token", checkUserHasTokenData.error);
+
       if (checkUserHasTokenData.error instanceof Error) {
         CustomToast({
           message: "Error checking Strava token",
@@ -32,13 +31,13 @@ export default function Dashboard() {
         });
       }
     }
-  }, [checkUserHasTokenData.error!]);
+  }, [checkUserHasTokenData.error, checkUserHasTokenData.isLoading]);
 
   useEffect(() => {
     if (!user?.verifiedEmail) {
       navigate("/confirm-email");
     }
-  }, []);
+  });
 
   return (
     <>
