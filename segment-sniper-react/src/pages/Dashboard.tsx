@@ -13,11 +13,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   //TODO: REMOVE THIS - mebbe
-  useEffect(() => {
-    if (!user?.hasStravaTokenData) {
-      checkUserHasTokenData.refetch();
-    }
-  }, [checkUserHasTokenData, user?.hasStravaTokenData]);
+  // useEffect(() => {
+  //   if (!user?.hasStravaTokenData) {
+  //     checkUserHasTokenData.refetch();
+  //   }
+  // }, [ user?.hasStravaTokenData]);
 
   useEffect(() => {
     if (!checkUserHasTokenData.isLoading && checkUserHasTokenData.error !== null) {

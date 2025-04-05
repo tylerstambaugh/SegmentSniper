@@ -37,7 +37,7 @@ export default function LogoutWidget({ inactive }: { inactive: boolean }) {
     };
 
     revokeTokenAsync();
-  }, []);
+  }, [logout, resetAllStores]);
 
   return (
     <>
