@@ -28,9 +28,6 @@ export default function ResetPasswordWidget() {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const [resetPasswordToken, setResetPasswordToken] = useState(
-    searchParams.get("prt")
-  );
   const [cleanedPasswordResetToken, setCleanedPasswordResetToken] =
     useState("");
   const [queryStringUserId, setQueryStringUserId] = useState(
@@ -57,11 +54,11 @@ export default function ResetPasswordWidget() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    setResetPasswordToken(searchParams.get("prt"));
     setCleanedPasswordResetToken(
-      resetPasswordToken?.replace(/\s+/g, "+") ?? ""
+      searchParams.get("prt")?.replace(/\s+/g, "+") ?? ""
     );
     setQueryStringUserId(searchParams.get("uid"));
+
   }, [location.search]);
 
   const formik = useFormik<ResetPasswordForm>({
