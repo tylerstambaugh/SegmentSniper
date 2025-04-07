@@ -21,7 +21,6 @@ export default function ResetPasswordWidget() {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [emailSent, setEmailSent] = useState<boolean>(false);
   const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -137,28 +136,6 @@ export default function ResetPasswordWidget() {
                     </Button>
                   </Col>
                 </Row>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  ) : emailSent ? (
-    <Container>
-      <Row className="vh-100 d-flex justify-content-center mt-5">
-        <Col md={6} lg={6} xs={10}>
-          <Card>
-            <Card.Title className="d-flex justify-content-center">
-              Reset Password
-            </Card.Title>
-            <Card.Body>
-              <Row className="justify-text-center">
-                <Col>
-                  <h3>
-                    Please check you email and follow the instructions to reset
-                    your password.{" "}
-                  </h3>
-                </Col>
               </Row>
             </Card.Body>
           </Card>
