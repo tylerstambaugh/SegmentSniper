@@ -36,10 +36,14 @@ const ActivityCardCarousel = () => {
       setIsSmallScreen(window.innerWidth < 768);
     }, 200),
     []
+
   );
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     checkScreenSize();
+    console.log("checking screen size");
+
 
     window.addEventListener("resize", checkScreenSize);
 
@@ -76,16 +80,18 @@ const ActivityCardCarousel = () => {
                   activityList.length > 1 ? "d-flex px-3" : "d-inline px-3"
                 }
               >
-                {activityList.map((activity, index) => (
-                  index === activityIndex ? (
+                {activityList.map((activity, index) => {
+                  console.log(`Rendering index ${index}, activityIndex: ${activityIndex}, activityId: ${activity.activityId}`);
+
+                  return index === activityIndex ? (
                     <ActivityCard
                       key={activity.activityId}
                       activity={activity}
                       isActivitySearchResults={true}
                       mapShown={true}
                     />
-                  ) : <></>
-                ))}
+                  ) : null;
+                })}
               </Slider>
             </Col>
           </Row>
