@@ -27,7 +27,7 @@ function ActivitySearchResults() {
   }, []);
 
   return (
-    <Col md={8} className="mx-auto">
+    <Col md={8} xs={10} className="mx-auto">
       <Row className="pt-1">
         <Col className="d-flex justify-content-around">
           <Button
@@ -44,9 +44,7 @@ function ActivitySearchResults() {
         </Col>
       </Row>
       <Row>
-        <Col className="pt-0 mt-0">
-          <ActivityCardCarousel />
-        </Col>
+        <ActivityCardCarousel />
       </Row>
       <Row className="justify-content-center">
         <Col className="text-center pt-3 pb-3">

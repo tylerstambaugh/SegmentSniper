@@ -20,13 +20,13 @@ const ActivityCardCarousel = () => {
     adaptiveHeight: true,
     infinite: true,
     speed: 300,
-    slidesToShow: 1,
+    //slidesToShow: isSmallScreen ? 1 : 3,
     slidesToScroll: 1,
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     swipeToSlide: true,
-
+    swipe: true,
     className: "slider-container",
   };
 
@@ -40,7 +40,7 @@ const ActivityCardCarousel = () => {
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    // if (typeof window === "undefined") return;
     checkScreenSize();
     console.log("checking screen size");
 
@@ -68,33 +68,32 @@ const ActivityCardCarousel = () => {
               <p className="small text-muted p-0 m-0">Swipe to see more</p>
             </Row>
           </div>
-          <Row>
-            <Col>
-              <Slider
-                {...settings}
-                beforeChange={(oldIndex, newIndex) => {
-                  setActivityIndex(() => newIndex);
-                }
-                }
-                className={
-                  activityList.length > 1 ? "d-flex px-3" : "d-inline px-3"
-                }
-              >
-                {activityList.map((activity, index) => {
-                  console.log(`Rendering index ${index}, activityIndex: ${activityIndex}, activityId: ${activity.activityId}`);
+          <Slider
+            {...settings}
+            //arrows={!isSmallScreen}
+            // arrows={true}
+            // prevArrow={<PrevArrow />}
+            // nextArrow={<NextArrow />}
+            beforeChange={(_, newIndex) => {
+              setActivityIndex(() => newIndex);
+            }}
+            className={
+              activityList.length > 1 ? "d-flex px-3" : "d-inline px-3"
+            }
+          >
+            {activityList.map((activity, index) => {
+              console.log(`Rendering index ${index}, activityIndex: ${activityIndex}, activityId: ${activity.activityId}`);
 
-                  return index === activityIndex ? (
-                    <ActivityCard
-                      key={activity.activityId}
-                      activity={activity}
-                      isActivitySearchResults={true}
-                      mapShown={true}
-                    />
-                  ) : null;
-                })}
-              </Slider>
-            </Col>
-          </Row>
+              return index === activityIndex ? (
+                <ActivityCard
+                  key={activity.activityId}
+                  activity={activity}
+                  isActivitySearchResults={true}
+                  mapShown={true}
+                />
+              ) : null;
+            })}
+          </Slider>
         </Col>
       ) : (
         <Container>

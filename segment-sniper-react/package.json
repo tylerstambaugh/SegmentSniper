@@ -45,6 +45,7 @@
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-medium-image-zoom": "^5.1.10",
+    "react-multi-carousel": "^2.8.6",
     "react-player": "^2.16.0",
     "react-router-dom": "^6.15.0",
     "react-select": "^5.8.0",
