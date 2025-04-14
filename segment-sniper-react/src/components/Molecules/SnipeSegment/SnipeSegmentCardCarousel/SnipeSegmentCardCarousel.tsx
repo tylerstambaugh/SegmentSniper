@@ -65,13 +65,14 @@ const SnipeSegmentCardCarousel = ({
             customRightArrow={<NextArrow />}
             itemClass="carousel-item-padding-40-px"
           >
-            {snipeSegmentList.map((snipeSegment) => (
+            {/* {snipeSegmentList.map((snipeSegment) => (
               <SnipeSegmentCard
                 key={uuidv4()}
                 snipeSegment={snipeSegment}
                 leaderTypeQom={leaderTypeQom}
               />
-            ))}
+            ))} */}
+            asdf asdf
           </Carousel>
         </Col>
       </Row>
