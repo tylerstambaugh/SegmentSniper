@@ -31,6 +31,8 @@ const ActivityCard = ({
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
 
+  console.log("ActivityCard", activity.activityId, selectedActivityId);
+
   return (
     <Container className="py-2">
       <Row>
