@@ -45,6 +45,15 @@ const ActivityCardCarousel = () => {
     },
   };
 
+  const changeSlide = (previousSlide: number, currentSlide: number, dataSize: number) => {
+    let activeSlide = 1
+    // right arrow
+    if (previousSlide < currentSlide) activeSlide = currentSlide - 2 === dataSize ? 0 : currentSlide - 2
+    // left arrow
+    else activeSlide = currentSlide + (currentSlide <= dataSize && currentSlide >= 2 ? -2 : dataSize - 2);
+    setActivityIndex(activeSlide)
+  }
+
   return (
     <>
       {activityList.length > 0 ? (
@@ -61,38 +70,34 @@ const ActivityCardCarousel = () => {
           </div>
           <Carousel
             responsive={responsive}
-            infinite
-            // afterChange={(previousSlide, { currentSlide }) => {
-            //   console.log(`afterChange: ${previousSlide} to ${currentSlide}`)
-            //   setActivityIndex(currentSlide)
-            //   console.log('activiy index:', activityIndex);
+            infinite={true}
+            afterChange={(previousSlide, { currentSlide }) => changeSlide(previousSlide, currentSlide, activityList.length)}
 
-            // }}
-            beforeChange={(nextSlide, { currentSlide }) => {
-              console.log(`beforeChange: ${nextSlide} to ${currentSlide}`)
-              setActivityIndex(currentSlide)
-              console.log('beforeChangeactiviy index:', activityIndex);
-
-            }}
             arrows={true}
             swipeable
             draggable
             customLeftArrow={<PrevArrow />}
             customRightArrow={<NextArrow />}
-          // itemClass="carousel-item-padding-40-px"
+            itemClass="carousel-item-padding-40-px"
           >
 
             {activityList.map((activity, index) => {
-              console.log('activityList', activityList);
-
+              const isVisible = index === activityIndex;
               console.log(`Rendering index ${index}, activityIndex: ${activityIndex}, activityId: ${activity.activityId}`);
               return (
-                <ActivityCard
-                  key={uuidv4()}
-                  activity={activity}
-                  isActivitySearchResults={true}
-                  mapShown={true}
-                />
+                <div key={activity.activityId}>
+                  {isVisible ? (
+                    <ActivityCard
+                      activity={activity}
+                      isActivitySearchResults={true}
+                      mapShown={true}
+                    />
+                  ) : (
+                    <div style={{ height: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span className="text-muted">Loading…</span>
+                    </div>
+                  )}
+                </div>
               )
             })}
           </Carousel>
