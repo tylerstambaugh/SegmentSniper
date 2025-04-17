@@ -85,9 +85,10 @@ const ActivityCardCarousel = () => {
               const isVisible = index === activityIndex;
               console.log(`Rendering index ${index}, activityIndex: ${activityIndex}, activityId: ${activity.activityId}`);
               return (
-                <div key={activity.activityId}>
+                <div key={uuidv4()}>
                   {isVisible ? (
                     <ActivityCard
+                      key={uuidv4()}
                       activity={activity}
                       isActivitySearchResults={true}
                       mapShown={true}

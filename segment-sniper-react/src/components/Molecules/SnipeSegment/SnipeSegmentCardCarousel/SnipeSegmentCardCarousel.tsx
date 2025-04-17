@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import 'react-multi-carousel/lib/styles.css';
 import { SnipeSegmentListItem } from '../../../../models/Segment/SnipeSegmentListItem';
 import SnipeSegmentCard from '../SnipeSegmentCard/SnipeSegmentCard';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,21 +26,21 @@ const SnipeSegmentCardCarousel = ({
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
 
-  const checkScreenSize = useCallback(
-    debounce(() => {
-      setIsSmallScreen(window.innerWidth < 768);
-    }, 200),
-    []
-  );
+  // const checkScreenSize = useCallback(
+  //   debounce(() => {
+  //     setIsSmallScreen(window.innerWidth < 768);
+  //   }, 200),
+  //   []
+  // );
 
-  useEffect(() => {
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => {
-      window.removeEventListener('resize', checkScreenSize);
-      checkScreenSize.cancel();
-    };
-  }, [checkScreenSize]);
+  // useEffect(() => {
+  //   checkScreenSize();
+  //   window.addEventListener('resize', checkScreenSize);
+  //   return () => {
+  //     window.removeEventListener('resize', checkScreenSize);
+  //     checkScreenSize.cancel();
+  //   };
+  // }, [checkScreenSize]);
 
   const responsive = {
     all: {
@@ -48,6 +49,15 @@ const SnipeSegmentCardCarousel = ({
     },
   };
 
+  const changeSlide = (previousSlide: number, currentSlide: number, dataSize: number) => {
+    let activeSlide = 1
+    // right arrow
+    if (previousSlide < currentSlide) activeSlide = currentSlide - 2 === dataSize ? 0 : currentSlide - 2
+    // left arrow
+    else activeSlide = currentSlide + (currentSlide <= dataSize && currentSlide >= 2 ? -2 : dataSize - 2);
+    setSegmentIndex(activeSlide)
+  }
+
   return !snipeSegmentIsLoading ? (
     <Col>
       <Row>
@@ -55,9 +65,7 @@ const SnipeSegmentCardCarousel = ({
           <Carousel
             responsive={responsive}
             infinite
-            afterChange={(previousSlide, { currentSlide }) =>
-              setSegmentIndex(currentSlide)
-            }
+            afterChange={(previousSlide, { currentSlide }) => changeSlide(previousSlide, currentSlide, snipeSegmentList.length)}
             arrows={!isSmallScreen}
             swipeable
             draggable
@@ -65,14 +73,25 @@ const SnipeSegmentCardCarousel = ({
             customRightArrow={<NextArrow />}
             itemClass="carousel-item-padding-40-px"
           >
-            {/* {snipeSegmentList.map((snipeSegment) => (
-              <SnipeSegmentCard
-                key={uuidv4()}
-                snipeSegment={snipeSegment}
-                leaderTypeQom={leaderTypeQom}
-              />
-            ))} */}
-            asdf asdf
+            {snipeSegmentList.map((segment, index) => {
+              const isVisible = index === segmentIndex;
+              console.log(`Rendering index ${index}, activityIndex: ${segmentIndex}, activityId: ${segment.segmentId}`);
+              return (
+                <div key={uuidv4()}>
+                  {isVisible ? (
+                    <SnipeSegmentCard
+                      key={uuidv4()}
+                      snipeSegment={segment}
+                      leaderTypeQom={leaderTypeQom}
+                    />
+                  ) : (
+                    <div style={{ height: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span className="text-muted">Loading…</span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </Carousel>
         </Col>
       </Row>
