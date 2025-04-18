@@ -23,14 +23,14 @@ function SegmentPredictorForm({
   const [validated, setValidated] = useState(false);
   const {
     mutateAsync: handle,
-    isLoading: predictSegmentIsLoading,
+    isPending: predictSegmentIsLoading,
     error: predictSegmentIsError,
     data: predictSegmentData,
   } = usePostPredictSegment();
   const [requestData, setRequestData] =
     useState<SegmentPredictionRequest | null>(null);
 
-    const timeFormatter = useTimeFormatConverter();
+  const timeFormatter = useTimeFormatConverter();
 
   const initialValues = {
     segmentId: null,
@@ -119,13 +119,13 @@ function SegmentPredictorForm({
                             onChange={(e) => {
                               formik.setFieldValue('segmentId', e.target.value);
                             }}
-                            //className={`${styles.activityNameInput}`}
+                          //className={`${styles.activityNameInput}`}
                           />
                         </Col>
                       </Row>
                       <Row>
                         <Col>
-                        <p>testing: 27775517</p>
+                          <p>testing: 27775517</p>
                         </Col>
                       </Row>
                       <Form.Control.Feedback type="invalid">
@@ -179,7 +179,7 @@ function SegmentPredictorForm({
               <hr className="hr-75" />
               <Row className="d-flex align-items-center pt-2">
                 <span className="card-label"> Segment Time Prediction:</span>{' '}
-                {timeFormatter.numericTimeToString(predictSegmentData?.predictedTime || 0 )}
+                {timeFormatter.numericTimeToString(predictSegmentData?.predictedTime || 0)}
               </Row>
             </Card.Body>
           </Card>

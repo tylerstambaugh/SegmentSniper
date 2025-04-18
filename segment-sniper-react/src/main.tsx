@@ -1,4 +1,3 @@
-import { scan } from "react-scan";
 import { BrowserRouter as Router } from 'react-router-dom';
 //import './App.css';
 import './index.css';
@@ -17,9 +16,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 
 
-scan({
-  enabled: true,
-});
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

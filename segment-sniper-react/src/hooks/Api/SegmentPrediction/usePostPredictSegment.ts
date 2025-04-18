@@ -13,34 +13,24 @@ export const usePostPredictSegment = () => {
     (state) => state.tokenData?.accessToken
   );
 
-  const {
-    mutateAsync,
-    isLoading,
-    isError,
-    error,
-    data: SegmentPredictionResponse,
-  } = useMutation(trigger);
+  const mutate = useMutation<
+    SegmentPredictionResponse,
+    Error,
+    SegmentPredictionRequest
+  >({
+    mutationFn: async (request: SegmentPredictionRequest) => {
+      const contract: ApiContract<SegmentPredictionRequest> = {
+        baseUrl: apiConfig!.baseRestApiUrl,
+        request: request,
+        token: accessToken!,
+      };
 
-  async function trigger(request: SegmentPredictionRequest) {
-    const contract: ApiContract<SegmentPredictionRequest> = {
-      baseUrl: apiConfig!.baseRestApiUrl,
-      request: request,
-      token: accessToken!,
-    };
+      const response: SegmentPredictionResponse = await postPredictSegment(
+        contract
+      );
+      return response;
+    },
+  });
 
-    const response: SegmentPredictionResponse = await postPredictSegment(
-      contract
-    );
-
-    if (!response) throw new Error('Failure to train model');
-    return response;
-  }
-
-  return {
-    mutateAsync,
-    isLoading,
-    isError,
-    error,
-    data: SegmentPredictionResponse,
-  };
+  return mutate;
 };

@@ -140,7 +140,7 @@ export default function LoginWidget() {
                     <Row className="d-flex justify-content-center">
                       <Col xs={12}>
                         <div className="d-grid">
-                          {loginUser.isLoading ? (
+                          {loginUser.isPending ? (
                             <Button
                               type="submit"
                               variant="secondary"
@@ -160,7 +160,7 @@ export default function LoginWidget() {
                               type="submit"
                               variant="primary"
                               className={"me-1 primary-rounded-button "}
-                              disabled={loginUser.isLoading}
+                              disabled={loginUser.isPending}
                             >
                               Login
                             </Button>
