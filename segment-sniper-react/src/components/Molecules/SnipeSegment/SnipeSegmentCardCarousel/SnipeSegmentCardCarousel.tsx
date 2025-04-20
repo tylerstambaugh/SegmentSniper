@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Col, Row } from 'react-bootstrap';
 import PrevArrow from '../../../Atoms/Slider/PrevArrow';
 import NextArrow from '../../../Atoms/Slider/NextArrow';
-import { debounce } from 'lodash';
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
@@ -69,29 +68,19 @@ const SnipeSegmentCardCarousel = ({
             arrows={!isSmallScreen}
             swipeable
             draggable
-            customLeftArrow={<PrevArrow />}
-            customRightArrow={<NextArrow />}
+            // customLeftArrow={<PrevArrow />}
+            // customRightArrow={<NextArrow />}
             itemClass="carousel-item-padding-40-px"
           >
-            {snipeSegmentList.map((segment, index) => {
-              const isVisible = index === segmentIndex;
-              console.log(`Rendering index ${index}, activityIndex: ${segmentIndex}, activityId: ${segment.segmentId}`);
-              return (
-                <div key={uuidv4()}>
-                  {isVisible ? (
-                    <SnipeSegmentCard
-                      key={uuidv4()}
-                      snipeSegment={segment}
-                      leaderTypeQom={leaderTypeQom}
-                    />
-                  ) : (
-                    <div style={{ height: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span className="text-muted">Loading…</span>
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+            {snipeSegmentList.map((segment, index) => (
+              <div key={segment.segmentId ?? index}>
+                <SnipeSegmentCard
+                  snipeSegment={segment}
+                  leaderTypeQom={leaderTypeQom}
+                />
+              </div>
+            ))
+            }
           </Carousel>
         </Col>
       </Row>

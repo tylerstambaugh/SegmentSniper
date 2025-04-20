@@ -1,5 +1,4 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-//import './App.css';
 import './index.css';
 import Header from './components/Organisms/Header/Header';
 import Routes from './SegmentSniper.routes';
