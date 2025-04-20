@@ -3,7 +3,7 @@ import { ActivityListItem } from "../../../../models/Activity/ActivityListItem";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import useActivityListStore from "../../../../stores/useActivityListStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ActivityMap from "../ActivityMap/ActivityMap";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +30,8 @@ const ActivityCard = ({
     setSelectedActivityId(activity.activityId!);
     navigate(`/${AppRoutes.ActivityDetails}`);
   };
+
+  console.log("ActivityCard", activity.activityId);
 
   return (
     <Container className="py-2">

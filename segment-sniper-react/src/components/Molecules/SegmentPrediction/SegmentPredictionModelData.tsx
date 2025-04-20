@@ -21,7 +21,7 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
     useState<boolean>(false);
 
   const {
-    mutateAsync: trainModel,
+    refetch: trainModel,
     isLoading: trainModelIsLoading,
     error: trainModelError,
   } = useGetTrainSegmentPredictionModel();
@@ -56,7 +56,7 @@ const SegmentPredictionModelData: React.FC<SegmentPredictionModelDataProps> = ({
               Segment Prediction Model Data
               <hr className="hr-75" />
             </Card.Title>
-            
+
             <Card.Body>
               <Col>
                 {segmentPredictionTrainedModelData?.hasTrainedSegmentPredictionModel ? (

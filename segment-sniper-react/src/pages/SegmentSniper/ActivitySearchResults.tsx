@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useActivityListStore from "../../stores/useActivityListStore";
-import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
 import useSegmentEffortsListStore from "../../stores/useSegmentEffortsListStore";

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-//import './App.css';
 import './index.css';
 import Header from './components/Organisms/Header/Header';
 import Routes from './SegmentSniper.routes';
@@ -15,6 +14,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,7 +28,6 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <>
-
     <ErrorBoundary>
       <ApolloClientProvider>
         <QueryClientProvider client={queryClient}>

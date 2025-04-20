@@ -16,29 +16,27 @@ const devtoolOptions = {
 const initialState: ActivityListItem[] = [];
 
 const useActivityListStore = create<ActivityListStore>()(
-  immer(
-    devtools(
-      persist(
-        (set) => ({
-          activityList: initialState,
-          selectedActivityId: null,
-          setActivityList: (activityList: ActivityListItem[]) =>
-            set((state) => {
-              state.activityList = activityList;
-            }),
-          setSelectedActivityId: (selectedActivityId: string) =>
-            set((state) => {
-              state.selectedActivityId = selectedActivityId;
-            }),
-          resetActivityList: () =>
-            set((state) => {
-              state.activityList = [];
-            }),
-        }),
-        persistOptions
-      ),
-      devtoolOptions
-    )
+  devtools(
+    persist(
+      immer((set) => ({
+        activityList: initialState,
+        selectedActivityId: null,
+        setActivityList: (activityList: ActivityListItem[]) =>
+          set((state) => {
+            state.activityList = activityList;
+          }),
+        setSelectedActivityId: (selectedActivityId: string) =>
+          set((state) => {
+            state.selectedActivityId = selectedActivityId;
+          }),
+        resetActivityList: () =>
+          set((state) => {
+            state.activityList = [];
+          }),
+      })),
+      persistOptions
+    ),
+    devtoolOptions
   )
 );
 

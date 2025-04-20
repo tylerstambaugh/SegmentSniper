@@ -52,7 +52,7 @@ export default function AutoLogoutModal({ showModal }: AutoLogoutModalProps) {
 
         const revokeTokenAsync = async () => {
           try {
-            await logout.mutateAsync().then(() => {
+            await logout.refetch().then(() => {
               resetAllStores();
               navigate(`/${AppRoutes.InactiveLogout}`);
               setShow(false)

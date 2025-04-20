@@ -3,7 +3,6 @@ import { usePostStarSegment } from '../../../hooks/Api/Segments/usePostStarSegme
 import { SegmentDetails } from '../../../models/Segment/SegmentDetails';
 import { CustomToast } from '../Toast/CustomToast';
 import ActivityMap from '../Activity/ActivityMap/ActivityMap';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +25,7 @@ const SegmentDetailsCard = ({ segmentDetails }: SegmentDetailsCardProps) => {
 
         if (
           !starSegment.isError &&
-          !starSegment.isLoading &&
+          !starSegment.isPending &&
           response !== null
         ) {
           segmentDetails.starred = true;
