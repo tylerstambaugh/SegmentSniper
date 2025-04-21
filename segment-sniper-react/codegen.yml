@@ -1,22 +1,44 @@
+# schema:
+#   - https://localhost:44351/graphql:
+#       # customFetch: ../../../../src/utils/custom-fetch.js
+#       headers:
+#         GraphQL-Require-Preflight: true
+
+# documents: 'src/**/*.graphql' # Path to GraphQL operations
+# generates:
+#   src/graphql/generated.ts: # Output file
+#     plugins:
+#       - 'typescript'
+#       - 'typescript-operations'
+#       - 'typescript-react-apollo'
+# config:
+#   withHooks: true
+#   withHOC: false
+#   withComponent: false
+#   scalars:
+#     DateTime: 'string'
+#     Decimal: 'number'
+#     Int: 'number'
+#   # customFetch: ../../../../src/utils/custom-fetch.js
+
 schema:
   - https://localhost:44351/graphql:
-      # customFetch: ../../../../src/utils/custom-fetch.js
+      customFetch: ../utils/custom-fetch.js
       headers:
         GraphQL-Require-Preflight: true
 
-documents: 'src/**/*.graphql' # Path to GraphQL operations
+documents: 'src/**/*.graphql'
 generates:
-  src/graphql/generated.ts: # Output file
+  src/graphql/generated.ts:
     plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
 config:
   withHooks: true
   withHOC: false
   withComponent: false
   scalars:
-    DateTime: 'string'
-    Decimal: 'number'
-    Int: 'number'
-  # customFetch: ../../../../src/utils/custom-fetch.js
+    DateTime: string
+    Decimal: number
+    Int: number
