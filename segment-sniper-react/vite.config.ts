@@ -23,7 +23,6 @@ export default ({ mode }) => {
   return defineConfig({
     base: '/',
     server: {
-      https: true,
       port: 6767,
       proxy: {
         '/api': { target: apiUrl, secure: false },

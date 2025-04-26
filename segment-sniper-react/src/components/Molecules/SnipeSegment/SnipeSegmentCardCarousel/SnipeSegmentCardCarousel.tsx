@@ -74,10 +74,13 @@ const SnipeSegmentCardCarousel = ({
           >
             {snipeSegmentList.map((segment, index) => (
               <div key={segment.segmentId ?? index}>
-                <SnipeSegmentCard
+                {/* <SnipeSegmentCard
                   snipeSegment={segment}
                   leaderTypeQom={leaderTypeQom}
-                />
+                /> */}
+                <h2>
+                  {segment.segmentId ?? index}
+                </h2>
               </div>
             ))
             }
