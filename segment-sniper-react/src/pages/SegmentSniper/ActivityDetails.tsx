@@ -145,7 +145,7 @@ const ActivityDetails = () => {
   }, [filterOptions.sortBy]);
 
   return (
-    <>
+    <Row className="justify-content-center">
       <Col md={7} className="mb-2 mx-auto">
         <Row className="pt-1">
           <Col className="d-flex justify-content-around">
@@ -202,7 +202,7 @@ const ActivityDetails = () => {
           </Col>
         </Row>
       </Col>
-    </>
+    </Row>
   );
 };
 

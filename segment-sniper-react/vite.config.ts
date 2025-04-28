@@ -13,17 +13,23 @@ export default ({ mode }) => {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   }
 
+  const plugins = [
+    react(),
+    mkcert(),
+    graphqlLoader(),
+    ...(mode !== 'production' ? [codegen()] : []), // Only include codegen in non-production
+  ];
+
   return defineConfig({
     base: '/',
     server: {
-      https: true,
       port: 6767,
       proxy: {
         '/api': { target: apiUrl, secure: false },
         '/graphql': { target: graphqlUrl, secure: true },
       },
     },
-    plugins: [react(), mkcert(), graphqlLoader(), codegen()],
+    plugins,
     optimizeDeps: {
       include: ['lodash'],
     },

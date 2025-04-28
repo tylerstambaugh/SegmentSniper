@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "tsc": "tsc --noEmit --watch",
-    "build": "tsc && vite build",
+    "build": " tsc && vite build",
+    "build:dev": " tsc && vite build --mode development",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen",
