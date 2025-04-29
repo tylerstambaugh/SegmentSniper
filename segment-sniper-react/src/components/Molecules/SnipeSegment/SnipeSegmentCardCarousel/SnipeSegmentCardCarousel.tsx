@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Col, Row } from 'react-bootstrap';
 import PrevArrow from '../../../Atoms/Slider/PrevArrow';
 import NextArrow from '../../../Atoms/Slider/NextArrow';
+import { debounce } from 'lodash-es';
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
@@ -25,21 +26,21 @@ const SnipeSegmentCardCarousel = ({
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
 
-  // const checkScreenSize = useCallback(
-  //   debounce(() => {
-  //     setIsSmallScreen(window.innerWidth < 768);
-  //   }, 200),
-  //   []
-  // );
+  const checkScreenSize = useCallback(
+    debounce(() => {
+      setIsSmallScreen(window.innerWidth < 768);
+    }, 200),
+    []
+  );
 
-  // useEffect(() => {
-  //   checkScreenSize();
-  //   window.addEventListener('resize', checkScreenSize);
-  //   return () => {
-  //     window.removeEventListener('resize', checkScreenSize);
-  //     checkScreenSize.cancel();
-  //   };
-  // }, [checkScreenSize]);
+  useEffect(() => {
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+      checkScreenSize.cancel();
+    };
+  }, [checkScreenSize]);
 
   const responsive = {
     all: {
@@ -68,8 +69,8 @@ const SnipeSegmentCardCarousel = ({
             arrows={!isSmallScreen}
             swipeable
             draggable
-            // customLeftArrow={<PrevArrow />}
-            // customRightArrow={<NextArrow />}
+            customLeftArrow={<PrevArrow />}
+            customRightArrow={<NextArrow />}
             itemClass="carousel-item-padding-40-px"
           >
             {snipeSegmentList.map((segment, index) => (
