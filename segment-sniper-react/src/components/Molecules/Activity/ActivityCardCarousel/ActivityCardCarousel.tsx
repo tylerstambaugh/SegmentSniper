@@ -7,8 +7,8 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { v4 as uuidv4 } from 'uuid';
 import { debounce } from "lodash-es";
-import { NextArrow } from "../../../Atoms/Slider/NextArrow";
-import { PrevArrow } from "../../../Atoms/Slider/PrevArrow";
+import NextArrow from "../../../Atoms/Slider/NextArrow";
+import PrevArrow from "../../../Atoms/Slider/PrevArrow";
 
 const ActivityCardCarousel = () => {
   const [activityList] = useActivityListStore((state) => [state.activityList]);
@@ -68,13 +68,15 @@ const ActivityCardCarousel = () => {
               <p className="small text-muted p-0 m-0">Swipe to see more</p>
             </Row>
           </div>
-          <Row className="d-flex">
-            <Col>
+          <Row
+            className="d-flex flex-row justify-content-center align-items-center"
+          >
+            <Col xs={1} className="d-flex justify-content-center ">
               {!isSmallScreen ? (
                 <PrevArrow onClick={() => carouselRef.current?.previous(1)} />
               ) : null}
             </Col>
-            <Col>
+            <Col xs={10} className="px-0">
               <Carousel
                 ref={carouselRef}
                 responsive={responsive}
@@ -107,7 +109,7 @@ const ActivityCardCarousel = () => {
                 })}
               </Carousel>
             </Col>
-            <Col>
+            <Col xs={1} className="d-flex justify-content-center align-items-center">
               {!isSmallScreen ? (
                 <NextArrow onClick={() => {
                   console.log("next");
