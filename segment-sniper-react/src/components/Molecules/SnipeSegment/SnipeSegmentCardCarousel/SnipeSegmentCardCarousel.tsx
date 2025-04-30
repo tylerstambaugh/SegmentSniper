@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import 'react-multi-carousel/lib/styles.css';
@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Col, Row } from 'react-bootstrap';
 import PrevArrow from '../../../Atoms/Slider/PrevArrow';
 import NextArrow from '../../../Atoms/Slider/NextArrow';
+import { debounce } from 'lodash-es';
 
 interface SnipeSegmentCardCarouselProps {
   snipeSegmentList: SnipeSegmentListItem[];
@@ -25,21 +26,23 @@ const SnipeSegmentCardCarousel = ({
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [segmentIndex, setSegmentIndex] = useState<number>(carouselIndex ?? 0);
 
-  // const checkScreenSize = useCallback(
-  //   debounce(() => {
-  //     setIsSmallScreen(window.innerWidth < 768);
-  //   }, 200),
-  //   []
-  // );
+  const carouselRef = useRef<Carousel>(null);
 
-  // useEffect(() => {
-  //   checkScreenSize();
-  //   window.addEventListener('resize', checkScreenSize);
-  //   return () => {
-  //     window.removeEventListener('resize', checkScreenSize);
-  //     checkScreenSize.cancel();
-  //   };
-  // }, [checkScreenSize]);
+  const checkScreenSize = useCallback(
+    debounce(() => {
+      setIsSmallScreen(window.innerWidth < 768);
+    }, 200),
+    []
+  );
+
+  useEffect(() => {
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+      checkScreenSize.cancel();
+    };
+  }, [checkScreenSize]);
 
   const responsive = {
     all: {
@@ -59,29 +62,51 @@ const SnipeSegmentCardCarousel = ({
 
   return !snipeSegmentIsLoading ? (
     <Col>
-      <Row>
-        <Col className="p-0">
+      <Row
+        className="d-flex flex-row justify-content-center align-items-center"
+      >
+        <Col xs={1} className="d-flex justify-content-center ">
+          {!isSmallScreen ? (
+            <PrevArrow onClick={() => carouselRef.current?.previous(1)} />
+          ) : null}
+        </Col>
+        <Col xs={10} className="px-0">
           <Carousel
+            ref={carouselRef}
             responsive={responsive}
             infinite
             afterChange={(previousSlide, { currentSlide }) => changeSlide(previousSlide, currentSlide, snipeSegmentList.length)}
-            arrows={!isSmallScreen}
+            arrows={false}
             swipeable
             draggable
-            // customLeftArrow={<PrevArrow />}
-            // customRightArrow={<NextArrow />}
             itemClass="carousel-item-padding-40-px"
           >
-            {snipeSegmentList.map((segment, index) => (
-              <div key={segment.segmentId ?? index}>
-                <SnipeSegmentCard
-                  snipeSegment={segment}
-                  leaderTypeQom={leaderTypeQom}
-                />
-              </div>
-            ))
-            }
+            {snipeSegmentList.map((segment, index) => {
+              const isVisible = index === segmentIndex;
+              return (
+                <div key={uuidv4()}>
+                  {isVisible ? (
+                    <SnipeSegmentCard
+                      snipeSegment={segment}
+                      leaderTypeQom={leaderTypeQom}
+                    />
+                  ) : (
+                    <div className='my-auto' style={{ height: 350, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span className="text-muted">Loading…</span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </Carousel>
+        </Col>
+        <Col xs={1} className="d-flex justify-content-center align-items-center">
+          {!isSmallScreen ? (
+            <NextArrow onClick={() => {
+              console.log("next");
+              carouselRef.current?.next(1)
+            }} />
+          ) : null}
         </Col>
       </Row>
       <Row>
