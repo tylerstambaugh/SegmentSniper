@@ -121,15 +121,28 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                 XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
-                int percentageOffKom = (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
-                int prPercentageOffKom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven);
-                int percentageOffQom = (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
-                int prPercentageOffQom = (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven);
+                int? percentageOffKom = xomsTime.KomTime != null ? 
+                    (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
+                    : null;
+                int? prPercentageOffKom = xomsTime.QomTime != null ? 
+                    (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
+                    : null;
+                int? percentageOffQom = xomsTime.KomTime != null ?
+                    (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven) 
+                    : null;
+                int? prPercentageOffQom = xomsTime.QomTime != null ? 
+                    (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven)
+                    : null;
 
-                int secondsOffKom = dse.MovingTime - xomsTime.KomTime;
-                int prSecondsOffKom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime;
-                int secondsOffQom = dse.MovingTime - xomsTime.QomTime;
-                int prSecondsOffQom = detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime;
+                int? secondsOffKom = xomsTime.KomTime != null ? dse.MovingTime - xomsTime.KomTime : null;
+                int? prSecondsOffKom = (detailedSegment.AthleteSegmentStats.PrElapsedTime != null && xomsTime.KomTime != null) ?
+                    detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime :
+                    null;
+                int? secondsOffQom = xomsTime.QomTime != null ? dse.MovingTime - xomsTime.QomTime : null;
+                int? prSecondsOffQom = (detailedSegment.AthleteSegmentStats.PrElapsedTime != null && xomsTime.QomTime != null) ?
+                    detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime :
+                    null;
+
 
                 SnipeSegment snipeSegment = new SnipeSegment
                 {
@@ -137,18 +150,18 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     DetailedSegmentEffort = dse,
                     SegmentId = dse.SummarySegment.Id,
                     Name = dse.Name,
-                    KomTime = ConvertTimeInSeconds(xomsTime.KomTime),
-                    QomTime = ConvertTimeInSeconds(xomsTime.QomTime),
+                    KomTime = ConvertTimeInSeconds(xomsTime?.KomTime ?? 0),
+                    QomTime = ConvertTimeInSeconds(xomsTime?.QomTime ?? 0),
                     PercentageFromKom = percentageOffKom,
                     PercentageFromQom = percentageOffQom,
                     PrPercentageFromKom = prPercentageOffKom,
                     PrPercentageFromQom = prPercentageOffQom,
-                    TimeFromKom = ConvertTimeInSeconds(secondsOffKom),
-                    TimeFromQom = ConvertTimeInSeconds(secondsOffQom),
+                    TimeFromKom = secondsOffKom != null ? ConvertTimeInSeconds((int)secondsOffKom) : null,
+                    TimeFromQom = secondsOffQom != null ? ConvertTimeInSeconds((int)secondsOffQom) : null,
                     SecondsFromKom = secondsOffKom,
                     SecondsFromQom = secondsOffQom,
-                    PrSecondsFromKom = ConvertTimeInSeconds(prSecondsOffKom),
-                    PrSecondsFromQom = ConvertTimeInSeconds(prSecondsOffQom),
+                    PrSecondsFromKom = prSecondsOffKom != null ? ConvertTimeInSeconds((int)prSecondsOffKom) : null,
+                    PrSecondsFromQom = prSecondsOffQom != null ?  ConvertTimeInSeconds((int)prSecondsOffQom) : null,
                     ActivityType = detailedSegment.ActivityType,
                     Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                     Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
@@ -183,8 +196,10 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             };
         }
 
-        private int GetTimeFromString(string time)
+        private int? GetTimeFromString(string time)
         {
+            if (string.IsNullOrEmpty(time))
+                return null;
             time = RemoveLetters(time);
 
             int returnTime = 0;
@@ -206,8 +221,8 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private class XomsTimes
         {
-            public int KomTime { get; set; }
-            public int QomTime { get; set; }
+            public int? KomTime { get; set; }
+            public int? QomTime { get; set; }
         }
 
         private string ConvertTimeInSeconds(int seconds)
