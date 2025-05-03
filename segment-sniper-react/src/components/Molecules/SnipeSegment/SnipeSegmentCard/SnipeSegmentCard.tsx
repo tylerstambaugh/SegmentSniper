@@ -93,8 +93,8 @@ const SnipeSegmentCard = ({
               <Col>
                 <Link to={linkToSegmentOnStrava} target='blank'>{snipeSegment.name}</Link>
 
-                {(!leaderTypeQom && snipeSegment.secondsFromKom === 0) ||
-                  (leaderTypeQom && snipeSegment.secondsFromQom === 0) ? (
+                {(!leaderTypeQom && snipeSegment.secondsFromKom && snipeSegment.secondsFromKom <= 0) ||
+                  (leaderTypeQom && snipeSegment.secondsFromQom && snipeSegment.secondsFromQom <= 0) ? (
                   <FontAwesomeIcon icon={crown} className="ps-2" />
                 ) : (
                   <></>
@@ -136,8 +136,9 @@ const SnipeSegmentCard = ({
                     </p>
                     <p className="mb-0">
                       {!leaderTypeQom
-                        ? snipeSegment.komTime
-                        : snipeSegment.qomTime}
+                        ? snipeSegment.komTime === null ? 'No KOM' : snipeSegment.komTime
+                        : snipeSegment.qomTime === null ? 'No QOM'
+                          : snipeSegment.qomTime}
                     </p>
                   </Col>
                 </Row>
@@ -156,18 +157,20 @@ const SnipeSegmentCard = ({
                   <Col className="d-flex justify-content-between">
                     <p className="mb-0">
                       <span className="activity-card-label">
-                        Time Behind {!leaderTypeQom ? `KOM:` : `QOM:`}
+                        Time {((leaderTypeQom && snipeSegment.secondsFromQom && snipeSegment.secondsFromQom <= 0)
+                          || (!leaderTypeQom && snipeSegment.secondsFromKom && snipeSegment.secondsFromKom <= 0)) ? 'Ahead ' : 'Behind '}
+                        {!leaderTypeQom ? `KOM:` : `QOM:`}
                       </span>
                     </p>
                     <p className="mb-0">
                       -
                       {!leaderTypeQom
                         ? comparePrTime
-                          ? snipeSegment.prSecondsFromKom
-                          : snipeSegment.timeFromKom
+                          ? snipeSegment.prSecondsFromKom === null ? 'N/A' : snipeSegment.prSecondsFromKom
+                          : snipeSegment.timeFromKom === null ? 'N/A' : snipeSegment.timeFromKom
                         : comparePrTime
-                          ? snipeSegment.prSecondsFromQom
-                          : snipeSegment.timeFromQom}
+                          ? snipeSegment.prSecondsFromQom === null ? 'N/A' : snipeSegment.prSecondsFromQom
+                          : snipeSegment.timeFromQom === null ? 'N/A' : snipeSegment.timeFromQom}
                     </p>
                   </Col>
                 </Row>
@@ -181,11 +184,11 @@ const SnipeSegmentCard = ({
                     <p className="mb-0">
                       {!leaderTypeQom
                         ? comparePrTime
-                          ? `${snipeSegment.prPercentageFromKom}%`
-                          : `${snipeSegment.percentageFromKom}% `
+                          ? snipeSegment.prPercentageFromKom === null ? 'N/A' : `${snipeSegment.prPercentageFromKom}%`
+                          : snipeSegment.percentageFromKom === null ? 'N/A' : `${snipeSegment.percentageFromKom}% `
                         : comparePrTime
-                          ? `${snipeSegment.prPercentageFromQom}%`
-                          : `${snipeSegment.percentageFromQom}%`}
+                          ? snipeSegment.prPercentageFromQom === null ? 'N/A' : `${snipeSegment.prPercentageFromQom}%`
+                          : snipeSegment.percentageFromQom === null ? 'N/A' : `${snipeSegment.percentageFromQom}%`}
                     </p>
                   </Col>
                 </Row>

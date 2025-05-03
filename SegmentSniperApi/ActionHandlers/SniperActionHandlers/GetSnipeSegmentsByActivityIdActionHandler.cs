@@ -124,10 +124,10 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 int? percentageOffKom = xomsTime.KomTime != null ? 
                     (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
                     : null;
-                int? prPercentageOffKom = xomsTime.QomTime != null ? 
+                int? prPercentageOffKom = xomsTime.KomTime != null ? 
                     (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
                     : null;
-                int? percentageOffQom = xomsTime.KomTime != null ?
+                int? percentageOffQom = xomsTime.QomTime != null ?
                     (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven) 
                     : null;
                 int? prPercentageOffQom = xomsTime.QomTime != null ? 
