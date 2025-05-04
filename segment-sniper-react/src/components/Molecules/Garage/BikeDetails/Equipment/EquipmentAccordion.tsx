@@ -10,7 +10,7 @@ type EquipmentAccordionProps = {
     setModalState: (state: EquipmentModalState) => void;
 }
 
-export const EquipmentAccodion = ({ equipment, setModalState }: EquipmentAccordionProps) => {
+export const EquipmentAccordion = ({ equipment, setModalState }: EquipmentAccordionProps) => {
 
 
     return (
