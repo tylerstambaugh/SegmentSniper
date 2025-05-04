@@ -14,7 +14,6 @@ permissions:
 
 jobs:
   build:
-    fail-fast: true
     runs-on: windows-latest
 
     steps:
