@@ -9,7 +9,7 @@ import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
 import RetireEquipmentModal from "./RetireEquipmentModal";
 import { RetireBikeEquipmentBase } from "../../../../../pages/Garage/BikeDetails";
 import _ from "lodash";
-import { EquipmentAccodion } from "./EquipmentAccordion";
+import { EquipmentAccordion } from "./EquipmentAccordion";
 
 
 type EquipmentListProps = {
@@ -70,7 +70,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                     />
                     <p className={styles.equipmentHeading}>Active Equipment</p>
                     <Row className='pt-1 p-1'>
-                        <EquipmentAccodion
+                        <EquipmentAccordion
                             equipment={activeEquipment}
                             setModalState={setModalState} />
                     </Row>
@@ -81,7 +81,7 @@ const EquipmentList = ({ equipment, handleAddEquipmentSubmit, handleRetireEquipm
                 <Row>
                     <p className={styles.equipmentHeading}>Retired Equipment</p>
                     <Row className='pt-1 p-1'>
-                        <EquipmentAccodion
+                        <EquipmentAccordion
                             equipment={retiredEquipment}
                             setModalState={setModalState} />
                     </Row>
