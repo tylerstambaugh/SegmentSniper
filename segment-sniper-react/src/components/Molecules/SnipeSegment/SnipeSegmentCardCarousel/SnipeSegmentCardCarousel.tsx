@@ -28,19 +28,20 @@ const SnipeSegmentCardCarousel = ({
 
   const carouselRef = useRef<Carousel>(null);
 
-  const checkScreenSize = useCallback(
-    debounce(() => {
+  const checkScreenSize = useCallback(() => {
+    const debouncedCheck = debounce(() => {
       setIsSmallScreen(window.innerWidth < 768);
-    }, 200),
-    []
-  );
+    }, 200);
+
+    debouncedCheck();
+    return () => debouncedCheck.cancel();
+  }, []);
 
   useEffect(() => {
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => {
       window.removeEventListener('resize', checkScreenSize);
-      checkScreenSize.cancel();
     };
   }, [checkScreenSize]);
 

@@ -16,24 +16,25 @@ const ActivityCardCarousel = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const carouselRef = useRef<Carousel>(null);
-  const checkScreenSize = useCallback(
-    debounce(() => {
-      setIsSmallScreen(window.innerWidth < 768);
-    }, 200),
-    []
 
-  );
+  const checkScreenSize = useCallback(() => {
+    const debouncedCheck = debounce(() => {
+      setIsSmallScreen(window.innerWidth < 768);
+    }, 200);
+
+    debouncedCheck();
+    return () => debouncedCheck.cancel();
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    checkScreenSize();
 
+    checkScreenSize();
 
     window.addEventListener("resize", checkScreenSize);
 
     return () => {
       window.removeEventListener("resize", checkScreenSize);
-      checkScreenSize.cancel();
     };
   }, [checkScreenSize]);
 
