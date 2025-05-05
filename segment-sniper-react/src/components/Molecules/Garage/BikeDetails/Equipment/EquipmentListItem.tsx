@@ -3,7 +3,7 @@ import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
 import { EquipmentModalState } from "./EquipmentList";
-import { MAX_DATE_TIME, MAX_DATE_TIME_STRING } from "../../../../../Constants/timeConstant";
+import { MAX_DATE_STRING } from "../../../../../Constants/timeConstant";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
@@ -59,7 +59,7 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                         Edit
                     </Button>
                 </Col>
-                {(item.retiredDate?.toString() !== MAX_DATE_TIME_STRING) && (
+                {(item.retiredDate?.toString() !== MAX_DATE_STRING) && (
                     <Col>
                         <Button
                             className={styles.retire_button}
