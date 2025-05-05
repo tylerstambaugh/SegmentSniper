@@ -29,11 +29,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             ValidateRequest(request);
             var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
-            if (token != null)
+            if (token.RefreshToken != null)
             {
                 try
                 {
-                    _stravaRequestService.UserId = request.UserId;
+                    _stravaRequestService.UserId = request.UserId;                   
                     _stravaRequestService.RefreshToken = token.RefreshToken;
                     //get detailed activity by Id
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));

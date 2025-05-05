@@ -9,3 +9,5 @@ export const MAX_DATE_TIME: DateTime = DateTime.fromObject({
   second: 59,
   millisecond: 999,
 });
+
+export const MAX_DATE_STRING = MAX_DATE_TIME.toISODate();

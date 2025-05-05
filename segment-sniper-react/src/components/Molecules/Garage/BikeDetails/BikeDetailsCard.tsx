@@ -1,19 +1,17 @@
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import EquipmentList from "./Equipment/EquipmentList";
 import { BikeModel } from "../../../../graphql/generated";
 import _ from "lodash";
-import { AddEquipmentFormValues } from "./Equipment/AddEquipmentForm";
 import { useConversionHelpers } from "../../../../hooks/useConversionHelpers";
-import { RetireBikeEquipmentBase } from "../../../../pages/Garage/BikeDetails";
 
 
 type BikeDetailsCardProps = {
     bike: BikeModel;
-    handleAddEquipmentSubmit: (values: AddEquipmentFormValues) => void;
-    handleRetireEquipment: (values: RetireBikeEquipmentBase) => void;
 }
 
-const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit, handleRetireEquipment }: BikeDetailsCardProps) => {
+
+
+const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
     const convert = useConversionHelpers();
     return (
         <Card>
@@ -26,9 +24,7 @@ const BikeDetailsCard = ({ bike, handleAddEquipmentSubmit, handleRetireEquipment
                     </Row>
                 </Card.Text>
                 <EquipmentList
-                    equipment={_.compact(bike?.equipment) ?? []}
-                    handleAddEquipmentSubmit={handleAddEquipmentSubmit}
-                    handleRetireEquipment={handleRetireEquipment} />
+                    equipment={_.compact(bike?.equipment) ?? []} bike={bike} />
             </Card.Body>
         </Card>
     )
