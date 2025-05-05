@@ -1,5 +1,4 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { FrameType } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
 import { AppRoutes } from '../../../../enums/AppRoutes';
 import { useNavigate } from 'react-router-dom';

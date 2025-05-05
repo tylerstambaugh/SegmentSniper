@@ -25,12 +25,12 @@ namespace SegmentSniper.Models.Models.Strava.Segment
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public double TotalElevationGain { get; set; }
-        public MapModel Map { get; set; }
+        public MapModel? Map { get; set; }
         public int EffortCount { get; set; }
         public int AthleteCount { get; set; }
         public int StarCount { get; set; }
-        public AthleteSegmentStats AthleteSegmentStats { get; set; }
-        public Xoms Xoms { get; set; }
-        public LocalLegend LocalLegend { get; set; }
+        public AthleteSegmentStats? AthleteSegmentStats { get; set; }
+        public Xoms? Xoms { get; set; }
+        public LocalLegend? LocalLegend { get; set; }
     }
 }

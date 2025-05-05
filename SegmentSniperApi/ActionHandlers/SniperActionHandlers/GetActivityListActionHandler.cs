@@ -71,9 +71,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     listOfSummaryActivities = response.SummaryActivities;
 
-
                     await UpdateGarage(listOfSummaryActivities, request.UserId);
-
 
                     if (parsedActivity != ActivityTypeEnum.ActivityType.All)
                     {
@@ -124,7 +122,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             //for each summary activity
             //check to see if bike exists, add it if it doesn't
-            //create bikeActivity record for each activityId that doesn't have bikeActivity record
+            //create bikeActivity record for each activityId that doesn't already have bikeActivity record
 
             var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
             var userBikeActivities = await _getAllBikeActivitiesByUserId.ExecuteAsync(contract: new GetAllBikeActivitiesByUserIdContract(userId));

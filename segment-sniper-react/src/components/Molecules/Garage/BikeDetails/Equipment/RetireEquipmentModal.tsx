@@ -4,9 +4,19 @@ import { Maybe } from "graphql/jsutils/Maybe"
 import { DateTime } from "luxon"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
-import { RetireBikeEquipmentBase } from "../../../../../pages/Garage/BikeDetails"
 import { useState } from "react"
 import styles from "./Equipment.module.scss"
+
+
+export interface RetireBikeEquipmentBase {
+    equipmentId: Maybe<string>;
+    retireDate: Maybe<DateTime>;
+}
+
+export interface RetireBikeEquipmentValues extends RetireBikeEquipmentBase {
+    bikeId: string;
+    userId: string;
+}
 
 type RetireEquipmentModalProps = {
     show: boolean
@@ -19,14 +29,13 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
 
     const [validated, setValidated] = useState(false);
     const initialValues: RetireBikeEquipmentBase = {
-
         equipmentId: item?.equipmentId ?? "",
         retireDate: null
     }
 
     const validationSchema = Yup.object({
-        retiredDate: Yup.date().required(),
-    })
+        retireDate: Yup.date().required("Retirement date is required"),
+    });
 
     const formik = useFormik<RetireBikeEquipmentBase>({
         initialValues: initialValues,
@@ -34,8 +43,12 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values) => {
+            const equipmentToRetire: RetireBikeEquipmentBase = {
+                equipmentId: item?.equipmentId ?? "",
+                retireDate: values.retireDate
+            }
             setValidated(true);
-            await handleRetireEquipment(values)
+            handleRetireEquipment(equipmentToRetire)
         }
     })
     return (
@@ -48,7 +61,8 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                     <Row className="justify-content-center">
                         {`When would you like to retire ${item?.name}?`}
                     </Row>
-                    <Form>
+                    <Form noValidate onSubmit={formik.handleSubmit}>
+
                         <Row className="justify-content-center">
                             <Col sm={6}>
 
@@ -74,7 +88,8 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                         </Row>
                         <Row className={styles.modal_button_row}>
                             <Col>
-                                <Button onClick={() => onClose}>Cancel</Button>
+                                <Button variant="secondary" onClick={onClose}>Cancel</Button>
+
                             </Col>
                             <Col>
                                 <Button variant="primary" type="submit">
