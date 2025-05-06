@@ -4,10 +4,11 @@ import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConver
 import styles from "./Equipment.module.scss";
 import { EquipmentModalState } from "./EquipmentList";
 import { MAX_DATE_STRING } from "../../../../../Constants/timeConstant";
+import { Dispatch, SetStateAction } from "react";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
-    setModalState: (modalState: EquipmentModalState) => void;
+    setModalState: Dispatch<SetStateAction<EquipmentModalState>>;
 }
 
 
@@ -55,7 +56,10 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
             <Row className="justify-content-between">
                 <Col>
                     <Button
-                        onClick={() => setModalState({ type: "addEdit", item: item })}>
+                        onClick={() => {
+                            console.log("Edit button clicked");
+                            setModalState({ type: "addEdit", item: item })
+                        }}>
                         Edit
                     </Button>
                 </Col>

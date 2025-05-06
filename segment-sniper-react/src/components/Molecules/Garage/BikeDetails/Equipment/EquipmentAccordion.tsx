@@ -2,12 +2,13 @@
 import { Col, Accordion } from "react-bootstrap"
 import EquipmentListItem from "./EquipmentListItem"
 import { EquipmentModel } from "../../../../../graphql/generated"
-import { EquipmentModalState } from "./EquipmentList"
+import { Dispatch, SetStateAction } from "react";
+import { EquipmentModalState } from "./EquipmentList";
 
 
 type EquipmentAccordionProps = {
     equipment: EquipmentModel[];
-    setModalState: (state: EquipmentModalState) => void;
+    setModalState: Dispatch<SetStateAction<EquipmentModalState>>;
 }
 
 export const EquipmentAccordion = ({ equipment, setModalState }: EquipmentAccordionProps) => {
