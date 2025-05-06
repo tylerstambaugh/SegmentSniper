@@ -28,7 +28,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
     console.log("AddEquipmentFormUI", editEquipment);
 
     const [validated, setValidated] = useState(false);
-
+    const isEdit = editEquipment !== undefined;
     const initialValues: AddEquipmentFormValues = {
         name: editEquipment?.name ?? '',
         description: editEquipment?.description ?? '',
@@ -66,7 +66,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
     return (
         <Modal show={show} onHide={onClose} className="shadow">
             <Modal.Header closeButton>
-                <Modal.Title>{editEquipment !== undefined ? 'Edit' : 'Add'} Equipment</Modal.Title>
+                <Modal.Title>{isEdit ? 'Edit' : 'Add'} Equipment</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Col>
@@ -123,7 +123,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
-                            <Col>
+                            {/* <Col>
                                 <Form.Group controlId="retiredDate" className="mb-3">
                                     <Form.Label>Retired Date</Form.Label>
                                     <Form.Control type="date"
@@ -142,7 +142,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                         {formik.errors.retiredDate as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row>
                             <Col>
@@ -224,12 +224,21 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
 
                         <Row className="justify-content-between">
                             <Col>
-                                <Button variant="secondary" onClick={() => {
-                                    setValidated(false)
-                                    formik.resetForm()
-                                }}>
-                                    Reset
-                                </Button>
+                                {isEdit ? (
+
+                                    <Button variant="secondary" onClick={() => {
+                                        onClose();
+                                    }}>
+                                        Cancel
+                                    </Button>
+                                ) : (
+                                    <Button variant="secondary" onClick={() => {
+                                        setValidated(false)
+                                        formik.resetForm()
+                                    }}>
+                                        Reset
+                                    </Button>
+                                )}
                             </Col>
                             <Col className="justify-content-center">
                                 <Button variant="primary" type="submit">

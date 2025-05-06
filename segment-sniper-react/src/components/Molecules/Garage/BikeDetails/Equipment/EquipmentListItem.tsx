@@ -11,9 +11,8 @@ type EquipmentListItemProps = {
     setModalState: Dispatch<SetStateAction<EquipmentModalState>>;
 }
 
-
-
 const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => {
+
 
 
     const timeFormatter = useTimeFormatConverter();
@@ -35,10 +34,12 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                 <Col className={styles.equipmentLabel}>Installed on</Col>
                 <Col>{timeFormatter.convertStringToFormattedDateTime(item.installDate as string)}</Col>
             </Row>
-            <Row>
-                <Col className={styles.equipmentLabel}>Retired on</Col>
-                <Col>{timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}</Col>
-            </Row>
+            {item.retiredDate && item.retiredDate !== MAX_DATE_STRING && (
+                <Row>
+                    <Col className={styles.equipmentLabel}>Retired on</Col>
+                    <Col>{timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}</Col>
+                </Row>
+            )}
             <Row>
                 <Col className={styles.equipmentLabel}>Price </Col>
                 <Col>${item.price}</Col>
@@ -53,27 +54,40 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                     <Col>{item.milesUntilReplaceReminder} miles</Col>
                 </Row>
             )}
-            <Row className="justify-content-between">
+            <Row className="justify-content-center pb-2 pt-1">
                 <Col>
                     <Button
+                        className="d-flex justify-content-center px-3"
+                        variant="primary"
                         onClick={() => {
                             console.log("Edit button clicked");
                             setModalState({ type: "addEdit", item: item })
                         }}>
+
                         Edit
                     </Button>
                 </Col>
-                {(item.retiredDate?.toString() !== MAX_DATE_STRING) && (
-                    <Col>
-                        <Button
-                            className={styles.retire_button}
-                            onClick={() => setModalState({ type: "retire", item: item })}>
-                            Retire
-                        </Button>
-                    </Col>
-                )}
-            </Row>
-        </Col>
+                {
+                    (item.retiredDate && item.retiredDate === MAX_DATE_STRING) ? (
+                        <Col>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setModalState({ type: "retire", item: item })}>
+                                Retire
+                            </Button>
+                        </Col>
+                    ) : (
+                        <Col>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setModalState({ type: "retire", item: item })}>
+                                Un-Retire
+                            </Button>
+                        </Col>
+                    )
+                }
+            </Row >
+        </Col >
     )
 }
 
