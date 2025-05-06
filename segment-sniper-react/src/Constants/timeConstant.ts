@@ -10,4 +10,4 @@ export const MAX_DATE_TIME: DateTime = DateTime.fromObject({
   millisecond: 999,
 });
 
-export const MAX_DATE_STRING = MAX_DATE_TIME.toISODate();
+export const MAX_DATE_STRING = '9999-12-31T23:59:59.9999999';
