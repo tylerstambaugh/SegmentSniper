@@ -35,6 +35,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     }
 
     function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): AddEquipmentFormValues {
+
         return {
             name: selectedEquipment?.name,
             description: selectedEquipment?.description ?? "",
@@ -143,8 +144,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                         handleSubmit={handleAddEquipmentSubmit}
                         onClose={handleClosedModal}
                         editEquipment={
-                            modalState.type === "addEdit"
-                                ? adaptEquipmentModelToEquipmentFormValues(modalState.item!)
+                            modalState.type === "addEdit" && modalState.item
+                                ? adaptEquipmentModelToEquipmentFormValues(modalState.item)
                                 : undefined
                         }
                     />
