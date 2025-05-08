@@ -51,10 +51,30 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     const activeEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year === MAX_DATE_TIME.year);
     const retiredEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year);
 
-    const [
-        addEquipmentToBike,
-        { data: addEquipmentData, loading: addEquipmentLoading, error: addEquipmentError }
-    ] = useAddEquipmentToBikeMutation();
+    const [addEquipmentToBike,
+        { data: addEquipmentData,
+            loading: addEquipmentLoading,
+            error: addEquipmentError }
+    ] = useAddEquipmentToBikeMutation(
+
+        {
+            update(cache, { data }) {
+                const updatedBike = data?.garage?.addEquipmentToBike;
+                if (!updatedBike) return;
+
+                cache.writeQuery({
+                    query: GetBikeByIdQuery,
+                    variables: { bikeId: updatedBike.bikeId },
+                    data: {
+                        bikes: {
+                            __typename: "BikeQuery",
+                            byBikeId: updatedBike,
+                        },
+                    },
+                });
+            },
+        }
+    );
 
     const [retireBikeEquipment,
         { data: retireBikeEquipmentData,
@@ -148,6 +168,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                                 ? adaptEquipmentModelToEquipmentFormValues(modalState.item)
                                 : undefined
                         }
+                        loading={addEquipmentLoading}
+                        error={addEquipmentError}
                     />
                     <RetireEquipmentModal
                         show={modalState.type === "retire"}

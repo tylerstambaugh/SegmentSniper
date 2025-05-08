@@ -1,16 +1,20 @@
-import { Button, Col, Form, Modal, Row } from "react-bootstrap"
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
 import { DateTime } from "luxon";
 import { Maybe } from "graphql/jsutils/Maybe";
+import { ApolloError } from "@apollo/client";
+import toast from "react-hot-toast";
 
 export type AddEquipmentFormProps = {
     show: boolean;
     handleSubmit: (values: AddEquipmentFormValues) => Promise<void>;
     onClose: () => void
     editEquipment?: Maybe<AddEquipmentFormValues> | undefined;
+    loading?: boolean;
+    error: ApolloError | undefined
 }
 
 export interface AddEquipmentFormValues {
@@ -24,7 +28,7 @@ export interface AddEquipmentFormValues {
     milesUntilReplaceReminder?: number | null;
 }
 
-const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddEquipmentFormProps) => {
+const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: AddEquipmentFormProps) => {
     console.log("AddEquipmentFormUI", editEquipment);
 
     const [validated, setValidated] = useState(false);
@@ -60,9 +64,23 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
         validateOnChange: validated,
         onSubmit: async (values: AddEquipmentFormValues) => {
             setValidated(true);
-            await handleSubmit(values)
+            await handleSubmit(values).then(() => {
+                if (!loading && !error) {
+                    toast.success(`Equipment ${isEdit ? 'updated' : 'added'} successfully`);
+                    onClose();
+                    formik.resetForm()
+                }
+            })
         }
     })
+
+    useEffect(() => {
+        if (error) {
+            toast.error(`Error: ${error.message}`);
+        }
+    }, [error])
+
+
     return (
         <Modal show={show} onHide={onClose} className="shadow">
             <Modal.Header closeButton>
@@ -241,9 +259,29 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                 )}
                             </Col>
                             <Col className="justify-content-center">
-                                <Button variant="primary" type="submit">
-                                    Submit
-                                </Button>
+                                {!loading ? (
+
+                                    <Button variant="primary" type="submit" onClick={() => {
+                                        console.log("formik errors", formik.errors);
+                                    }}>
+                                        Submit
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        variant="secondary"
+                                        style={{ width: '175px' }}
+                                    >
+                                        <Spinner
+                                            as="span"
+                                            variant="light"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                            animation="border"
+                                        />
+                                    </Button>
+                                )}
 
                             </Col>
                         </Row>

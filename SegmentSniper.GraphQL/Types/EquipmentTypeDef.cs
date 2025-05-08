@@ -29,6 +29,7 @@ namespace SegmentSniper.GraphQL.Types
         public EquipmentInputType()
         {
             Name = "EquipmentInput";
+            Field(e => e.EquipmentId).Description("The Id of the equipment, used for updating existing equipment");
             Field(e => e.Name).Description("The name of the equipment.");
             Field(e => e.Description).Description("The description of the equipment.");
             Field(e => e.Price).Description("The price of the equipment.");
@@ -37,6 +38,6 @@ namespace SegmentSniper.GraphQL.Types
             Field(e => e.MilesLogged).Description("The miles logged on the equipment");
             Field(e => e.ReplaceAtMiles).Description("The sum total of miles that the equipment should be replaced");
             Field(e => e.MilesUntilReplaceReminder).Description(("Miles until a reminder to replace the equipment is sent"));
-            }
+        }
     }
 }
