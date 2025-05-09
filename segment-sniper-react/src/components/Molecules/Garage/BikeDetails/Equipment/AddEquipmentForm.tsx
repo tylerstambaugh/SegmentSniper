@@ -8,16 +8,16 @@ import { Maybe } from "graphql/jsutils/Maybe";
 import { ApolloError } from "@apollo/client";
 import toast from "react-hot-toast";
 
-export type AddEquipmentFormProps = {
+export type UpsertEquipmentFormProps = {
     show: boolean;
-    handleSubmit: (values: AddEquipmentFormValues) => Promise<void>;
+    handleSubmit: (values: UpsertEquipmentFormValues) => Promise<void>;
     onClose: () => void
-    editEquipment?: Maybe<AddEquipmentFormValues> | undefined;
+    editEquipment?: Maybe<UpsertEquipmentFormValues> | undefined;
     loading?: boolean;
     error: ApolloError | undefined
 }
 
-export interface AddEquipmentFormValues {
+export interface UpsertEquipmentFormValues {
     name: string;
     description: string;
     milesLogged?: number | null;
@@ -28,12 +28,12 @@ export interface AddEquipmentFormValues {
     milesUntilReplaceReminder?: number | null;
 }
 
-const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: AddEquipmentFormProps) => {
+const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: UpsertEquipmentFormProps) => {
     console.log("AddEquipmentFormUI", editEquipment);
 
     const [validated, setValidated] = useState(false);
     const isEdit = editEquipment !== undefined;
-    const initialValues: AddEquipmentFormValues = {
+    const initialValues: UpsertEquipmentFormValues = {
         name: editEquipment?.name ?? '',
         description: editEquipment?.description ?? '',
         milesLogged: editEquipment?.milesLogged ?? undefined,
@@ -57,12 +57,12 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loadin
         milesUntilReplaceReminder: Yup.number(),
     })
 
-    const formik = useFormik<AddEquipmentFormValues>({
+    const formik = useFormik<UpsertEquipmentFormValues>({
         initialValues: initialValues,
         validationSchema: validationSchema,
         validateOnBlur: validated,
         validateOnChange: validated,
-        onSubmit: async (values: AddEquipmentFormValues) => {
+        onSubmit: async (values: UpsertEquipmentFormValues) => {
             setValidated(true);
             await handleSubmit(values).then(() => {
                 if (!loading && !error) {
@@ -292,4 +292,4 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loadin
     )
 }
 
-export default AddEquipmentFormUI
+export default UpsertEquipmentFormUI

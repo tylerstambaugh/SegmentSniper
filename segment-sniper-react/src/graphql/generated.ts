@@ -66,6 +66,8 @@ export type BikeQueriesByUserIdArgs = {
 export type EquipmentInput = {
   /** The description of the equipment. */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** The Id of the equipment, used for updating existing equipment */
+  equipmentId?: InputMaybe<Scalars['String']['input']>;
   /** The installation date of the equipment. */
   installDate?: InputMaybe<Scalars['DateTime']['input']>;
   /** The miles logged on the equipment */
@@ -107,17 +109,10 @@ export type EquipmentModel = {
 
 export type GarageMutations = {
   __typename?: 'GarageMutations';
-  addEquipmentToBike?: Maybe<BikeModel>;
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
-};
-
-
-export type GarageMutationsAddEquipmentToBikeArgs = {
-  bikeId: Scalars['ID']['input'];
-  equipment: EquipmentInput;
-  userId: Scalars['ID']['input'];
+  upsertBikeEquipment?: Maybe<BikeModel>;
 };
 
 
@@ -133,6 +128,13 @@ export type GarageMutationsRetireEquipmentOnBikeArgs = {
   userId: Scalars['ID']['input'];
 };
 
+
+export type GarageMutationsUpsertBikeEquipmentArgs = {
+  bikeId: Scalars['ID']['input'];
+  equipment: EquipmentInput;
+  userId: Scalars['ID']['input'];
+};
+
 export type RootMutation = {
   __typename?: 'RootMutation';
   /** Add or update bikes and equipment */
@@ -145,15 +147,6 @@ export type RootQuery = {
   bikes?: Maybe<BikeQueries>;
 };
 
-export type AddEquipmentToBikeMutationVariables = Exact<{
-  bikeId: Scalars['ID']['input'];
-  equipment: EquipmentInput;
-  userId: Scalars['ID']['input'];
-}>;
-
-
-export type AddEquipmentToBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', addEquipmentToBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
-
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
@@ -163,6 +156,15 @@ export type RetireEquipmentOnBikeMutationVariables = Exact<{
 
 
 export type RetireEquipmentOnBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', retireEquipmentOnBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+
+export type UpsertBikeEquipmentMutationVariables = Exact<{
+  bikeId: Scalars['ID']['input'];
+  equipment: EquipmentInput;
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type GetBikeByIdQueryVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -179,55 +181,6 @@ export type GetBikesByUserIdQueryVariables = Exact<{
 export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 
-export const AddEquipmentToBikeDocument = gql`
-    mutation AddEquipmentToBike($bikeId: ID!, $equipment: EquipmentInput!, $userId: ID!) {
-  garage {
-    addEquipmentToBike(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
-      bikeId
-      name
-      equipment {
-        equipmentId
-        name
-        description
-        installDate
-        milesLogged
-        milesUntilReplaceReminder
-        price
-        replaceAtMiles
-        retiredDate
-      }
-    }
-  }
-}
-    `;
-export type AddEquipmentToBikeMutationFn = Apollo.MutationFunction<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>;
-
-/**
- * __useAddEquipmentToBikeMutation__
- *
- * To run a mutation, you first call `useAddEquipmentToBikeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddEquipmentToBikeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addEquipmentToBikeMutation, { data, loading, error }] = useAddEquipmentToBikeMutation({
- *   variables: {
- *      bikeId: // value for 'bikeId'
- *      equipment: // value for 'equipment'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useAddEquipmentToBikeMutation(baseOptions?: Apollo.MutationHookOptions<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>(AddEquipmentToBikeDocument, options);
-      }
-export type AddEquipmentToBikeMutationHookResult = ReturnType<typeof useAddEquipmentToBikeMutation>;
-export type AddEquipmentToBikeMutationResult = Apollo.MutationResult<AddEquipmentToBikeMutation>;
-export type AddEquipmentToBikeMutationOptions = Apollo.BaseMutationOptions<AddEquipmentToBikeMutation, AddEquipmentToBikeMutationVariables>;
 export const RetireEquipmentOnBikeDocument = gql`
     mutation RetireEquipmentOnBike($bikeId: ID!, $equipmentId: ID!, $userId: ID!, $retireDate: Date!) {
   garage {
@@ -286,6 +239,55 @@ export function useRetireEquipmentOnBikeMutation(baseOptions?: Apollo.MutationHo
 export type RetireEquipmentOnBikeMutationHookResult = ReturnType<typeof useRetireEquipmentOnBikeMutation>;
 export type RetireEquipmentOnBikeMutationResult = Apollo.MutationResult<RetireEquipmentOnBikeMutation>;
 export type RetireEquipmentOnBikeMutationOptions = Apollo.BaseMutationOptions<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>;
+export const UpsertBikeEquipmentDocument = gql`
+    mutation UpsertBikeEquipment($bikeId: ID!, $equipment: EquipmentInput!, $userId: ID!) {
+  garage {
+    upsertBikeEquipment(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
+      bikeId
+      name
+      equipment {
+        equipmentId
+        name
+        description
+        installDate
+        milesLogged
+        milesUntilReplaceReminder
+        price
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}
+    `;
+export type UpsertBikeEquipmentMutationFn = Apollo.MutationFunction<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>;
+
+/**
+ * __useUpsertBikeEquipmentMutation__
+ *
+ * To run a mutation, you first call `useUpsertBikeEquipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertBikeEquipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertBikeEquipmentMutation, { data, loading, error }] = useUpsertBikeEquipmentMutation({
+ *   variables: {
+ *      bikeId: // value for 'bikeId'
+ *      equipment: // value for 'equipment'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpsertBikeEquipmentMutation(baseOptions?: Apollo.MutationHookOptions<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>(UpsertBikeEquipmentDocument, options);
+      }
+export type UpsertBikeEquipmentMutationHookResult = ReturnType<typeof useUpsertBikeEquipmentMutation>;
+export type UpsertBikeEquipmentMutationResult = Apollo.MutationResult<UpsertBikeEquipmentMutation>;
+export type UpsertBikeEquipmentMutationOptions = Apollo.BaseMutationOptions<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>;
 export const GetBikeByIdDocument = gql`
     query GetBikeById($bikeId: ID!) {
   bikes {

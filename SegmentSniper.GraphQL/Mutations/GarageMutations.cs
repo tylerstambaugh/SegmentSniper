@@ -39,7 +39,7 @@ namespace SegmentSniper.GraphQL.Mutations
 
             AddField(new FieldType
             {
-                Name = "AddEquipmentToBike",
+                Name = "UpsertBikeEquipment",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },

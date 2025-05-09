@@ -1,7 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
-import AddEquipmentForm, { AddEquipmentFormValues } from "./AddEquipmentForm";
+import AddEquipmentForm, { UpsertEquipmentFormValues } from "./AddEquipmentForm";
 import { useState } from "react";
-import { BikeModel, EquipmentInput, EquipmentModel, useAddEquipmentToBikeMutation } from "../../../../../graphql/generated";
+import { BikeModel, EquipmentInput, EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
 import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
@@ -11,6 +11,7 @@ import { EquipmentAccordion } from "./EquipmentAccordion";
 import useUserStore from "../../../../../stores/useUserStore";
 import { useRetireBikeEquipmentMutation } from "./GraphQl/useRetireBikeEquipment";
 import GetBikeByIdQuery from '../../GraphQl/GetBikeById.graphql';
+import { useUpsertBikeEquipmentMutation } from "./GraphQl/useUpsertBikeEquipmentMutation";
 
 
 type EquipmentListProps = {
@@ -34,7 +35,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         setModalState({ type: "none" });
     }
 
-    function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): AddEquipmentFormValues {
+    function adaptEquipmentModelToEquipmentFormValues(selectedEquipment: EquipmentModel): UpsertEquipmentFormValues {
 
         return {
             name: selectedEquipment?.name,
@@ -52,14 +53,14 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     const retiredEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year);
 
     const [addEquipmentToBike,
-        { data: addEquipmentData,
+        { data: bikeEquipmentData,
             loading: addEquipmentLoading,
             error: addEquipmentError }
-    ] = useAddEquipmentToBikeMutation(
+    ] = useUpsertBikeEquipmentMutation(
 
         {
             update(cache, { data }) {
-                const updatedBike = data?.garage?.addEquipmentToBike;
+                const updatedBike = data?.garage?.upsertBikeEquipment;
                 if (!updatedBike) return;
 
                 cache.writeQuery({
@@ -98,7 +99,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             });
 
 
-    async function handleAddEquipmentSubmit(values: AddEquipmentFormValues) {
+    async function handleUpsertEquipmentSubmit(values: UpsertEquipmentFormValues) {
 
         const installDate = values.installDate
             ? DateTime.fromISO(values.installDate as unknown as string).toISO()
@@ -161,7 +162,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                 <Row>
                     <AddEquipmentForm
                         show={modalState.type === "addEdit"}
-                        handleSubmit={handleAddEquipmentSubmit}
+                        handleSubmit={handleUpsertEquipmentSubmit}
                         onClose={handleClosedModal}
                         editEquipment={
                             modalState.type === "addEdit" && modalState.item
