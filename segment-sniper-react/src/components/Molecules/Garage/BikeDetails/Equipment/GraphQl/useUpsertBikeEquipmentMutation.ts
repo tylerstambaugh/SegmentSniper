@@ -2,19 +2,18 @@ import * as Apollo from '@apollo/client';
 import AddEquipmentToBike from './AddEquipmentToBike.graphql';
 import {
   RootMutation,
-  GarageMutationsAddEquipmentToBikeArgs,
+  GarageMutationsUpsertBikeEquipmentArgs,
 } from '../../../../../../graphql/generated';
 
-export function useAddEquipmentToBikeMutation(
+export function useUpsertBikeEquipmentMutation(
   baseOptions?: Apollo.MutationHookOptions<
     { garage: RootMutation['garage'] },
-    GarageMutationsAddEquipmentToBikeArgs
+    GarageMutationsUpsertBikeEquipmentArgs
   >
-  
 ) {
-  const options = { ...baseOptions,  };
+  const options = { ...baseOptions };
   return Apollo.useMutation<
     { garage: RootMutation['garage'] },
-    GarageMutationsAddEquipmentToBikeArgs
+    GarageMutationsUpsertBikeEquipmentArgs
   >(AddEquipmentToBike, options);
 }
