@@ -9,6 +9,11 @@ namespace SegmentSniper.Services.Garage
 
     public class AddBikeContract
     {
+        public AddBikeContract(BikeModel bike)
+        {
+            Bike = bike;
+        }
+
         public BikeModel Bike { get; set; }
         public class Result
         {

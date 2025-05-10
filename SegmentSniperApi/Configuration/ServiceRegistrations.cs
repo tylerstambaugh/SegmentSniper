@@ -71,13 +71,13 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetSegmentPredictionTrainedModelMetaDataActionHandler, GetSegmentPredictionTrainedModelMetaDataActionHandler>();
             services.AddScoped<ITrainSegmentPredictionModelActionHandler, TrainSegmentPredictionModelActionHandler>();
 
-
             ////admin action handlers
             services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
             services.AddScoped<IRemoveUserActionHandler, RemoveUserActionHandler>();
 
             //garage actionhandlers
             services.AddScoped<IImportGarageActionHandler, ImportGarageActionHandler>();
+            services.AddScoped<IGetBikesByUserIdActionHandler, GetBikesByUserIdActionHandler>();
 
             //auth services
             services.AddScoped<IRegisterUser, RegisterUser>();
