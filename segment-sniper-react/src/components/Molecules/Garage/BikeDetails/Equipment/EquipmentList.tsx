@@ -1,17 +1,17 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import AddEquipmentForm, { UpsertEquipmentFormValues } from "./AddEquipmentForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BikeModel, EquipmentInput, EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
 import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
 import RetireEquipmentModal, { RetireBikeEquipmentBase } from "./RetireEquipmentModal";
-import _ from "lodash";
 import { EquipmentAccordion } from "./EquipmentAccordion";
 import useUserStore from "../../../../../stores/useUserStore";
 import { useRetireBikeEquipmentMutation } from "./GraphQl/useRetireBikeEquipment";
 import GetBikeByIdQuery from '../../GraphQl/GetBikeById.graphql';
 import { useUpsertBikeEquipmentMutation } from "./GraphQl/useUpsertBikeEquipmentMutation";
+import toast from "react-hot-toast";
 
 
 type EquipmentListProps = {
@@ -53,8 +53,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     const retiredEquipment = equipment.filter(e => DateTime.fromISO(e.retiredDate!).year !== MAX_DATE_TIME.year);
 
     const [addEquipmentToBike,
-        { data: bikeEquipmentData,
-            loading: addEquipmentLoading,
+        { loading: addEquipmentLoading,
             error: addEquipmentError }
     ] = useUpsertBikeEquipmentMutation(
 
@@ -78,25 +77,23 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     );
 
     const [retireBikeEquipment,
-        { data: retireBikeEquipmentData,
-            loading: retieBikeEquipmentLoading,
-            error: retireBikeEquipmentError }] = useRetireBikeEquipmentMutation({
-                update(cache, { data }) {
-                    const updatedBike = data?.garage?.retireEquipmentOnBike;
-                    if (!updatedBike) return;
+        { error: retireBikeEquipmentError }] = useRetireBikeEquipmentMutation({
+            update(cache, { data }) {
+                const updatedBike = data?.garage?.retireEquipmentOnBike;
+                if (!updatedBike) return;
 
-                    cache.writeQuery({
-                        query: GetBikeByIdQuery,
-                        variables: { bikeId: updatedBike.bikeId },
-                        data: {
-                            bikes: {
-                                __typename: "BikeQuery",
-                                byBikeId: updatedBike,
-                            },
+                cache.writeQuery({
+                    query: GetBikeByIdQuery,
+                    variables: { bikeId: updatedBike.bikeId },
+                    data: {
+                        bikes: {
+                            __typename: "BikeQuery",
+                            byBikeId: updatedBike,
                         },
-                    });
-                },
-            });
+                    },
+                });
+            },
+        });
 
 
     async function handleUpsertEquipmentSubmit(values: UpsertEquipmentFormValues) {
@@ -154,6 +151,14 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     //         console.error('User is not authorized. Please log in.');
     //     }
     // }, [addEquipmentError]);
+
+    useEffect(() => {
+        if (retireBikeEquipmentError || addEquipmentError) {
+            toast.error("Dang. An error occurred: " + (retireBikeEquipmentError?.message || addEquipmentError?.message), {
+                duration: 5000
+            })
+        }
+    }, [retireBikeEquipmentError, addEquipmentError])
 
     return (
 
