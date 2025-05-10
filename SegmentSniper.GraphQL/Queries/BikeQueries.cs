@@ -2,6 +2,7 @@
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
+using SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers;
 using SegmentSniper.GraphQL.Types;
 using SegmentSniper.Services.Garage;
 
@@ -46,10 +47,10 @@ namespace SegmentSniper.GraphQL.Queries
                 ),
                 Resolver = new FuncFieldResolver<object>(async context =>
                 {
-                    var service = context.RequestServices.GetRequiredService<IGetAllBikesByUserId>();
+                    var service = context.RequestServices.GetRequiredService<IGetBikesByUserIdActionHandler>();
                     var userId = context.GetArgument<string>("userId");
 
-                    var queriedBikes = await service.ExecuteAsync(new GetAllBikesByUserIdContract(userId));
+                    var queriedBikes = await service.ExecuteAsync(new GetBikesByUserIdRequest(userId));
 
                     if (queriedBikes == null)
                     {
