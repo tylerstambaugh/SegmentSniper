@@ -50,15 +50,24 @@ namespace SegmentSniper.GraphQL.Queries
                     var service = context.RequestServices.GetRequiredService<IGetBikesByUserIdActionHandler>();
                     var userId = context.GetArgument<string>("userId");
 
-                    var queriedBikes = await service.ExecuteAsync(new GetBikesByUserIdRequest(userId));
-
-                    if (queriedBikes == null)
+                    try
                     {
-                        throw new ExecutionError($"User with ID '{context.GetArgument<string>("userId")}' not found.");
+                        var queriedBikes = await service.ExecuteAsync(new GetBikesByUserIdRequest(userId));
+
+                        if (queriedBikes == null || queriedBikes.Bikes == null)
+                        {
+                            throw new ExecutionError($"User with ID '{userId}' not found or has no bikes.");
+                        }
+
+                        return queriedBikes.Bikes;
+                    }
+                    catch (Exception ex)
+                    {
+                        var error = new ExecutionError("An error occurred while retrieving bikes.", ex);
+                        error.Data.Add("userId", userId);
+                        throw error;
                     }
 
-                    var bikeModels = queriedBikes.Bikes;
-                    return bikeModels;
                 })
             });
         }

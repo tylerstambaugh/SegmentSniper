@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Services.Garage;
+using SegmentSniper.Services.StravaToken;
 using StravaApiClient;
 using StravaApiClient.Models.Misc;
 using StravaApiClient.Services.Gear;
@@ -11,13 +13,15 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
     public class GetBikesByUserIdActionHandler : IGetBikesByUserIdActionHandler
     {
         private readonly IStravaRequestService _stravaRequestService;
+        private readonly IGetStravaTokenForUser _getStravaTokenForUser;
         private readonly IMapper _mapper;
         private readonly IGetAllBikesByUserId _getAllBikesByUserId;
         private readonly IUpsertBike _upsertBike;
 
-        public GetBikesByUserIdActionHandler(IStravaRequestService stravaRequestService, IMapper mapper, IGetAllBikesByUserId getAllBikesByUserId, IUpsertBike upsertBike)
+        public GetBikesByUserIdActionHandler(IStravaRequestService stravaRequestService, IGetStravaTokenForUser getStravaTokenForUser, IMapper mapper, IGetAllBikesByUserId getAllBikesByUserId, IUpsertBike upsertBike)
         {
             _stravaRequestService = stravaRequestService;
+            _getStravaTokenForUser = getStravaTokenForUser;
             _mapper = mapper;
             _getAllBikesByUserId = getAllBikesByUserId;
             _upsertBike = upsertBike;
@@ -26,32 +30,55 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
         public async Task<GetBikesByUserIdRequest.Response> ExecuteAsync(GetBikesByUserIdRequest request)
         {
             ValidateRequest(request);
+            var token = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
 
-            var result = await _getAllBikesByUserId.ExecuteAsync(new GetAllBikesByUserIdContract(request.UserId));
-
-            var stravaGear = new List<DetailedGearApiModel>();
-
-            foreach(var bike in result.Bikes)
+            if (token != null)
             {
-               var stravaBikeResponse = await _stravaRequestService.GetGearById(new GetGearByIdContract(bike.BikeId));
-
-                if (stravaBikeResponse != null)
+                try
                 {
-                    stravaGear.Add(stravaBikeResponse.DetailedGearApiModel);
-                    
-                    bike.MetersLogged = stravaBikeResponse.DetailedGearApiModel.Distance;
+                    _stravaRequestService.UserId = request.UserId;
+                    _stravaRequestService.RefreshToken = token.StravaToken.RefreshToken;
+                    var result = await _getAllBikesByUserId.ExecuteAsync(new GetAllBikesByUserIdContract(request.UserId));
 
-                    await _upsertBike.ExecuteAsync(new AddBikeContract(bike));
+                    var stravaGear = new List<DetailedGearApiModel>();
+
+                    foreach (var bike in result.Bikes)
+                    {
+                        if (!string.IsNullOrEmpty(bike.BikeId))
+                        {
+                            var stravaBikeResponse = await _stravaRequestService.GetGearById(new GetGearByIdContract(bike.BikeId));
+
+                            if (stravaBikeResponse != null)
+                            {
+                                stravaGear.Add(stravaBikeResponse.DetailedGearApiModel);
+
+                                bike.MetersLogged = stravaBikeResponse.DetailedGearApiModel.Distance;
+
+                                await _upsertBike.ExecuteAsync(new AddBikeContract(bike));
+                            }
+                        }
+
+                    }
+                    return new GetBikesByUserIdRequest.Response(result.Bikes);
                 }
-
+                catch (Exception ex)
+                {
+                    throw new Exception($"Unable to load bike. Error: {ex.Message}");
+                }
             }
-
-            return new GetBikesByUserIdRequest.Response(result.Bikes);
+            return new GetBikesByUserIdRequest.Response(new List<BikeModel>());
         }
 
-        private void ValidateRequest(object request)
+        private void ValidateRequest(GetBikesByUserIdRequest request)
         {
-            throw new NotImplementedException();
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            if(string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException(nameof(request.UserId));
+            }
         }
     }
 }

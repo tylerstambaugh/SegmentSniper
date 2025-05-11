@@ -12,6 +12,7 @@ import { useRetireBikeEquipmentMutation } from "./GraphQl/useRetireBikeEquipment
 import GetBikeByIdQuery from '../../GraphQl/GetBikeById.graphql';
 import { useUpsertBikeEquipmentMutation } from "./GraphQl/useUpsertBikeEquipmentMutation";
 import toast from "react-hot-toast";
+import DeleteEquipmentModal, { DeleteBikeEquipmentValues } from "./DeleteEquipmentModal";
 
 
 type EquipmentListProps = {
@@ -22,7 +23,8 @@ type EquipmentListProps = {
 export type EquipmentModalState =
     | { type: "none" }
     | { type: "retire", item: EquipmentModel }
-    | { type: "addEdit", item?: EquipmentModel };
+    | { type: "addEdit", item?: EquipmentModel }
+    | { type: "delete", item?: EquipmentModel };
 
 
 
@@ -138,12 +140,31 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     retireDate: values.retireDate?.toISODate() ?? ""
                 }
             });
-            handleClosedModal(); // optionally close the modal after success
+            handleClosedModal();
         } catch (e) {
             console.error("Error retiring equipment", e);
-            // Optionally show user feedback
         }
     }
+
+    async function handleDeleteEquipment(values: EquipmentModel) {
+        try {
+            if (!values.equipmentId) {
+                console.error("No equipmentId provided");
+            }
+            await retireBikeEquipment({
+                variables: {
+                    bikeId: bike!.bikeId,
+                    equipmentId: values.equipmentId!,
+                    userId: user?.id ?? '',
+                    retireDate: DateTime.now().toISODate() ?? ""
+                }
+            });
+            handleClosedModal();
+        } catch (e) {
+            console.error("Error deleting equipment", e);
+        }
+    }
+
 
     // useEffect(() => {
     //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
@@ -182,6 +203,12 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                         onClose={handleClosedModal}
                         item={modalState.type === "retire" ? modalState.item : null}
                         handleRetireEquipment={handleRetireEquipment}
+                    />
+                    <DeleteEquipmentModal
+                        show={modalState.type === "delete"}
+                        onClose={handleClosedModal}
+                        item={modalState.type === "delete" ? modalState.item : null}
+                        handleDeleteEquipment={handleDeleteEquipment}
                     />
                 </Row>
 

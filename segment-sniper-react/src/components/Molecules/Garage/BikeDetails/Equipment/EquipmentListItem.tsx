@@ -80,8 +80,8 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                         <Col>
                             <Button
                                 variant="secondary"
-                                onClick={() => setModalState({ type: "retire", item: item })}>
-                                Un-Retire
+                                onClick={() => setModalState({ type: "delete", item: item })}>
+                                Delete
                             </Button>
                         </Col>
                     )
