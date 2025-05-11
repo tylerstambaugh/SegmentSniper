@@ -9,7 +9,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
 
     public class GetBikesByUserIdRequest
     {
+        public GetBikesByUserIdRequest(string userId)
+        {
+            UserId = userId;
+        }
+
         public string UserId { get; set; }
+
         public class Response
         {
             public Response(List<BikeModel> bikes) => Bikes = bikes;

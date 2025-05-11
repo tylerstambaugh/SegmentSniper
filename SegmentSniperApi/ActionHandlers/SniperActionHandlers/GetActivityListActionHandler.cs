@@ -156,10 +156,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     var bikeToAdd = _mapper.Map<DetailedGearApiModel, BikeModel>(bikeApiModel);
                     bikeToAdd.UserId = userId;
                     //persist the bike
-                    var bikeAdded = await _upsertBike.ExecuteAsync(new AddBikeContract
-                    {
-                        Bike = bikeToAdd
-                    });
+                    var bikeAdded = await _upsertBike.ExecuteAsync(new AddBikeContract(bikeToAdd));
 
                     if (string.IsNullOrEmpty(bikeAdded.BikeId))
                     {
