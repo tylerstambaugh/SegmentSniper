@@ -63,6 +63,12 @@ export type BikeQueriesByUserIdArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export type DeleteEquipmentResult = {
+  __typename?: 'DeleteEquipmentResult';
+  /** Indicates if the deletion was successful. */
+  success: Scalars['Boolean']['output'];
+};
+
 export type EquipmentInput = {
   /** The description of the equipment. */
   description?: InputMaybe<Scalars['String']['input']>;
@@ -109,10 +115,17 @@ export type EquipmentModel = {
 
 export type GarageMutations = {
   __typename?: 'GarageMutations';
+  deleteEquipment?: Maybe<DeleteEquipmentResult>;
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
   upsertBikeEquipment?: Maybe<BikeModel>;
+};
+
+
+export type GarageMutationsDeleteEquipmentArgs = {
+  equipmentId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -146,6 +159,14 @@ export type RootQuery = {
   /** Bike related queries */
   bikes?: Maybe<BikeQueries>;
 };
+
+export type DeleteEquipmentMutationVariables = Exact<{
+  userId: Scalars['ID']['input'];
+  equipmentId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'DeleteEquipmentResult', success: boolean } | null } | null };
 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -181,6 +202,42 @@ export type GetBikesByUserIdQueryVariables = Exact<{
 export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 
+export const DeleteEquipmentDocument = gql`
+    mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
+  garage {
+    deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
+      success
+    }
+  }
+}
+    `;
+export type DeleteEquipmentMutationFn = Apollo.MutationFunction<DeleteEquipmentMutation, DeleteEquipmentMutationVariables>;
+
+/**
+ * __useDeleteEquipmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteEquipmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteEquipmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteEquipmentMutation, { data, loading, error }] = useDeleteEquipmentMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      equipmentId: // value for 'equipmentId'
+ *   },
+ * });
+ */
+export function useDeleteEquipmentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteEquipmentMutation, DeleteEquipmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteEquipmentMutation, DeleteEquipmentMutationVariables>(DeleteEquipmentDocument, options);
+      }
+export type DeleteEquipmentMutationHookResult = ReturnType<typeof useDeleteEquipmentMutation>;
+export type DeleteEquipmentMutationResult = Apollo.MutationResult<DeleteEquipmentMutation>;
+export type DeleteEquipmentMutationOptions = Apollo.BaseMutationOptions<DeleteEquipmentMutation, DeleteEquipmentMutationVariables>;
 export const RetireEquipmentOnBikeDocument = gql`
     mutation RetireEquipmentOnBike($bikeId: ID!, $equipmentId: ID!, $userId: ID!, $retireDate: Date!) {
   garage {

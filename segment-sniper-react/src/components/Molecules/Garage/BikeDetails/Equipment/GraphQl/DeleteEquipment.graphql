@@ -1,0 +1,7 @@
+mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
+  garage {
+    deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
+      success
+    }
+  }
+}

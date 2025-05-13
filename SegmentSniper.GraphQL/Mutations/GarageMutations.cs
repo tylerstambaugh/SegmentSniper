@@ -93,6 +93,24 @@ namespace SegmentSniper.GraphQL.Mutations
                     return result.BikeModel;
                 })
             });
+
+            AddField(new FieldType
+            {
+                Name = "DeleteEquipment",
+                Type = typeof(DeleteEquipmentResultGraphType),
+                Arguments = new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
+                ),
+                Resolver = new FuncFieldResolver<bool>(async context =>
+                {
+                    var userId = context.GetArgument<string>("userId");
+                    var equipmentId = context.GetArgument<string>("equipmentId");
+                    var service = context.RequestServices.GetRequiredService<IDeleteEquipment>();
+                    var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
+                    return result.Success;
+                }),
+            });
         }
     }
 }
