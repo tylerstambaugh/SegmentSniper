@@ -57,7 +57,6 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
                                 await _upsertBike.ExecuteAsync(new AddBikeContract(bike));
                             }
                         }
-
                     }
                     return new GetBikesByUserIdRequest.Response(result.Bikes);
                 }

@@ -144,6 +144,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IImportGarage,  ImportGarage>();
             services.AddScoped<IUpsertBikeEquipment, UpsertBikeEquipment>();
             services.AddScoped<IRetireBikeEquipment, RetireBikeEquipment>();
+            services.AddScoped<IDeleteEquipment, DeleteEquipment>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
