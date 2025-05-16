@@ -24,7 +24,9 @@ namespace SegmentSniper.Services.Garage
             ValidateContract(contract);
 
             var existingBikes = await _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId).ToListAsync();
-            var existingBikeActivies = _segmentSniperDbContext.BikeActivities.Where(b => b.UserId == contract.UserId);
+            
+            //If we want to seed the bike activities with data 
+            //var existingBikeActivies = _segmentSniperDbContext.BikeActivities.Where(b => b.UserId == contract.UserId);
 
            var existingBikeIds = existingBikes.Select(b => b.BikeId).ToList();
 

@@ -3,11 +3,11 @@ using SegmentSniper.Services.Garage.Equipment;
 
 namespace SegmentSniper.GraphQL.Types
 {
-    public class DeleteEquipmentResultGraphType : ObjectGraphType<DeleteEquipmentContract.Result>
+    public class DeleteResultGraphType : ObjectGraphType<DeleteEquipmentContract.Result>
     {
-        public DeleteEquipmentResultGraphType()
+        public DeleteResultGraphType()
         {
-            Name = "DeleteEquipmentResult";
+            Name = "DeleteResult";
             Field(x => x.Success).Description("Indicates if the deletion was successful.");            
         }
     }

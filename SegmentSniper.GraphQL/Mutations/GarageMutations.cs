@@ -97,7 +97,7 @@ namespace SegmentSniper.GraphQL.Mutations
             AddField(new FieldType
             {
                 Name = "DeleteEquipment",
-                Type = typeof(DeleteEquipmentResultGraphType),
+                Type = typeof(DeleteResultGraphType),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
@@ -108,6 +108,24 @@ namespace SegmentSniper.GraphQL.Mutations
                     var equipmentId = context.GetArgument<string>("equipmentId");
                     var service = context.RequestServices.GetRequiredService<IDeleteEquipment>();
                     var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
+                    return result.Success;
+                }),
+            });
+
+            AddField(new FieldType
+            {
+                Name = "DeleteBike",
+                Type = typeof(DeleteResultGraphType),
+                Arguments = new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the equipment being retired." }
+                ),
+                Resolver = new FuncFieldResolver<bool>(async context =>
+                {
+                    var userId = context.GetArgument<string>("userId");
+                    var bikeId = context.GetArgument<string>("bikeId");
+                    var service = context.RequestServices.GetRequiredService<IDeleteBike>();
+                    var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeId));
                     return result.Success;
                 }),
             });
