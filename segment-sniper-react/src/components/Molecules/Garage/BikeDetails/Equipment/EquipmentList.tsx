@@ -97,6 +97,25 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             },
         });
 
+    const [deleteBikeEquipment,
+        { error: deleteBikeEquipmentError }] = useRetireBikeEquipmentMutation({
+            update(cache, { data }) {
+                const updatedBike = data?.garage?.retireEquipmentOnBike;
+                if (!updatedBike) return;
+
+                cache.writeQuery({
+                    query: GetBikeByIdQuery,
+                    variables: { bikeId: updatedBike.bikeId },
+                    data: {
+                        bikes: {
+                            __typename: "BikeQuery",
+                            byBikeId: updatedBike,
+                        },
+                    },
+                });
+            },
+        });
+
 
     async function handleUpsertEquipmentSubmit(values: UpsertEquipmentFormValues) {
 
@@ -151,7 +170,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             if (!values.equipmentId) {
                 console.error("No equipmentId provided");
             }
-            await retireBikeEquipment({
+            await deleteBikeEquipment({
                 variables: {
                     bikeId: bike!.bikeId,
                     equipmentId: values.equipmentId!,

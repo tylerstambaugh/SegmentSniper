@@ -7,12 +7,11 @@ import ImportBikesModal from "../../Molecules/Garage/ImportBikes/ImportBikesModa
 type GarageModalState =
     | { type: "none" }
     | { type: "import" }
-    | { type: "addEdit" };
+    | { type: "addBike" };
 export default function GarageMenu() {
 
     const [modalState, setModalState] = useState<GarageModalState>({ type: "none" });
     const handleClosedModal = () => {
-
         setModalState({ type: "none" });
     }
     return (
@@ -44,5 +43,3 @@ export default function GarageMenu() {
         </>
     )
 }
-
-//ceramic speed is already doing it.

@@ -63,8 +63,8 @@ export type BikeQueriesByUserIdArgs = {
   userId: Scalars['ID']['input'];
 };
 
-export type DeleteEquipmentResult = {
-  __typename?: 'DeleteEquipmentResult';
+export type DeleteResult = {
+  __typename?: 'DeleteResult';
   /** Indicates if the deletion was successful. */
   success: Scalars['Boolean']['output'];
 };
@@ -115,11 +115,18 @@ export type EquipmentModel = {
 
 export type GarageMutations = {
   __typename?: 'GarageMutations';
-  deleteEquipment?: Maybe<DeleteEquipmentResult>;
+  deleteBike?: Maybe<DeleteResult>;
+  deleteEquipment?: Maybe<DeleteResult>;
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
   upsertBikeEquipment?: Maybe<BikeModel>;
+};
+
+
+export type GarageMutationsDeleteBikeArgs = {
+  bikeId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -166,7 +173,7 @@ export type DeleteEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'DeleteEquipmentResult', success: boolean } | null } | null };
+export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
