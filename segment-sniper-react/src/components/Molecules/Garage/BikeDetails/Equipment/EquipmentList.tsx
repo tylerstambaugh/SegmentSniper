@@ -184,6 +184,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         }
     }
 
+    //should probably clean this whole file up tomorrow. 
+
 
     // useEffect(() => {
     //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
