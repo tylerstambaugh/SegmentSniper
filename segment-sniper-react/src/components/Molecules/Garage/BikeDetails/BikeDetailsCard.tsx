@@ -66,10 +66,10 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Body>
                     <Card.Title>
                         <Row>
-                            <Col xs={3} className="d-flex align-items-center">
+                            <Col xs={2} className="d-flex align-items-center">
                                 {bike?.name ?? "Bike Not Found"}
                             </Col>
-                            <Col xs={1} className="d-flex justify-content-end">
+                            <Col xs={1} className="d-flex justify-content-start align-items-center">
                                 <Button onClick={() => setShowDeleteBikeModal(true)} variant="link" className="ms-auto">
                                     <FontAwesomeIcon icon={faTrashCan} />
                                 </Button>
