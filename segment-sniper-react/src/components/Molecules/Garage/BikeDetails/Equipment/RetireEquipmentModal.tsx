@@ -52,7 +52,7 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
         }
     })
     return (
-        <Modal show={show} onHide={onClose} className="shadow">
+        <Modal show={show} onHide={() => { onClose(); formik.resetForm() }} className="shadow">
             <Modal.Header closeButton>
                 <Modal.Title>Retire Equipment?</Modal.Title>
             </Modal.Header>
@@ -61,14 +61,13 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                     <Row className="justify-content-center">
                         {`When would you like to retire ${item?.name}?`}
                     </Row>
-                    <Form noValidate onSubmit={formik.handleSubmit}>
+                    <Form onSubmit={formik.handleSubmit}>
 
                         <Row className="justify-content-center">
                             <Col sm={6}>
 
                                 <Form.Group controlId="retireDate" className="mb-3 d-flex">
                                     <Form.Control
-
                                         name="retireDate"
                                         type="date"
                                         value={formik.values.retireDate?.toISODate() ?? ""}
@@ -79,20 +78,30 @@ const RetireEquipmentModal = ({ show, item, onClose, handleRetireEquipment }: Re
                                             );
                                             formik.setFieldValue("retireDate", newDate)
                                         }
-                                        } />
-                                    <Form.Control.Feedback type="invalid">
-                                        {formik.errors.retireDate as FormikErrors<string>}
-                                    </Form.Control.Feedback>
+                                        }
+                                        isInvalid={!!formik.errors.retireDate}
+                                    />
+                                    <Row>
+                                        <Form.Control.Feedback type="invalid">
+                                            {formik.errors.retireDate}
+                                        </Form.Control.Feedback>
+                                    </Row>
                                 </Form.Group>
                             </Col>
                         </Row>
                         <Row className={styles.modal_button_row}>
                             <Col>
-                                <Button variant="secondary" onClick={onClose}>Cancel</Button>
+                                <Button variant="secondary" onClick={() => {
+                                    onClose();
+                                    formik.resetForm();
+                                }
+                                }
+                                >Cancel
+                                </Button>
 
                             </Col>
                             <Col>
-                                <Button variant="primary" type="submit">
+                                <Button variant="primary" type="submit" >
                                     Retire
                                 </Button>
                             </Col>

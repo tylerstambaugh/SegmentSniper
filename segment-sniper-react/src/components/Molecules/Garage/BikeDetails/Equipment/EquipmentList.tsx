@@ -13,6 +13,8 @@ import GetBikeByIdQuery from '../../GraphQl/GetBikeById.graphql';
 import { useUpsertBikeEquipmentMutation } from "./GraphQl/useUpsertBikeEquipmentMutation";
 import toast from "react-hot-toast";
 import DeleteEquipmentModal, { DeleteBikeEquipmentValues } from "./DeleteEquipmentModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 
 type EquipmentListProps = {
@@ -149,6 +151,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     async function handleRetireEquipment(values: RetireBikeEquipmentBase) {
         try {
             if (!values.equipmentId || !values.retireDate) {
+                toast.error("Unable to process request", {
+                    duration: 5000
+                })
                 console.error("No equipmentId or retireDate provided");
             }
             await retireBikeEquipment({
@@ -161,6 +166,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             });
             handleClosedModal();
         } catch (e) {
+            toast.error(`Error retiring equipment:${e}`, {
+                duration: 5000
+            })
             console.error("Error retiring equipment", e);
         }
     }
@@ -168,6 +176,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     async function handleDeleteEquipment(values: EquipmentModel) {
         try {
             if (!values.equipmentId) {
+                toast.error("Unable to process request", {
+                    duration: 5000
+                })
                 console.error("No equipmentId provided");
             }
             await deleteBikeEquipment({
@@ -180,6 +191,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             });
             handleClosedModal();
         } catch (e) {
+            toast.error("Error deleting equipment", {
+                duration: 5000
+            });
             console.error("Error deleting equipment", e);
         }
     }
@@ -233,12 +247,12 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     />
                 </Row>
 
-                <Row className="justify-content-center">
+                <Row className="justify-content-center ">
                     <Col md={8}>
                         <Row >
-                            <Col className={styles.equipmentHeading}>Active Equipment</Col>
+                            <Col xs={8} className={styles.equipmentHeading}>Active Equipment</Col>
                             <Col className="d-flex justify-content-end">
-                                <Button onClick={() => setModalState({ type: "addEdit" })}>Add Equipment</Button>
+                                <Button onClick={() => setModalState({ type: "addEdit" })}> <FontAwesomeIcon icon={faPlus} />Add</Button>
                             </Col>
                         </Row>
 
@@ -252,7 +266,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     </Row>
                 </Row>
 
-                <Row className="justify-content-center">
+                <Row className="justify-content-center pt-2">
                     <Col md={8}>
                         <Row>
                             <Col className={`${styles.equipmentHeading} mb-2`}>Retired Equipment</Col>
