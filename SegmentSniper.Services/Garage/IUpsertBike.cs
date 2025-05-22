@@ -4,12 +4,12 @@ namespace SegmentSniper.Services.Garage
 {
     public interface IUpsertBike
     {
-       Task <AddBikeContract.Result> ExecuteAsync(AddBikeContract contrect);
+       Task <UpsertBikeContract.Result> ExecuteAsync(UpsertBikeContract contrect);
     }
 
-    public class AddBikeContract
+    public class UpsertBikeContract
     {
-        public AddBikeContract(BikeModel bike)
+        public UpsertBikeContract(BikeModel bike)
         {
             Bike = bike;
         }
@@ -17,7 +17,7 @@ namespace SegmentSniper.Services.Garage
         public BikeModel Bike { get; set; }
         public class Result
         {
-            public required string BikeId { get; set; }
+            public BikeModel? Bike { get; set; }
         }
     }
 }
