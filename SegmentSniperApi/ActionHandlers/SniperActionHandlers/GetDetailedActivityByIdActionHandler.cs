@@ -69,7 +69,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 MetersLogged = activity.SummaryGear.MetersLogged,
             };
 
-            _addBikeService.ExecuteAsync(new AddBikeContract(bikeToUpsert));
+            _addBikeService.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));
         }
 
         private void ValidateRequest(GetDetailedActivityByIdRequest request)

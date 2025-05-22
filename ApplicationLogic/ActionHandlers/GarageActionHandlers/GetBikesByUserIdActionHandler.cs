@@ -54,7 +54,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
 
                                 bike.MetersLogged = stravaBikeResponse.DetailedGearApiModel.Distance;
 
-                                await _upsertBike.ExecuteAsync(new AddBikeContract(bike));
+                                await _upsertBike.ExecuteAsync(new UpsertBikeContract(bike));
                             }
                         }
                     }

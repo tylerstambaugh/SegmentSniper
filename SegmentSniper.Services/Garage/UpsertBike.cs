@@ -1,5 +1,7 @@
-﻿using SegmentSniper.Data;
+﻿using AutoMapper;
+using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Models.Models.Garage;
 using Serilog;
 
 namespace SegmentSniper.Services.Garage
@@ -7,13 +9,15 @@ namespace SegmentSniper.Services.Garage
     public class UpsertBike : IUpsertBike
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
+        private readonly IMapper _mapper;
 
-        public UpsertBike(ISegmentSniperDbContext segmentSniperDbContext)
+        public UpsertBike(ISegmentSniperDbContext segmentSniperDbContext, IMapper mapper)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
+            _mapper = mapper;
         }
 
-        public async Task<AddBikeContract.Result> ExecuteAsync(AddBikeContract contract)
+        public async Task<UpsertBikeContract.Result> ExecuteAsync(UpsertBikeContract contract)
         {
             ValidateContract(contract);
 
@@ -39,11 +43,14 @@ namespace SegmentSniper.Services.Garage
 
                     _segmentSniperDbContext.Bikes.Add(bikeToAdd);
                     if (await _segmentSniperDbContext.SaveChangesAsync() == 1)
-                        return new AddBikeContract.Result
-                        { BikeId = bikeToAdd.BikeId };
+                    {
+                        var bikeModel = _mapper.Map<Bike, BikeModel>(bikeToAdd);
+                        return new UpsertBikeContract.Result
+                        { Bike = bikeModel };
+                    }
                     else
                     {
-                        return new AddBikeContract.Result { BikeId = string.Empty };
+                        return new UpsertBikeContract.Result { Bike = null };
                     }
                 }
                 else
@@ -99,7 +106,9 @@ namespace SegmentSniper.Services.Garage
                         await _segmentSniperDbContext.SaveChangesAsync();
                     }
 
-                    return new AddBikeContract.Result { BikeId = existingBike.BikeId };
+                    var bikeModel = _mapper.Map<Bike, BikeModel>(existingBike);
+                    return new UpsertBikeContract.Result
+                    { Bike = bikeModel };
                 }
 
             }
@@ -111,7 +120,7 @@ namespace SegmentSniper.Services.Garage
 
         }
 
-        private void ValidateContract(AddBikeContract contract)
+        private void ValidateContract(UpsertBikeContract contract)
         {
             if (contract == null)
             {
