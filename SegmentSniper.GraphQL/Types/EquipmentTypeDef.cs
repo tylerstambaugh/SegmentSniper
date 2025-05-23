@@ -6,7 +6,6 @@ namespace SegmentSniper.GraphQL.Types
 {
     public sealed class EquipmentTypeDef : ObjectGraphType<EquipmentModel>
     {
-
         public EquipmentTypeDef()
         {            
             Name = nameof(EquipmentModel);
@@ -38,21 +37,6 @@ namespace SegmentSniper.GraphQL.Types
             Field(e => e.MilesLogged).Description("The miles logged on the equipment");
             Field(e => e.ReplaceAtMiles).Description("The sum total of miles that the equipment should be replaced");
             Field(e => e.MilesUntilReplaceReminder).Description(("Miles until a reminder to replace the equipment is sent"));
-        }
-    }
-
-    public class BikeInputTypeDef : InputObjectGraphType<BikeModel>
-    {
-        public BikeInputTypeDef()
-        {
-            Name = "BikeInput";
-            Field(b => b.UserId).Description("The Id of the user the bike belongs to");
-            Field(b => b.Name).Description("The name of the bike");
-            Field(b => b.Description).Description("The description of the bike");
-            Field(b => b.BrandName).Description("The brand of the bike");
-            Field(b => b.ModelName).Description("The model of the bike");
-            Field(b => b.FrameType).Description("The enum value of the frame type");
-            Field(b => b.MetersLogged).Description("The odometer of the bike in meters");
         }
     }
 }
