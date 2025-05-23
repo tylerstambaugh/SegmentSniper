@@ -20,6 +20,25 @@ export type Scalars = {
   Decimal: { input: number; output: number; }
 };
 
+export type BikeInput = {
+  /** The Id of the user the bike belongs to */
+  bikeId?: InputMaybe<Scalars['ID']['input']>;
+  /** The brand of the bike */
+  brandName?: InputMaybe<Scalars['String']['input']>;
+  /** The description of the bike */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The enum value of the frame type */
+  frameType: FrameTypeEnum;
+  /** The odometer of the bike in meters */
+  metersLogged?: InputMaybe<Scalars['Float']['input']>;
+  /** The model of the bike */
+  modelName?: InputMaybe<Scalars['String']['input']>;
+  /** The name of the bike */
+  name: Scalars['String']['input'];
+  /** The Id of the user the bike belongs to */
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 /** A bike in the collection */
 export type BikeModel = {
   __typename?: 'BikeModel';
@@ -113,6 +132,18 @@ export type EquipmentModel = {
   retiredDate?: Maybe<Scalars['DateTime']['output']>;
 };
 
+/** The type of bike frame. */
+export enum FrameTypeEnum {
+  Cross = 'CROSS',
+  Ebike = 'EBIKE',
+  Gravel = 'GRAVEL',
+  Mtb = 'MTB',
+  None = 'NONE',
+  Other = 'OTHER',
+  Road = 'ROAD',
+  TimeTrial = 'TIME_TRIAL'
+}
+
 export type GarageMutations = {
   __typename?: 'GarageMutations';
   deleteBike?: Maybe<DeleteResult>;
@@ -120,6 +151,7 @@ export type GarageMutations = {
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
+  upsertBike?: Maybe<BikeModel>;
   upsertBikeEquipment?: Maybe<BikeModel>;
 };
 
@@ -149,6 +181,12 @@ export type GarageMutationsRetireEquipmentOnBikeArgs = {
 };
 
 
+export type GarageMutationsUpsertBikeArgs = {
+  bike: BikeInput;
+  userId: Scalars['ID']['input'];
+};
+
+
 export type GarageMutationsUpsertBikeEquipmentArgs = {
   bikeId: Scalars['ID']['input'];
   equipment: EquipmentInput;
@@ -166,6 +204,14 @@ export type RootQuery = {
   /** Bike related queries */
   bikes?: Maybe<BikeQueries>;
 };
+
+export type UpsertBikeMutationVariables = Exact<{
+  bike: BikeInput;
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type UpsertBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, description?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null } | null } | null };
 
 export type DeleteEquipmentMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -194,6 +240,14 @@ export type UpsertBikeEquipmentMutationVariables = Exact<{
 
 export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
+export type DeleteBikeMutationVariables = Exact<{
+  userId: Scalars['ID']['input'];
+  bikeId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteBike?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
+
 export type GetBikeByIdQueryVariables = Exact<{
   bikeId: Scalars['ID']['input'];
 }>;
@@ -209,6 +263,48 @@ export type GetBikesByUserIdQueryVariables = Exact<{
 export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 
+export const UpsertBikeDocument = gql`
+    mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
+  garage {
+    upsertBike(bike: $bike, userId: $userId) {
+      bikeId
+      name
+      description
+      brandName
+      modelName
+      frameType
+      metersLogged
+    }
+  }
+}
+    `;
+export type UpsertBikeMutationFn = Apollo.MutationFunction<UpsertBikeMutation, UpsertBikeMutationVariables>;
+
+/**
+ * __useUpsertBikeMutation__
+ *
+ * To run a mutation, you first call `useUpsertBikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertBikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertBikeMutation, { data, loading, error }] = useUpsertBikeMutation({
+ *   variables: {
+ *      bike: // value for 'bike'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpsertBikeMutation(baseOptions?: Apollo.MutationHookOptions<UpsertBikeMutation, UpsertBikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertBikeMutation, UpsertBikeMutationVariables>(UpsertBikeDocument, options);
+      }
+export type UpsertBikeMutationHookResult = ReturnType<typeof useUpsertBikeMutation>;
+export type UpsertBikeMutationResult = Apollo.MutationResult<UpsertBikeMutation>;
+export type UpsertBikeMutationOptions = Apollo.BaseMutationOptions<UpsertBikeMutation, UpsertBikeMutationVariables>;
 export const DeleteEquipmentDocument = gql`
     mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
   garage {
@@ -352,6 +448,42 @@ export function useUpsertBikeEquipmentMutation(baseOptions?: Apollo.MutationHook
 export type UpsertBikeEquipmentMutationHookResult = ReturnType<typeof useUpsertBikeEquipmentMutation>;
 export type UpsertBikeEquipmentMutationResult = Apollo.MutationResult<UpsertBikeEquipmentMutation>;
 export type UpsertBikeEquipmentMutationOptions = Apollo.BaseMutationOptions<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>;
+export const DeleteBikeDocument = gql`
+    mutation DeleteBike($userId: ID!, $bikeId: ID!) {
+  garage {
+    deleteBike(userId: $userId, bikeId: $bikeId) {
+      success
+    }
+  }
+}
+    `;
+export type DeleteBikeMutationFn = Apollo.MutationFunction<DeleteBikeMutation, DeleteBikeMutationVariables>;
+
+/**
+ * __useDeleteBikeMutation__
+ *
+ * To run a mutation, you first call `useDeleteBikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBikeMutation, { data, loading, error }] = useDeleteBikeMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      bikeId: // value for 'bikeId'
+ *   },
+ * });
+ */
+export function useDeleteBikeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBikeMutation, DeleteBikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBikeMutation, DeleteBikeMutationVariables>(DeleteBikeDocument, options);
+      }
+export type DeleteBikeMutationHookResult = ReturnType<typeof useDeleteBikeMutation>;
+export type DeleteBikeMutationResult = Apollo.MutationResult<DeleteBikeMutation>;
+export type DeleteBikeMutationOptions = Apollo.BaseMutationOptions<DeleteBikeMutation, DeleteBikeMutationVariables>;
 export const GetBikeByIdDocument = gql`
     query GetBikeById($bikeId: ID!) {
   bikes {

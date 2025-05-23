@@ -45,7 +45,30 @@ namespace SegmentSniper.GraphQL.Mutations
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<BikeInputTypeDef>> { Name = "bike", Description = "The bike model to be added" }
-                )
+                ),
+                Resolver = new FuncFieldResolver<BikeModel>(async context =>
+                {
+                    var userId = context.GetArgument<string>("userId");
+                    var bike = context.GetArgument<BikeModel>("bike");
+
+                    var service = context.RequestServices.GetRequiredService<IUpsertBike>();
+
+                    var bikeToUpsert = new BikeModel
+                    {
+                        BikeId = bike.BikeId,
+                        UserId = userId,
+                        Name = bike.Name,
+                        Description = bike.Description,
+                        BrandName = bike.BrandName,
+                        ModelName = bike.ModelName,
+                        FrameType = bike.FrameType,
+                        MetersLogged = bike.MetersLogged
+                    };
+
+                    var result = await service.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));
+
+                    return result.Bike;
+                })
             }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType

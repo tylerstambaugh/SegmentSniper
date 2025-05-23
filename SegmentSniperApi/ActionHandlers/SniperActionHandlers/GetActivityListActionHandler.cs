@@ -13,7 +13,6 @@ using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Misc;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
-using static GraphQL.Instrumentation.Metrics;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
@@ -158,7 +157,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     //persist the bike
                     var bikeAdded = await _upsertBike.ExecuteAsync(new UpsertBikeContract(bikeToAdd));
 
-                    if (string.IsNullOrEmpty(bikeAdded.BikeId))
+                    if (bikeAdded.Bike == null)
                     {
                         Log.Error("Failed to add GearId: {GearId} from GetActivityListHandler.", bikeApiModel.Id);
                     }
@@ -171,7 +170,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         {
                             StravaActivityId = summaryActivity.Id,
                             UserId = userId,
-                            BikeId = bikeAdded.BikeId,
+                            BikeId = bikeAdded.Bike.BikeId,
                             ActivityDate = summaryActivity.StartDate,
                             DistanceInMeters = summaryActivity.Distance,
 
@@ -182,7 +181,6 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         Log.Error("Failed to add bikeActivity {ActivityId} from GetActivityListHandler.", summaryActivity.Id);
                     }
                 }
-
             }
         }
 
