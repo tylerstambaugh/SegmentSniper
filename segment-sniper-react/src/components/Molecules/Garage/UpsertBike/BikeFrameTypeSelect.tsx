@@ -1,12 +1,11 @@
 import { FormikErrors } from "formik";
 
 import { Col, Form, Row } from "react-bootstrap";
-
+import styles from "./UpsertBike.module.scss";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import styles from "./ActivityTypeDropdown.module.scss";
-import { UpsertBikeFormValues } from "../UpsertBikeModal";
-import { FrameType, FrameTypeToString } from "../../../../../enums/FrameTypes";
+import { UpsertBikeFormValues } from "./UpsertBikeModal";
+import { FrameType, FrameTypeToString } from "../../../../enums/FrameTypes";
 
 type Props = {
     selection: string;
@@ -18,16 +17,16 @@ const ActivityTypeDropdown = ({ selection, onChange, errors }: Props) => {
     const animatedComponents = makeAnimated();
     return (
         <Form.Group
-            controlId="activityTypeFormGroup"
-            className={styles.activityTypeFormGroup}
+            controlId="bikeFrameTypeFormGroup"
+            className={styles.bikeFrameTypeFormGroup}
         >
             <Row className={`mb-3 d-flex`}>
                 <Col md={6} className={`mb-2`}>
                     <Form.Label
-                        id="activityTypeDropdownLabel"
-                        className={styles.activityTypeLabel}
+                        id="bikeFrameDropdownLabel"
+                        className={styles.bikeFrameLabel}
                     >
-                        Activity Type:
+                        Bike Type:
                     </Form.Label>
                 </Col>
                 <Col>

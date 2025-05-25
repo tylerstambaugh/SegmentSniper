@@ -205,14 +205,6 @@ export type RootQuery = {
   bikes?: Maybe<BikeQueries>;
 };
 
-export type UpsertBikeMutationVariables = Exact<{
-  bike: BikeInput;
-  userId: Scalars['ID']['input'];
-}>;
-
-
-export type UpsertBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, description?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null } | null } | null };
-
 export type DeleteEquipmentMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
@@ -262,49 +254,15 @@ export type GetBikesByUserIdQueryVariables = Exact<{
 
 export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
+export type UpsertBikeMutationVariables = Exact<{
+  bike: BikeInput;
+  userId: Scalars['ID']['input'];
+}>;
 
-export const UpsertBikeDocument = gql`
-    mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
-  garage {
-    upsertBike(bike: $bike, userId: $userId) {
-      bikeId
-      name
-      description
-      brandName
-      modelName
-      frameType
-      metersLogged
-    }
-  }
-}
-    `;
-export type UpsertBikeMutationFn = Apollo.MutationFunction<UpsertBikeMutation, UpsertBikeMutationVariables>;
 
-/**
- * __useUpsertBikeMutation__
- *
- * To run a mutation, you first call `useUpsertBikeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertBikeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertBikeMutation, { data, loading, error }] = useUpsertBikeMutation({
- *   variables: {
- *      bike: // value for 'bike'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useUpsertBikeMutation(baseOptions?: Apollo.MutationHookOptions<UpsertBikeMutation, UpsertBikeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpsertBikeMutation, UpsertBikeMutationVariables>(UpsertBikeDocument, options);
-      }
-export type UpsertBikeMutationHookResult = ReturnType<typeof useUpsertBikeMutation>;
-export type UpsertBikeMutationResult = Apollo.MutationResult<UpsertBikeMutation>;
-export type UpsertBikeMutationOptions = Apollo.BaseMutationOptions<UpsertBikeMutation, UpsertBikeMutationVariables>;
+export type UpsertBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, description?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null } | null } | null };
+
+
 export const DeleteEquipmentDocument = gql`
     mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
   garage {
@@ -598,3 +556,45 @@ export type GetBikesByUserIdQueryHookResult = ReturnType<typeof useGetBikesByUse
 export type GetBikesByUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByUserIdLazyQuery>;
 export type GetBikesByUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByUserIdSuspenseQuery>;
 export type GetBikesByUserIdQueryResult = Apollo.QueryResult<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>;
+export const UpsertBikeDocument = gql`
+    mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
+  garage {
+    upsertBike(bike: $bike, userId: $userId) {
+      bikeId
+      name
+      description
+      brandName
+      modelName
+      frameType
+      metersLogged
+    }
+  }
+}
+    `;
+export type UpsertBikeMutationFn = Apollo.MutationFunction<UpsertBikeMutation, UpsertBikeMutationVariables>;
+
+/**
+ * __useUpsertBikeMutation__
+ *
+ * To run a mutation, you first call `useUpsertBikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertBikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertBikeMutation, { data, loading, error }] = useUpsertBikeMutation({
+ *   variables: {
+ *      bike: // value for 'bike'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpsertBikeMutation(baseOptions?: Apollo.MutationHookOptions<UpsertBikeMutation, UpsertBikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpsertBikeMutation, UpsertBikeMutationVariables>(UpsertBikeDocument, options);
+      }
+export type UpsertBikeMutationHookResult = ReturnType<typeof useUpsertBikeMutation>;
+export type UpsertBikeMutationResult = Apollo.MutationResult<UpsertBikeMutation>;
+export type UpsertBikeMutationOptions = Apollo.BaseMutationOptions<UpsertBikeMutation, UpsertBikeMutationVariables>;

@@ -5,7 +5,7 @@ import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { ApolloError } from "@apollo/client";
 import toast from "react-hot-toast";
-import BikeFrameTypeSelect from "./GraphQl/BikeFrameTypeSelect";
+import BikeFrameTypeSelect from "./BikeFrameTypeSelect";
 
 
 export type UpsertBikeModalProps = {
@@ -23,7 +23,7 @@ export interface UpsertBikeFormValues {
     bikeFrameType: Maybe<number>;
     bikeBrand: string;
     bikeModel: string;
-    bikeMtersLogged: number;
+    bikeMetersLogged: number;
     bikeDescription: string;
     // bikeYear: number;
     // bikeWeight: number;
@@ -41,7 +41,7 @@ const UpsertBikeModal = ({
         bikeFrameType: bike?.frameType ?? null,
         bikeBrand: bike?.brandName ?? "",
         bikeModel: bike?.modelName ?? "",
-        bikeMtersLogged: bike?.metersLogged ?? 0,
+        bikeMetersLogged: bike?.metersLogged ?? 0,
         bikeDescription: bike?.description ?? "",
         // bikeYear: 0,
         // bikeWeight: 0,
@@ -96,7 +96,7 @@ const UpsertBikeModal = ({
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
-                    <Row className="mb-3">
+                    <Row >
                         <BikeFrameTypeSelect
                             selection={formik.values.bikeFrameType?.toString() ?? ""}
                             onChange={(selection) => {
@@ -105,7 +105,7 @@ const UpsertBikeModal = ({
                             errors={formik.errors}
                         />
                     </Row>
-                    <Row className="mb-3">
+                    <Row >
                         <Form.Group controlId="bikeBrand">
                             <Form.Label>Bike Brand</Form.Label>
                             <Form.Control type="text" placeholder="Enter bike brand" />
@@ -114,12 +114,21 @@ const UpsertBikeModal = ({
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
-                    <Row className="mb-3">
+                    <Row >
                         <Form.Group controlId="bikeModel">
                             <Form.Label>Bike Model</Form.Label>
                             <Form.Control type="text" placeholder="Enter bike model" />
                             <Form.Control.Feedback type="invalid">
                                 {formik.errors.bikeModel as FormikErrors<string>}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group controlId="bikeMetersLogged">
+                            <Form.Label>Meters Logged</Form.Label>
+                            <Form.Control type="number" placeholder="Enter meters logged" />
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.bikeMetersLogged as FormikErrors<string>}
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
