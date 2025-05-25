@@ -1,3 +1,5 @@
+import { FrameTypeEnum } from '../graphql/generated';
+
 export enum FrameType {
   NONE = 0,
   MTB = 1,
@@ -22,4 +24,15 @@ export const FrameTypeToString = (frameType: number): string => {
   };
 
   return mapping[frameType as FrameType] || 'Unknown';
+};
+
+export const FrameTypeToEnumMap: Record<FrameType, FrameTypeEnum> = {
+  [FrameType.NONE]: FrameTypeEnum.None,
+  [FrameType.MTB]: FrameTypeEnum.Mtb,
+  [FrameType.CROSS]: FrameTypeEnum.Cross,
+  [FrameType.ROAD]: FrameTypeEnum.Road,
+  [FrameType.TIMETRIAL]: FrameTypeEnum.TimeTrial,
+  [FrameType.GRAVEL]: FrameTypeEnum.Gravel,
+  [FrameType.EBIKE]: FrameTypeEnum.Ebike,
+  [FrameType.OTHER]: FrameTypeEnum.Other,
 };
