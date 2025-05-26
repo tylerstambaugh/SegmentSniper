@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BikeModel, Maybe } from "../../../../graphql/generated";
-import { Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
 import { ApolloError } from "@apollo/client";
@@ -132,7 +132,50 @@ const UpsertBikeModal = ({
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Row>
+                    <Row className="justify-content-between">
+                        <Col>
+                            {isEdit ? (
 
+                                <Button variant="secondary" onClick={() => {
+                                    onClose();
+                                }}>
+                                    Cancel
+                                </Button>
+                            ) : (
+                                <Button variant="secondary" onClick={() => {
+                                    setValidated(false)
+                                    formik.resetForm()
+                                }}>
+                                    Reset
+                                </Button>
+                            )}
+                        </Col>
+                        <Col className="justify-content-center">
+                            {!loading ? (
+
+                                <Button variant="primary" type="submit" onClick={() => {
+                                }}>
+                                    Submit
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="submit"
+                                    variant="secondary"
+                                    style={{ width: '175px' }}
+                                >
+                                    <Spinner
+                                        as="span"
+                                        variant="light"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                        animation="border"
+                                    />
+                                </Button>
+                            )}
+
+                        </Col>
+                    </Row>
 
                 </Col>
             </Modal.Body>
