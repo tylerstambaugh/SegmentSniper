@@ -13,7 +13,7 @@ type Props = {
     errors: FormikErrors<UpsertBikeFormValues>;
 };
 
-const ActivityTypeDropdown = ({ selection, onChange, errors }: Props) => {
+const BikeFrameTypeDropdown = ({ selection, onChange, errors }: Props) => {
     const animatedComponents = makeAnimated();
     return (
         <Form.Group
@@ -35,14 +35,17 @@ const ActivityTypeDropdown = ({ selection, onChange, errors }: Props) => {
                         className={styles.select}
                         isMulti={false}
                         components={animatedComponents}
-                        value={{ value: selection, label: selection }}
+                        value={{
+                            value: selection,
+                            label: FrameTypeToString(selection as unknown as FrameType),
+                        }}
                         onChange={(selection) => {
-                            onChange(selection?.value ?? "Ride");
+                            onChange(selection?.value ?? "None");
                         }}
                         options={Object.values(FrameType)
                             .filter((v) => typeof v === 'number')
                             .map((value) => ({
-                                value: value as unknown as string,
+                                value: value.toString(),
                                 label: FrameTypeToString(value as FrameType),
                             }))}
                     />
@@ -55,4 +58,4 @@ const ActivityTypeDropdown = ({ selection, onChange, errors }: Props) => {
     );
 };
 
-export default ActivityTypeDropdown;
+export default BikeFrameTypeDropdown;
