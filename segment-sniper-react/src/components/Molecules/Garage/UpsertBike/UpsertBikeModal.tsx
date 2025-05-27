@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { ApolloError } from "@apollo/client";
 import toast from "react-hot-toast";
 import BikeFrameTypeSelect from "./BikeFrameTypeSelect";
+import { FrameType } from "../../../../enums/FrameTypes";
 
 
 export type UpsertBikeModalProps = {
@@ -19,7 +20,7 @@ export type UpsertBikeModalProps = {
 
 
 export interface UpsertBikeFormValues {
-    bikeName: string;
+    bikeName: Maybe<string>;
     bikeFrameType: Maybe<number>;
     bikeBrand: string;
     bikeModel: string;
@@ -37,7 +38,7 @@ const UpsertBikeModal = ({
     const [validated, setValidated] = useState(false);
     const isEdit = bike !== undefined;
     const initialValues: UpsertBikeFormValues = {
-        bikeName: bike?.name ?? "",
+        bikeName: bike?.name ?? null,
         bikeFrameType: bike?.frameType ?? null,
         bikeBrand: bike?.brandName ?? "",
         bikeModel: bike?.modelName ?? "",
@@ -54,13 +55,6 @@ const UpsertBikeModal = ({
         bikeName: Yup.string().required('Required'),
         description: Yup.string(),
         milesLogged: Yup.number(),
-        installDate: Yup.date().nullable()
-            .max(new Date(), "Date must be in the past"),
-        retiredDate: Yup.date().nullable()
-            .max(new Date(), "Date must be in the past"),
-        price: Yup.number().nullable(),
-        replaceAtMiles: Yup.number(),
-        milesUntilReplaceReminder: Yup.number(),
     })
 
     const formik = useFormik<UpsertBikeFormValues>({
@@ -69,7 +63,7 @@ const UpsertBikeModal = ({
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values: UpsertBikeFormValues) => {
-            setValidated(true);
+            console.log("calling upsert");
             await handleUpsertBike(values).then(() => {
                 if (!loading && !error) {
                     toast.success(`Bike ${isEdit ? 'updated' : 'added'} successfully`);
@@ -81,102 +75,125 @@ const UpsertBikeModal = ({
     })
 
     return (
-        <Modal show={show} onHide={() => { }} className="shadow">
+        <Modal show={show} onHide={() => onClose()} className="shadow">
             <Modal.Header closeButton>
                 <Modal.Title>Add Bike</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Col>
-                    <Row className="mb-3">
-                        <Form.Group controlId="bikeName">
-                            <Form.Label>Bike Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter bike name" />
-                            <Form.Control.Feedback type="invalid">
-                                {formik.errors.bikeName as FormikErrors<string>}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
-                    <Row >
-                        <BikeFrameTypeSelect
-                            selection={formik.values.bikeFrameType?.toString() ?? ""}
-                            onChange={(selection) => {
-                                formik.setFieldValue("bikeFrameType", selection)
-                            }}
-                            errors={formik.errors}
-                        />
-                    </Row>
-                    <Row >
-                        <Form.Group controlId="bikeBrand">
-                            <Form.Label>Bike Brand</Form.Label>
-                            <Form.Control type="text" placeholder="Enter bike brand" />
-                            <Form.Control.Feedback type="invalid">
-                                {formik.errors.bikeBrand as FormikErrors<string>}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
-                    <Row >
-                        <Form.Group controlId="bikeModel">
-                            <Form.Label>Bike Model</Form.Label>
-                            <Form.Control type="text" placeholder="Enter bike model" />
-                            <Form.Control.Feedback type="invalid">
-                                {formik.errors.bikeModel as FormikErrors<string>}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
-                    <Row>
-                        <Form.Group controlId="bikeMetersLogged">
-                            <Form.Label>Meters Logged</Form.Label>
-                            <Form.Control type="number" placeholder="Enter meters logged" />
-                            <Form.Control.Feedback type="invalid">
-                                {formik.errors.bikeMetersLogged as FormikErrors<string>}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
-                    <Row className="justify-content-between">
-                        <Col>
-                            {isEdit ? (
+                    <Form
+                        name="upsertBikeForm"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            setValidated(true);
+                            formik.handleSubmit(event);
+                        }}
+                    >
+                        <Row className="mb-2">
+                            <Form.Group controlId="bikeName">
+                                <Form.Label className="mb-0">Bike Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter bike name"
+                                    value={formik.values.bikeName ?? ""}
+                                    isValid={formik.touched.bikeName && !formik.errors.bikeName}
 
-                                <Button variant="secondary" onClick={() => {
-                                    onClose();
-                                }}>
-                                    Cancel
-                                </Button>
-                            ) : (
-                                <Button variant="secondary" onClick={() => {
-                                    setValidated(false)
-                                    formik.resetForm()
-                                }}>
-                                    Reset
-                                </Button>
-                            )}
-                        </Col>
-                        <Col className="justify-content-center">
-                            {!loading ? (
+                                    name="bikeName"
+                                    isInvalid={!!formik.errors.bikeName}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("bikeName", e.target.value);
+                                    }}
+                                />
 
-                                <Button variant="primary" type="submit" onClick={() => {
-                                }}>
-                                    Submit
-                                </Button>
-                            ) : (
-                                <Button
-                                    type="submit"
-                                    variant="secondary"
-                                    style={{ width: '175px' }}
-                                >
-                                    <Spinner
-                                        as="span"
-                                        variant="light"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                        animation="border"
-                                    />
-                                </Button>
-                            )}
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.bikeName as FormikErrors<string>}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+                        <Row >
+                            <BikeFrameTypeSelect
+                                selection={formik.values.bikeFrameType?.toString() ?? FrameType.NONE.toString()}
+                                onChange={(selection) => {
+                                    formik.setFieldValue("bikeFrameType", selection)
+                                }}
+                                errors={formik.errors}
+                            />
+                        </Row>
+                        <Row className="mb-2">
+                            <Form.Group controlId="bikeBrand">
+                                <Form.Label className="pb-0 mb-0">Bike Brand</Form.Label>
+                                <Form.Control type="text" placeholder="Enter bike brand" />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.bikeBrand as FormikErrors<string>}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-1">
+                            <Form.Group controlId="bikeModel">
+                                <Form.Label className="mb-0">Bike Model</Form.Label>
+                                <Form.Control type="text" placeholder="Enter bike model" />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.bikeModel as FormikErrors<string>}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-4">
+                            <Form.Group controlId="bikeMetersLogged">
+                                <Form.Label className="mb-0">Miles Logged</Form.Label>
+                                <Form.Control type="number" placeholder="Enter meters logged" />
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.bikeMetersLogged as FormikErrors<string>}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+                        <Row className="justify-content-between">
+                            <Col>
+                                {isEdit ? (
 
-                        </Col>
-                    </Row>
+                                    <Button variant="secondary" onClick={() => {
+                                        onClose();
+                                    }}>
+                                        Cancel
+                                    </Button>
+                                ) : (
+                                    <Button variant="secondary" onClick={() => {
+                                        setValidated(false)
+                                        formik.resetForm()
+                                    }}>
+                                        Reset
+                                    </Button>
+                                )}
+                            </Col>
+                            <Col className="justify-content-between d-flex">
+                                {!loading ? (
+                                    <Button variant="primary" type="submit" onClick={() => {
+                                        console.log("Submitting form", formik.values);
+                                        console.log("Submitting form errors", formik.errors);
 
+
+                                    }}>
+                                        Submit
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        variant="secondary"
+                                        style={{ width: '175px' }}
+                                    >
+                                        <Spinner
+                                            as="span"
+                                            variant="light"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                            animation="border"
+                                        />
+                                    </Button>
+                                )}
+
+                            </Col>
+                        </Row>
+                    </Form>
                 </Col>
             </Modal.Body>
         </Modal>
