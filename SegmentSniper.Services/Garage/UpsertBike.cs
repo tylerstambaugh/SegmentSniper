@@ -39,6 +39,7 @@ namespace SegmentSniper.Services.Garage
                         FrameType = contract.Bike.FrameType.ToString(),
                         MetersLogged = (double)contract.Bike.MetersLogged,
                         DateAdded = DateTime.Now,
+                        ImportedFromStrava = contract.Bike.ImportedFromStrava
                     };
 
                     _segmentSniperDbContext.Bikes.Add(bikeToAdd);

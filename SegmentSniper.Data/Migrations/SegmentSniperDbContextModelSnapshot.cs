@@ -383,7 +383,6 @@ namespace SegmentSniper.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BrandName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAdded")
@@ -393,8 +392,10 @@ namespace SegmentSniper.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FrameType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ImportedFromStrava")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("bit");
@@ -403,11 +404,12 @@ namespace SegmentSniper.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ModelName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ModelYear")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")

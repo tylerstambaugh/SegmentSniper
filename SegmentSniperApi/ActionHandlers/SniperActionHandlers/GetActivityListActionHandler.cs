@@ -154,6 +154,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     //adapt the bike
                     var bikeToAdd = _mapper.Map<DetailedGearApiModel, BikeModel>(bikeApiModel);
                     bikeToAdd.UserId = userId;
+                    bikeToAdd.ImportedFromStrava = true;
                     //persist the bike
                     var bikeAdded = await _upsertBike.ExecuteAsync(new UpsertBikeContract(bikeToAdd));
 

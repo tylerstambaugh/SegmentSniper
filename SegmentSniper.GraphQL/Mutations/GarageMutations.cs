@@ -62,7 +62,8 @@ namespace SegmentSniper.GraphQL.Mutations
                         BrandName = bike.BrandName,
                         ModelName = bike.ModelName,
                         FrameType = bike.FrameType,
-                        MetersLogged = bike.MetersLogged
+                        MetersLogged = bike.MetersLogged,
+                        ImportedFromStrava = false
                     };
 
                     var result = await service.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));
