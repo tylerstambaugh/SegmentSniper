@@ -67,6 +67,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                 BikeId = activity.SummaryGear.Id,
                 Name = activity.SummaryGear.Name,
                 MetersLogged = activity.SummaryGear.MetersLogged,
+                ImportedFromStrava = true,
             };
 
             _addBikeService.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));

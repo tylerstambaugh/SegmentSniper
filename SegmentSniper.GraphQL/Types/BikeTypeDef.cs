@@ -63,7 +63,7 @@ namespace SegmentSniper.GraphQL.Types
             Field<StringGraphType>(nameof(BikeModel.BrandName)).Description("The brand of the bike");
             Field<StringGraphType>(nameof(BikeModel.ModelName)).Description("The model of the bike");
             Field<NonNullGraphType<FrameTypeEnumType>>("frameType").Description("The enum value of the frame type");
-            Field<FloatGraphType>(nameof(BikeModel.MetersLogged)).Description("The odometer of the bike in meters");
+            Field<FloatGraphType>(nameof(BikeModel.MetersLogged)).Description("The odometer of the bike in meters");            
         }
     }
 
