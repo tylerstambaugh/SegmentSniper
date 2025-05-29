@@ -93,7 +93,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     StravaSegmentId = detailedSegment.SegmentId,
                     SegmentName = detailedSegment.Name,
                     ElapsedTime = dse.ElapsedTime,
-                    SegmentPrTime = detailedSegment.AthleteSegmentStats.PrElapsedTime,
+                    SegmentPrTime = (int)detailedSegment.AthleteSegmentStats.PrElapsedTime,
                     Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                     AverageSpeed = CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
                     ElevationGain = detailedSegment.TotalElevationGain,

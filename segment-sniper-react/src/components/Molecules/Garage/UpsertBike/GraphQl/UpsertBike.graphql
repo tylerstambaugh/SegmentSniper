@@ -1,0 +1,13 @@
+mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
+  garage {
+    upsertBike(bike: $bike, userId: $userId) {
+      bikeId
+      name
+      description
+      brandName
+      modelName
+      frameType
+      metersLogged
+    }
+  }
+}

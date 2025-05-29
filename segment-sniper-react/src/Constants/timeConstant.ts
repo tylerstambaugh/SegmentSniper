@@ -9,3 +9,5 @@ export const MAX_DATE_TIME: DateTime = DateTime.fromObject({
   second: 59,
   millisecond: 999,
 });
+
+export const MAX_DATE_STRING = '9999-12-31T23:59:59.9999999';

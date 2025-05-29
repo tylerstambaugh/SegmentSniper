@@ -1,10 +1,10 @@
-mutation AddEquipmentToBike(
+mutation UpsertBikeEquipment(
   $bikeId: ID!
   $equipment: EquipmentInput!
   $userId: ID!
 ) {
   garage {
-    addEquipmentToBike(
+    upsertBikeEquipment(
       bikeId: $bikeId
       equipment: $equipment
       userId: $userId

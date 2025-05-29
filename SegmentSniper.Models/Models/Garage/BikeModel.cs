@@ -2,16 +2,17 @@
 {
     public class BikeModel
     {
-            public string? BikeId { get; set; }
-            public string UserId { get; set; }
-            public bool IsPrimary { get; set; }
-            public string? Name { get; set; }
-            public string? Description { get; set; }
-            public string? BrandName { get; set; }
-            public string? ModelName { get; set; }
-            public FrameType? FrameType { get; set; }
-            public double? MetersLogged { get; set; }
+        public string? BikeId { get; set; }
+        public string UserId { get; set; }
+        public bool IsPrimary { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? BrandName { get; set; }
+        public string? ModelName { get; set; }
+        public FrameType? FrameType { get; set; }
+        public double? MetersLogged { get; set; }
         public List<EquipmentModel> Equipment { get; set; } = new List<EquipmentModel>();
+        public bool ImportedFromStrava { get; set; }
     }
 
     public enum FrameType

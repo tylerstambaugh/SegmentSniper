@@ -50,6 +50,23 @@ namespace SegmentSniper.GraphQL.Types
         }
     }
 
+    public class BikeInputTypeDef : InputObjectGraphType<BikeModel>
+    {
+        public BikeInputTypeDef()
+        {
+            Name = "BikeInput";
+
+            Field<IdGraphType>(nameof(BikeModel.UserId)).Description("The Id of the user the bike belongs to");
+            Field<IdGraphType>(nameof(BikeModel.BikeId)).Description("The Id of the user the bike belongs to");
+            Field<NonNullGraphType<StringGraphType>>(nameof(BikeModel.Name)).Description("The name of the bike");
+            Field<StringGraphType>(nameof(BikeModel.Description)).Description("The description of the bike");
+            Field<StringGraphType>(nameof(BikeModel.BrandName)).Description("The brand of the bike");
+            Field<StringGraphType>(nameof(BikeModel.ModelName)).Description("The model of the bike");
+            Field<NonNullGraphType<FrameTypeEnumType>>("frameType").Description("The enum value of the frame type");
+            Field<FloatGraphType>(nameof(BikeModel.MetersLogged)).Description("The odometer of the bike in meters");            
+        }
+    }
+
     public sealed class FrameTypeEnumType : EnumerationGraphType<FrameType>
     {
         public FrameTypeEnumType()

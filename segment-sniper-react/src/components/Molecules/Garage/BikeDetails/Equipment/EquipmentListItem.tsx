@@ -3,15 +3,16 @@ import { EquipmentModel } from "../../../../../graphql/generated";
 import { useTimeFormatConverter } from "../../../../../hooks/useTimeFormatConverter";
 import styles from "./Equipment.module.scss";
 import { EquipmentModalState } from "./EquipmentList";
+import { MAX_DATE_STRING } from "../../../../../Constants/timeConstant";
+import { Dispatch, SetStateAction } from "react";
 
 type EquipmentListItemProps = {
     item: EquipmentModel;
-    setModalState: (modalState: EquipmentModalState) => void;
+    setModalState: Dispatch<SetStateAction<EquipmentModalState>>;
 }
 
-
-
 const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => {
+
 
 
     const timeFormatter = useTimeFormatConverter();
@@ -33,10 +34,12 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                 <Col className={styles.equipmentLabel}>Installed on</Col>
                 <Col>{timeFormatter.convertStringToFormattedDateTime(item.installDate as string)}</Col>
             </Row>
-            <Row>
-                <Col className={styles.equipmentLabel}>Retired on</Col>
-                <Col>{timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}</Col>
-            </Row>
+            {item.retiredDate && item.retiredDate !== MAX_DATE_STRING && (
+                <Row>
+                    <Col className={styles.equipmentLabel}>Retired on</Col>
+                    <Col>{timeFormatter.convertStringToFormattedDateTime(item.retiredDate as string)}</Col>
+                </Row>
+            )}
             <Row>
                 <Col className={styles.equipmentLabel}>Price </Col>
                 <Col>${item.price}</Col>
@@ -51,22 +54,40 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                     <Col>{item.milesUntilReplaceReminder} miles</Col>
                 </Row>
             )}
-            <Row className="justify-content-between">
+            <Row className="justify-content-center pb-2 pt-1">
                 <Col>
                     <Button
-                        onClick={() => setModalState({ type: "addEdit", item: item })}>
+                        className="d-flex justify-content-center px-3"
+                        variant="primary"
+                        onClick={() => {
+                            console.log("Edit button clicked");
+                            setModalState({ type: "addEdit", item: item })
+                        }}>
+
                         Edit
                     </Button>
                 </Col>
-                <Col>
-                    <Button
-                        className={styles.retire_button}
-                        onClick={() => setModalState({ type: "retire", item: item })}>
-                        Retire
-                    </Button>
-                </Col>
-            </Row>
-        </Col>
+                {
+                    (item.retiredDate && item.retiredDate === MAX_DATE_STRING) ? (
+                        <Col>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setModalState({ type: "retire", item: item })}>
+                                Retire
+                            </Button>
+                        </Col>
+                    ) : (
+                        <Col>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setModalState({ type: "delete", item: item })}>
+                                Delete
+                            </Button>
+                        </Col>
+                    )
+                }
+            </Row >
+        </Col >
     )
 }
 

@@ -1,20 +1,23 @@
-import { Button, Card, Col, Container, Form, Modal, Row } from "react-bootstrap"
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
 import { DateTime } from "luxon";
-import { valueFromAST } from "graphql";
 import { Maybe } from "graphql/jsutils/Maybe";
+import { ApolloError } from "@apollo/client";
+import toast from "react-hot-toast";
 
-export type AddEquipmentFormProps = {
+export type UpsertEquipmentFormProps = {
     show: boolean;
-    handleSubmit: (values: AddEquipmentFormValues) => void;
+    handleSubmit: (values: UpsertEquipmentFormValues) => Promise<void>;
     onClose: () => void
-    editEquipment?: Maybe<AddEquipmentFormValues>;
+    editEquipment?: Maybe<UpsertEquipmentFormValues> | undefined;
+    loading?: boolean;
+    error: ApolloError | undefined
 }
 
-export interface AddEquipmentFormValues {
+export interface UpsertEquipmentFormValues {
     name: string;
     description: string;
     milesLogged?: number | null;
@@ -25,10 +28,12 @@ export interface AddEquipmentFormValues {
     milesUntilReplaceReminder?: number | null;
 }
 
-const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddEquipmentFormProps) => {
-    const [validated, setValidated] = useState(false);
+const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: UpsertEquipmentFormProps) => {
+    console.log("AddEquipmentFormUI", editEquipment);
 
-    const initialValues: AddEquipmentFormValues = {
+    const [validated, setValidated] = useState(false);
+    const isEdit = editEquipment !== undefined;
+    const initialValues: UpsertEquipmentFormValues = {
         name: editEquipment?.name ?? '',
         description: editEquipment?.description ?? '',
         milesLogged: editEquipment?.milesLogged ?? undefined,
@@ -52,20 +57,34 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
         milesUntilReplaceReminder: Yup.number(),
     })
 
-    const formik = useFormik<AddEquipmentFormValues>({
+    const formik = useFormik<UpsertEquipmentFormValues>({
         initialValues: initialValues,
         validationSchema: validationSchema,
         validateOnBlur: validated,
         validateOnChange: validated,
-        onSubmit: async (values) => {
+        onSubmit: async (values: UpsertEquipmentFormValues) => {
             setValidated(true);
-            await handleSubmit(values)
+            await handleSubmit(values).then(() => {
+                if (!loading && !error) {
+                    toast.success(`Equipment ${isEdit ? 'updated' : 'added'} successfully`);
+                    onClose();
+                    formik.resetForm()
+                }
+            })
         }
     })
+
+    useEffect(() => {
+        if (error) {
+            toast.error(`Error: ${error.message}`);
+        }
+    }, [error])
+
+
     return (
         <Modal show={show} onHide={onClose} className="shadow">
             <Modal.Header closeButton>
-                <Modal.Title>Add Equipment</Modal.Title>
+                <Modal.Title>{isEdit ? 'Edit' : 'Add'} Equipment</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Col>
@@ -76,7 +95,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                 <Form.Control
                                     type="text"
                                     required
-                                    value={formik.values.name}
+                                    value={editEquipment?.name ?? formik.values.name}
                                     onChange={(e) => {
                                         formik.setFieldValue("name", e.target.value);
                                     }
@@ -92,7 +111,7 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                 <Form.Label>Description</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={formik.values.description}
+                                    value={editEquipment?.description ?? formik.values.description}
                                     onChange={(e) => formik.setFieldValue("description", e.target.value)} />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.description as FormikErrors<string>}
@@ -105,7 +124,10 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                     <Form.Label>Install Date</Form.Label>
                                     <Form.Control
                                         type="date"
-                                        value={formik.values.installDate?.toISODate() ?? ""}
+                                        value={
+                                            editEquipment?.installDate?.toISODate()
+                                            ?? formik.values.installDate?.toISODate()
+                                            ?? ""}
                                         onChange={(e) => {
                                             const newDate = DateTime.fromFormat(
                                                 e.target.value,
@@ -119,11 +141,13 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
-                            <Col>
+                            {/* <Col>
                                 <Form.Group controlId="retiredDate" className="mb-3">
                                     <Form.Label>Retired Date</Form.Label>
                                     <Form.Control type="date"
-                                        value={formik.values.retiredDate?.toISODate() ?? ""}
+                                        value={editEquipment?.retiredDate?.toISODate()
+                                            ?? formik.values.retiredDate?.toISODate()
+                                            ?? ""}
                                         onChange={(e) => {
                                             const newDate = DateTime.fromFormat(
                                                 e.target.value,
@@ -136,14 +160,16 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                         {formik.errors.retiredDate as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                            </Col>
+                            </Col> */}
                         </Row>
                         <Row>
                             <Col>
                                 <Form.Group controlId="milesLogged" className="mb-3">
                                     <Form.Label>Miles Logged</Form.Label>
                                     <Form.Control type="number"
-                                        value={formik.values.milesLogged ?? ""}
+                                        value={editEquipment?.milesLogged
+                                            ?? formik.values.milesLogged
+                                            ?? ""}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
                                             formik.setFieldValue("milesLogged", value);
@@ -159,7 +185,9 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                                     <CurrencyInput
                                         id="input-price"
                                         name="Price"
-                                        value={formik.values.price ?? 0}
+                                        value={editEquipment?.price
+                                            ?? formik.values.price
+                                            ?? 0}
                                         onValueChange={(value) => {
                                             const numericValue = parseFloat(value ?? "0.00") || 0;
                                             formik.setFieldValue("price", numericValue);
@@ -177,7 +205,12 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                             <Col>
                                 <Form.Group controlId="replaceAtMiles" className="mb-3">
                                     <Form.Label>Replace At</Form.Label>
-                                    <Form.Control type="number" placeholder="Miles" value={formik.values.replaceAtMiles ?? ""}
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="Miles"
+                                        value={editEquipment?.replaceAtMiles
+                                            ?? formik.values.replaceAtMiles
+                                            ?? ""}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
                                             formik.setFieldValue("replaceAtMiles", value)
@@ -190,7 +223,12 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
                             <Col>
                                 <Form.Group controlId="milesUntilReplaceReminder" className="mb-3">
                                     <Form.Label>Remind At</Form.Label>
-                                    <Form.Control type="number" placeholder="Miles" value={formik.values.milesUntilReplaceReminder ?? undefined}
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="Miles"
+                                        value={editEquipment?.milesUntilReplaceReminder
+                                            ?? formik.values.milesUntilReplaceReminder
+                                            ?? undefined}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
                                             formik.setFieldValue("milesUntilReplaceReminder", value)
@@ -204,17 +242,46 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
 
                         <Row className="justify-content-between">
                             <Col>
-                                <Button variant="secondary" onClick={() => {
-                                    setValidated(false)
-                                    formik.resetForm()
-                                }}>
-                                    Reset
-                                </Button>
+                                {isEdit ? (
+
+                                    <Button variant="secondary" onClick={() => {
+                                        onClose();
+                                    }}>
+                                        Cancel
+                                    </Button>
+                                ) : (
+                                    <Button variant="secondary" onClick={() => {
+                                        setValidated(false)
+                                        formik.resetForm()
+                                    }}>
+                                        Reset
+                                    </Button>
+                                )}
                             </Col>
                             <Col className="justify-content-center">
-                                <Button variant="primary" type="submit">
-                                    Submit
-                                </Button>
+                                {!loading ? (
+
+                                    <Button variant="primary" type="submit" onClick={() => {
+                                        console.log("formik errors", formik.errors);
+                                    }}>
+                                        Submit
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        variant="secondary"
+                                        style={{ width: '175px' }}
+                                    >
+                                        <Spinner
+                                            as="span"
+                                            variant="light"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                            animation="border"
+                                        />
+                                    </Button>
+                                )}
 
                             </Col>
                         </Row>
@@ -225,4 +292,4 @@ const AddEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment }: AddE
     )
 }
 
-export default AddEquipmentFormUI
+export default UpsertEquipmentFormUI
