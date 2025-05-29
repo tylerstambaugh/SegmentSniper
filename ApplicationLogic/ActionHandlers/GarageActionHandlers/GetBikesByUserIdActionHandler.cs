@@ -44,7 +44,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
 
                     foreach (var bike in result.Bikes)
                     {
-                        if (!string.IsNullOrEmpty(bike.BikeId) && !bike.ImportedFromStrava)
+                        if (!string.IsNullOrEmpty(bike.BikeId) && bike.ImportedFromStrava)
                         {
                             var stravaBikeResponse = await _stravaRequestService.GetGearById(new GetGearByIdContract(bike.BikeId));
 
