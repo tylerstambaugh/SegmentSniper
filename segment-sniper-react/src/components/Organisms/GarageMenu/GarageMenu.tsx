@@ -76,6 +76,7 @@ export default function GarageMenu() {
 
             <UpsertBikeModal
                 show={modalState.type === "upsertBike"}
+                loading={upsertBikeLoading}
                 onClose={handleClosedModal}
                 handleUpsertBike={handleUpsertBike}
                 error={upsertBikeError} />
