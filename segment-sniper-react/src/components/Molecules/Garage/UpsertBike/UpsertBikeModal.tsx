@@ -20,10 +20,10 @@ export type UpsertBikeModalProps = {
 
 
 export interface UpsertBikeFormValues {
-    bikeName: Maybe<string>;
+    bikeName: string;
     bikeFrameType: Maybe<number>;
-    bikeBrand: string;
-    bikeModel: string;
+    bikeBrand: Maybe<string>;
+    bikeModel: Maybe<string>;
     bikeMetersLogged: number;
     bikeDescription: string;
     // bikeYear: number;
@@ -38,10 +38,10 @@ const UpsertBikeModal = ({
     const [validated, setValidated] = useState(false);
     const isEdit = bike !== undefined;
     const initialValues: UpsertBikeFormValues = {
-        bikeName: bike?.name ?? null,
+        bikeName: bike?.name ?? "",
         bikeFrameType: bike?.frameType ?? null,
-        bikeBrand: bike?.brandName ?? "",
-        bikeModel: bike?.modelName ?? "",
+        bikeBrand: bike?.brandName ?? null,
+        bikeModel: bike?.modelName ?? null,
         bikeMetersLogged: bike?.metersLogged ?? 0,
         bikeDescription: bike?.description ?? "",
         // bikeYear: 0,
@@ -53,8 +53,8 @@ const UpsertBikeModal = ({
 
     const validationSchema = Yup.object({
         bikeName: Yup.string().required('Required'),
-        description: Yup.string(),
-        milesLogged: Yup.number(),
+        description: Yup.string().max(250, 'Description must be 250 characters or less'),
+        milesLogged: Yup.number().min(0, 'Miles logged must be a positive number'),
     })
 
     const formik = useFormik<UpsertBikeFormValues>({

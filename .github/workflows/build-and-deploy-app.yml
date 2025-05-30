@@ -49,11 +49,6 @@ jobs:
         working-directory: ././segment-sniper-react
         run: npm run build
 
-      - name: Move React build output to .NET wwwroot
-        run: |
-          mkdir -p ./wwwroot
-          cp -r ././segment-sniper-react/dist/* ./wwwroot/
-
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
         with:
@@ -82,6 +77,10 @@ jobs:
           sqlcmd -S ${{ secrets.DB_SERVER }} -d ${{ secrets.DB_NAME }} -U ${{ secrets.DB_USER }} -P ${{ secrets.DB_PASSWORD }} -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
         shell: bash
 
+      - name: Move React build output to .NET wwwroot
+        run: |
+          rm -rf ./SegmentSniperApi/wwwroot/*
+          cp -r ./segment-sniper-react/dist/* ./SegmentSniperApi/wwwroot/
 
       - name: Publish .NET app
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
