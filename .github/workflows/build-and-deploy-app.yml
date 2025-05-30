@@ -61,7 +61,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Apply Entity Framework migrations
-        run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniperApi.csproj --context SegmentSniperDbContext
+        run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
 
       # - name: Verify migration success
       #   run: |
