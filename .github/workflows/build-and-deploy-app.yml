@@ -1,6 +1,7 @@
 name: Build and Deploy Segment Sniper
 env:
   AZURE_WEBAPP_NAME: as-segmentsniper-api-eastus-dev
+  AZURE_REACT_WEBAPP_NAME: as-segmentsniper-frontend-eastus-dev
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '8'
 
@@ -96,7 +97,6 @@ jobs:
     needs: build
     environment:
       name: 'Azure Dev'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
@@ -104,11 +104,20 @@ jobs:
         with:
           name: .net-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+      # ✅ Deploy .NET API
+      - name: Deploy API to Azure Web App
+        id: deploy-api
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-name: ${{ env.AZURE_API_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
           package: ${{ env.DOTNET_ROOT }}/myapp
+
+      # ✅ Deploy React frontend
+      - name: Deploy React frontend to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.as-segmentsniper-frontend-eastus-dev }}
+          publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
+          package: ./segment-sniper-react/dist
 
