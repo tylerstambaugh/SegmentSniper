@@ -4,6 +4,7 @@ using StravaApiClient.Configuration;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
+using StravaApiClient.Services.Webhook;
 
 namespace StravaApiClient
 {
@@ -57,6 +58,12 @@ namespace StravaApiClient
         public Task<GetGearByIdContract.Result> GetGearById(GetGearByIdContract contract)
         {
             var service = new GetGearById(_client);
+            return service.ExecuteAsync(contract);
+        }
+
+        public Task<CreateStravaWebhookSubscriptionContract.Result> CreateStravaWebhookSubscription(CreateStravaWebhookSubscriptionContract contract)
+        {
+            var service = new CreateStravaWebhookSubscription(_client);
             return service.ExecuteAsync(contract);
         }
     }
