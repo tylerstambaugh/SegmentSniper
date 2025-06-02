@@ -19,7 +19,7 @@
                 ClientSecret = contract.ClientSecret
             };
 
-            await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData>("push_subscriptions", parameters);
+           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, HttpResponseMessage>("push_subscriptions", parameters);
 
             return new CreateStravaWebhookSubscriptionContract.Result { Success = apiResponse.IsSuccessStatusCode };
         }
