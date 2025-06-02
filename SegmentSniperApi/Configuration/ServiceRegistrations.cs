@@ -26,6 +26,7 @@ using StravaApiClient.Services;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
+using StravaApiClient.Services.Webhook;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -125,6 +126,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
             services.AddScoped<IGetGearById,  GetGearById>();
+            services.AddScoped<ICreateStravaWebhookSubscription, CreateStravaWebhookSubscription>();
 
             //ML Services
             services.AddScoped<IGetSegmentPredictionTrainingData, GetSegmentPredictionTrainingData>();

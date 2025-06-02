@@ -1,39 +1,56 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
+using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
 {
 
     public record StravaVerifyResponse(
-    [property: JsonPropertyName("hub.challenge")] string HubChallenge);
+    [property: JsonPropertyName("hub.challenge")] string hubChallenge);
 
 
     [Route("api/[controller]")]
     [ApiController]
     public class WebhookController : ControllerBase
     {
+        private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
+        private readonly IConfiguration _configuration;
 
-        public WebhookController()
+        _stravaApiSettings = _configuration.GetSection("StravaApiSettings").Get<StravaApiSettings>();
+
+        public WebhookController(ICreateStravaWebhookSubscription createStravaWebhookSubscription, IConfiguration configuration1)
         {
-            
+            _createStravaWebhookSubscription = createStravaWebhookSubscription;
+            _configuration1 = configuration1;
         }
 
         [HttpGet]
+        [Route("verify")]
         public IActionResult Verify(
         [FromQuery(Name = "hub.challenge")] string challenge,
         [FromQuery(Name = "hub.mode")] string mode,
         [FromQuery(Name = "hub.verify_token")] string verifyToken)
         {
-            // Optional: ensure mode == "subscribe" and verifyToken matches your secret
+            if(verifyToken != "segment-sniper")
+            {
+                return BadRequest("Invalid verify token.");
+            }
 
             return Ok(new StravaVerifyResponse(challenge));
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult InitiateSubscription()
+        public async Task<IActionResult> InitiateSubscription()
         {
+
+            var respone = await _createStravaWebhookSubscription.ExecuteAsync(new CreateStravaWebhookSubscriptionContract(
+                verifyToken: "segment-sniper",
+                callbackUrl: "https://your-callback-url.com/api/webhook/verify", 
+                clientId: "your-client-id", // Replace with your actual client ID
+                clientSecret: "your-client-secret" // Replace with your actual client secret
+            ));
 
 
             return Ok(new

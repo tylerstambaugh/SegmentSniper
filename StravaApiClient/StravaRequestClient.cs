@@ -70,6 +70,13 @@ namespace StravaApiClient
             return await Post<TResponse>(url, null);
         }
 
+        public async Task<HttpResponseMessage> PostAsync<TRequest>(string url, TRequest data)
+        {
+            var serializedData = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            var result = await Post<HttpResponseMessage>(url, serializedData);
+            return result;
+        }
+
         private async Task<TResponse> Post<TResponse>(string url, StringContent data) where TResponse : class
         {
             _accessToken = await GetAccessToken();
