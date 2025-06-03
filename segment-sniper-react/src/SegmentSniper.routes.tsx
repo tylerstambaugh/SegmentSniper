@@ -16,7 +16,7 @@ import Logout from "./pages/Authentication/Logout";
 import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
 import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
 import SegmentSniper from "./pages/SegmentSniper/ActivityLookup";
-import Admin from "./pages/Admin";
+import Admin from "./pages/Admin/Admin";
 import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/SegmentSniper/ActivitySearchResults";
 import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
@@ -94,6 +94,22 @@ export default function Routes({ defaultPage }: Props) {
             }
           />
           <Route
+            path={AppRoutes.UserManagement}
+            element={
+              <PrivateRoute userRoles={[UserRole.Admin]}>
+                <BikeDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoutes.StravaWebhookManageMent}
+            element={
+              <PrivateRoute userRoles={[UserRole.Admin]}>
+                <BikeDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path={AppRoutes.ConfirmEmail}
             element={
               <PrivateRoute userRoles={[UserRole.User]}>
@@ -157,6 +173,7 @@ export default function Routes({ defaultPage }: Props) {
               </PrivateRoute>
             }
           />
+
         </Route>
       </RRRoutes>
     </>

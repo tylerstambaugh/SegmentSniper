@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
+using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
 using System.Security.Claims;
 
 namespace SegmentSniper.Api.Controllers

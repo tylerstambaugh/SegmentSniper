@@ -4,7 +4,7 @@ using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Models.UIModels.MachineLearning;
 
-namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 {
     public class TrainSegmentPredictionModelActionHandler : ITrainSegmentPredictionModelActionHandler
     {
@@ -24,7 +24,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             // can evaluate if trained model exists and determine whether to use it or train a new model?
             var hasTrainedModel = await _segmentPredictionDataProcessor.GetSegmentPredictionTrainedModelData(request.UserId);
 
-            if(hasTrainedModel.NumberOfSegmentsUsedInModelTraining > 0)
+            if (hasTrainedModel.NumberOfSegmentsUsedInModelTraining > 0)
             {
                 try
                 {
