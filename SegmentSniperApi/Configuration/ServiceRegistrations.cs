@@ -3,10 +3,11 @@ using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
-using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
+
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
-using SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
+using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Admin;

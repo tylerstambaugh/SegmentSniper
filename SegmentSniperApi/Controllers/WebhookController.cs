@@ -1,5 +1,7 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
+using SegmentSniper.Api.Configuration;
+using StravaApiClient.Configuration;
 using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
 
@@ -17,16 +19,15 @@ namespace SegmentSniper.Api.Controllers
         private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
         private readonly IConfiguration _configuration;
 
-        _stravaApiSettings = _configuration.GetSection("StravaApiSettings").Get<StravaApiSettings>();
+        private readonly IStravaRequestClientConfiguration _stravaApiSettings;
 
-        public WebhookController(ICreateStravaWebhookSubscription createStravaWebhookSubscription, IConfiguration configuration1)
+        public WebhookController(ICreateStravaWebhookSubscription createStravaWebhookSubscription, IConfiguration configuration)
         {
             _createStravaWebhookSubscription = createStravaWebhookSubscription;
-            _configuration1 = configuration1;
+            _configuration = configuration;
         }
 
         [HttpGet]
-        [Route("verify")]
         public IActionResult Verify(
         [FromQuery(Name = "hub.challenge")] string challenge,
         [FromQuery(Name = "hub.mode")] string mode,
@@ -40,17 +41,25 @@ namespace SegmentSniper.Api.Controllers
             return Ok(new StravaVerifyResponse(challenge));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ReceiveUpdate()
+        {
+            return Ok();
+        }
+
         [Authorize]
         [HttpPost]
+        [Route("initiate")]
         public async Task<IActionResult> InitiateSubscription()
         {
 
             var respone = await _createStravaWebhookSubscription.ExecuteAsync(new CreateStravaWebhookSubscriptionContract(
                 verifyToken: "segment-sniper",
-                callbackUrl: "https://your-callback-url.com/api/webhook/verify", 
-                clientId: "your-client-id", // Replace with your actual client ID
-                clientSecret: "your-client-secret" // Replace with your actual client secret
+                callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/", 
+                clientId: _configuration["StravaApiSettings-ClientId"],
+                clientSecret: _configuration["StravaApiSettings-ClientSecret"]
             ));
+
 
 
             return Ok(new

@@ -4,7 +4,7 @@ using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Models.UIModels.MachineLearning;
 
-namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 {
     public class GetSegmentPredictionTrainedModelMetaDataActionHandler : IGetSegmentPredictionTrainedModelMetaDataActionHandler
     {
@@ -30,7 +30,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             return new GetSegmentPredictionTrainingModelActionHandlerRequest.Result()
             {
                 SegmentPredictionTrainingDataUiModel = returnModel,
-            };            
+            };
         }
 
         private void ValidateRequest(GetSegmentPredictionTrainingModelActionHandlerRequest request)
