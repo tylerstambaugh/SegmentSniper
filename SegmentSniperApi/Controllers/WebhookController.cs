@@ -44,7 +44,7 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> ReceiveUpdate()
         {
-            return Ok();
+            return Ok(); // Handle the webhook update here. You can access the request body to process the Strava event.
         }
 
         [Authorize]
