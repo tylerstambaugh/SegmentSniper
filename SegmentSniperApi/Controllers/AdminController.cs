@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
-using SegmentSniper.Models.Models.Auth;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
 
 namespace SegmentSniper.Api.Controllers
 {

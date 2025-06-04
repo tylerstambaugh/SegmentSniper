@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.Api.ActionHandlers.AdminActionHandlers
+﻿namespace SegmentSniper.ApplicationLogic.ActionHandlers.Admin
 {
     public interface IRemoveUserActionHandler
     {

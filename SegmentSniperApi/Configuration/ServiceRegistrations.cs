@@ -1,11 +1,11 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
 using SegmentSniper.GraphQL;
