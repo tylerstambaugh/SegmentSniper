@@ -1,8 +1,8 @@
-import { ApiContract } from "./ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "./ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "./BaseApiService";
+import { ApiContract } from './ApiCommon/ApiContract';
+import UnsuccessfulHttpResponseError from './ApiCommon/UnsuccessfulHttpResponseError';
+import { apiGet } from './BaseApiService';
 
-export type ClientConfigurationRequest = {};
+export type ClientConfigurationRequest = Record<string, never>;
 
 export type ClientConfigurationResponse = {
   stravaApiClientId: string;
