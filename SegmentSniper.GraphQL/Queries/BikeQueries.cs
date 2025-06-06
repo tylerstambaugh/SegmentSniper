@@ -2,7 +2,7 @@
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
-using SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.GraphQL.Types;
 using SegmentSniper.Services.Garage;
 

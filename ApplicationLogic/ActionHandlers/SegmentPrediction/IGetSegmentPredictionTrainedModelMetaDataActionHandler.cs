@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Models.UIModels.MachineLearning;
 
-namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 {
     public interface IGetSegmentPredictionTrainedModelMetaDataActionHandler
     {

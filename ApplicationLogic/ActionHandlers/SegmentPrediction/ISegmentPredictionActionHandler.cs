@@ -1,7 +1,7 @@
 ﻿using SegmentSniper.Models.UIModels.Segment;
 using System.Text.Json.Serialization;
 
-namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 {
     public interface ISegmentPredictionActionHandler
     {

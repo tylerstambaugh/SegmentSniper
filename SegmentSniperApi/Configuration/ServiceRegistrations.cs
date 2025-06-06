@@ -1,12 +1,13 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.Api.ActionHandlers.AdminActionHandlers;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
-using SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers;
+
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.ActionHandlers.StravaApiToken;
-using SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
+using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Admin;
@@ -26,6 +27,7 @@ using StravaApiClient.Services;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
+using StravaApiClient.Services.Webhook;
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -125,6 +127,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
             services.AddScoped<IGetGearById,  GetGearById>();
+            services.AddScoped<ICreateStravaWebhookSubscription, CreateStravaWebhookSubscription>();
 
             //ML Services
             services.AddScoped<IGetSegmentPredictionTrainingData, GetSegmentPredictionTrainingData>();

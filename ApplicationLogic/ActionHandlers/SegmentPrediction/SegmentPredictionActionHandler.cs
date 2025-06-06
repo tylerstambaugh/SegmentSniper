@@ -11,13 +11,13 @@ using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Segment;
 using static SegmentSniper.Services.Common.SegmentFormattingHelpers;
 
-namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 {
     public class SegmentPredictionActionHandler : ISegmentPredictionActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
-        
+
         private readonly ISegmentPredictionDataProcessor _segmentPredictionDataProcessor;
         private readonly IMapper _mapper;
 
@@ -55,14 +55,14 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     if (predictionModelExists != null)
                     {
                         var segmentToPredict = new SegmentDetailDataForPrediction
-                        {                       
+                        {
                             Distance = (float)segment.Distance,
                             AverageGrade = (float)segment.AverageGrade,
                             ElevationGain = (float)segment.TotalElevationGain,
-                            MaximumGrade = (float)segment.MaximumGrade                            
+                            MaximumGrade = (float)segment.MaximumGrade
                         };
 
-                       var segmentPrediction = await _segmentPredictionDataProcessor.PredictSegmentEffort(segmentToPredict, request.UserId);
+                        var segmentPrediction = await _segmentPredictionDataProcessor.PredictSegmentEffort(segmentToPredict, request.UserId);
 
                         return new SegmentPredictionRequest.Response
                         {
@@ -72,7 +72,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
                     }
                     else
                     {
-                       
+
                         throw new ApplicationException($"No segment prediction model for user {request.UserId}");
                     }
                 }
@@ -88,7 +88,7 @@ namespace SegmentSniper.Api.ActionHandlers.SegmentPredictionActionHandlers
             {
                 throw new ApplicationException($"No strava token for userId: {request.UserId}");
             }
-            
+
 
         }
 

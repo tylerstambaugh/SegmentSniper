@@ -22,4 +22,6 @@ export enum AppRoutes {
   SnipedSegments = 'snipe/sniped-segments',
   Garage = 'garage',
   BikeDetails = 'garage/bike-details/:bikeId',
+  UserManagement = 'admin/user-management',
+  StravaWebhookManageMent = 'admin/strava-webhook-management',
 }

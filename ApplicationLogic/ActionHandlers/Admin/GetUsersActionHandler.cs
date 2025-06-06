@@ -1,7 +1,7 @@
 ﻿using Duende.IdentityServer.Validation;
 using SegmentSniper.Services.Admin;
 
-namespace SegmentSniper.Api.ActionHandlers.AdminActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Admin
 {
     public class GetUsersActionHandler : IGetUsersActionHandler
     {

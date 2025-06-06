@@ -10,7 +10,7 @@ using StravaApiClient.Models.Misc;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 
-namespace SegmentSniper.ApplicationLogic.ActionHandlers.GarageActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
 {
     public class ImportGarageActionHandler : IImportGarageActionHandler
     {

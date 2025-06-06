@@ -1,21 +1,52 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { AppRoutes } from "../../../../enums/AppRoutes";
 
 export default function AdminWidget() {
   return (
     <Container>
-      <Row>
-        <Col>
-          <h2>admin menu widget</h2>
+      <Row className="d-flex justify-content-center pt-3 ">
+        <Col >
+          <Card className="shadow">
+            <Card.Body className="mx-3">
+              <div className="mb-2 text-center">
+                <h2 className="fw-bold mb-2 ">Admin Menu</h2>
+                <Row >
+                  <Col
+                    className="d-flex p-2 mb-2 justify-content-center"
+                  >
+                    <Link
+                      to={`/${AppRoutes.UserManagement}`}
+                      className="primary-rounded-button text-decoration-none
+                      "
+                      style={{ width: '155px' }}
+                    >
+                      User Management
+                    </Link>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    md={12}
+                    className="d-flex p-2 mb-2 justify-content-center"
+                  >
+                    <Link
+                      to={`/${AppRoutes.StravaWebhookManageMent}`}
+                      className="primary-rounded-button text-decoration-none
+                      "
+                      style={{ width: '155px' }}
+                    >
+                      Strava Webhook Management
+                    </Link>
+                  </Col>
+                </Row>
 
-          need to put button here to subscribe to strava webhooks.  It should:
-
-          POST https://www.strava.com/api/v3/push_subscriptions \
-          -F client_id=5 \
-          -F client_secret=7b2946535949ae70f015d696d8ac602830ece412 \
-          -F callback_url=https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook
-          -F verify_token=STRAVA
+              </div>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
+
     </Container>
   );
 }
