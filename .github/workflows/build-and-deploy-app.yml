@@ -71,24 +71,40 @@ jobs:
       #       exit 1
       #     fi
 
+      # - name: Verify migration success
+      #   run: |
+      #     sqlcmd -S ${{ secrets.DB_SERVER }} -d ${{ secrets.DB_NAME }} -U ${{ secrets.DB_USER }} -P ${{ secrets.DB_PASSWORD }} -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
+      #   shell: bash
+
+      - name: Debug DB connection info
+        run: |
+          echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
+          echo "DB_NAME: ${{ secrets.DB_NAME }}"
+          echo "DB_USER: ${{ secrets.DB_USER }}"
+
       - name: Verify migration success
         run: |
-          sqlcmd -S ${{ secrets.DB_SERVER }} -d ${{ secrets.DB_NAME }} -U ${{ secrets.DB_USER }} -P ${{ secrets.DB_PASSWORD }} -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
+          sqlcmd -S "${{ secrets.DB_SERVER }}" \
+                -d "${{ secrets.DB_NAME }}" \
+                -U "${{ secrets.DB_USER }}" \
+                -P "${{ secrets.DB_PASSWORD }}" \
+                -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
         shell: bash
 
-      - name: Move React build output to .NET wwwroot
-        run: |
-          rm -rf ./SegmentSniperApi/wwwroot/*
-          cp -r ./segment-sniper-react/dist/* ./SegmentSniperApi/wwwroot/
+        # old way of tryingt to deploy FE 
+      # - name: Move React build output to .NET wwwroot
+      #   run: |
+      #     rm -rf ./SegmentSniperApi/wwwroot/*
+      #     cp -r ./segment-sniper-react/dist/* ./SegmentSniperApi/wwwroot/
 
       - name: Publish .NET app
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ./publish
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy:
     permissions:
@@ -111,7 +127,7 @@ jobs:
         with:
           app-name: ${{ env.AZURE_API_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-          package: ${{ env.DOTNET_ROOT }}/myapp
+          package: .net-app
 
       # ✅ Deploy React frontend
       - name: Deploy React frontend to Azure Web App
