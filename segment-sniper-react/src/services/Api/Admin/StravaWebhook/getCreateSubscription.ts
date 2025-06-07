@@ -12,7 +12,7 @@ export default async function getCreateSubscription(
 ) {
   try {
     const respone = apiGet<CreateSubscriptionResponse>(
-      `${contract.baseUrl}/stravaWebhook/initiateSubscription`,
+      `${contract.baseUrl}/webhook/initiate`,
       contract
     );
     return respone;

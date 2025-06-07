@@ -48,7 +48,7 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("initiate")]
         public async Task<IActionResult> InitiateSubscription()
         {

@@ -29,6 +29,7 @@ import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
 import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 import BikeDetails from "./pages/Garage/BikeDetails";
+import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
 
 interface Props {
   defaultPage?: string;
@@ -105,7 +106,7 @@ export default function Routes({ defaultPage }: Props) {
             path={AppRoutes.StravaWebhookManageMent}
             element={
               <PrivateRoute userRoles={[UserRole.Admin]}>
-                <BikeDetails />
+                <ManageStravaWebhook />
               </PrivateRoute>
             }
           />
