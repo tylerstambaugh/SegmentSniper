@@ -11,7 +11,7 @@ export const useGetCreateSubscription = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryFn: triggerQuery,
     queryKey: ['createQebhookSubscription'],
     enabled: false,
@@ -36,5 +36,5 @@ export const useGetCreateSubscription = () => {
     return response;
   }
 
-  return { data, isLoading, isError, error };
+  return { data, isLoading, isError, error, refetch };
 };
