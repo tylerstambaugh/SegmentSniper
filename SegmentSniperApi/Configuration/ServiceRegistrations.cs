@@ -21,6 +21,7 @@ using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
+using SegmentSniper.Services.StravaWebhook;
 using StravaApiClient;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services;
@@ -118,6 +119,9 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IStravaRequestService, StravaRequestService>();
             services.AddScoped<IStravaRequestClientConfiguration, StravaRequestClientConfiguration>();
             services.AddScoped<IExchangeAuthCodeForToken, ExchangeAuthCodeForToken>();
+
+            //strava webhook services
+            services.AddScoped<ISaveStravaWebhookSubscriptionId, SaveStravaWebhookSubscriptionId>();
 
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();

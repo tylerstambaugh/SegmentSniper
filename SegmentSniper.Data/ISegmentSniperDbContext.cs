@@ -5,6 +5,7 @@ using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Data.Entities.StravaWebhookSubscription;
 
 namespace SegmentSniper.Data
 {
@@ -23,6 +24,7 @@ namespace SegmentSniper.Data
         DbSet<Equipment> Equipment { get; set; }
 
         DbSet<BikeActivity> BikeActivities { get; set; }
+        DbSet<StravaWebhookSubscription> StravaWebhookSubscription { get; set; }
 
         int SaveChanges();
 

@@ -24,7 +24,7 @@ namespace StravaApiClient.Services.Webhook
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
             if (apiResponse != null) 
             {
-                return new DeleteStravaWebhookSubscriptionContract.Result(apiResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                return new DeleteStravaWebhookSubscriptionContract.Result(apiResponse.StatusCode == System.Net.HttpStatusCode.OK);
             }
             return new DeleteStravaWebhookSubscriptionContract.Result(false);
         }

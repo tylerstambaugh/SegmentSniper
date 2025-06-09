@@ -20,15 +20,14 @@
 
         
         public class Result
-        {
-            private bool _v;
+        {            
 
-            public Result(bool v)
+            public Result(bool success)
             {
-                _v = v;
+                Success = success;
             }
 
-            public bool Success { get; set; }
+            public bool  Success { get; set; }
         }
 
 
