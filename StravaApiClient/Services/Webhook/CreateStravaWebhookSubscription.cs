@@ -19,6 +19,7 @@
                 ClientSecret = contract.ClientSecret
             };
 
+            //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
            var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, HttpResponseMessage>("push_subscriptions", parameters);
 
             return new CreateStravaWebhookSubscriptionContract.Result { Success = apiResponse.IsSuccessStatusCode };
