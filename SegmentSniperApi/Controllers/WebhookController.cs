@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Api.Configuration;
 using StravaApiClient.Configuration;
-using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
@@ -16,14 +15,14 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class WebhookController : ControllerBase
     {
-        private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
+        
         private readonly IConfiguration _configuration;
 
         private readonly IStravaRequestClientConfiguration _stravaApiSettings;
 
-        public WebhookController(ICreateStravaWebhookSubscription createStravaWebhookSubscription, IConfiguration configuration)
+        public WebhookController(ICreate)
         {
-            _createStravaWebhookSubscription = createStravaWebhookSubscription;
+            
             _configuration = configuration;
         }
 

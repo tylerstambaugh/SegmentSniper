@@ -7,6 +7,7 @@
 
     public class SaveStravaWebhookSubscriptionIdContract
     {
+
         public int StravaWebhookSubscriptionId { get; set; }
         public class Result
         {

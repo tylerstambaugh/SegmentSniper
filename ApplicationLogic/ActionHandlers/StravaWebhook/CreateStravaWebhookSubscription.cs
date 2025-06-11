@@ -1,17 +1,22 @@
 ﻿using Microsoft.Extensions.Configuration;
 using StravaApiClient.Services.Webhook;
+using SegmentSniper.Services.StravaWebhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
     public class CreateStravaWebhookSubscription
     {
         private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
+        private readonly ISaveStravaWebhookSubscriptionId _saveStravaWebhookSubscriptionId;
         private readonly IConfiguration _configuration;
 
-        public CreateStravaWebhookSubscription(ICreateStravaWebhookSubscription createStravaWebhookSubscription, ICreateStravaWebhookSubscription createStravaWebhookSubscriptionService, IConfiguration configuration)
+        public CreateStravaWebhookSubscription(
+            ICreateStravaWebhookSubscription createStravaWebhookSubscription,
+            ISaveStravaWebhookSubscriptionId saveStravaWebhookSubscriptionId,
+            IConfiguration configuration)
         {
             _createStravaWebhookSubscription = createStravaWebhookSubscription;
-            CreateStravaWebhookSubscriptionService = createStravaWebhookSubscriptionService;
+            _saveStravaWebhookSubscriptionId = saveStravaWebhookSubscriptionId;
             _configuration = configuration;
         }
 
@@ -19,7 +24,25 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
         public async Task<bool> ExecuteAsync()
         {
-            var stravaResponse = _createStravaWebhookSubscription.ExecuteAsync(new CreateStravaWebhookSubscriptionContract())
+            var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
+                verifyToken: "segment-sniper",
+                callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/",
+                clientId: _configuration["StravaApiSettings-ClientId"],
+                clientSecret: _configuration["StravaApiSettings-ClientSecret"]
+            );
+            var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
+
+            if (stravaResponse.Success)
+            {
+                // Save the subscription ID to the database
+                await _saveStravaWebhookSubscriptionId.ExecuteAsync(new SaveStravaWebhookSubscriptionIdContract
+                {
+                    StravaWebhookSubscriptionId = stravaResponse.SubscriptionId,
+                }
+                    
+                ));
+                return true;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@
         }
         public class Result
         {
-            public int It { get; init; }
+            public int Id { get; init; }
         }
     }
 
