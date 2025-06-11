@@ -1,4 +1,6 @@
-﻿namespace StravaApiClient.Services.Webhook
+﻿using System.Text.Json.Serialization;
+
+namespace StravaApiClient.Services.Webhook
 {
     public class CreateStravaWebhookSubscription : ICreateStravaWebhookSubscription
     {
@@ -20,9 +22,9 @@
             };
 
             //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
-           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, HttpResponseMessage>("push_subscriptions", parameters);
+           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, CreateSubscriptionResponse>("push_subscriptions", parameters);
 
-            return new CreateStravaWebhookSubscriptionContract.Result { Success = apiResponse.IsSuccessStatusCode };
+            return new CreateStravaWebhookSubscriptionContract.Result { Id  = apiResponse.Id };
         }
 
         private void ValidateContract(CreateStravaWebhookSubscriptionContract contract)
@@ -33,6 +35,12 @@
             if (string.IsNullOrEmpty(contract.ClientId)) throw new ArgumentException("Client ID must be provided", nameof(contract.ClientId));
             if (string.IsNullOrEmpty(contract.ClientSecret)) throw new ArgumentException("Client secret must be provided", nameof(contract.ClientSecret));
         }
+    }
+    
+        public class CreateSubscriptionResponse
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
     }
 }
 
