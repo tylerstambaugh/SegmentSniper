@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Api.Configuration;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using StravaApiClient.Configuration;
 using System.Text.Json.Serialization;
 
@@ -15,14 +16,14 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class WebhookController : ControllerBase
     {
-        
+        private readonly ICreateStravaWebhookSubscriptionHandler _createStravaWebhookSubscriptionHandler;
         private readonly IConfiguration _configuration;
 
         private readonly IStravaRequestClientConfiguration _stravaApiSettings;
 
-        public WebhookController(ICreate)
+        public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler, IConfiguration configuration)
         {
-            
+            _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
             _configuration = configuration;
         }
 
@@ -79,14 +80,12 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> InitiateSubscription()
         {
 
-            var respone = await _createStravaWebhookSubscription.ExecuteAsync(new CreateStravaWebhookSubscriptionContract(
-                verifyToken: "segment-sniper",
-                callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/", 
-                clientId: _configuration["StravaApiSettings-ClientId"],
-                clientSecret: _configuration["StravaApiSettings-ClientSecret"]
-            ));
+            var response = await _createStravaWebhookSubscriptionHandler.ExecuteAsync();
 
-
+            if(!response)
+            {
+                return StatusCode(500, "Failed to initiate subscription.");
+            }
 
             return Ok(new
             {
