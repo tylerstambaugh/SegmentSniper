@@ -4,13 +4,13 @@ using SegmentSniper.Services.StravaWebhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
-    public class CreateStravaWebhookSubscription
+    public class CreateStravaWebhookSubscriptionHandler : ICreateStravaWebhookSubscriptionHandler
     {
         private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
         private readonly ISaveStravaWebhookSubscriptionId _saveStravaWebhookSubscriptionId;
         private readonly IConfiguration _configuration;
 
-        public CreateStravaWebhookSubscription(
+        public CreateStravaWebhookSubscriptionHandler(
             ICreateStravaWebhookSubscription createStravaWebhookSubscription,
             ISaveStravaWebhookSubscriptionId saveStravaWebhookSubscriptionId,
             IConfiguration configuration)
@@ -18,9 +18,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
             _createStravaWebhookSubscription = createStravaWebhookSubscription;
             _saveStravaWebhookSubscriptionId = saveStravaWebhookSubscriptionId;
             _configuration = configuration;
-        }
-
-        public ICreateStravaWebhookSubscription CreateStravaWebhookSubscriptionService { get; }
+        }        
 
         public async Task<bool> ExecuteAsync()
         {
@@ -32,17 +30,17 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
             );
             var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
 
-            if (stravaResponse.Success)
+            if (stravaResponse.Id != 0)
             {
                 // Save the subscription ID to the database
                 await _saveStravaWebhookSubscriptionId.ExecuteAsync(new SaveStravaWebhookSubscriptionIdContract
                 {
-                    StravaWebhookSubscriptionId = stravaResponse.SubscriptionId,
-                }
-                    
-                ));
+                    StravaWebhookSubscriptionId = stravaResponse.Id
+                });
+
                 return true;
             }
+            return false;
         }
     }
 }
