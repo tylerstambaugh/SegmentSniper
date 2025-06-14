@@ -33,6 +33,8 @@ namespace SegmentSniper.Api.Controllers
         [FromQuery(Name = "hub.mode")] string mode,
         [FromQuery(Name = "hub.verify_token")] string verifyToken)
         {
+
+            //strava willl ping this when a subsciption creation request is made.
             if(verifyToken != "segment-sniper")
             {
                 return BadRequest("Invalid verify token.");
