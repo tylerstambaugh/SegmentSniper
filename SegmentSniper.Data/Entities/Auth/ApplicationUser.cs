@@ -9,6 +9,6 @@ namespace SegmentSniper.Data.Entities.Auth
         public DateTime RefreshTokenExpiration { get; set; }
         public DateTime LastLogin { get; set; }
         public int? EmailChangeVerificationCode { get; set; }
-        public long? StravaAthleteId { get; set; } // Nullable to allow for users without a Strava account
+        public long? StravaAthleteId { get; set; } 
     }
 }

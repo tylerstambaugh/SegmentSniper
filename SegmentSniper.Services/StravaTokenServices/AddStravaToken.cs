@@ -14,18 +14,31 @@ namespace SegmentSniper.Services.StravaTokenServices
         public AddStravaTokenContract.Result Execute(AddStravaTokenContract contract)
         {
             ValidateContract(contract);
-
-            var tokenToAdd = new Data.Entities.StravaToken.StravaApiToken
+            try
             {
-                UserId = contract.UserId,
-                ExpiresAt = contract.Token.ExpiresAt,
-                ExpiresIn = contract.Token.ExpiresIn,
-                RefreshToken = contract.Token.RefreshToken,
-            };
+                var user = _context.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
 
-            _context.StravaTokens.Add(tokenToAdd);
-            bool wasSuccess = _context.SaveChanges() == 1;
-            return new AddStravaTokenContract.Result(wasSuccess);
+                if (user != null && contract.Token.StravaAthlete?.Id != 0)
+                {
+                    user.StravaAthleteId = contract.Token.StravaAthlete?.Id;
+
+                    var tokenToAdd = new Data.Entities.StravaToken.StravaApiToken
+                    {
+                        UserId = contract.UserId,
+                        ExpiresAt = contract.Token.ExpiresAt,
+                        ExpiresIn = contract.Token.ExpiresIn,
+                        RefreshToken = contract.Token.RefreshToken,
+                    };
+
+                    _context.Users.Update(user);
+                    _context.StravaTokens.Add(tokenToAdd);
+                }
+                return new AddStravaTokenContract.Result(true);
+            }
+            catch (Exception ex)
+            {
+                return new AddStravaTokenContract.Result(false);
+            }
         }
 
         private void ValidateContract(AddStravaTokenContract contract)
