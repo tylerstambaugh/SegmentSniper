@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SegmentSniper.Models.Models.Strava.Athlete;
 using System.Drawing;
 
 namespace SegmentSniper.Models.Models.Strava.Token
@@ -12,6 +13,7 @@ namespace SegmentSniper.Models.Models.Strava.Token
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
 
+        public StravaAthleteModel? StravaAthlete { get; set; }
         public StravaApiTokenModel()
         {
 

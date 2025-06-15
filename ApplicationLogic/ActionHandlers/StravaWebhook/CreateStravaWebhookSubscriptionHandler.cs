@@ -28,6 +28,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
                 clientId: _configuration["StravaApiSettings-ClientId"],
                 clientSecret: _configuration["StravaApiSettings-ClientSecret"]
             );
+
+            //strava should response to this with the subscription ID
             var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
 
             if (stravaResponse.Id != 0)
