@@ -1,6 +1,5 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.Configuration;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using StravaApiClient.Configuration;
 using System.Text.Json.Serialization;
