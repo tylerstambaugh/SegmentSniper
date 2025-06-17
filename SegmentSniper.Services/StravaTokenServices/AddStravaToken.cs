@@ -32,6 +32,7 @@ namespace SegmentSniper.Services.StravaTokenServices
 
                     _context.Users.Update(user);
                     _context.StravaTokens.Add(tokenToAdd);
+                    _context.SaveChangesAsync();
                 }
                 return new AddStravaTokenContract.Result(true);
             }
