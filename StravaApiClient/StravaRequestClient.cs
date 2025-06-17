@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using SegmentSniper.Models.Models.Strava.Token;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
+using StravaApiClient.Models.Token;
 using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StravaApiClient
 {
@@ -16,8 +14,8 @@ namespace StravaApiClient
         private readonly IStravaRequestClientConfiguration _config;
         private readonly IMemoryCache _cache;
         private readonly IUpdateStravaTokenForUser _updateStravaToken;
-        private  string _accessToken { get; set; }
-        private  DateTime _tokenExpiration { get; set; }
+        private string _accessToken { get; set; }
+        private DateTime _tokenExpiration { get; set; }
         private int _tokenExpirationBufferSeconds = 120;
 
         private HttpMessageHandler _handler { get; set; }
@@ -121,7 +119,7 @@ namespace StravaApiClient
             return result;
         }
 
-        public async Task<TResponse> DeleteAsync<TResponse>(string url) where TResponse: class
+        public async Task<TResponse> DeleteAsync<TResponse>(string url) where TResponse : class
         {
             _accessToken = await GetAccessToken();
 
@@ -207,12 +205,11 @@ namespace StravaApiClient
                 {
                     _updateStravaToken.Execute(new UpdateStravaTokenContract
                     {
-                        StravaToken = new SegmentSniper.Models.Models.Strava.Token.StravaApiTokenModel
+                        StravaToken = new StravaTokenModel
                         {
                             RefreshToken = result.RefreshToken,
                             ExpiresAt = Int32.Parse(result.ExpiresAt),
                             ExpiresIn = result.ExpiresIn
-
                         }
                     });
                 }
@@ -252,7 +249,7 @@ namespace StravaApiClient
 
         private class StravaApiError
         {
-            [JsonProperty ("message")]
+            [JsonProperty("message")]
             public string Message { get; set; }
             public List<StravaApiErrorDetail> Errors { get; set; }
         }

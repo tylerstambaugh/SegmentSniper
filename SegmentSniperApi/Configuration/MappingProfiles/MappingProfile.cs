@@ -5,14 +5,17 @@ using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.MachineLearning;
 using SegmentSniper.Models.Models.Garage;
 using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Models.Strava.Athlete;
 using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.Models.Strava.Token;
 using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
 using StravaApiClient.Models.Activity;
+using StravaApiClient.Models.Athlete;
 using StravaApiClient.Models.Misc;
 using StravaApiClient.Models.Segment;
+using StravaApiClient.Models.Token;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
@@ -24,10 +27,22 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
 
-            CreateMap<StravaApiTokenModel, StravaApiToken>()
+            CreateMap<StravaTokenApiModel, StravaTokenModel>()
                 .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken))
                 .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
                 .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.ExpiresIn))
+                .ForMember(dest => dest.StravaAthlete, opt => opt.MapFrom(src => src.StravaApiAthlete))
+                .ReverseMap();
+
+            CreateMap<StravaAthleteApiModel, StravaAthleteModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Firstname, opt => opt.MapFrom(src => src.Firstname))
+                .ForMember(dest => dest.Lastname, opt => opt.MapFrom(src => src.Lastname))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.ProfileMedium, opt => opt.MapFrom(src => src.ProfileMedium))
+                .ForMember(dest => dest.Profile, opt => opt.MapFrom(src => src.Profile))
+                .ForMember(dest => dest.ResourceState, opt => opt.MapFrom(src => src.ResourceState))
                 .ReverseMap();
 
             CreateMap<DetailedActivityApiModel, DetailedActivity>()

@@ -10,7 +10,7 @@ namespace SegmentSniper.Services.StravaTokenServices
     public class UpdateStravaTokenContract
     {
 
-        public StravaApiTokenModel StravaToken { get; set; }
+        public StravaTokenModel StravaToken { get; set; }
         public class Result
         {
             public Result(bool success)

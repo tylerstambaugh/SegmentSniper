@@ -1,9 +1,4 @@
 ﻿using SegmentSniper.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {
@@ -23,7 +18,7 @@ namespace SegmentSniper.Services.StravaTokenServices
 
             tokenToUpdate.RefreshToken = contract.StravaToken.RefreshToken;
             tokenToUpdate.ExpiresIn = contract.StravaToken.ExpiresIn;
-            tokenToUpdate.ExpiresAt = contract.StravaToken.ExpiresAt;            
+            tokenToUpdate.ExpiresAt = contract.StravaToken.ExpiresAt;
 
             _context.StravaTokens.Update(tokenToUpdate);
             bool wasSuccess = _context.SaveChanges() == 1;

@@ -1,5 +1,4 @@
-﻿using SegmentSniper.Data.Entities.StravaToken;
-using SegmentSniper.Models.Models.Strava.Token;
+﻿using SegmentSniper.Models.Models.Strava.Token;
 
 namespace SegmentSniper.Services.StravaToken
 {
@@ -19,7 +18,7 @@ namespace SegmentSniper.Services.StravaToken
 
         public class Result
         {
-            public Models.Models.Strava.Token.StravaApiTokenModel StravaToken { get; set; }
+            public StravaTokenModel StravaToken { get; set; }
         }
     }
 }
