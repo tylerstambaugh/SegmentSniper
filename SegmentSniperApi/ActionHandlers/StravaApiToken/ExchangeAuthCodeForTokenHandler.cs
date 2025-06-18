@@ -27,7 +27,7 @@ namespace SegmentSniper.Api.ActionHandlers.StravaApiToken
 
             if (tokenData != null)
             {
-                tokenWasAdded = _addStravaToken.Execute(new AddStravaTokenContract(request.UserId, tokenData.StravaToken)).Success;
+                tokenWasAdded = _addStravaToken.ExecuteAsync(new AddStravaTokenContract(request.UserId, tokenData.StravaToken)).Success;
             }
 
             return new ExchangeAuthCodeForTokenRequest.Response { TokenWasAdded = tokenWasAdded };

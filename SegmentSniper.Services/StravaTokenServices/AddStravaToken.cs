@@ -1,22 +1,26 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {
     public class AddStravaToken : IAddStravaToken
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AddStravaToken(ISegmentSniperDbContext context)
+        public AddStravaToken(ISegmentSniperDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public AddStravaTokenContract.Result Execute(AddStravaTokenContract contract)
+        public async Task<AddStravaTokenContract.Result> ExecuteAsync(AddStravaTokenContract contract)
         {
             ValidateContract(contract);
             try
             {
-                var user = _context.Users.Where(u => u.Id == contract.UserId).FirstOrDefault();
+                var user = await _userManager.FindByIdAsync(contract.UserId);
 
                 if (user != null && contract.Token.StravaAthlete?.Id != 0)
                 {
@@ -30,7 +34,7 @@ namespace SegmentSniper.Services.StravaTokenServices
                         RefreshToken = contract.Token.RefreshToken,
                     };
 
-                    _context.Users.Update(user);
+                   _userManager.UpdateAsync(user).Wait();
                     _context.StravaTokens.Add(tokenToAdd);
                     _context.SaveChangesAsync();
                 }
