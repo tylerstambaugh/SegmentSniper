@@ -22,11 +22,24 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
         public async Task<bool> ExecuteAsync()
         {
+
+            var clientId = _configuration["StravaApiSettings-ClientId"];
+            if (string.IsNullOrWhiteSpace(clientId))
+            {
+                throw new ArgumentException("Strava Client ID is not configured.");
+            }
+
+            var clientSecret = _configuration["StravaApiSettings-ClientSecret"];
+            if (string.IsNullOrWhiteSpace(clientSecret))
+            {
+                throw new ArgumentException("Strava Client Secret is not configured.");
+            }
+
             var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
                 verifyToken: "segment-sniper",
                 callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/",
-                clientId: _configuration["StravaApiSettings-ClientId"],
-                clientSecret: _configuration["StravaApiSettings-ClientSecret"]
+                clientId: clientId,
+                clientSecret: clientSecret
             );
 
             //strava should response to this with the subscription ID
