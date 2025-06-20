@@ -3,7 +3,7 @@ import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useGetCreateSubscription } from "../../../../hooks/Api/Admin/StravaWebhook/usePostCreateSubscription";
 
 
-
+//dataQuest isonly a little free.
 const ManageStravaWebhookWidget = () => {
 
     const { refetch: createSubscription,
