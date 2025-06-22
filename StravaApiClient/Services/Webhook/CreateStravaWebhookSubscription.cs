@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using StravaApiClient.Models.Webhook;
+using System.Text.Json.Serialization;
 
 namespace StravaApiClient.Services.Webhook
 {
@@ -22,7 +23,7 @@ namespace StravaApiClient.Services.Webhook
             };
 
             //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
-           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, CreateSubscriptionResponse>("push_subscriptions", parameters);
+           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>("push_subscriptions", parameters);
 
             return new CreateStravaWebhookSubscriptionContract.Result { Id  = apiResponse.Id };
         }
@@ -36,43 +37,4 @@ namespace StravaApiClient.Services.Webhook
             if (string.IsNullOrEmpty(contract.ClientSecret)) throw new ArgumentException("Client secret must be provided", nameof(contract.ClientSecret));
         }
     }
-    
-        public class CreateSubscriptionResponse
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-    }
 }
-
-
-
-
-
-//using StravaApiClient.Models.Misc;
-
-//namespace StravaApiClient.Services.Gear
-//{
-//    public class GetGearById : IGetGearById
-//    {
-//        private readonly IStravaRequestClient _stravaRequestClient;
-
-//        public GetGearById(IStravaRequestClient stravaRequestClient)
-//        {
-//            _stravaRequestClient = stravaRequestClient;
-//        }
-
-//        public async Task<GetGearByIdContract.Result> ExecuteAsync(GetGearByIdContract contract)
-//        {
-//            ValidateContract(contract);
-
-//            var apiResponse = await _stravaRequestClient.GetAsync<DetailedGearApiModel>($"gear/{contract.GearId}");
-//            return new GetGearByIdContract.Result { DetailedGearApiModel = apiResponse };
-//        }
-
-//        private void ValidateContract(GetGearByIdContract contract)
-//        {
-//            if (contract == null) throw new ArgumentNullException(nameof(contract));
-//            if (string.IsNullOrEmpty(contract.GearId)) throw new ArgumentException("Gear Id must be provided", nameof(contract.GearId));
-//        }
-//    }
-//}

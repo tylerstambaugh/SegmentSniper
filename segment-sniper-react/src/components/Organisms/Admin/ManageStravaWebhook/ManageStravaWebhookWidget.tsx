@@ -1,6 +1,6 @@
 import "react";
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
-import { useGetCreateSubscription } from "../../../../hooks/Api/Admin/StravaWebhook/useGrtCreateSubscription";
+import { useGetCreateSubscription } from "../../../../hooks/Api/Admin/StravaWebhook/useGetCreateSubscription";
 
 
 //dataQuest isonly a little free.
