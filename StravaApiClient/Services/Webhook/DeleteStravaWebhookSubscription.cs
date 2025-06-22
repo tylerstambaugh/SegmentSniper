@@ -14,8 +14,6 @@ namespace StravaApiClient.Services.Webhook
         {
             ValidateContract(contract);
 
-            //needsd to call  https://www.strava.com/api/v3/push_subscriptions/id 
-
             var url = $"https://www.strava.com/api/v3/push_subscriptions/{contract.SubscriptionId}";
 
 

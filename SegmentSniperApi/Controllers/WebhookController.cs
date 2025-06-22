@@ -103,7 +103,7 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpDelete]
         [Route("deleteSubscription")]
         public async Task<IActionResult> DeleteSubscription()
         {
