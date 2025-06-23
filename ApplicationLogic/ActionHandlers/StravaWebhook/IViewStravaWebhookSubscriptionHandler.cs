@@ -4,7 +4,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
     public interface IViewStravaWebhookSubscriptionHandler
     {
-        Task<ViewStravaWebhookSubscriptionRequest.Response> HandleAsync(ViewStravaWebhookSubscriptionRequest request);
+        Task<ViewStravaWebhookSubscriptionRequest.Response> HandleAsync();
     }
 
     public class ViewStravaWebhookSubscriptionRequest

@@ -9,6 +9,12 @@ namespace StravaApiClient.Services.Webhook
 
     public class ViewStravaWebhookSubscriptionContract
     {
+        public ViewStravaWebhookSubscriptionContract(string clientId, string clientSecret)
+        {
+            ClientId = clientId;
+            ClientSecret = clientSecret;
+        }
+
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public class Result
