@@ -9,10 +9,10 @@
     {
         public class Result
         {
-            public string SubscriptionId { get; set; }
-            public Result(string subscriptionId)
+            public int SubscriptionId { get; set; }
+            public Result(int subscriptionId)
             {
-                SubscriptionId = subscriptionId ?? throw new ArgumentNullException(nameof(subscriptionId));
+                SubscriptionId = subscriptionId;
             }
         }
     }

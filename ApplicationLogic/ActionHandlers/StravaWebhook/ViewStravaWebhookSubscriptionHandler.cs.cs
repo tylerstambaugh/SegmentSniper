@@ -7,26 +7,17 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
     public class ViewStravaWebhookSubscriptionHandler : IViewStravaWebhookSubscriptionHandler
     {
-        private readonly IViewStravaWebhookSubscription _viewStravaWebhookSubscription;
-        private readonly IGetStravaWebhookSubscriptionId _getStravaWebhookSubscriptionId;
+        private readonly IViewStravaWebhookSubscription _viewStravaWebhookSubscription;        
         private readonly IConfiguration _configuration;
 
-        public ViewStravaWebhookSubscriptionHandler(IViewStravaWebhookSubscription viewStravaWebhookSubscription, IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId, IConfiguration configuration)
+        public ViewStravaWebhookSubscriptionHandler(IViewStravaWebhookSubscription viewStravaWebhookSubscription, IConfiguration configuration)
         {
-            _viewStravaWebhookSubscription = viewStravaWebhookSubscription;
-            _getStravaWebhookSubscriptionId = getStravaWebhookSubscriptionId;
+            _viewStravaWebhookSubscription = viewStravaWebhookSubscription;            
             _configuration = configuration;
         }
 
         public async Task<ViewStravaWebhookSubscriptionRequest.Response> HandleAsync()
-        {
-            var subscriptionId = await _getStravaWebhookSubscriptionId.ExecuteAsync(new GetStravaWebhookSubscriptionIdContract());
-
-            if (string.IsNullOrWhiteSpace(subscriptionId?.SubscriptionId))
-            {
-                throw new InvalidOperationException("No Strava webhook subscription ID found.");
-            }
-
+        {        
             var clientId = _configuration["StravaApiSettings-ClientId"];
             if (string.IsNullOrWhiteSpace(clientId))
             {

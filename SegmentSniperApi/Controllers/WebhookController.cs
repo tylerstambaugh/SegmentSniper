@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using StravaApiClient.Configuration;
+using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
@@ -16,14 +17,20 @@ namespace SegmentSniper.Api.Controllers
     public class WebhookController : ControllerBase
     {
         private readonly ICreateStravaWebhookSubscriptionHandler _createStravaWebhookSubscriptionHandler;
-        private readonly IConfiguration _configuration;
+        private readonly IViewStravaWebhookSubscriptionHandler _viewStravaWebhookSubscriptionHandler;
+        private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;        
 
         private readonly IStravaRequestClientConfiguration _stravaApiSettings;
 
-        public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler, IConfiguration configuration)
+        public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
+            IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
+            IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler
+            
+            )
         {
             _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
-            _configuration = configuration;
+            _viewStravaWebhookSubscriptionHandler = viewStravaWebhookSubscriptionHandler;
+            _deleteStravaWebhookSubscriptionHandler = deleteStravaWebhookSubscriptionHandler;
         }
 
         [HttpGet]
@@ -99,7 +106,15 @@ namespace SegmentSniper.Api.Controllers
         [Route("viewSubscription")]
         public async Task<IActionResult> ViewSubscription()
         {
-            throw new NotImplementedException();
+            var response = await _viewStravaWebhookSubscriptionHandler.HandleAsync();
+            if (response == null)
+            {
+                return NotFound("No subscription found.");
+            }
+            return Ok(new
+            {
+                subscriptionId = response.ViewSubscriptionResponseModel.Id,
+            });
         }
 
         [Authorize]
@@ -107,7 +122,15 @@ namespace SegmentSniper.Api.Controllers
         [Route("deleteSubscription")]
         public async Task<IActionResult> DeleteSubscription()
         {
-            throw new NotImplementedException();
+            var response = await _deleteStravaWebhookSubscriptionHandler.HandleAsync();
+            if (!response.Success)
+            {
+                return StatusCode(500, "Failed to delete subscription.");
+            }
+            return Ok(new
+            {
+                message = "Subscription deleted successfully."
+            });
         }
 
 
