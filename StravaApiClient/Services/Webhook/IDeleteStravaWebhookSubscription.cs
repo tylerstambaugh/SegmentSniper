@@ -2,12 +2,12 @@
 {
     public interface IDeleteStravaWebhookSubscription
     {
-        Task<DeleteStravaWebhookSubscriptionContract.Result> ExecuteAsync(DeleteStravaWebhookSubscriptionContract contract);
+        Task<DeleteStravaWebhookSubscriptionApiRequest.Response> ExecuteAsync(DeleteStravaWebhookSubscriptionApiRequest contract);
     }
 
-    public class DeleteStravaWebhookSubscriptionContract
+    public class DeleteStravaWebhookSubscriptionApiRequest
     {
-        public DeleteStravaWebhookSubscriptionContract(string clientId, string clientSecret, string subscriptionId)
+        public DeleteStravaWebhookSubscriptionApiRequest(string clientId, string clientSecret, int subscriptionId)
         {
             ClientId = clientId;
             ClientSecret = clientSecret;
@@ -16,13 +16,13 @@
 
         public string ClientId { get; init; }
         public string ClientSecret { get; init; }
-        public string SubscriptionId { get; init; }
+        public int SubscriptionId { get; init; }
 
         
-        public class Result
+        public class Response
         {            
 
-            public Result(bool success)
+            public Response(bool success)
             {
                 Success = success;
             }

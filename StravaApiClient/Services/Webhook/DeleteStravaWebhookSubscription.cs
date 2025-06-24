@@ -10,7 +10,7 @@ namespace StravaApiClient.Services.Webhook
             _stravaRequestClient = stravaRequestClient;
         }
 
-        public async Task<DeleteStravaWebhookSubscriptionContract.Result> ExecuteAsync(DeleteStravaWebhookSubscriptionContract contract)
+        public async Task<DeleteStravaWebhookSubscriptionApiRequest.Response> ExecuteAsync(DeleteStravaWebhookSubscriptionApiRequest contract)
         {
             ValidateContract(contract);
 
@@ -22,12 +22,12 @@ namespace StravaApiClient.Services.Webhook
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
             if (apiResponse != null) 
             {
-                return new DeleteStravaWebhookSubscriptionContract.Result(apiResponse.StatusCode == System.Net.HttpStatusCode.OK);
+                return new DeleteStravaWebhookSubscriptionApiRequest.Response(apiResponse.StatusCode == System.Net.HttpStatusCode.OK);
             }
-            return new DeleteStravaWebhookSubscriptionContract.Result(false);
+            return new DeleteStravaWebhookSubscriptionApiRequest.Response(false);
         }
 
-        private void ValidateContract(DeleteStravaWebhookSubscriptionContract contract)
+        private void ValidateContract(DeleteStravaWebhookSubscriptionApiRequest contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
             if (string.IsNullOrEmpty(contract.ClientId)) throw new ArgumentException("Client ID must be provided", nameof(contract.ClientId));

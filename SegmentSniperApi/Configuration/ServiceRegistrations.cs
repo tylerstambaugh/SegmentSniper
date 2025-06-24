@@ -8,6 +8,7 @@ using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Admin;
@@ -59,6 +60,11 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedSegmentBySegmentIdActionHandler, GetDetailedSegmentBySegmentIdActionHandler>();
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
             services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
+
+            //strava webhook action handlers
+            services.AddScoped<ICreateStravaWebhookSubscriptionHandler, CreateStravaWebhookSubscriptionHandler>();
+            services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
+            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
