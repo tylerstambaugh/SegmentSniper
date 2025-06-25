@@ -4,7 +4,7 @@ import { apiGet } from '../../BaseApiService';
 
 export type ViewSubscriptionRequest = Record<string, never>;
 export type ViewSubscriptionResponse = {
-  success: boolean;
+  subscriptionId: number;
 };
 
 export default async function getCreateSubscription(

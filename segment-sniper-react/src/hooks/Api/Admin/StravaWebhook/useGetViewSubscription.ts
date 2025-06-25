@@ -8,7 +8,7 @@ import getViewSubscription, {
   ViewSubscriptionResponse,
 } from '../../../../services/Api/Admin/StravaWebhook/getViewSubscription';
 
-export const useGetCreateSubscription = () => {
+export const useGetViewSubscription = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
