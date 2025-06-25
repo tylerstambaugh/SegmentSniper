@@ -1,22 +1,17 @@
 import { ApiContract } from '../../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../../ApiCommon/UnsuccessfulHttpResponseError';
-import { apiDelete } from '../../BaseApiService';
+import { apiDeleteNoRequest } from '../../BaseApiService';
 
-export type DeleteSubscriptionRequest = {
-  subscriptionId: string;
-};
 export type DeleteSubscriptionResponse = {
   success: boolean;
 };
 
-export default async function deleteSubscription(
-  contract: ApiContract<DeleteSubscriptionRequest>
-) {
+export default async function deleteSubscription(contract: ApiContract) {
   try {
-    const respone = apiDelete<
-      DeleteSubscriptionRequest,
-      DeleteSubscriptionResponse
-    >(`${contract.baseUrl}/webhook/deleteSubscription`, contract);
+    const respone = apiDeleteNoRequest<DeleteSubscriptionResponse>(
+      `${contract.baseUrl}/webhook/deleteSubscription`,
+      contract
+    );
     return respone;
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {
