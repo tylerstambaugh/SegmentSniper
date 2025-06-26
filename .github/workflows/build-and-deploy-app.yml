@@ -1,6 +1,6 @@
 name: Build and Deploy Segment Sniper
 env:
-  AZURE_WEBAPP_NAME: as-segmentsniper-api-eastus-dev
+  AZURE_WEBAPI_NAME: as-segmentsniper-api-eastus-dev
   AZURE_REACT_WEBAPP_NAME: as-segmentsniper-frontend-eastus-dev
   AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '8'
@@ -47,7 +47,7 @@ jobs:
             ${{ runner.os }}-node-modules-
 
       - name: Build React app
-        working-directory: ././segment-sniper-react
+        working-directory: ./segment-sniper-react
         run: npm run build
 
       - name: Set up dependency caching for faster builds
@@ -58,29 +58,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+      - name: Restore .NET dependencies
+        run: dotnet restore            
+
       - name: Build .NET application
         run: dotnet build --configuration Release
 
       - name: Apply Entity Framework migrations
         run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
 
-      # - name: Verify migration success
+      # - name: Debug DB connection info
       #   run: |
-      #     if [ ! -f "__EFMigrationsHistory" ]; then
-      #       echo "EF Migrations failed."
-      #       exit 1
-      #     fi
-
-      # - name: Verify migration success
-      #   run: |
-      #     sqlcmd -S ${{ secrets.DB_SERVER }} -d ${{ secrets.DB_NAME }} -U ${{ secrets.DB_USER }} -P ${{ secrets.DB_PASSWORD }} -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
-      #   shell: bash
-
-      - name: Debug DB connection info
-        run: |
-          echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
-          echo "DB_NAME: ${{ secrets.DB_NAME }}"
-          echo "DB_USER: ${{ secrets.DB_USER }}"
+      #     echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
+      #     echo "DB_NAME: ${{ secrets.DB_NAME }}"
+      #     echo "DB_USER: ${{ secrets.DB_USER }}"
 
       - name: Verify migration success
         run: |
@@ -120,20 +111,21 @@ jobs:
         with:
           name: .net-app
 
-      # ✅ Deploy .NET API
+      #  Deploy .NET API
       - name: Deploy API to Azure Web App
         id: deploy-api
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_API_WEBAPP_NAME }}
+          app-name: ${{ env.AZURE_WEBAPI_NAME }}
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-          package: .net-app
+          package: ./publish
 
-      # ✅ Deploy React frontend
+
+      #  Deploy React frontend
       - name: Deploy React frontend to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.as-segmentsniper-frontend-eastus-dev }}
+          app-name: ${{ env.AZURE_REACT_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
           package: ./segment-sniper-react/dist
 
