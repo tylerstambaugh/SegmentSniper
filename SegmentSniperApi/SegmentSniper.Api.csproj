@@ -18,10 +18,7 @@
 	<PropertyGroup>
 		<PublishTrimmed>true</PublishTrimmed>
 	</PropertyGroup>
-	<PropertyGroup>
-		<InvariantGlobalization>true</InvariantGlobalization>
-	</PropertyGroup>
-
+	
 	<ItemGroup>
     <Compile Remove="Logging\**" />
     <Content Remove="Logging\**" />
