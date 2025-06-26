@@ -1,8 +1,11 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Tests.Services.StravaTokenServices.AddStravaToken
 {
@@ -15,6 +18,9 @@ namespace SegmentSniper.Tests.Services.StravaTokenServices.AddStravaToken
         [TestInitialize]
         public virtual void Arrange()
         {
+            var userManager = new UserManager<ApplicationUser>(
+                Mock.Of<IUserStore<ApplicationUser>>(),
+                null, null, null, null, null, null, null, null);
             var services = new ServiceCollection();
             services.AddDbContext<SegmentSniperDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "SegmentSniper"));
@@ -34,7 +40,7 @@ namespace SegmentSniper.Tests.Services.StravaTokenServices.AddStravaToken
             });
             Context = new SegmentSniperDbContext(dbOptions, operationalStoreOptions);
 
-            Service = new SegmentSniper.Services.StravaTokenServices.AddStravaToken(Context);
+            Service = new SegmentSniper.Services.StravaTokenServices.AddStravaToken(Context, userManager);
 
             InternalArrange();
         }
