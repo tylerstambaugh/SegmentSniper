@@ -50,6 +50,12 @@ jobs:
         working-directory: ./segment-sniper-react
         run: npm run build
 
+      - name: Upload React build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-app
+          path: ./segment-sniper-react/dist
+
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
         with:
@@ -89,13 +95,13 @@ jobs:
       #     cp -r ./segment-sniper-react/dist/* ./SegmentSniperApi/wwwroot/
 
       - name: Publish .NET app
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o ${{ github.workspace }}/publish
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ./publish
+          path: ${{ github.workspace }}/publish
 
   deploy:
     permissions:
@@ -106,26 +112,31 @@ jobs:
       name: 'Azure Dev'
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v4
+      with:
+        name: .net-app
+        path: ${{ github.workspace }}/publish
 
       #  Deploy .NET API
-      - name: Deploy API to Azure Web App
-        id: deploy-api
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPI_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-          package: ./publish
-
+    - name: Deploy API to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPI_NAME }}
+        publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+        package: ${{ github.workspace }}/publish
 
       #  Deploy React frontend
-      - name: Deploy React frontend to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_REACT_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
-          package: ./segment-sniper-react/dist
+    - name: Download React artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: react-app
+        path: ./react-build
+      
+    - name: Deploy React frontend to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_REACT_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
+        package: ./react-build
 
