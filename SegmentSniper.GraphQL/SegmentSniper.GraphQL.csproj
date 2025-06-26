@@ -14,7 +14,15 @@
     <PackageReference Include="GraphQL" Version="8.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<InvariantGlobalization>true</InvariantGlobalization>
+	</PropertyGroup>
+	
+	<ItemGroup>
     <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
     <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
