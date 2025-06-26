@@ -15,7 +15,14 @@
     <UserSecretsId>09bd8ae1-f273-4c6e-aa51-85553b95f188</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
+	<PropertyGroup>
+		<InvariantGlobalization>true</InvariantGlobalization>
+	</PropertyGroup>
+
+	<ItemGroup>
     <Compile Remove="Logging\**" />
     <Content Remove="Logging\**" />
     <EmbeddedResource Remove="Logging\**" />

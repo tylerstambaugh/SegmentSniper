@@ -6,7 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
+
+
+	<ItemGroup>
     <ProjectReference Include="..\SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj" />
     <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
     <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />

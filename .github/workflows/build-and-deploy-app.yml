@@ -95,8 +95,7 @@ jobs:
       #     cp -r ./segment-sniper-react/dist/* ./SegmentSniperApi/wwwroot/
 
       - name: Publish .NET app
-        run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o ${{ github.workspace }}/publish -p:DebugType=None
-
+        run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o ${{ github.workspace }}/publish  -p:PublishTrimmed=true -p:DebugType=None
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
@@ -132,7 +131,7 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPI_NAME }}
         publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-        package: ${{ github.workspace }}/publish
+        package: ${{ github.workspace }}/publish        
 
       #  Deploy React frontend
     - name: Download React artifact

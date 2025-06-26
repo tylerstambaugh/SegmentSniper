@@ -9,7 +9,15 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PublishTrimmed>true</PublishTrimmed>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<InvariantGlobalization>true</InvariantGlobalization>
+	</PropertyGroup>
+
+	<ItemGroup>
     <Compile Remove="Services\AuthServices\GetUserRoles\**" />
     <Compile Remove="Services\AuthServices\RefreshToken\**" />
     <Compile Remove="Services\AuthServices\TokenServices\**" />
