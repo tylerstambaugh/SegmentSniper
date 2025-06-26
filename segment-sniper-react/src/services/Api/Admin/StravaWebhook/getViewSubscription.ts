@@ -2,17 +2,17 @@ import { ApiContract } from '../../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../../ApiCommon/UnsuccessfulHttpResponseError';
 import { apiGet } from '../../BaseApiService';
 
-export type CreateSubscriptionRequest = Record<string, never>;
-export type CreateSubscriptionResponse = {
-  success: boolean;
+export type ViewSubscriptionRequest = Record<string, never>;
+export type ViewSubscriptionResponse = {
+  subscriptionId: number;
 };
 
 export default async function getCreateSubscription(
-  contract: ApiContract<CreateSubscriptionRequest>
+  contract: ApiContract<ViewSubscriptionRequest>
 ) {
   try {
-    const respone = apiGet<CreateSubscriptionResponse>(
-      `${contract.baseUrl}/webhook/initiate`,
+    const respone = apiGet<ViewSubscriptionResponse>(
+      `${contract.baseUrl}/webhook/viewSubscription`,
       contract
     );
     return respone;

@@ -357,6 +357,9 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("StravaAthleteId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -709,6 +712,25 @@ namespace SegmentSniper.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("StravaTokens");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.StravaWebhookSubscription.StravaWebhookSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StravaWebhookSubscriptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StravaWebhookSubscription");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.SegmentSniperDbContext+SegmentSniperLogEntity", b =>

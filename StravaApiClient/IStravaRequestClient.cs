@@ -9,5 +9,6 @@
         Task<TResponse> PostExchangeAuthCodeForToken<TResponse>(string url) where TResponse: class;
         Task PostRefreshToken();
         Task<TResponse> PutAsync<TRequest, TResponse>(string url, TRequest data) where TResponse : class;
+        Task<TResponse> DeleteAsync<TResponse>(string url) where TResponse : class;
     }
 }

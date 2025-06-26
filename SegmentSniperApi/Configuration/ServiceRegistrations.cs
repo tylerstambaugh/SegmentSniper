@@ -8,6 +8,7 @@ using SegmentSniper.Api.ActionHandlers.StravaApiToken;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Admin;
@@ -21,6 +22,7 @@ using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
+using SegmentSniper.Services.StravaWebhook;
 using StravaApiClient;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services;
@@ -58,6 +60,11 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedSegmentBySegmentIdActionHandler, GetDetailedSegmentBySegmentIdActionHandler>();
             services.AddScoped<IStarSegmentActionHandler, StarSegmentActionHandler>();
             services.AddScoped<IGetSnipeSegmentsByActivityIdActionHandler, GetSnipeSegmentsByActivityIdActionHandler>();
+
+            //strava webhook action handlers
+            services.AddScoped<ICreateStravaWebhookSubscriptionHandler, CreateStravaWebhookSubscriptionHandler>();
+            services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
+            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
@@ -118,6 +125,13 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IStravaRequestService, StravaRequestService>();
             services.AddScoped<IStravaRequestClientConfiguration, StravaRequestClientConfiguration>();
             services.AddScoped<IExchangeAuthCodeForToken, ExchangeAuthCodeForToken>();
+
+            //strava webhook services
+            services.AddScoped<ISaveStravaWebhookSubscriptionId, SaveStravaWebhookSubscriptionId>();
+            services.AddScoped<ICreateStravaWebhookSubscription, CreateStravaWebhookSubscription>();
+            services.AddScoped<IViewStravaWebhookSubscription, ViewStravaWebhookSubscription>();
+            services.AddScoped<IDeleteStravaWebhookSubscription, DeleteStravaWebhookSubscription>();
+            services.AddScoped<IGetStravaWebhookSubscriptionId, GetStravaWebhookSubscriptionId>();
 
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();

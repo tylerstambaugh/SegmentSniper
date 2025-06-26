@@ -33,11 +33,12 @@ namespace SegmentSniper.Api.Configuration
             var connectionString = "";
 
             // Setup configuration sources
-            builder.Configuration
-                .SetBasePath(builder.Environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
-                .AddEnvironmentVariables();
+            //This is being done in program.cs
+            //builder.Configuration
+            //    .SetBasePath(builder.Environment.ContentRootPath)
+            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+            //    .AddEnvironmentVariables();
 
             if (builder.Environment.IsDevelopment())
             {

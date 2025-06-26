@@ -1,31 +1,49 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {
     public class AddStravaToken : IAddStravaToken
     {
         private readonly ISegmentSniperDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AddStravaToken(ISegmentSniperDbContext context)
+        public AddStravaToken(ISegmentSniperDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public AddStravaTokenContract.Result Execute(AddStravaTokenContract contract)
+        public async Task<AddStravaTokenContract.Result> ExecuteAsync(AddStravaTokenContract contract)
         {
             ValidateContract(contract);
-
-            var tokenToAdd = new Data.Entities.StravaToken.StravaApiToken
+            try
             {
-                UserId = contract.UserId,
-                ExpiresAt = contract.Token.ExpiresAt,
-                ExpiresIn = contract.Token.ExpiresIn,
-                RefreshToken = contract.Token.RefreshToken,
-            };
+                var user = await _userManager.FindByIdAsync(contract.UserId);
 
-            _context.StravaTokens.Add(tokenToAdd);
-            bool wasSuccess = _context.SaveChanges() == 1;
-            return new AddStravaTokenContract.Result(wasSuccess);
+                if (user != null && contract.Token.StravaAthlete?.Id != 0)
+                {
+                    user.StravaAthleteId = contract.Token.StravaAthlete?.Id;
+
+                    var tokenToAdd = new Data.Entities.StravaToken.StravaApiToken
+                    {
+                        UserId = contract.UserId,
+                        ExpiresAt = contract.Token.ExpiresAt,
+                        ExpiresIn = contract.Token.ExpiresIn,
+                        RefreshToken = contract.Token.RefreshToken,
+                    };
+
+                   _userManager.UpdateAsync(user).Wait();
+                    _context.StravaTokens.Add(tokenToAdd);
+                    _context.SaveChangesAsync();
+                }
+                return new AddStravaTokenContract.Result(true);
+            }
+            catch (Exception ex)
+            {
+                return new AddStravaTokenContract.Result(false);
+            }
         }
 
         private void ValidateContract(AddStravaTokenContract contract)

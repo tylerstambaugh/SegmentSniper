@@ -21,7 +21,7 @@
         }
         public class Result
         {
-            public bool Success { get; init; }
+            public int Id { get; init; }
         }
     }
 

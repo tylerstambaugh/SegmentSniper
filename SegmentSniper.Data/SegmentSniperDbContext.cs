@@ -9,6 +9,7 @@ using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Data.Entities.StravaWebhookSubscription;
 
 namespace SegmentSniper.Data
 {
@@ -27,6 +28,7 @@ namespace SegmentSniper.Data
         public virtual DbSet<Bike> Bikes { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<BikeActivity> BikeActivities { get; set; }
+        public virtual DbSet<StravaWebhookSubscription> StravaWebhookSubscription { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -58,6 +60,8 @@ namespace SegmentSniper.Data
            .HasMany(b => b.Equipment) // A Bike has many Equipment
            .WithOne(e => e.Bike)      // Each Equipment belongs to one Bike
            .HasForeignKey(e => e.BikeId); // Equipment's foreign key is BikeId
+
+
         }
 
         // Define a dummy entity class for the log table

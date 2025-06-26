@@ -1,6 +1,6 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.Configuration;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
@@ -16,15 +16,21 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class WebhookController : ControllerBase
     {
-        private readonly ICreateStravaWebhookSubscription _createStravaWebhookSubscription;
-        private readonly IConfiguration _configuration;
+        private readonly ICreateStravaWebhookSubscriptionHandler _createStravaWebhookSubscriptionHandler;
+        private readonly IViewStravaWebhookSubscriptionHandler _viewStravaWebhookSubscriptionHandler;
+        private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;        
 
         private readonly IStravaRequestClientConfiguration _stravaApiSettings;
 
-        public WebhookController(ICreateStravaWebhookSubscription createStravaWebhookSubscription, IConfiguration configuration)
+        public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
+            IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
+            IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler
+            
+            )
         {
-            _createStravaWebhookSubscription = createStravaWebhookSubscription;
-            _configuration = configuration;
+            _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
+            _viewStravaWebhookSubscriptionHandler = viewStravaWebhookSubscriptionHandler;
+            _deleteStravaWebhookSubscriptionHandler = deleteStravaWebhookSubscriptionHandler;
         }
 
         [HttpGet]
@@ -33,6 +39,8 @@ namespace SegmentSniper.Api.Controllers
         [FromQuery(Name = "hub.mode")] string mode,
         [FromQuery(Name = "hub.verify_token")] string verifyToken)
         {
+
+            //strava willl ping this when a subsciption creation request is made.
             if(verifyToken != "segment-sniper")
             {
                 return BadRequest("Invalid verify token.");
@@ -44,23 +52,48 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> ReceiveUpdate()
         {
+
+            //    object_type
+            //string Always either "activity" or "athlete."
+            //object_id
+            //long integer    For activity events, the activity's ID. For athlete events, the athlete's ID.
+            //aspect_type
+            //string Always "create," "update," or "delete."
+            //updates
+            //hash    For activity update events, keys can contain "title," "type," and "private," which is always "true" (activity visibility set to Only You) or "false" (activity visibility set to Followers Only or Everyone). For app deauthorization events, there is always an "authorized" : "false" key-value pair.
+            //owner_id
+            //long integer    The athlete's ID.
+            //subscription_id
+            //integer The push subscription ID that is receiving this event.
+            //event_time
+            //long integer    The time that the event occurred.
+            //Example Request
+            //{
+            //        "aspect_type": "update",
+            //    "event_time": 1516126040,
+            //    "object_id": 1360128428,
+            //    "object_type": "activity",
+            //    "owner_id": 134815,
+            //    "subscription_id": 120475,
+            //    "updates": {
+            //            "title": "Messy"
+            //    }
+            //    }
             return Ok(); // Handle the webhook update here. You can access the request body to process the Strava event.
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("initiate")]
         public async Task<IActionResult> InitiateSubscription()
         {
 
-            var respone = await _createStravaWebhookSubscription.ExecuteAsync(new CreateStravaWebhookSubscriptionContract(
-                verifyToken: "segment-sniper",
-                callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/", 
-                clientId: _configuration["StravaApiSettings-ClientId"],
-                clientSecret: _configuration["StravaApiSettings-ClientSecret"]
-            ));
+            var response = await _createStravaWebhookSubscriptionHandler.ExecuteAsync();
 
-
+            if(!response)
+            {
+                return StatusCode(500, "Failed to initiate subscription.");
+            }
 
             return Ok(new
             {
@@ -68,38 +101,39 @@ namespace SegmentSniper.Api.Controllers
             });
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("viewSubscription")]
+        public async Task<IActionResult> ViewSubscription()
+        {
+            var response = await _viewStravaWebhookSubscriptionHandler.HandleAsync();
+            if (response == null)
+            {
+                return NotFound("No subscription found.");
+            }
+            return Ok(new
+            {
+                subscriptionId = response.ViewSubscriptionResponseModel.Id,
+            });
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("deleteSubscription")]
+        public async Task<IActionResult> DeleteSubscription()
+        {
+            var response = await _deleteStravaWebhookSubscriptionHandler.HandleAsync();
+            if (!response.Success)
+            {
+                return StatusCode(500, "Failed to delete subscription.");
+            }
+            return Ok(new
+            {
+                message = "Subscription deleted successfully."
+            });
+        }
+
 
     }
-
-
-
-
-
-    //    object_type
-    //string Always either "activity" or "athlete."
-    //object_id
-    //long integer    For activity events, the activity's ID. For athlete events, the athlete's ID.
-    //aspect_type
-    //string Always "create," "update," or "delete."
-    //updates
-    //hash    For activity update events, keys can contain "title," "type," and "private," which is always "true" (activity visibility set to Only You) or "false" (activity visibility set to Followers Only or Everyone). For app deauthorization events, there is always an "authorized" : "false" key-value pair.
-    //owner_id
-    //long integer    The athlete's ID.
-    //subscription_id
-    //integer The push subscription ID that is receiving this event.
-    //event_time
-    //long integer    The time that the event occurred.
-    //Example Request
-    //{
-    //        "aspect_type": "update",
-    //    "event_time": 1516126040,
-    //    "object_id": 1360128428,
-    //    "object_type": "activity",
-    //    "owner_id": 134815,
-    //    "subscription_id": 120475,
-    //    "updates": {
-    //            "title": "Messy"
-    //    }
-    //    }
 
 }
