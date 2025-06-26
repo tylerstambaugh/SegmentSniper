@@ -44,6 +44,27 @@ const ManageStravaWebhookWidget = () => {
                 }}
                 handleCloseModal={() => setShowDeleteConfirmation(false)}
             />
+            <Row>
+                <Col className="d-flex justify-content-center">
+                    <h1 className="fw-bold mb-2">Manage Strava Webhook</h1>
+                </Col>
+            </Row>
+            <Row className="d-flex justify-content-center">
+                <Col>
+                    <h3>Subscription ID:</h3>
+                </Col>
+                <Col>
+                    {viewSubscriptionIsLoading ? (
+                        <Spinner
+                            size="sm"
+                            variant="light"
+                            as="span"
+                            role="status"
+                            aria-hidden="true"
+                            animation="border"
+                        />) : (<p>{viewSubscriptionData?.subscriptionId ? viewSubscriptionData.subscriptionId : "None"}</p>)}
+                </Col>
+            </Row>
             <Col lg={4}>
                 <Card className="pb-3 mb-3">
                     <Card.Body className="mx-3 pb-2">
@@ -82,7 +103,7 @@ const ManageStravaWebhookWidget = () => {
                         </Row>
                     </Card.Body>
                 </Card>
-                <Card className="pb-3 mb-3">
+                {/* <Card className="pb-3 mb-3">
                     <Card.Body className="mx-3">
                         <Row className="d-flex justify-content-center">
                             <Col>
@@ -129,7 +150,7 @@ const ManageStravaWebhookWidget = () => {
 
                         </Row>
                     </Card.Body>
-                </Card>
+                </Card> */}
                 <Card className="pb-3 mb-3">
                     <Card.Body className="mx-3">
                         <Row className="d-flex justify-content-center">
