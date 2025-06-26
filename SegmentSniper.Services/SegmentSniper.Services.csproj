@@ -6,11 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<PublishTrimmed>true</PublishTrimmed>
-	</PropertyGroup>
-
-
 	<ItemGroup>
     <PackageReference Include="MailKit" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
