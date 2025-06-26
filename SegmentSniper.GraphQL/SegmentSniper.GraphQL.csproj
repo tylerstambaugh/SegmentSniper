@@ -17,10 +17,6 @@
 	<PropertyGroup>
 		<PublishTrimmed>true</PublishTrimmed>
 	</PropertyGroup>
-
-	<PropertyGroup>
-		<InvariantGlobalization>true</InvariantGlobalization>
-	</PropertyGroup>
 	
 	<ItemGroup>
     <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
