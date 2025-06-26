@@ -102,12 +102,14 @@ jobs:
         with:
           name: .net-app
           path: ${{ github.workspace }}/publish
-
-      - name: List publish directory contents
-        run: ls -la ${{ github.workspace }}/publish
       
-      - name: List React build directory contents
-        run: ls -la ./react-build
+      - name: List published files
+        run: Get-ChildItem -Recurse D:\a\SegmentSniper\SegmentSniper\publish
+        shell: pwsh
+      
+      - name: List published files
+        run: Get-ChildItem -Recurse ./react-build
+        shell: pwsh
 
   deploy:
     permissions:
