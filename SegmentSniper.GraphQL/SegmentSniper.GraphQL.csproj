@@ -13,10 +13,6 @@
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="8.2.1" />
   </ItemGroup>
-
-	<PropertyGroup>
-		<PublishTrimmed>true</PublishTrimmed>
-	</PropertyGroup>
 	
 	<ItemGroup>
     <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />

@@ -13,11 +13,8 @@
 	<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
 	<ApplicationInsightsResourceId>/subscriptions/83edbc45-837e-4ff5-9735-a2e2a57d2387/resourceGroups/rg-segmentsniper-eastus-dev/providers/microsoft.insights/components/appInsights-segmentsniper-eastus-dev</ApplicationInsightsResourceId> 
     <UserSecretsId>09bd8ae1-f273-4c6e-aa51-85553b95f188</UserSecretsId>
+	<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
-
-	<PropertyGroup>
-		<PublishTrimmed>true</PublishTrimmed>
-	</PropertyGroup>
 	
 	<ItemGroup>
     <Compile Remove="Logging\**" />
