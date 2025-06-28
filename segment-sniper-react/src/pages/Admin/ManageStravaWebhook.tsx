@@ -4,6 +4,8 @@ import ManageStravaWebhookWidget from "../../components/Organisms/Admin/ManageSt
 
 export default function ManageStravaWebhook() {
     return (
-        <ManageStravaWebhookWidget />
+        <>
+            <ManageStravaWebhookWidget />
+        </>
     )
 }  
