@@ -17,7 +17,7 @@ export const DeleteSubscriptionModal = ({
 
     return (
         <Modal show={showDeleteSubscriptionModal} >
-            <Modal.Header closeButton>
+            <Modal.Header closeButton onHide={() => handleCloseModal()}>
                 <Modal.Title>Delete Webhook Subscription?</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -29,42 +29,36 @@ export const DeleteSubscriptionModal = ({
                     </Row>
                 </Col>
             </Modal.Body>
-            <Modal.Footer>
-                <Row className="justify-content-end">
-                    <Col className="col-auto ml-auto">
-                        {deleteSubscriptionIsLoading ? (
-                            <>
-                                <Button
-                                    variant="secondary"
-                                    className={`me-1`}
-                                >
-                                    <Spinner
-                                        as="span"
-                                        variant="light"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                        animation="border"
-                                    />
-                                </Button>
-                            </>
-                        ) : (
-                            <Button variant="primary" onClick={() => handleDeleteSubscription()}>
-                                Submit
-                            </Button>
-                        )}
-                    </Col>
-                    <Col className="col-auto">
+            <Modal.Footer className="justify-content-center gap-5" >
+                {deleteSubscriptionIsLoading ? (
+                    <>
                         <Button
                             variant="secondary"
-                            onClick={() => {
-                                handleCloseModal();
-                            }}
+                            className={`me-1`}
                         >
-                            Close
+                            <Spinner
+                                as="span"
+                                variant="light"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                animation="border"
+                            />
                         </Button>
-                    </Col>
-                </Row>
+                    </>
+                ) : (
+                    <Button variant="third" onClick={() => handleDeleteSubscription()}>
+                        Delete
+                    </Button>
+                )}
+                <Button
+                    variant="secondary"
+                    onClick={() => {
+                        handleCloseModal();
+                    }}
+                >
+                    Close
+                </Button>
             </Modal.Footer>
         </Modal>
     )

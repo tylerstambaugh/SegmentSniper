@@ -140,7 +140,7 @@ const UpsertBikeModal = ({
                         <Row className="mb-4">
                             <Form.Group controlId="bikeMetersLogged">
                                 <Form.Label className="mb-0">Miles Logged</Form.Label>
-                                <Form.Control type="number" placeholder="Enter meters logged" />
+                                <Form.Control type="number" placeholder="Enter miles logged" />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.bikeMetersLogged as FormikErrors<string>}
                                 </Form.Control.Feedback>
