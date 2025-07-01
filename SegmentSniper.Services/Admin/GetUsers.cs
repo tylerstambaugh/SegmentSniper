@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data.Entities.Auth;
 
 namespace SegmentSniper.Services.Admin
@@ -14,7 +15,7 @@ namespace SegmentSniper.Services.Admin
 
         public async Task<GetUserContract.Result> ExecuteAsync()
         {
-            var users = _userManager.Users.ToList();
+            var users =  await _userManager.Users.ToListAsync();
 
             return new GetUserContract.Result
             {
