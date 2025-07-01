@@ -35,9 +35,15 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
                 throw new ArgumentException("Strava Client Secret is not configured.");
             }
 
+            var callbackUrl = _configuration["CallbackUrl"];
+            if (string.IsNullOrWhiteSpace(callbackUrl))
+            {
+                throw new ArgumentException("Callback URL is not configured");
+            }
+
             var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
                 verifyToken: "segment-sniper",
-                callbackUrl: "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/webhook/",
+                callbackUrl: callbackUrl,
                 clientId: clientId,
                 clientSecret: clientSecret
             );
