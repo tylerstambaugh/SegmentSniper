@@ -5,6 +5,7 @@ import { useGetViewSubscription } from "../../../../hooks/Api/Admin/StravaWebhoo
 import { useDeleteSubscription } from "../../../../hooks/Api/Admin/StravaWebhook/useDeleteSubscription";
 import { useState } from "react";
 import { DeleteSubscriptionModal } from "../../../Molecules/ManageStravaWebhook/DeleteSubscriptionModal";
+import { useGetSubscriptionId } from "../../../../hooks/Api/Admin/StravaWebhook/useGetSubscriptionID";
 
 
 const ManageStravaWebhookWidget = () => {
@@ -32,6 +33,12 @@ const ManageStravaWebhookWidget = () => {
         error: deleteSubscriptionError } = useDeleteSubscription();
 
 
+    const {
+        data: subscriptionIdData,
+        isLoading: subscriptionIdIsLoading,
+        isError: subscriptionIdIsError,
+        error: subscriptionIdError,
+    } = useGetSubscriptionId();
 
     return (
         <Container className="py-4"> {/* Add vertical padding to the container */}
@@ -57,7 +64,7 @@ const ManageStravaWebhookWidget = () => {
                             <h3>Subscription ID:</h3>
                         </Col>
                         <Col className="justify-content-left">
-                            {viewSubscriptionIsLoading ? (
+                            {subscriptionIdIsLoading ? (
                                 <Spinner
                                     size="sm"
                                     variant="light"
@@ -65,7 +72,7 @@ const ManageStravaWebhookWidget = () => {
                                     role="status"
                                     aria-hidden="true"
                                     animation="border"
-                                />) : (<p>{viewSubscriptionData?.subscriptionId ? viewSubscriptionData.subscriptionId : "None"}</p>)}
+                                />) : (<p>{subscriptionIdData?.subscriptionId ? subscriptionIdData.subscriptionId : "None"}</p>)}
                         </Col>
                     </Row>
                     <Col>

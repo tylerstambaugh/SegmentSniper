@@ -1,20 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
-import getCreateSubscription, {
-  CreateSubscriptionRequest,
-  CreateSubscriptionResponse,
-} from '../../../../services/Api/Admin/StravaWebhook/getCreateSubscription';
+
 import useApiConfigStore from '../../../../stores/useApiConfigStore';
 import useTokenDataStore from '../../../../stores/useTokenStore';
 import { ApiContract } from '../../../../services/Api/ApiCommon/ApiContract';
+import getSubscriptionId, {
+  GetSubscriptionIdRequest,
+  SubscriptionIdResponse,
+} from '../../../../services/Api/Admin/StravaWebhook/getSubscriptionId';
 
-export const useGetCreateSubscription = () => {
+export const useGetSubscriptionId = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const tokenData = useTokenDataStore((state) => state.tokenData);
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryFn: triggerQuery,
-    queryKey: ['createQebhookSubscription'],
-    enabled: false,
+    queryKey: ['getWebhookSubscriptionId'],
+    enabled: true,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -24,15 +25,13 @@ export const useGetCreateSubscription = () => {
   const abortController = new AbortController();
 
   async function triggerQuery() {
-    const contract: ApiContract<CreateSubscriptionRequest> = {
+    const contract: ApiContract<GetSubscriptionIdRequest> = {
       baseUrl: apiConfig!.baseRestApiUrl,
       token: tokenData?.accessToken ?? '',
       abortController,
     };
 
-    const response: CreateSubscriptionResponse = await getCreateSubscription(
-      contract
-    );
+    const response: SubscriptionIdResponse = await getSubscriptionId(contract);
 
     return response;
   }

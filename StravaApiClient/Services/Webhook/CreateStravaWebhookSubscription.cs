@@ -1,4 +1,6 @@
-﻿using StravaApiClient.Models.Webhook;
+﻿using Microsoft.Extensions.Configuration;
+using StravaApiClient.Configuration;
+using StravaApiClient.Models.Webhook;
 using System.Text.Json.Serialization;
 
 namespace StravaApiClient.Services.Webhook
@@ -6,10 +8,12 @@ namespace StravaApiClient.Services.Webhook
     public class CreateStravaWebhookSubscription : ICreateStravaWebhookSubscription
     {
         private readonly IStravaRequestClient _stravaRequestClient;
+        private readonly IStravaRequestClientConfiguration _configuration;
 
-        public CreateStravaWebhookSubscription(IStravaRequestClient stravaRequestClient)
+        public CreateStravaWebhookSubscription(IStravaRequestClient stravaRequestClient, IStravaRequestClientConfiguration configuration)
         {
             _stravaRequestClient = stravaRequestClient;
+            _configuration = configuration;
         }
         public async Task<CreateStravaWebhookSubscriptionContract.Result> ExecuteAsync(CreateStravaWebhookSubscriptionContract contract)
         {
@@ -22,8 +26,10 @@ namespace StravaApiClient.Services.Webhook
                 ClientSecret = contract.ClientSecret
             };
 
+            var baseUrl = _configuration.BaseUrl;
+
             //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
-           var apiResponse =  await _stravaRequestClient.PostAsync<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>("push_subscriptions", parameters);
+            var apiResponse =  await _stravaRequestClient.PostWebhookSubscription<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>($"{baseUrl}/push_subscriptions", parameters);
 
             return new CreateStravaWebhookSubscriptionContract.Result { Id  = apiResponse.Id };
         }

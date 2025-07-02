@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.StravaWebhook
             {
                 return new GetStravaWebhookSubscriptionIdContract.Result(subscription.StravaWebhookSubscriptionId);
             }
-            throw new InvalidOperationException("No Strava webhook subscription found for the specified user.");
+            throw new InvalidOperationException("No Strava webhook subscription found for the application.");
         }
     }
 

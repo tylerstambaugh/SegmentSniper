@@ -1,8 +1,8 @@
 ﻿using GraphQL;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
+using SegmentSniper.Services.StravaWebhook;
 using StravaApiClient.Configuration;
-using StravaApiClient.Services.Webhook;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
@@ -18,19 +18,20 @@ namespace SegmentSniper.Api.Controllers
     {
         private readonly ICreateStravaWebhookSubscriptionHandler _createStravaWebhookSubscriptionHandler;
         private readonly IViewStravaWebhookSubscriptionHandler _viewStravaWebhookSubscriptionHandler;
-        private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;        
-
-        private readonly IStravaRequestClientConfiguration _stravaApiSettings;
+        private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;
+        private readonly IGetStravaWebhookSubscriptionId _getStravaWebhookSubscriptionId;
 
         public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
             IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
-            IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler
-            
+            IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler,
+            IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId
+
             )
         {
             _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
             _viewStravaWebhookSubscriptionHandler = viewStravaWebhookSubscriptionHandler;
             _deleteStravaWebhookSubscriptionHandler = deleteStravaWebhookSubscriptionHandler;
+            _getStravaWebhookSubscriptionId = getStravaWebhookSubscriptionId;
         }
 
         [HttpGet]
@@ -41,7 +42,7 @@ namespace SegmentSniper.Api.Controllers
         {
 
             //strava willl ping this when a subsciption creation request is made.
-            if(verifyToken != "segment-sniper")
+            if (verifyToken != "segment-sniper")
             {
                 return BadRequest("Invalid verify token.");
             }
@@ -90,7 +91,7 @@ namespace SegmentSniper.Api.Controllers
 
             var response = await _createStravaWebhookSubscriptionHandler.ExecuteAsync();
 
-            if(!response)
+            if (!response)
             {
                 return StatusCode(500, "Failed to initiate subscription.");
             }
@@ -133,7 +134,21 @@ namespace SegmentSniper.Api.Controllers
             });
         }
 
-
+        [Authorize]
+        [HttpGet]
+        [Route("getExistingSubscriptionId")]
+        public async Task<IActionResult> GetExistingSubscriptionId()
+        {
+            try
+            {
+                var result = await _getStravaWebhookSubscriptionId.ExecuteAsync(new GetStravaWebhookSubscriptionIdContract());
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return Ok(null);
+            }
+               
+        }
     }
-
 }
