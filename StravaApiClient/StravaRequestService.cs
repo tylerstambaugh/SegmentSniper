@@ -63,7 +63,7 @@ namespace StravaApiClient
 
         public Task<CreateStravaWebhookSubscriptionContract.Result> CreateStravaWebhookSubscription(CreateStravaWebhookSubscriptionContract contract)
         {
-            var service = new CreateStravaWebhookSubscription(_client);
+            var service = new CreateStravaWebhookSubscription(_client, _config);
             return service.ExecuteAsync(contract);
         }
     }

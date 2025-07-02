@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using SegmentSniper.Models.Models.Strava.Token;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
-using StravaApiClient.Models.Token;
+using StravaApiClient.Services.Webhook;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -147,6 +147,39 @@ namespace StravaApiClient
                 var response = await httpClient.PostAsync(url, null);
 
                 await VerifyResponse(response);
+
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
+        public async Task<TResponse> PostWebhookSubscription<TRequest, TResponse>(string url, TRequest data) where TResponse : class
+        {
+            var formData = new List<KeyValuePair<string, string>>();
+
+            if (data is CreateStravaWebhookSubscriptionData subscriptionData)
+            {
+                formData.Add(new KeyValuePair<string, string>("client_id", subscriptionData.ClientId.ToString()));
+                formData.Add(new KeyValuePair<string, string>("client_secret", subscriptionData.ClientSecret));
+                formData.Add(new KeyValuePair<string, string>("callback_url", subscriptionData.CallbackUrl));
+                formData.Add(new KeyValuePair<string, string>("verify_token", subscriptionData.VerifyToken));
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported data type for webhook subscription.");
+            }
+
+            var formContent = new FormUrlEncodedContent(formData);
+
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await httpClient.PostAsync(url, formContent);
+
+                await VerifyResponse(response); 
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<TResponse>(stringResult);
