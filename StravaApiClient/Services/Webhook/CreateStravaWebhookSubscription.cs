@@ -29,7 +29,7 @@ namespace StravaApiClient.Services.Webhook
             var baseUrl = _configuration.BaseUrl;
 
             //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
-            var apiResponse =  await _stravaRequestClient.PostWebhookSubscription<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>($"{baseUrl}/push_subscriptions", parameters);
+            var apiResponse =  await _stravaRequestClient.PostWebhookSubscription<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>($"{baseUrl}push_subscriptions", parameters);
 
             return new CreateStravaWebhookSubscriptionContract.Result { Id  = apiResponse.Id };
         }
