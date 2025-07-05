@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using SegmentSniper.Models.Models.Strava.Webhook;
 using SegmentSniper.Services.StravaWebhook;
+using StravaApiClient.Models.Webhook;
 using StravaApiClient.Services.Webhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
@@ -9,11 +11,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
     {
         private readonly IViewStravaWebhookSubscription _viewStravaWebhookSubscription;        
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public ViewStravaWebhookSubscriptionHandler(IViewStravaWebhookSubscription viewStravaWebhookSubscription, IConfiguration configuration)
+        public ViewStravaWebhookSubscriptionHandler(IViewStravaWebhookSubscription viewStravaWebhookSubscription, IConfiguration configuration, IMapper mapper)
         {
             _viewStravaWebhookSubscription = viewStravaWebhookSubscription;            
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         public async Task<ViewStravaWebhookSubscriptionRequest.Response> HandleAsync()
@@ -39,15 +43,20 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
                     throw new InvalidOperationException("No Strava webhook subscription found.");
                 }
 
-                return new ViewStravaWebhookSubscriptionRequest.Response(new ViewSubscriptionResponseModel(response.ViewSubscriptionApiResponse.Id));                
 
+                var responseModel = _mapper.Map<ViewSubscriptionApiResponse, ViewSubscriptionResponseModel>(response.ViewSubscriptionApiResponse);
+
+               if( responseModel == null)
+                {
+                    throw new InvalidOperationException("Failed to map Strava webhook subscription response.");
+                }
+
+                return new ViewStravaWebhookSubscriptionRequest.Response(responseModel);                
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("An error occurred while viewing the Strava webhook subscription.", ex);
             }
         }
-
-
     }
 }

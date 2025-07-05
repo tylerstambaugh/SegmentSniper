@@ -9,6 +9,7 @@ using SegmentSniper.Models.Models.Strava.Athlete;
 using SegmentSniper.Models.Models.Strava.Misc;
 using SegmentSniper.Models.Models.Strava.Segment;
 using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Models.Strava.Webhook;
 using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
 using StravaApiClient.Models.Activity;
@@ -16,6 +17,7 @@ using StravaApiClient.Models.Athlete;
 using StravaApiClient.Models.Misc;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Models.Token;
+using StravaApiClient.Models.Webhook;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
@@ -39,6 +41,14 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
                .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.ExpiresIn))
                .ReverseMap();
+
+            CreateMap<ViewSubscriptionApiResponse, ViewSubscriptionResponseModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CallbackUrl, opt => opt.MapFrom(src => src.CallbackUrl))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+                .ForMember(dest => dest.ResourceState, opt => opt.MapFrom(src => src.ResourceState))
+                .ForMember(dest => dest.ApplicationId, opt => opt.MapFrom(src => src.ApplicationId));
 
 
             CreateMap<StravaAthleteApiModel, StravaAthleteModel>()

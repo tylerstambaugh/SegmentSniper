@@ -12,9 +12,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
         public class Response
         {
             public ViewSubscriptionResponseModel ViewSubscriptionResponseModel { get; set; }
-            public Response(ViewSubscriptionResponseModel viewSubscriptionApiResponseModel)
+            public Response(ViewSubscriptionResponseModel viewSubscriptionResponseModel)
             {
-                ViewSubscriptionResponseModel = viewSubscriptionApiResponseModel;
+                ViewSubscriptionResponseModel = viewSubscriptionResponseModel;
             }
         }
     }
