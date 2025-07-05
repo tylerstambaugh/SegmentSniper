@@ -3,10 +3,15 @@
     public class ViewSubscriptionResponseModel
     {
         public int Id { get; set; }
-        public ViewSubscriptionResponseModel(int id)
+
+        public string CallbackUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public int ResourceState { get; set; }
+        public int ApplicationId { get; set; }
+        public ViewSubscriptionResponseModel()
         {
-            Id = id;
-        }
+        }     
 
     }
 }
