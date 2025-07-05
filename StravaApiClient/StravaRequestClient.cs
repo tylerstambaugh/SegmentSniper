@@ -41,7 +41,7 @@ namespace StravaApiClient
         {
             _accessToken = await GetAccessToken();
 
-            TResponse result = null;
+            TResponse? result = null;
             using (var httpClient = new HttpClient(Handler))
             {
                 ConfigureHttpClient(httpClient);
@@ -51,7 +51,11 @@ namespace StravaApiClient
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+
+                if (result == null)
+                {
+                    throw new InvalidOperationException($"Failed to deserialize API response to {typeof(TResponse).Name}. Received: {stringResult}");
+                }
             }
 
             return result;
@@ -65,7 +69,7 @@ namespace StravaApiClient
 
         public async Task<TResponse> PostAsync<TResponse>(string url) where TResponse : class
         {
-            return await Post<TResponse>(url, null);
+            return await Post<TResponse>(url);
         }
 
         public async Task<HttpResponseMessage> PostAsync<TRequest>(string url, TRequest data)
@@ -75,11 +79,11 @@ namespace StravaApiClient
             return result;
         }
 
-        private async Task<TResponse> Post<TResponse>(string url, StringContent data) where TResponse : class
+        private async Task<TResponse> Post<TResponse>(string url, StringContent? data = null) where TResponse : class
         {
             _accessToken = await GetAccessToken();
 
-            TResponse result = null;
+            TResponse? result = null;
             using (var httpClient = new HttpClient(Handler))
             {
                 ConfigureHttpClient(httpClient);
@@ -89,7 +93,11 @@ namespace StravaApiClient
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+
+                if (result == null)
+                {
+                    throw new InvalidOperationException($"Failed to deserialize API response to {typeof(TResponse).Name}. Received: {stringResult}");
+                }
             }
             return result;
         }
@@ -187,6 +195,20 @@ namespace StravaApiClient
             return result;
         }
 
+        public async Task<TResponse> GetWebhookSubscription<TResponse>(string url) where TResponse : class
+        {
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await httpClient.GetAsync(url);
+                await VerifyResponse(response);
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
         private void ConfigureHttpClient(HttpClient httpClient)
         {
             httpClient.BaseAddress = new Uri(_config.BaseUrl);
@@ -246,7 +268,7 @@ namespace StravaApiClient
                         }
                     });
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
 
                 _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
             }

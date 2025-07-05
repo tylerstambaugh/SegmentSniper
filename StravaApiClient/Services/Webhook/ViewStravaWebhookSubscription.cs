@@ -22,7 +22,7 @@ namespace StravaApiClient.Services.Webhook
             var url = $"https://www.strava.com/api/v3/push_subscriptions/?client_id={contract.ClientId}&client_secret={contract.ClientSecret}";
 
 
-            var apiResponse = await _stravaRequestClient.GetAsync<ViewSubscriptionApiResponse>(url);
+            var apiResponse = await _stravaRequestClient.GetWebhookSubscription<ViewSubscriptionApiResponse>(url);
 
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
             if (apiResponse != null)            {

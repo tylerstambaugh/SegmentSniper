@@ -51,7 +51,7 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReceiveUpdate()
+        public IActionResult ReceiveUpdate()
         {
 
             //    object_type
@@ -144,7 +144,7 @@ namespace SegmentSniper.Api.Controllers
                 var result = await _getStravaWebhookSubscriptionId.ExecuteAsync(new GetStravaWebhookSubscriptionIdContract());
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return Ok(null);
             }
