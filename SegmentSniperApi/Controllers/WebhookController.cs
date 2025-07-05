@@ -51,7 +51,7 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> ReceiveUpdate()
+        public IActionResult ReceiveUpdate()
         {
 
             //    object_type
