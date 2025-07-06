@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.Api.ActionHandlers;
+﻿namespace SegmentSniper.Api.Controllers;
 public class ApiResponse<T>
 {
     public int StatusCode { get; set; }

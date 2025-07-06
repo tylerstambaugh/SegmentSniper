@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Api.Controllers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.Models.Strava.Activity;

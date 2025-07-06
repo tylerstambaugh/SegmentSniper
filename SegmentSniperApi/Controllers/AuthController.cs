@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
 using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
-using SegmentSniper.Api.ActionHandlers.StravaApiToken;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using Serilog;
 using System.Security.Claims;
-using System.Security.Policy;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SegmentSniper.Api.Controllers
 {
@@ -94,9 +92,9 @@ namespace SegmentSniper.Api.Controllers
                 try
                 {
                     var refreshedToken = await _refreshTokenActionHandler.HandleAsync(new RefreshTokenRequest(refreshToken));
-                    if(refreshedToken.RefreshedToken.AccessToken != null)
+                    if (refreshedToken.RefreshedToken.AccessToken != null)
                     {
-                    return Ok(refreshedToken);
+                        return Ok(refreshedToken);
 
                     }
                     else
@@ -163,12 +161,12 @@ namespace SegmentSniper.Api.Controllers
 
         [AllowAnonymous, HttpPost]
         [Route("send-reset-password-email")]
-        public async Task <IActionResult> SendResetPasswordEmail(SendResetPasswordEmailRequest request)
+        public async Task<IActionResult> SendResetPasswordEmail(SendResetPasswordEmailRequest request)
         {
             try
             {
                 var response = await _sendResetPasswordEmailActionHandler.HandleAsync(request);
-                if(response.Success)
+                if (response.Success)
                     return Ok(response);
                 return BadRequest("Unable to reset password");
             }
@@ -196,8 +194,8 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-       [Authorize, HttpGet]
-       [Route("check-for-strava-token")]
+        [Authorize, HttpGet]
+        [Route("check-for-strava-token")]
         public async Task<IActionResult> CheckForStravaToken()
         {
             try
@@ -225,7 +223,7 @@ namespace SegmentSniper.Api.Controllers
                 Log.Information("Logging out");
                 var result = await _revokeTokenActionHandler.HandleRevokeSingleUserToken(new RevokeUserTokenRequest(userId));
 
-                if(result.Success)
+                if (result.Success)
                     return Ok(result.Success);
                 return BadRequest("Unable to revoke token.");
 

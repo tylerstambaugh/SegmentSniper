@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.StravaApiToken;
-using static SegmentSniper.Api.ActionHandlers.StravaApiToken.IExchangeAuthCodeForTokenHandler;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 
 namespace SegmentSniper.Api.Controllers
 {
