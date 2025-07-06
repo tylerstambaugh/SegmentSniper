@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Services.AuthServices;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class SendEmailConfirmationActionHandler : ISendEmailConfirmationActionHandler
     {

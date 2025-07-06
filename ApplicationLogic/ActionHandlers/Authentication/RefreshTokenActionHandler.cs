@@ -1,10 +1,7 @@
-﻿
-
-using IdentityModel;
-using SegmentSniper.Services.AuthServices;
+﻿using SegmentSniper.Services.AuthServices;
 using static SegmentSniper.Services.AuthServices.IRefreshToken;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class RefreshTokenActionHandler : IRefreshTokenActionHandler
     {
@@ -18,7 +15,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
         public async Task<RefreshTokenRequest.Response> HandleAsync(RefreshTokenRequest request)
         {
             var refreshedToken = await _refreshToken.Execute(new RefreshTokenContract(request.RefreshTokenData));
-            if(refreshedToken != null)
+            if (refreshedToken != null)
             {
                 return new RefreshTokenRequest.Response(refreshedToken.RefreshedToken);
             }

@@ -1,7 +1,7 @@
 ﻿using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public interface IConfirmEmailActionHandler
     {

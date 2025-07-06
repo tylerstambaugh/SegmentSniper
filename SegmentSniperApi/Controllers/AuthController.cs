@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
-using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Authentication;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 using SegmentSniper.Models.Models.Auth;
 using SegmentSniper.Models.Models.Auth.User;

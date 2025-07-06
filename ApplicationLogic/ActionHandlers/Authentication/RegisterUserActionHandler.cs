@@ -3,7 +3,7 @@ using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class RegisterUserActionHandler : IRegisterUserActionHandler
     {

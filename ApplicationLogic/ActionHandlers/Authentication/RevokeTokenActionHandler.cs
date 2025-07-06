@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Services.AuthServices.Token;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class RevokeTokenActionHandler : IRevokeTokenActionHandler
     {
