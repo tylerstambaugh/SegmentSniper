@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Models.UIModels.Segment;
+﻿using SegmentSniper.Api.Controllers;
+using SegmentSniper.Models.UIModels.Segment;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 {
