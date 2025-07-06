@@ -1,11 +1,9 @@
-﻿using SegmentSniper.Models.Models.Auth;
-using SegmentSniper.Models.Models.Auth.User;
+﻿using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.AuthServices;
 using SegmentSniper.Services.StravaToken;
 using static SegmentSniper.Services.AuthServices.IGetAuthenticatedUser;
-using static SegmentSniper.Services.AuthServices.IRefreshToken;
 
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class ConfirmEmailActionHandler : IConfirmEmailActionHandler
     {
@@ -49,7 +47,7 @@ namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
 
                 return new ConfirmEmailRequest.Response
                 {
-                    Success = result.Success,                    
+                    Success = result.Success,
                     UserData = userDto
                 };
             }

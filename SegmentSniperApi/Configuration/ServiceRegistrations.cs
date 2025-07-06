@@ -1,13 +1,13 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.Api.ActionHandlers.AuthActionHandlers;
-using SegmentSniper.Api.ActionHandlers.LoginActionHandlers;
 using SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers;
 
 using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
-using SegmentSniper.Api.ActionHandlers.StravaApiToken;
+
 using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Authentication;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
+using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
@@ -140,7 +140,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
-            services.AddScoped<IGetGearById,  GetGearById>();
+            services.AddScoped<IGetGearById, GetGearById>();
             services.AddScoped<ICreateStravaWebhookSubscription, CreateStravaWebhookSubscription>();
 
             //ML Services
@@ -158,7 +158,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IAddBikeActivity, AddBikeActivity>();
             services.AddScoped<IGetAllBikeActivitiesByBikeId, GetAllBikeActivitiesByBikeId>();
             services.AddScoped<IGetAllBikeActivitiesByUserId, GetAllBikeActivitiesByUserId>();
-            services.AddScoped<IImportGarage,  ImportGarage>();
+            services.AddScoped<IImportGarage, ImportGarage>();
             services.AddScoped<IUpsertBikeEquipment, UpsertBikeEquipment>();
             services.AddScoped<IRetireBikeEquipment, RetireBikeEquipment>();
             services.AddScoped<IDeleteEquipment, DeleteEquipment>();

@@ -1,5 +1,5 @@
 ﻿
-namespace SegmentSniper.Api.ActionHandlers.AuthActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public interface IRevokeTokenActionHandler
     {

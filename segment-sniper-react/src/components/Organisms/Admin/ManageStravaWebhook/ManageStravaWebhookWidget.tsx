@@ -5,7 +5,8 @@ import { useGetViewSubscription } from "../../../../hooks/Api/Admin/StravaWebhoo
 import { useDeleteSubscription } from "../../../../hooks/Api/Admin/StravaWebhook/useDeleteSubscription";
 import { useState } from "react";
 import { DeleteSubscriptionModal } from "../../../Molecules/ManageStravaWebhook/DeleteSubscriptionModal";
-import { useGetSubscriptionId } from "../../../../hooks/Api/Admin/StravaWebhook/useGetSubscriptionID";
+import { useGetSubscriptionId } from "../../../../hooks/Api/Admin/StravaWebhook/useGetSubscriptionId";
+
 
 
 const ManageStravaWebhookWidget = () => {

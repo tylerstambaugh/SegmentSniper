@@ -9,8 +9,7 @@ using StravaApiClient.Services.Activity;
 using SegmentSniper.Services.Common;
 
 namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
-{
-    [Obsolete]
+{    
     public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
@@ -30,7 +29,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         {
             ValidateRequest(request);
             var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
-            if (token != null)
+            if (token?.RefreshToken != null)
             {
                 try
                 {

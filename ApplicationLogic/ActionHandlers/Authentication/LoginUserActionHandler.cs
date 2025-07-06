@@ -9,8 +9,9 @@ using SegmentSniper.Services.StravaToken;
 using System.IdentityModel.Tokens.Jwt;
 using Serilog;
 using Serilog.Context;
+using Microsoft.Extensions.Configuration;
 
-namespace SegmentSniper.Api.ActionHandlers.LoginActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 {
     public class LoginUserActionHandler : ILoginUserActionHandler
     {
