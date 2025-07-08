@@ -1,6 +1,5 @@
-﻿using SegmentSniper.Services.ManageProfile;
-
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+﻿
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public interface IRevokeStravaTokenAsyncActionHandler
     {

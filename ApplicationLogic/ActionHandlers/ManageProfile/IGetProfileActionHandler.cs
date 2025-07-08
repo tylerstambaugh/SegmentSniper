@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Models.UIModels.ManageProfile;
+﻿using SegmentSniper.Models.UIModels.ManageProfile;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public interface IGetProfileActionHandler
     {
@@ -16,7 +15,5 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
         {
             public UserProfileUiModel? ProfileData { get; set; }
         }
-    }
-
-   
+    }   
 }

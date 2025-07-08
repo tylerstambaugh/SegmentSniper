@@ -1,8 +1,6 @@
-﻿using SegmentSniper.Models.Models.ManageProfile;
-using SegmentSniper.Models.UIModels.ManageProfile;
-using System.Runtime.CompilerServices;
+﻿using SegmentSniper.Models.UIModels.ManageProfile;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public interface IUpdateFirstNameAsyncActionHandler
     {
@@ -13,7 +11,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
     {
         public UpdateFirstNameRequest()
         {
-            
+
         }
 
         public UpdateFirstNameRequest(string firstName)

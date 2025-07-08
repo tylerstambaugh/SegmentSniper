@@ -21,7 +21,12 @@ namespace SegmentSniper.Api.Controllers
         private readonly IGetSnipeSegmentsByActivityIdActionHandler _getSnipeSegmentsByActivityIdActionHandler;
         private readonly IGetActivityListActionHandler _getActivityListActionHandler;
 
-        public SniperController(IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler, ISnipeSegmentsActionHandler snipeSegmentsActionHandler, IGetDetailedSegmentBySegmentIdActionHandler getDetailedSegmentBySegmentIdActionHandler, IStarSegmentActionHandler starSegmentActionHandler, IGetSnipeSegmentsByActivityIdActionHandler getSnipeSegmentsByActivityIdActionHandler,  IGetActivityListActionHandler getActivityListActionHandler)
+        public SniperController(IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler,
+            ISnipeSegmentsActionHandler snipeSegmentsActionHandler,
+            IGetDetailedSegmentBySegmentIdActionHandler getDetailedSegmentBySegmentIdActionHandler,
+            IStarSegmentActionHandler starSegmentActionHandler,
+            IGetSnipeSegmentsByActivityIdActionHandler getSnipeSegmentsByActivityIdActionHandler,
+            IGetActivityListActionHandler getActivityListActionHandler)
         {
            
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;

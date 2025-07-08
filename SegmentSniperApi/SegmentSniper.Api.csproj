@@ -76,10 +76,6 @@
     <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ActionHandlers\SniperActionHandlers\" />
-  </ItemGroup>
-
 
 	<!--<Target Name="RunNpmDevScript" BeforeTargets="Build">
 		--><!-- Run npm run dev script --><!--
