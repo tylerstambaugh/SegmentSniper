@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Models.UIModels.Activity;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public interface IGetActivityListActionHandler
     {

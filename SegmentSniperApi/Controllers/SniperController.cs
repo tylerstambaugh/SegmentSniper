@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using SegmentSniper.Api.ActionHandlers.SniperActionHandlers;
 using SegmentSniper.Api.Controllers.Contracts;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Sniper;
 using System.Security.Claims;
 
 namespace SegmentSniper.Api.Controllers
@@ -39,7 +39,9 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                    ?? throw new InvalidOperationException("User ID claim is missing.");
+                
                 request.UserId = userId;
                 var returnList = await _getActivityListActionHandler.HandleAsync(request);
 
@@ -60,7 +62,9 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> GetDetailedActivityById(string activityId)
         {
 
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new InvalidOperationException("User ID claim is missing.");
+            
             var request = new GetDetailedActivityByIdRequest(userId, activityId);
             var returnList = await _getDetailedActivityByIdActionHandler.Handle(request);
 
@@ -75,7 +79,8 @@ namespace SegmentSniper.Api.Controllers
         [Route("starSegment/{segmentId}")]
         public async Task<IActionResult> StarSegment(string segmentId, [FromBody] StarSegmentContract contract)
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new InvalidOperationException("User ID claim is missing.");
 
             var request = new StarSegmentRequest
             {
@@ -95,7 +100,8 @@ namespace SegmentSniper.Api.Controllers
         [Route("detailedSegment/{segmentId}")]
         public async Task<IActionResult> DetailedSegment(string segmentId)
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new InvalidOperationException("User ID claim is missing.");
 
             var request = new GetDetailedSegmentBySegmentIdRequest
             {
@@ -113,7 +119,8 @@ namespace SegmentSniper.Api.Controllers
         [Route("snipeSegments/{activityId}")]
         public async Task<IActionResult> SnipeSegments(string activityId)
         {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                ?? throw new InvalidOperationException("User ID claim is missing.");
 
             var request = new GetSnipeSegmentsByActivityIdRequest
             {

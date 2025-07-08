@@ -1,7 +1,6 @@
-﻿using SegmentSniper.Api.Controllers;
-using SegmentSniper.Models.UIModels.Segment;
+﻿using SegmentSniper.Models.UIModels.Segment;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public interface IGetSnipeSegmentsByActivityIdActionHandler
     {
@@ -12,7 +11,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
     {
         public GetSnipeSegmentsByActivityIdRequest()
         {
-            
+
         }
         public GetSnipeSegmentsByActivityIdRequest(string activityId, string userId)
         {

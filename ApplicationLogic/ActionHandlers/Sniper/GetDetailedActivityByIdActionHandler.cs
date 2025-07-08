@@ -6,10 +6,9 @@ using SegmentSniper.Services.Garage;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
-using SegmentSniper.Services.Common;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
-{    
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
+{
     public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
     {
         private readonly ISegmentSniperDbContext _context;
@@ -40,7 +39,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
 
-                    UpsertBike(activity);                   
+                    UpsertBike(activity);
 
                     return new GetDetailedActivityByIdRequest.Response
                     {
@@ -61,7 +60,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
         private void UpsertBike(DetailedActivity activity)
         {
-           var bikeToUpsert = new BikeModel
+            var bikeToUpsert = new BikeModel
             {
                 BikeId = activity.SummaryGear.Id,
                 Name = activity.SummaryGear.Name,

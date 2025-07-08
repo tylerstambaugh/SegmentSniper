@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using SegmentSniper.Api.Controllers;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.Models.Strava.Activity;
@@ -13,10 +11,9 @@ using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Segment;
-using System.Drawing;
 using System.Text.RegularExpressions;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public class GetSnipeSegmentsByActivityIdActionHandler : IGetSnipeSegmentsByActivityIdActionHandler
     {
@@ -28,7 +25,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
         private string _userId;
 
 
-        public GetSnipeSegmentsByActivityIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData , IMapper mapper)
+        public GetSnipeSegmentsByActivityIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
@@ -63,7 +60,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                         var snipeSegment = CreateSnipeSegmentFromDetails(dse, detailedSegment);
                         snipeSegment.ActivityId = activity.ActivityId;
                         snipeSegments.Add(snipeSegment);
-                        
+
                         MlSegmentEfforts.Add(CreateMlSegmentEffort(dse, detailedSegment));
                     }
 
@@ -80,7 +77,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             {
                 return new ApiResponse<GetSnipeSegmentsByActivityIdRequest.Response>(500, null);
             }
-        }      
+        }
 
         //refactor this into the service that saves the ML_SegmentEffort. Use automapper.
         private ML_SegmentEffort CreateMlSegmentEffort(DetailedSegmentEffort dse, DetailedSegment detailedSegment)
@@ -106,7 +103,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     AthleteCount = detailedSegment.AthleteCount,
                     EffortCount = detailedSegment.EffortCount,
                     StarCount = detailedSegment.StarCount,
-                    PrRank = dse.PrRank,                
+                    PrRank = dse.PrRank,
                 };
             }
             catch (Exception ex)
@@ -122,16 +119,16 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
                 XomsTimes xomsTime = GetXomTimeFromStrings(detailedSegment.Xoms);
 
-                int? percentageOffKom = xomsTime.KomTime != null ? 
-                    (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
+                int? percentageOffKom = xomsTime.KomTime != null ?
+                    (int)Math.Round((double)((dse.MovingTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven)
                     : null;
-                int? prPercentageOffKom = xomsTime.KomTime != null ? 
-                    (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven) 
+                int? prPercentageOffKom = xomsTime.KomTime != null ?
+                    (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.KomTime) / (double)xomsTime.KomTime) * 100, 3, MidpointRounding.ToEven)
                     : null;
                 int? percentageOffQom = xomsTime.QomTime != null ?
-                    (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven) 
+                    (int)Math.Round((double)((dse.MovingTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven)
                     : null;
-                int? prPercentageOffQom = xomsTime.QomTime != null ? 
+                int? prPercentageOffQom = xomsTime.QomTime != null ?
                     (int)Math.Round((double)((detailedSegment.AthleteSegmentStats.PrElapsedTime - xomsTime.QomTime) / (double)xomsTime.QomTime) * 100, 3, MidpointRounding.ToEven)
                     : null;
 
@@ -162,7 +159,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
                     SecondsFromKom = secondsOffKom,
                     SecondsFromQom = secondsOffQom,
                     PrSecondsFromKom = prSecondsOffKom != null ? ConvertTimeInSeconds((int)prSecondsOffKom) : null,
-                    PrSecondsFromQom = prSecondsOffQom != null ?  ConvertTimeInSeconds((int)prSecondsOffQom) : null,
+                    PrSecondsFromQom = prSecondsOffQom != null ? ConvertTimeInSeconds((int)prSecondsOffQom) : null,
                     ActivityType = detailedSegment.ActivityType,
                     Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                     Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
@@ -233,11 +230,11 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
             int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
 
             var timeAsString = "";
-            if(hours > 0)
+            if (hours > 0)
             {
                 timeAsString = $"{hours:D2}:{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
             }
-            if(hours == 0)
+            if (hours == 0)
             {
                 timeAsString = $"{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
             }
@@ -269,7 +266,7 @@ namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
 
             return averageSpeed;
         }
-             
+
 
         private void ValidateRequest(GetSnipeSegmentsByActivityIdRequest request)
         {

@@ -15,7 +15,7 @@ using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 using static SegmentSniper.Data.Enums.ActivityTypeEnum;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public class GetActivityListActionHandler : IGetActivityListActionHandler
     {

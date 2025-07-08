@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Models.Models.Strava.Activity;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public interface IGetDetailedActivityByIdActionHandler
     {
