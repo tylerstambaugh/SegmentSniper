@@ -1,7 +1,6 @@
-﻿using Duende.IdentityServer.Validation;
-using SegmentSniper.Services.ManageProfile;
+﻿using SegmentSniper.Services.ManageProfile;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public class UpdatePasswordAsyncActionHandler : IUpdatePasswordAsyncActionHandler
     {

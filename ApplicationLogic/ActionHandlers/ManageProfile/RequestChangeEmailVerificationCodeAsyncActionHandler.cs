@@ -2,9 +2,8 @@
 using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.ManageProfile;
-using System.Diagnostics.Contracts;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public class RequestChangeEmailVerificationCodeAsyncActionHandler : IRequestChangeEmailVerificationCodeAsyncActionHandler
     {
@@ -43,7 +42,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
             {
                 throw new ApplicationException("Unable to send verification code", ex);
             }
-            
+
         }
 
         private async Task SendVerificationCode(ApplicationUser? user, GenerateVerificationCodeForEmailAddressChangeContract.Result verificationCode, string email)

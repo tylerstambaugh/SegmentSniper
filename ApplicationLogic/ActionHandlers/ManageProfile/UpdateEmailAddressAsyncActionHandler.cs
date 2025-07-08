@@ -1,9 +1,7 @@
-﻿using Duende.IdentityServer.Validation;
-using SegmentSniper.Models.Models.Auth.User;
-using SegmentSniper.Models.UIModels.ManageProfile;
+﻿using SegmentSniper.Models.UIModels.ManageProfile;
 using SegmentSniper.Services.ManageProfile;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public class UpdateEmailAddressAsyncActionHandler : IUpdateEmailAddressAsyncActionHandler
     {
@@ -16,16 +14,16 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
             _updateEmailAddressAsync = updateEmailAddressAsync;
         }
 
-        public async Task <UpdateEmailAddressAsyncRequest.Response> HandleAsync(UpdateEmailAddressAsyncRequest request)
+        public async Task<UpdateEmailAddressAsyncRequest.Response> HandleAsync(UpdateEmailAddressAsyncRequest request)
         {
             ValidatedRequest(request);
 
             var verifiedCode = _verifyCodeForEmailAddressChange.Execute(new VerifyCodeForEmailAddressChangeContract(request.UserId, request.VerificationCode)).CorrectCode;
-            if(!verifiedCode)
+            if (!verifiedCode)
             {
                 throw new ArgumentException("Incorrect verification code. Please try again");
             }
-           
+
             try
             {
                 var contract = new UpdateEmailAddressAsyncContract(request.UserId, request.EmailAddress);
@@ -47,7 +45,7 @@ namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
                             StravaRefreshToken = stravaToken?.RefreshToken,
                             StravaTokenExpiresAt = stravaToken != null ? DateTimeOffset.FromUnixTimeSeconds(result.ProfileData.StravaApiToken.ExpiresAt).DateTime : (DateTime?)null,
                             LastLogin = applicationUser.LastLogin,
-                        },                      
+                        },
                     };
                 }
                 else

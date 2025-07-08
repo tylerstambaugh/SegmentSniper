@@ -1,7 +1,7 @@
 ﻿using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Models.UIModels.ManageProfile;
 
-namespace SegmentSniper.Api.ActionHandlers.ManageProfileActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
     public interface IUpdateEmailAddressAsyncActionHandler
     {
