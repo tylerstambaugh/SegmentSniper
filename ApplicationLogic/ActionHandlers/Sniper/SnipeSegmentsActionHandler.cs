@@ -10,7 +10,7 @@ using StravaApiClient.Services.Segment;
 using System.Text.RegularExpressions;
 using static SegmentSniper.Services.Common.SegmentFormattingHelpers;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     [Obsolete]
     public class SnipeSegmentsActionHandler : ISnipeSegmentsActionHandler

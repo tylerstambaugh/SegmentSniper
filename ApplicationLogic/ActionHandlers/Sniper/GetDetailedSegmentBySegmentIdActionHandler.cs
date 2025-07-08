@@ -7,7 +7,7 @@ using StravaApiClient;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Segment;
 
-namespace SegmentSniper.Api.ActionHandlers.SniperActionHandlers
+namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {    
     public class GetDetailedSegmentBySegmentIdActionHandler : IGetDetailedSegmentBySegmentIdActionHandler
     {
