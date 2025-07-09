@@ -76,9 +76,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
             {
                 throw new ArgumentNullException(nameof(request.EmailAddress));
             }
-            if (request.VerificationCode == null)
+            if (request.VerificationCode <= 0)
             {
-                throw new ArgumentNullException(nameof(request.VerificationCode));
+                throw new ArgumentException(nameof(request.VerificationCode));
             }
         }
     }

@@ -40,23 +40,27 @@ namespace SegmentSniper.Api.Configuration
             //    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
             //    .AddEnvironmentVariables();
 
-            if (builder.Environment.IsDevelopment())
+            var isDevelopment = builder.Environment.IsDevelopment();
+
+            if (isDevelopment)
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
                 builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
-                builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
-                connectionString = builder.Configuration["SegmentSniperConnectionStringDev"];
             }
             else
             {
-                var keyVaultEndpoint = new Uri(configuration["AzureKeyVault:BaseUrl"] ?? "https://kv-segmentsiper-dev.vault.azure.net/");
-                builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-
-                builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-
-                connectionString = builder.Configuration["SegmentSniperConnectionString"];
+                var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
+                if(!string.IsNullOrEmpty(keyVaultEndpoint))
+                builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
             }
+
+            builder.Services.AddApplicationInsightsTelemetry();
+
+            // Connection string
+            connectionString = builder.Configuration[
+                isDevelopment ? "SegmentSniperConnectionStringDev" : "SegmentSniperConnectionString"
+            ];
+
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));

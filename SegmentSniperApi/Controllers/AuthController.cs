@@ -101,7 +101,7 @@ namespace SegmentSniper.Api.Controllers
                         return BadRequest("Something went wrong");
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return BadRequest($"Invalid access or refresh token: {nameof(refreshToken)}");
                 }
