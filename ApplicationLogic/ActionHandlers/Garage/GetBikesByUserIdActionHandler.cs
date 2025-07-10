@@ -30,7 +30,7 @@ public class GetBikesByUserIdActionHandler : IGetBikesByUserIdActionHandler
     public async Task<GetBikesByUserIdRequest.Response> ExecuteAsync(GetBikesByUserIdRequest request)
     {
         ValidateRequest(request);
-        var token = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
+        var token = await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(request.UserId));
 
         if (token != null)
         {

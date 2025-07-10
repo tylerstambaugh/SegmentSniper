@@ -33,7 +33,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
                 });
 
                 var userData = await _getAuthenticatedUser.ExecuteAsync(new GetAuthenticatedUserContract(request.UserId));
-                var hasStravaTokenData = (_getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId)).StravaToken != null);
+                var hasStravaTokenDataResult = (await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(request.UserId)));
+
+                var hasStravaTokenData = hasStravaTokenDataResult.StravaToken != null;
 
                 var userDto = new UserDto
                 {

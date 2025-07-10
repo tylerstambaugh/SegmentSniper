@@ -80,7 +80,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
                         Expiration = token.ValidTo
                     };
 
-                    var userStravaToken = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(authenticatedUser.Id)).StravaToken;
+                    var userStravaTokenResult = await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(authenticatedUser.Id));
+
+                    var userStravaToken = userStravaTokenResult.StravaToken;
 
                     var hasStravaTokenData = userStravaToken != null && userStravaToken.ExpiresAt < DateTime.Now.ToEpochTime();
 
