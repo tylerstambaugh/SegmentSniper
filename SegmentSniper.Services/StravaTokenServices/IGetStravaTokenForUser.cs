@@ -4,7 +4,7 @@ namespace SegmentSniper.Services.StravaToken
 {
     public interface IGetStravaTokenForUser
     {
-        GetStravaTokenForUserContract.Result Execute(GetStravaTokenForUserContract contract);
+       Task<GetStravaTokenForUserContract.Result> ExecuteAsync(GetStravaTokenForUserContract contract);
     }
 
     public class GetStravaTokenForUserContract

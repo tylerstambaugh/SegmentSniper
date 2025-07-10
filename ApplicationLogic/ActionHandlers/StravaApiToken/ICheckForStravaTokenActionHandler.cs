@@ -2,8 +2,7 @@
 {
     public interface ICheckForStravaTokenActionHandler
     {
-        CheckForStravaTokenRequest.Response Handle(CheckForStravaTokenRequest request);
-
+       Task<CheckForStravaTokenRequest.Response> HandleAsync(CheckForStravaTokenRequest request);
     }
 
     public class CheckForStravaTokenRequest

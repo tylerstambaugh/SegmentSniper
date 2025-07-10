@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
 using SegmentSniper.Api.Configuration;
-using SegmentSniper.Data;
 using System.Net;
 using System.Reflection;
 
@@ -11,7 +10,7 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
+var builder = WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
 
@@ -53,7 +52,7 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
-  
+
     app.UseCors("AllowReactApp");
 
     app.UseIdentityServer();

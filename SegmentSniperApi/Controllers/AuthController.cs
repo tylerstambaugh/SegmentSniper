@@ -201,9 +201,9 @@ namespace SegmentSniper.Api.Controllers
             {
                 var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
 
-                Log.Information("Checking for strava token");
+                var response = await _checkForStravaTokenActionHandler.HandleAsync(new CheckForStravaTokenRequest(userId));
 
-                return Ok(_checkForStravaTokenActionHandler.Handle(new CheckForStravaTokenRequest(userId)));
+                return Ok(response);
 
             }
             catch (Exception ex)

@@ -24,13 +24,17 @@ namespace SegmentSniper.Api.Configuration
 {
     public static class WebApplicationBuilderConfig
     {
-        public async static Task<WebApplicationBuilder> ConfigureBuilder(IConfiguration configuration)
+        public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
             // var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
             var connectionString = "";
+            var jwtKey = builder.Configuration["Jwt-Key"];
+
+            if (jwtKey == null)
+                throw new ApplicationException("Unable to load JWT Ket");
 
             // Setup configuration sources
             //This is being done in program.cs
@@ -160,7 +164,7 @@ namespace SegmentSniper.Api.Configuration
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt-Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey))
                     };
                     options.Events = new JwtBearerEvents
                     {

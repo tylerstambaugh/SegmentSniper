@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Models.Models.Strava.Token;
@@ -16,16 +17,23 @@ namespace SegmentSniper.Services.StravaToken
             _mapper = mapper;
         }
 
-        public GetStravaTokenForUserContract.Result Execute(GetStravaTokenForUserContract contract)
+        public async Task<GetStravaTokenForUserContract.Result> ExecuteAsync(GetStravaTokenForUserContract contract)
         {
             ValidateContract(contract);
 
-            var stravaToken = _context.StravaTokens.Where(x => x.UserId == contract.UserId).FirstOrDefault();
+            var stravaToken = await _context.StravaTokens.FirstOrDefaultAsync(x => x.UserId == contract.UserId);
 
-            return new GetStravaTokenForUserContract.Result
+            if (stravaToken != null)
             {
-                StravaToken = _mapper.Map<StravaApiToken, StravaTokenModel>(stravaToken)
-            };
+                return new GetStravaTokenForUserContract.Result
+                {
+                    StravaToken = _mapper.Map<StravaApiToken, StravaTokenModel>(stravaToken)
+                };
+            }
+            else
+            {
+                throw new ArgumentException("No Strava Token for User");
+            }
         }
 
         public void ValidateContract(GetStravaTokenForUserContract contract)
