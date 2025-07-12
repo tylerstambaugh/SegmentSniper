@@ -32,7 +32,7 @@ namespace SegmentSniper.Services.StravaToken
             }
             else
             {
-                throw new ArgumentException("No Strava Token for User");
+                return new GetStravaTokenForUserContract.Result();
             }
         }
 

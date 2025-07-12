@@ -7,10 +7,6 @@
 
     public class ConfirmEmailContract
     {
-        public ConfirmEmailContract()
-        {
-            
-        }
         public ConfirmEmailContract(string userId, string confirmationToken)
         {
             UserId = userId;
@@ -18,7 +14,6 @@
         }
 
         public string UserId { get; set; }
-        public string EmailAddress { get; set; }
         public string ConfirmationToken { get; set; }
 
         public class Result
