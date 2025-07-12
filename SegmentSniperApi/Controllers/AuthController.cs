@@ -114,7 +114,8 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                   ?? throw new InvalidOperationException("User ID claim is missing.");
 
                 var response = await _sendConfirmationEmailActionHandler.HandleAsync(new SendEmailConfirmationRequest
                 {
@@ -134,18 +135,19 @@ namespace SegmentSniper.Api.Controllers
 
         [Authorize, HttpPost]
         [Route("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest confirmEmailRequest)
+        public async Task<IActionResult> ConfirmEmail([FromBody] string accessToken, [FromBody] string confirmationToken, [FromBody] string refreshToken)
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                   ?? throw new InvalidOperationException("User ID claim is missing.");
 
                 var result = await _confirmEmailActionHandler.HandleAsync(new ConfirmEmailRequest
                 {
                     UserId = userId,
-                    ConfirmationToken = confirmEmailRequest.ConfirmationToken,
-                    AccessToken = confirmEmailRequest.AccessToken,
-                    RefreshToken = confirmEmailRequest.RefreshToken,
+                    ConfirmationToken = confirmationToken,
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken,
                 });
 
                 if (result.Success)
@@ -199,7 +201,8 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                                   ?? throw new InvalidOperationException("User ID claim is missing.");
 
                 var response = await _checkForStravaTokenActionHandler.HandleAsync(new CheckForStravaTokenRequest(userId));
 
@@ -218,7 +221,9 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                   ?? throw new InvalidOperationException("User ID claim is missing.");
+
                 Log.Information("Logging out");
                 var result = await _revokeTokenActionHandler.HandleRevokeSingleUserToken(new RevokeUserTokenRequest(userId));
 

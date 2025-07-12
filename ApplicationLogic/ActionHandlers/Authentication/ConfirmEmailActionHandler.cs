@@ -26,12 +26,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 
             try
             {
-                var result = await _confirmEmail.ExecuteAsync(new ConfirmEmailContract
-                {
-                    UserId = request.UserId,
-                    ConfirmationToken = request.ConfirmationToken,
-                });
-
+                var result = await _confirmEmail.ExecuteAsync(new ConfirmEmailContract(request.UserId, request.ConfirmationToken));
+               
                 var userData = await _getAuthenticatedUser.ExecuteAsync(new GetAuthenticatedUserContract(request.UserId));
                 var hasStravaTokenDataResult = (await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(request.UserId)));
 
@@ -40,8 +36,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
                 var userDto = new UserDto
                 {
                     Id = userData.LoggedInUser.Id,
-                    FirstName = userData.LoggedInUser.FirstName,
-                    Email = userData.LoggedInUser.Email,
+                    FirstName = userData.LoggedInUser.FirstName ?? throw new ArgumentException("Cannot find first name."),
+                    Email = userData.LoggedInUser.Email ?? throw new ArgumentException("Cannot find email address."),
                     HasStravaTokenData = hasStravaTokenData,
                     VerifiedEmail = userData.LoggedInUser.EmailConfirmed,
                     Roles = userData.Roles,
