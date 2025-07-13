@@ -41,6 +41,8 @@ const ManageStravaWebhookWidget = () => {
         error: subscriptionIdError,
     } = useGetSubscriptionId();
 
+    //did sql and rxjs exercises tonight
+
     return (
         <Container className="py-4"> {/* Add vertical padding to the container */}
             <Row >
