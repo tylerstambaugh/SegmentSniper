@@ -21,6 +21,7 @@ using SegmentSniper.Services.ManageProfile;
 using SegmentSniper.Services.StravaToken;
 using SegmentSniper.Services.StravaTokenServices;
 using SegmentSniper.Services.StravaWebhook;
+using SegmentSniper.Services.User;
 using StravaApiClient;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services;
@@ -63,6 +64,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ICreateStravaWebhookSubscriptionHandler, CreateStravaWebhookSubscriptionHandler>();
             services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
             services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();
+            services.AddScoped<IProcessWebhookUpdate, ProcessWebhookUpdate>();
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
@@ -114,6 +116,9 @@ namespace SegmentSniper.Api.Configuration
             //admin services
             services.AddScoped<IRemoveUser, RemoveUser>();
             services.AddScoped<IGetUsers, GetUsers>();
+
+            //user services
+            services.AddScoped<IGetUserByStravaAthleteId, GetUserByStravaAthleteId>();
 
             //common & helper services
             services.AddScoped<ISendEmail, SendEmail>();

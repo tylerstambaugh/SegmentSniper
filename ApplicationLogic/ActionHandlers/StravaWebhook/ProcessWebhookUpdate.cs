@@ -1,19 +1,21 @@
-﻿using Microsoft.Identity.Client;
+﻿using SegmentSniper.Services.User;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
-    public class ProcessWebhookUpdate 
+    public class ProcessWebhookUpdate : IProcessWebhookUpdate
     {
-        public ProcessWebhookUpdate()
-        {
+        private readonly IGetUserByStravaAthleteId _getUserByStravaAthleteId;
 
-            
-            
+        public ProcessWebhookUpdate(IGetUserByStravaAthleteId getUserByStravaAthleteId)
+        {
+            _getUserByStravaAthleteId = getUserByStravaAthleteId;
         }
 
         public async Task<bool> HandleAsync(WebhookUpdate webhookUpdate)
         {
-            if (webhookUpdate.ObjectType == "activity")
+
+            var user = await _getUserByStravaAthleteId.ExecuteAsync(new GetUserByStravaAthleteIdContract(webhookUpdate.OwnerId));
+            if (webhookUpdate.ObjectType == "activity" && webhookUpdate.AspectType == "update")
             {
 
                 //handle activity updates

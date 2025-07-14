@@ -8,14 +8,12 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
     public class ConfirmEmailActionHandler : IConfirmEmailActionHandler
     {
         private readonly IConfirmEmail _confirmEmail;
-        private readonly IRefreshToken _refresh;
         private readonly IGetAuthenticatedUser _getAuthenticatedUser;
         private readonly IGetStravaTokenForUser _getStravaTokenForUser;
 
-        public ConfirmEmailActionHandler(IConfirmEmail confirmEmail, IRefreshToken refresh, IGetAuthenticatedUser getAuthenticatedUser, IGetStravaTokenForUser getStravaTokenForUser)
+        public ConfirmEmailActionHandler(IConfirmEmail confirmEmail, IGetAuthenticatedUser getAuthenticatedUser, IGetStravaTokenForUser getStravaTokenForUser)
         {
             _confirmEmail = confirmEmail;
-            _refresh = refresh;
             _getAuthenticatedUser = getAuthenticatedUser;
             _getStravaTokenForUser = getStravaTokenForUser;
         }
@@ -26,8 +24,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 
             try
             {
-                var result = await _confirmEmail.ExecuteAsync(new ConfirmEmailContract(request.UserId, request.ConfirmationToken));
-               
+
+                var result = await _confirmEmail.ExecuteAsync(new ConfirmEmailContract(request.UserId ?? throw new ApplicationException(), request.ConfirmationToken));
+
                 var userData = await _getAuthenticatedUser.ExecuteAsync(new GetAuthenticatedUserContract(request.UserId));
                 var hasStravaTokenDataResult = (await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(request.UserId)));
 
