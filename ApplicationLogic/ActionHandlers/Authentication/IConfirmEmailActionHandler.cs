@@ -10,7 +10,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
 
     public class ConfirmEmailRequest
     {
-        public required string UserId { get; set; }
+        public string? UserId { get; set; }
         public required string AccessToken { get; set; }
         public required string RefreshToken { get; set; }
         public required string ConfirmationToken { get; set; }
