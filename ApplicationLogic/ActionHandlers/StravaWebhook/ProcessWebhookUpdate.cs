@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Services.User;
+using System.Text.Json.Serialization;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
@@ -29,11 +30,25 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
     public class WebhookUpdate
     {
-        public string ObjectType { get; set; } // "activity" or "athlete"
-        public long ObjectId { get; set; } // Activity or athlete ID
-        public string AspectType { get; set; } // "create", "update", or "delete"
-        public Dictionary<string, string> Updates { get; set; } // Contains keys like "title", "type", "private"
-        public long OwnerId { get; set; } // Athlete ID
-        public long SubscriptionId { get; set; } // Subscription ID
+        [JsonPropertyName("object_type")]
+        public string ObjectType { get; set; }
+
+        [JsonPropertyName("object_id")]
+        public long ObjectId { get; set; }
+
+        [JsonPropertyName("aspect_type")]
+        public string AspectType { get; set; }
+
+        [JsonPropertyName("updates")]
+        public Dictionary<string, string> Updates { get; set; }
+
+        [JsonPropertyName("owner_id")]
+        public long OwnerId { get; set; }
+
+        [JsonPropertyName("subscription_id")]
+        public long SubscriptionId { get; set; }
+
+        [JsonPropertyName("event_time")]
+        public long EventTime { get; set; }
     }
 }
