@@ -53,15 +53,20 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReceiveUpdate([FromBody] JObject payload)
+        public async Task<IActionResult> ReceiveUpdate(WebhookUpdate payload)
         {
+
+            using var reader = new StreamReader(Request.Body);
+            var body = await reader.ReadToEndAsync();
+
+            Console.WriteLine("Webhook payload: " + body);
+
             var otherObject = payload;
 
-            var webhookUpdate = payload.ToObject<WebhookUpdate>();
 
-            if (webhookUpdate != null)
+            if (payload != null)
             {
-                var result = await _processWebhookUpdate.HandleAsync(webhookUpdate);
+                var result = await _processWebhookUpdate.HandleAsync(payload);
                 return Ok();
             }
             else
