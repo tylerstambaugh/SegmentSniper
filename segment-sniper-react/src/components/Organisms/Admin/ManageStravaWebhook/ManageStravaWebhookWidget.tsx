@@ -8,6 +8,12 @@ import { DeleteSubscriptionModal } from "../../../Molecules/ManageStravaWebhook/
 import { useGetSubscriptionId } from "../../../../hooks/Api/Admin/StravaWebhook/useGetSubscriptionId";
 
 
+// SELECT s.user_id,
+//     ROUND(ISNULL(AVG(CASE WHEN action = 'confirmed' THEN 1.0 ELSE 0 END), 0), 2) AS confirmation_rate
+// FROM Signups s
+// LEFT JOIN Confirmations c ON s.user_id = c.user_id
+// GROUP BY s.user_id
+
 
 const ManageStravaWebhookWidget = () => {
 
