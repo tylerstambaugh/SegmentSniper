@@ -25,8 +25,7 @@ namespace SegmentSniper.Api.Controllers
         public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
             IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
             IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler,
-            IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId,
-            IProcessWebhookUpdate processWebhookUpdate,
+            IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId,            
             WebhookEventHandlerFactory webhookEventHandlerFactory
             )
         {
@@ -54,53 +53,33 @@ namespace SegmentSniper.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReceiveUpdate(WebhookEvent payload)
+        public IActionResult ReceiveUpdate(WebhookEvent payload)
         {
-
-            using var reader = new StreamReader(Request.Body);
-            var body = await reader.ReadToEndAsync();
-
-            Console.WriteLine("Webhook payload: " + body);
-
-            var otherObject = payload;
-
-
             if (payload != null)
             {
-                var result = await _processWebhookUpdate.HandleAsync(payload);
-                return Ok();
+               
+                // Fire and forget safely
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        var eventType = payload.AspectType;
+                        var handler = _webhookEventHandlerFactory.GetHandler(eventType);
+                        await handler.HandleEventAsync(payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log exception here
+                        // e.g., _logger.LogError(ex, "Error processing webhook event.");
+                    }
+                });
+
+                return Ok(); // Return immediately
             }
             else
             {
                 return BadRequest("we don't understand you.");
-            }
-
-            //    object_type
-            //string Always either "activity" or "athlete."
-            //object_id
-            //long integer    For activity events, the activity's ID. For athlete events, the athlete's ID.
-            //aspect_type
-            //string Always "create," "update," or "delete."
-            //updates
-            //hash    For activity update events, keys can contain "title," "type," and "private," which is always "true" (activity visibility set to Only You) or "false" (activity visibility set to Followers Only or Everyone). For app deauthorization events, there is always an "authorized" : "false" key-value pair.
-            //owner_id
-            //long integer    The athlete's ID.
-            //subscription_id
-            //integer The push subscription ID that is receiving this event.
-            //event_time
-            //long integer    The time that the event occurred.
-            //Example Request
-            //{
-            //        "aspect_type": "update",
-            //    "event_time": 1516126040,
-            //    "object_id": 1360128428,
-            //    "object_type": "activity",
-            //    "owner_id": 134815,
-            //    "subscription_id": 120475,
-            //    "updates": {
-            //            "title": "Messy"
-            //    }
-            //    }                
+            }               
         }
 
         [Authorize]
