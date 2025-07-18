@@ -4,7 +4,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
 {
     public class UpdateWebhookEventHandler : IWebhookEventHandler
     {
-        public Task HandleEventAsync(WebhookEvent payload)
+        public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
         {
             throw new NotImplementedException();
         }
