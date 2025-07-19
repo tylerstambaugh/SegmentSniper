@@ -13,14 +13,14 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
-        private readonly IUpsertBike _addBikeService;
+        private readonly IUpsertBike _upsertBikeService;
         private readonly IMapper _mapper;
 
         public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IUpsertBike addBikeService, IMapper mapper)
         {
             _context = context;
             _stravaRequestService = stravaRequestService;
-            _addBikeService = addBikeService;
+            _upsertBikeService = addBikeService;
             _mapper = mapper;
         }
 
@@ -68,7 +68,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                 ImportedFromStrava = true,
             };
 
-            _addBikeService.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));
+            _upsertBikeService.ExecuteAsync(new UpsertBikeContract(bikeToUpsert));
         }
 
         private void ValidateRequest(GetDetailedActivityByIdRequest request)
