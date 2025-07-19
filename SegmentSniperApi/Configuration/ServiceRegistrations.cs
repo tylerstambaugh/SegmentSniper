@@ -67,7 +67,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
             services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();            
 
-            services.AddTransient<WebhookEventHandlerFactory>();
+            services.AddScoped<WebhookEventHandlerFactory>();
             services.AddTransient<CreateWebhookEventHandler>();
             services.AddTransient<UpdateWebhookEventHandler>();
 
