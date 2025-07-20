@@ -70,6 +70,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<WebhookEventHandlerFactory>();
             services.AddTransient<CreateWebhookEventHandler>();
             services.AddTransient<UpdateWebhookEventHandler>();
+            services.AddTransient<DeleteWebhookEventHandler>();
 
             //profile action handlers
             services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
@@ -171,6 +172,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IRetireBikeEquipment, RetireBikeEquipment>();
             services.AddScoped<IDeleteEquipment, DeleteEquipment>();
             services.AddScoped<IDeleteBike, DeleteBike>();
+            services.AddScoped<IDeleteBikeActivity, DeleteBikeActivity>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
