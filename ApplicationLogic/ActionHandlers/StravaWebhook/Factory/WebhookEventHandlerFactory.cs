@@ -18,7 +18,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory
         {
             "create" => _serviceProvider.GetService<CreateWebhookEventHandler>(),
             "update" => _serviceProvider.GetService<UpdateWebhookEventHandler>(),
-            //"delete" => _serviceProvider.GetRequiredService<IDeleteWebhookEventHandler>(),
+            "delete" => _serviceProvider.GetRequiredService<DeleteWebhookEventHandler>(),
             _ => throw new NotSupportedException($"Event type '{eventType}' is not supported.")
         };
 #pragma warning restore CS8603 // Possible null reference return.
