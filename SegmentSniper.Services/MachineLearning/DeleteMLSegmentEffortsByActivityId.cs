@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.MachineLearning
@@ -14,14 +15,30 @@ namespace SegmentSniper.Services.MachineLearning
 
         public async Task<DeleteMLSegmentEffortsByIdContract.Result> ExecuteAsync(DeleteMLSegmentEffortsByIdContract contract)
         {
+            try
+            {
+                var segmentsToDelete = await _segmentSniperDbContext.ML_SegmentEfforts
+                    .Where(e => contract.SegmentEffortIds.Contains(e.SegmentEffortId))
+                    .ToListAsync();
 
-            var segmentsToDelete = _segmentSniperDbContext.ML_SegmentEfforts.Where(e => contract.SegmentEffortIds.Contains(e.SegmentEffortId);
+                _segmentSniperDbContext.ML_SegmentEfforts.RemoveRange(segmentsToDelete);
 
-            _segmentSniperDbContext.ML_SegmentEfforts.RemoveRange(segmentsToDelete);
+                await _segmentSniperDbContext.SaveChangesAsync();
 
-            _segmentSniperDbContext.SaveChanges();
-
-            return new DeleteMLSegmentEffortsByIdContract.Result();
-        }       
+                return new DeleteMLSegmentEffortsByIdContract.Result
+                {
+                    Success = true,
+                    Error = null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new DeleteMLSegmentEffortsByIdContract.Result
+                {
+                    Success = false,
+                    Error = ex.Message
+                };
+            }
+        }
     }
 }
