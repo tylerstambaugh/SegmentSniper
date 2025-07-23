@@ -4,6 +4,7 @@ using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.User;
 using Serilog;
+using System.Transactions;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandlers
 {
@@ -26,6 +27,14 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         }
         public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
         {
+
+            var transactionOptions = new TransactionOptions
+            {
+                IsolationLevel = IsolationLevel.ReadCommitted,
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+
+            using var scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions, TransactionScopeAsyncFlowOption.Enabled);
 
             try
             {
@@ -65,6 +74,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     SegmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList(),
                     UserId = user.UserId,                    
                 };
+
+
+                scope.Complete(); 
 
                 return new WebhookEventHandlerResponse(true);
             }
