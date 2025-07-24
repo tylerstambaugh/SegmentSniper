@@ -18,7 +18,7 @@ namespace SegmentSniper.Services.MachineLearning
             try
             {
                 var segmentsToDelete = await _segmentSniperDbContext.ML_SegmentEfforts
-                    .Where(e => contract.SegmentEffortIds.Contains(e.SegmentEffortId))
+                    .Where(e => contract.SegmentEffortIds.Contains(e.StravaSegmentEffortId))
                     .ToListAsync();
 
                 _segmentSniperDbContext.ML_SegmentEfforts.RemoveRange(segmentsToDelete);
