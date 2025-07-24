@@ -7,13 +7,13 @@
 
     public class DeleteMLSegmentEffortsByIdContract
     {
-        public DeleteMLSegmentEffortsByIdContract(List<long> segmentEffortsId, string userId)
+        public DeleteMLSegmentEffortsByIdContract(List<string> segmentEffortsId, string userId)
         {
             SegmentEffortIds = segmentEffortsId;
             UserId = userId;
         }
 
-        public List<long> SegmentEffortIds { get; set; }
+        public List<string> SegmentEffortIds { get; set; }
         public string UserId { get; set; }
         public class Result
         {
