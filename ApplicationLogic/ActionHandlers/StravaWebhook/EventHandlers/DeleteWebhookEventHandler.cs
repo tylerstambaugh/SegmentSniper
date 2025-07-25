@@ -69,12 +69,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
-                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract
-                {
-                    SegmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList(),
-                    UserId = user.UserId,                    
-                };
-
+                var segmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList();
+                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract(segmentEffortIds, user.UserId);                
 
                 scope.Complete(); 
 
@@ -82,7 +78,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error in CreateWebhookEventHandler.");
+                Log.Error(ex, "Error in DeleteWebhookEventHandler.");
                 return new WebhookEventHandlerResponse(false);
             }
         }

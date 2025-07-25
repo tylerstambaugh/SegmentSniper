@@ -14,7 +14,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory
         public required string AspectType { get; set; }
 
         [JsonPropertyName("updates")]
-        public required Dictionary<string, string> Updates { get; set; }
+        public Dictionary<string, string>? Updates { get; set; }
 
         [JsonPropertyName("owner_id")]
         public long OwnerId { get; set; }
