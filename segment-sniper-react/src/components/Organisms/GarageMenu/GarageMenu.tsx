@@ -4,10 +4,12 @@ import { useState } from "react";
 import ImportBikesModal from "../../Molecules/Garage/ImportBikes/ImportBikesModal";
 import UpsertBikeModal, { UpsertBikeFormValues } from "../../Molecules/Garage/UpsertBike/UpsertBikeModal";
 import { useUpsertBikeMutation } from "../../Molecules/Garage/UpsertBike/GraphQl/useUpsertBikeMutation";
+import GetBikesByUserId from "../../Molecules/Garage/GraphQl/GetBikesByUserId.graphql";
 import useUserStore from "../../../stores/useUserStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FrameType, FrameTypeToEnumMap } from "../../../enums/FrameTypes";
+import { GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables } from "../../../graphql/generated";
 
 
 type GarageModalState =
@@ -24,26 +26,7 @@ export default function GarageMenu() {
     const [upsertBike,
         { loading: upsertBikeLoading,
             error: upsertBikeError }
-    ] = useUpsertBikeMutation(
-
-            // {
-            //     update(cache, { data }) {
-            //         const updatedBike = data?.garage?.upsertBikeEquipment;
-            //         if (!updatedBike) return;
-
-            //         cache.writeQuery({
-            //             query: GetBikeByIdQuery,
-            //             variables: { bikeId: updatedBike.bikeId },
-            //             data: {
-            //                 bikes: {
-            //                     __typename: "BikeQuery",
-            //                     byBikeId: updatedBike,
-            //                 },
-            //             },
-            //         });
-            //     },
-            // }
-        );
+    ] = useUpsertBikeMutation();
 
     async function handleUpsertBike(values: UpsertBikeFormValues) {
 
@@ -58,10 +41,39 @@ export default function GarageMenu() {
                         modelName: values.bikeModel,
                         metersLogged: values.bikeMetersLogged,
                         description: values.bikeDescription,
+                    },
+                },
+                update: (cache, { data }) => {
+                    const newBike = data?.garage?.upsertBike;
+                    if (!newBike || !user?.id) return;
+
+                    const queryVars: GetBikesByUserIdQueryVariables = {
+                        userId: user.id,
+                    };
+
+                    try {
+                        const existingData = cache.readQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
+                            query: GetBikesByUserId,
+                            variables: queryVars,
+                        });
+
+                        if (!existingData?.bikes?.byUserId) return;
+
+                        cache.writeQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
+                            query: GetBikesByUserId,
+                            variables: queryVars,
+                            data: {
+                                bikes: {
+                                    ...existingData.bikes,
+                                    byUserId: [...existingData.bikes.byUserId, newBike],
+                                },
+                            },
+                        });
+                    } catch (error) {
+                        console.warn('Apollo cache update failed:', error);
                     }
-                }
-            }
-            );
+                },
+            });
             handleClosedModal();
         } catch (e) {
             console.error("Error upserting bike", e);

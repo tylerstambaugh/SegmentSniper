@@ -71,7 +71,7 @@ namespace SegmentSniper.Api.Controllers
                 ?? throw new InvalidOperationException("User ID claim is missing.");
             
             var request = new GetDetailedActivityByIdRequest(userId, activityId);
-            var returnList = await _getDetailedActivityByIdActionHandler.Handle(request);
+            var returnList = await _getDetailedActivityByIdActionHandler.HandleAsync(request);
 
             if (returnList != null)
                 return Ok(returnList);

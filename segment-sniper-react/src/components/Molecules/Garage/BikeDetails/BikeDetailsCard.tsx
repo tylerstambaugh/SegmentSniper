@@ -46,7 +46,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             });
             setShowDeleteBikeModal(false);
         } catch (e) {
-            console.error("Error deleting equipment", e);
+            console.error("Error deleting bike", e);
         }
     }
 
@@ -66,7 +66,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Body>
                     <Card.Title>
                         <Row>
-                            <Col xs={4} className="d-flex align-items-center">
+                            <Col xs={4} className="d-flex">
                                 {bike?.name ?? "Bike Not Found"}
                                 <Button onClick={() => setShowDeleteBikeModal(true)} variant="link" className="ms-auto">
                                     <FontAwesomeIcon icon={faTrashCan} />
