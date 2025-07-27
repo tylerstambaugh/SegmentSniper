@@ -4,7 +4,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public interface IGetDetailedActivityByIdActionHandler
     {
-        Task<GetDetailedActivityByIdRequest.Response> Handle(GetDetailedActivityByIdRequest request);
+        Task<GetDetailedActivityByIdRequest.Response> HandleAsync(GetDetailedActivityByIdRequest request);
     }
 
     public class GetDetailedActivityByIdRequest

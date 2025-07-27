@@ -51,6 +51,7 @@ namespace StravaApiClient
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
 
                 if (result == null)
                 {
