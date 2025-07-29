@@ -132,18 +132,18 @@ namespace SegmentSniper.GraphQL.Mutations
             AddField(new FieldType
             {
                 Name = "DeleteEquipment",
-                Type = typeof(DeleteResultGraphType),
+                Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
                 ),
-                Resolver = new FuncFieldResolver<bool>(async context =>
+                Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
                     var userId = context.GetArgument<string>("userId");
                     var equipmentId = context.GetArgument<string>("equipmentId");
                     var service = context.RequestServices.GetRequiredService<IDeleteEquipment>();
                     var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
-                    return result.Success;
+                    return result.Bike;
                 }),
             });
 
@@ -153,7 +153,7 @@ namespace SegmentSniper.GraphQL.Mutations
                 Type = typeof(DeleteResultGraphType),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the equipment being retired." }
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the equipment being deleted." }
                 ),
                 Resolver = new FuncFieldResolver<bool>(async context =>
                 {
