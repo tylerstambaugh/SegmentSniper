@@ -1,8 +1,10 @@
-﻿namespace SegmentSniper.Services.Garage
+﻿using SegmentSniper.Services.Common;
+
+namespace SegmentSniper.Services.Garage
 {
     public interface IDeleteBike
     {
-        Task<DeleteBikeContract.Result> ExecuteAsync(DeleteBikeContract contract);
+        Task<DeleteResult> ExecuteAsync(DeleteBikeContract contract);
     }
 
     public class DeleteBikeContract
@@ -14,10 +16,6 @@
         }
 
         public string UserId { get; set; }
-        public string BikeId { get; set; }
-        public class Result
-        {
-            public bool Success { get; set; }
-        }
+        public string BikeId { get; set; }       
     }
 }

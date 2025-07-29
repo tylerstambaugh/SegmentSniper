@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Services.Garage.Equipment;
+using SegmentSniper.Services.Common;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -13,7 +13,7 @@ namespace SegmentSniper.Services.Garage
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<DeleteBikeContract.Result> ExecuteAsync(DeleteBikeContract contract)
+        public async Task<DeleteResult> ExecuteAsync(DeleteBikeContract contract)
         {
             ValidateContract(contract);
 
@@ -32,20 +32,20 @@ namespace SegmentSniper.Services.Garage
 
                 if (bikeToDelete == null)
                 {
-                    return new DeleteBikeContract.Result { Success = false };
+                    return new DeleteResult(false);
                 }
-               
+
                 _segmentSniperDbContext.Bikes
                         .Remove(bikeToDelete);
 
                 var numRows = _segmentSniperDbContext.SaveChanges();
 
-                return new DeleteBikeContract.Result { Success = numRows > 0 };
-                
+                return new DeleteResult(numRows > 0);
+
             }
             catch (Exception ex)
             {
-                return new DeleteBikeContract.Result { Success = false };
+                return new DeleteResult(false);
             }
         }
 

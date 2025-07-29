@@ -147,7 +147,7 @@ export enum FrameTypeEnum {
 export type GarageMutations = {
   __typename?: 'GarageMutations';
   deleteBike?: Maybe<DeleteResult>;
-  deleteEquipment?: Maybe<DeleteResult>;
+  deleteEquipment?: Maybe<BikeModel>;
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
@@ -211,7 +211,7 @@ export type DeleteEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
+export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -267,7 +267,22 @@ export const DeleteEquipmentDocument = gql`
     mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
   garage {
     deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
-      success
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
     }
   }
 }

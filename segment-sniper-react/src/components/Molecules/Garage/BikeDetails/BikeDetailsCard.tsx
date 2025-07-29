@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDeleteBikeMutation } from "../GraphQl/useDeleteBike";
 import useUserStore from "../../../../stores/useUserStore";
 import DeleteBikeModal from "./DeleteBikeModal";
+import { AppRoutes } from "../../../../enums/AppRoutes";
+import { useNavigate } from "react-router-dom";
 
 
 type BikeDetailsCardProps = {
@@ -18,6 +20,7 @@ type BikeDetailsCardProps = {
 const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
     const user = useUserStore((state) => state.user);
     const convert = useConversionHelpers();
+    const navigate = useNavigate();
     const [showDeleteBikeModal, setShowDeleteBikeModal] = useState(false);
 
     const [deleteBike] = useDeleteBikeMutation({
@@ -26,7 +29,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             userId: bike?.userId ?? "",
         },
         onCompleted: (data) => {
-            console.log("Bike deleted successfully", data);
+            navigate(`/${AppRoutes.Garage}`);
         },
         onError: (error) => {
             console.error("Error deleting bike", error);
@@ -66,11 +69,17 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Body>
                     <Card.Title>
                         <Row>
-                            <Col xs={4} className="d-flex">
-                                {bike?.name ?? "Bike Not Found"}
-                                <Button onClick={() => setShowDeleteBikeModal(true)} variant="link" className="ms-auto">
-                                    <FontAwesomeIcon icon={faTrashCan} />
-                                </Button>
+                            <Col >
+                                <div className="d-flex align-items-center">
+                                    <span>{bike?.name ?? "Bike Not Found"}</span>
+                                    <Button
+                                        onClick={() => setShowDeleteBikeModal(true)}
+                                        variant="link"
+                                        className="ms-2 p-0"
+                                    >
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                    </Button>
+                                </div>
                             </Col>
                         </Row>
                     </Card.Title>
