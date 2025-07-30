@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { BikeList } from "../../Molecules/Garage/BikeList/BikeList";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ImportBikesModal from "../../Molecules/Garage/ImportBikes/ImportBikesModal";
 import UpsertBikeModal, { UpsertBikeFormValues } from "../../Molecules/Garage/UpsertBike/UpsertBikeModal";
 import { useUpsertBikeMutation } from "../../Molecules/Garage/UpsertBike/GraphQl/useUpsertBikeMutation";
@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FrameType, FrameTypeToEnumMap } from "../../../enums/FrameTypes";
 import { GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables } from "../../../graphql/generated";
+import { ApolloError } from "@apollo/client";
 
 
 type GarageModalState =
@@ -19,7 +20,10 @@ type GarageModalState =
 export default function GarageMenu() {
     const user = useUserStore((state) => state.user);
     const [modalState, setModalState] = useState<GarageModalState>({ type: "none" });
+    const abortRef = useRef<AbortController | null>(null);
+
     const handleClosedModal = () => {
+        abortRef.current?.abort();
         setModalState({ type: "none" });
     }
 
@@ -28,10 +32,13 @@ export default function GarageMenu() {
             error: upsertBikeError }
     ] = useUpsertBikeMutation();
 
-    async function handleUpsertBike(values: UpsertBikeFormValues) {
+    async function handleUpsertBike(values: UpsertBikeFormValues): Promise<boolean> {
+
+        abortRef.current?.abort();
+        abortRef.current = new AbortController();
 
         try {
-            await upsertBike({
+            const result = await upsertBike({
                 variables: {
                     userId: user?.id ?? '',
                     bike: {
@@ -43,9 +50,14 @@ export default function GarageMenu() {
                         description: values.bikeDescription,
                     },
                 },
+                context: {
+                    fetchOptions: {
+                        signal: abortRef.current.signal,
+                    },
+                },
                 update: (cache, { data }) => {
                     const newBike = data?.garage?.upsertBike;
-                    if (!newBike || !user?.id) return;
+                    if (!newBike || !user?.id) return
 
                     const queryVars: GetBikesByUserIdQueryVariables = {
                         userId: user.id,
@@ -69,14 +81,24 @@ export default function GarageMenu() {
                                 },
                             },
                         });
-                    } catch (error) {
-                        console.warn('Apollo cache update failed:', error);
+
+                    } catch (e: unknown) {
+                        if (e instanceof DOMException && e.name === 'AbortError') {
+                            console.info('Upsert bike request was aborted');
+                        } else if (e instanceof ApolloError) {
+                            console.error('Apollo error:', e.message, e.graphQLErrors);
+                        } else {
+                            console.error('Unexpected error upserting bike', e);
+                        }
+                        return false;
                     }
                 },
             });
             handleClosedModal();
+            return !!result.data?.garage?.upsertBike;
         } catch (e) {
             console.error("Error upserting bike", e);
+            return false
         }
     }
 
