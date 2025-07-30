@@ -13,7 +13,7 @@ export type UpsertBikeModalProps = {
     show: boolean;
     onClose: () => void;
     loading?: boolean;
-    handleUpsertBike: (values: UpsertBikeFormValues) => Promise<void>;
+    handleUpsertBike: (values: UpsertBikeFormValues) => Promise<boolean>;
     error: ApolloError | undefined
     bike?: BikeModel;
 }
@@ -53,6 +53,7 @@ const UpsertBikeModal = ({
 
     const validationSchema = Yup.object({
         bikeName: Yup.string().required('Required'),
+        bikeFrameType: Yup.number().required('Frame type is required'),
         description: Yup.string().max(250, 'Description must be 250 characters or less'),
         milesLogged: Yup.number().min(0, 'Miles logged must be a positive number'),
     })
@@ -63,9 +64,8 @@ const UpsertBikeModal = ({
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values: UpsertBikeFormValues) => {
-            console.log("calling upsert");
-            await handleUpsertBike(values).then(() => {
-                if (!loading && !error) {
+            await handleUpsertBike(values).then((result) => {
+                if (result === true) {
                     toast.success(`Bike ${isEdit ? 'updated' : 'added'} successfully`);
                     onClose();
                     formik.resetForm()

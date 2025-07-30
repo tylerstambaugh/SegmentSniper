@@ -32,6 +32,7 @@ const BikeFrameTypeDropdown = ({ selection, onChange, errors }: Props) => {
                 <Col>
                     <Select
                         closeMenuOnSelect={true}
+                        required
                         className={styles.select}
                         isMulti={false}
                         components={animatedComponents}
