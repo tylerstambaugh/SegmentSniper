@@ -149,18 +149,18 @@ namespace SegmentSniper.GraphQL.Mutations
 
             AddField(new FieldType
             {
-                Name = "DeleteBike",
+                Name = "DeleteBikes",
                 Type = typeof(DeleteResultGraphType),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the equipment being deleted." }
+                    new QueryArgument<NonNullGraphType<ListGraphType<IdGraphType>>> { Name = "bikeIds", Description = "The Ids of the bikes being deleted." }
                 ),
                 Resolver = new FuncFieldResolver<bool>(async context =>
                 {
                     var userId = context.GetArgument<string>("userId");
-                    var bikeId = context.GetArgument<string>("bikeId");
+                    var bikeIds = context.GetArgument<List<string>>("bikeIds");
                     var service = context.RequestServices.GetRequiredService<IDeleteBike>();
-                    var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeId));
+                    var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeIds));
                     return result.Success;
                 }),
             });

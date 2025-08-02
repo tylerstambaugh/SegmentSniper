@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Services.Common;
 
 namespace SegmentSniper.Services.Garage
@@ -17,36 +18,43 @@ namespace SegmentSniper.Services.Garage
         {
             ValidateContract(contract);
 
-            try
+            var result = new DeleteResult(false);
+            try            
             {
-                var equipmentToDelete = await _segmentSniperDbContext.Equipment
-                    .Where(e => e.BikeId == contract.BikeId).ToListAsync();
 
-                if (equipmentToDelete.Count > 0)
+                foreach (var bikeId in contract.BikeIds)
                 {
-                    _segmentSniperDbContext.Equipment.RemoveRange(equipmentToDelete);
+
+                    var equipmentToDelete = await _segmentSniperDbContext.Equipment
+                        .Where(e => e.BikeId == bikeId).ToListAsync();
+
+                    if (equipmentToDelete.Count > 0)
+                    {
+                        _segmentSniperDbContext.Equipment.RemoveRange(equipmentToDelete);
+                    }
+
+                    var bikeToDelete = await _segmentSniperDbContext.Bikes
+                        .FirstOrDefaultAsync(b => b.BikeId == bikeId && b.UserId == contract.UserId);
+
+                    if (bikeToDelete == null)
+                    {
+                        return new DeleteResult(false);
+                    }
+
+                    _segmentSniperDbContext.Bikes
+                            .Remove(bikeToDelete);
+
+                    var numRows = _segmentSniperDbContext.SaveChanges();
+
+                    result.Success = numRows > 0;
+
                 }
-
-                var bikeToDelete = await _segmentSniperDbContext.Bikes
-                    .FirstOrDefaultAsync(b => b.BikeId == contract.BikeId && b.UserId == contract.UserId);
-
-                if (bikeToDelete == null)
-                {
-                    return new DeleteResult(false);
-                }
-
-                _segmentSniperDbContext.Bikes
-                        .Remove(bikeToDelete);
-
-                var numRows = _segmentSniperDbContext.SaveChanges();
-
-                return new DeleteResult(numRows > 0);
-
             }
             catch (Exception ex)
             {
                 return new DeleteResult(false);
             }
+            return result;
         }
 
         private void ValidateContract(DeleteBikeContract contract)
@@ -61,9 +69,9 @@ namespace SegmentSniper.Services.Garage
                 throw new ArgumentException(nameof(contract.UserId));
             }
 
-            if (string.IsNullOrEmpty(contract.BikeId))
+            if (contract.BikeIds.Count <= 0)
             {
-                throw new ArgumentException(nameof(contract.BikeId));
+                throw new ArgumentException(nameof(contract.BikeIds));
             }
         }
     }

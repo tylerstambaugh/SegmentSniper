@@ -9,13 +9,13 @@ namespace SegmentSniper.Services.Garage
 
     public class DeleteBikeContract
     {
-        public DeleteBikeContract(string userId, string bikeId)
+        public DeleteBikeContract(string userId, List<string> bikeIds)
         {
             UserId = userId;
-            BikeId = bikeId;
+            BikeIds = bikeIds;
         }
 
         public string UserId { get; set; }
-        public string BikeId { get; set; }       
+        public List<string> BikeIds { get; set; }       
     }
 }
