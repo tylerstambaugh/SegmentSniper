@@ -25,7 +25,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
 
     const [deleteBike] = useDeleteBikeMutation({
         variables: {
-            bikeId: bike?.bikeId ?? "",
+            bikeIds: bike?.bikeId ? [bike.bikeId] : [],
             userId: bike?.userId ?? "",
         },
         onCompleted: (data) => {
