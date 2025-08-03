@@ -43,7 +43,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             }
             await deleteBike({
                 variables: {
-                    bikeId: bike!.bikeId,
+                    bikeIds: bike!.bikeId ? [bike.bikeId] : [],
                     userId: user?.id ?? '',
                 }
             });

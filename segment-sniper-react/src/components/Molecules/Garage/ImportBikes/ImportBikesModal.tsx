@@ -1,4 +1,7 @@
 import { Button, Col, Modal, Row } from "react-bootstrap";
+import useUserStore from "../../../../stores/useUserStore";
+import { useImportGarage } from "./GraphQl/useImportGarage";
+import toast from "react-hot-toast";
 
 
 export type ImportBikesModalProps = {
@@ -7,9 +10,32 @@ export type ImportBikesModalProps = {
 };
 
 const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
+    const userId = useUserStore((state) => state.user?.id);
+    const [importGarage] = useImportGarage({
+        variables: {
+            userId: userId ?? "",
+        },
+        onCompleted: () => {
+            toast.success("Bikes imported successfully!");
+            onClose();
+        },
+        onError: (error) => {
+            toast.error(`Error importing bikes: ${error.message}`);
+        },
+    });
+
 
     const handleImport = () => {
-        //do the stuff
+        if (!userId) {
+            console.error("User ID is not available");
+            return;
+        }
+        importGarage({
+            variables: {
+                userId: userId,
+            },
+        });
+
     }
 
 

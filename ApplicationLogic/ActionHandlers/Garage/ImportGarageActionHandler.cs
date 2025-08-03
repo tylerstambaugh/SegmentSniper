@@ -62,7 +62,15 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
 
         private void ValidateRequest(ImportGarageRequest request)
         {
-            throw new NotImplementedException();
+            if(request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if(string.IsNullOrEmpty(request.UserId))
+            {
+                throw new ArgumentNullException(nameof(request.UserId));
+            }
         }
     }
 }
