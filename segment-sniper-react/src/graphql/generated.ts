@@ -254,6 +254,13 @@ export type GetBikesByUserIdQueryVariables = Exact<{
 
 export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
+export type ImportGarageMutationVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type ImportGarageMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', importGarage?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+
 export type UpsertBikeMutationVariables = Exact<{
   bike: BikeInput;
   userId: Scalars['ID']['input'];
@@ -571,6 +578,56 @@ export type GetBikesByUserIdQueryHookResult = ReturnType<typeof useGetBikesByUse
 export type GetBikesByUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByUserIdLazyQuery>;
 export type GetBikesByUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByUserIdSuspenseQuery>;
 export type GetBikesByUserIdQueryResult = Apollo.QueryResult<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>;
+export const ImportGarageDocument = gql`
+    mutation ImportGarage($userId: ID!) {
+  garage {
+    importGarage(userId: $userId) {
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}
+    `;
+export type ImportGarageMutationFn = Apollo.MutationFunction<ImportGarageMutation, ImportGarageMutationVariables>;
+
+/**
+ * __useImportGarageMutation__
+ *
+ * To run a mutation, you first call `useImportGarageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportGarageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importGarageMutation, { data, loading, error }] = useImportGarageMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useImportGarageMutation(baseOptions?: Apollo.MutationHookOptions<ImportGarageMutation, ImportGarageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ImportGarageMutation, ImportGarageMutationVariables>(ImportGarageDocument, options);
+      }
+export type ImportGarageMutationHookResult = ReturnType<typeof useImportGarageMutation>;
+export type ImportGarageMutationResult = Apollo.MutationResult<ImportGarageMutation>;
+export type ImportGarageMutationOptions = Apollo.BaseMutationOptions<ImportGarageMutation, ImportGarageMutationVariables>;
 export const UpsertBikeDocument = gql`
     mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
   garage {

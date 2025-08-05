@@ -9,7 +9,7 @@ export default function MainMenu() {
   return (
     <>
       <Row className="d-flex justify-content-center pt-3 ">
-        <Col >
+        <Col xl={6} lg={8} md={10} sm={12} xs={12}>
           <Card className="shadow">
             <Card.Body className="mx-3">
               <div className="mb-2 text-center">

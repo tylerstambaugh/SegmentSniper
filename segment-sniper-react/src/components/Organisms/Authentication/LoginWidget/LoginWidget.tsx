@@ -93,7 +93,7 @@ export default function LoginWidget() {
     <>
       {!isAuthenticated || userData?.id === null ? (
         <Row className="d-flex justify-content-center mt-5">
-          <Col xs={10} md={6} lg={6} xl={4}>
+          <Col xs={10} md={6} lg={6} xl={3}>
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 text-center">

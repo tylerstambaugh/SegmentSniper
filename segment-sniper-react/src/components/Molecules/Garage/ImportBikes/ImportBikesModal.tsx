@@ -46,13 +46,15 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
             </Modal.Header>
             <Modal.Body>
                 <Col>
-                    <Row className="mb-3">
+                    <Row className="m-3">
                         This will query your strava activities for the last year and add any bikes you've ridden to your garage.
                     </Row>
-                    <Row className="mb-3">
-                        <Button variant="primary" onClick={handleImport}>
-                            Import
-                        </Button>
+                    <Row className="mb-3 justify-content-center">
+                        <Col className="text-center">
+                            <Button variant="primary" onClick={handleImport}>
+                                Import
+                            </Button>
+                        </Col>
                     </Row>
                 </Col>
             </Modal.Body>
