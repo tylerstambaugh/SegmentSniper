@@ -15,8 +15,7 @@ namespace SegmentSniper.GraphQL.Mutations
         public GarageMutations()
         {
             Name = "GarageMutations";
-
-            // Define the updateGarage mutation
+            
             AddField(new FieldType
             {
                 Name = "ImportGarage",

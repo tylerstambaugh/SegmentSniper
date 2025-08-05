@@ -45,11 +45,7 @@ export default function Dashboard() {
         className="d-flex flex-column justify-content-center"
       >
         {user?.hasStravaTokenData ? (
-          <Row >
-            <Col >
-              <MainMenu />
-            </Col>
-          </Row>
+          <MainMenu />
         ) : (
           <ConnectWithStrava />
         )}

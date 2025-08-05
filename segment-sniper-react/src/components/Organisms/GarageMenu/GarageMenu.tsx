@@ -124,9 +124,7 @@ export default function GarageMenu() {
 
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button onClick={() => {
-                            console.log("Import bikes clicked");
-                        }}>
+                        <Button onClick={() => setModalState({ type: "import" })}>
                             Import Bikes
                         </Button>
                     </Col>

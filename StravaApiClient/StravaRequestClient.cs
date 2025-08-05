@@ -277,15 +277,23 @@ namespace StravaApiClient
 
         private async Task<string> GetAccessToken()
         {
-            if (_cache.TryGetValue(_config.UserId, out string accessToken))
+            try
             {
-                return accessToken;
+                if (_cache.TryGetValue(_config.UserId, out string accessToken))
+                {
+                    return accessToken;
+                }
+                else
+                {
+                    await PostRefreshToken();
+                    return _cache.Get<string>(_config.UserId);
+                }
             }
-            else
+            catch(Exception e)
             {
-                await PostRefreshToken();
-                return _cache.Get<string>(_config.UserId);
+                throw new Exception("Error in GetAccessToken");
             }
+
         }
 
         private class RefreshTokenResponse
