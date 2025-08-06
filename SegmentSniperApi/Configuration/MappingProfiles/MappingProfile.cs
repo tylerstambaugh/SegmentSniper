@@ -250,7 +250,8 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName))
                 .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.ModelName))
                 .ForMember(dest => dest.IsPrimary, opt => opt.MapFrom(src => src.IsPrimary))
-                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment));
+                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment))
+                .ReverseMap();
 
             CreateMap<Equipment, EquipmentModel>()
                 .ForMember(dest => dest.EquipmentId, opt => opt.MapFrom(src => src.EquipmentId))
