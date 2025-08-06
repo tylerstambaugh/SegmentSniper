@@ -21,7 +21,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
         private readonly IMapper _mapper;
         private readonly ISegmentSniperDbContext _context;
         private readonly IImportGarage _importGarage;
-        private readonly int MaxActivities = 365;
+        private readonly int MaxActivities = 200;
 
         public ImportGarageActionHandler(ISegmentSniperDbContext context, IImportGarage importGarage, IStravaRequestService stravaRequestService,
             IMapper mapper, IActivityAdapter activityAdapter)
@@ -51,7 +51,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
 
 
                     //create records of all the bikes.
-                    var bikeIds = stravaActivities.SummaryActivities.Select(a => a.GearId).Distinct().ToList();
+                    var bikeIds = stravaActivities.SummaryActivities.Where(a => a.GearId != null).Select(a => a.GearId).Distinct().ToList();
 
                     var bikes = new List<BikeModel>();
                     foreach (var bikeId in bikeIds)

@@ -34,7 +34,8 @@ namespace SegmentSniper.Services.Garage
 
             foreach (var bike in bikesToAdd)
             {
-                mappedBikes.Add(_mapper.Map<BikeModel, Bike>(bike));
+                var mappedBike = _mapper.Map<BikeModel, Bike>(bike);
+                mappedBikes.Add(mappedBike);
             }
 
             _segmentSniperDbContext.Bikes.AddRange(mappedBikes);
