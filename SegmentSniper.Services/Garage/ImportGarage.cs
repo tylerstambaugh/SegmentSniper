@@ -21,6 +21,9 @@ namespace SegmentSniper.Services.Garage
         {
             ValidateContract(contract);
 
+            try
+            {
+
             var existingBikes = await _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId).ToListAsync();
 
             //If we want to seed the bike activities with data 
@@ -35,13 +38,24 @@ namespace SegmentSniper.Services.Garage
             foreach (var bike in bikesToAdd)
             {
                 var mappedBike = _mapper.Map<BikeModel, Bike>(bike);
+                mappedBike.ImportedFromStrava = true;
+                mappedBike.UserId = contract.UserId;
                 mappedBikes.Add(mappedBike);
             }
-
+                        
             _segmentSniperDbContext.Bikes.AddRange(mappedBikes);
 
+            await _segmentSniperDbContext.SaveChangesAsync();
 
-            return new ImportGarageContract.Result(new List<BikeModel>());
+            var allBikes = existingBikes.Concat(mappedBikes).ToList();
+            var returnListBikeModels = _mapper.Map<List<Bike>, List<BikeModel>>(allBikes);
+
+            return new ImportGarageContract.Result(returnListBikeModels);
+            }
+            catch(Exception e)
+            {
+                throw new ApplicationException("Failed to import garage", e);
+            }
         }
 
         private void ValidateContract(ImportGarageContract contract)
