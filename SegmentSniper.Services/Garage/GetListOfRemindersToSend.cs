@@ -3,7 +3,7 @@ using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.Garage
 {
-    public class GetListOfRemindersToSend : IGetListOfRemindersToSend, IExecutableServiceAsync<ReminderModel, GetListOfRemindersToSendContract>
+    public class GetListOfRemindersToSend : IGetListOfRemindersToSend, IExecutableServiceAsync<GetListOfRemindersToSendContract, List<ReminderModel>>
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
