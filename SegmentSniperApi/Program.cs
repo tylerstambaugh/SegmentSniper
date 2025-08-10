@@ -55,7 +55,7 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
 
     app.UseCors("AllowReactApp");
 
-    app.UseIdentityServer();
+    //app.UseIdentityServer();
     app.UseAuthentication();
     app.UseAuthorization();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure.Identity;
+using Clerk.Net.DependencyInjection;
 using Duende.IdentityServer.EntityFramework.Options;
 using GraphQL;
 using GraphQL.Authorization;
@@ -34,7 +35,7 @@ namespace SegmentSniper.Api.Configuration
             var jwtKey = builder.Configuration["Jwt-Key"];
 
             if (jwtKey == null)
-                throw new ApplicationException("Unable to load JWT Ket");
+                throw new ApplicationException("Unable to load JWT Key");
 
             // Setup configuration sources
             //This is being done in program.cs
@@ -69,21 +70,22 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
 
-            builder.Services.Configure<OperationalStoreOptions>(options =>
-            {
-                options.ConfigureDbContext = builder =>
-                    builder.UseSqlServer(connectionString,
-                                         sql => sql.MigrationsAssembly("SegmentSniper.Data"));
+            //REMOVE WHEN CLERK WORKING
+            //builder.Services.Configure<OperationalStoreOptions>(options =>
+            //{
+            //    options.ConfigureDbContext = builder =>
+            //        builder.UseSqlServer(connectionString,
+            //                             sql => sql.MigrationsAssembly("SegmentSniper.Data"));
 
-                // Token cleanup interval (default is 1 hour)
-                options.TokenCleanupInterval = 3600; // in seconds, e.g., 1 hour
+            //    // Token cleanup interval (default is 1 hour)
+            //    options.TokenCleanupInterval = 3600; // in seconds, e.g., 1 hour
 
-                // Tokens to be cleaned
-                options.TokenCleanupBatchSize = 100; // number of tokens to be cleaned in each batch
+            //    // Tokens to be cleaned
+            //    options.TokenCleanupBatchSize = 100; // number of tokens to be cleaned in each batch
 
-                // Automatic token cleanup (default is true)
-                options.EnableTokenCleanup = true;
-            });
+            //    // Automatic token cleanup (default is true)
+            //    options.EnableTokenCleanup = true;
+            //});
 
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -103,104 +105,141 @@ namespace SegmentSniper.Api.Configuration
 
             #endregion
 
-
+            //REMOVE WHEN CLERK WORKING
             #region Identity
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount = true;
+            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            //    {
+            //        options.SignIn.RequireConfirmedAccount = true;
 
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireNonAlphanumeric = true;
-                    options.Password.RequireUppercase = true;
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequiredUniqueChars = 1;
-                    options.User.RequireUniqueEmail = true;
+            //        options.Password.RequireDigit = true;
+            //        options.Password.RequireLowercase = true;
+            //        options.Password.RequireNonAlphanumeric = true;
+            //        options.Password.RequireUppercase = true;
+            //        options.Password.RequiredLength = 6;
+            //        options.Password.RequiredUniqueChars = 1;
+            //        options.User.RequireUniqueEmail = true;
 
-                    options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-                }
-            )
-               .AddRoles<IdentityRole>()
-               .AddDefaultTokenProviders()
-               .AddEntityFrameworkStores<SegmentSniperDbContext>();
+            //        options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+            //    }
+            //)
+            //   .AddRoles<IdentityRole>()
+            //   .AddDefaultTokenProviders()
+            //   .AddEntityFrameworkStores<SegmentSniperDbContext>();
 
-            builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-            {
-                options.TokenLifespan = TimeSpan.FromHours(24);
-            });
+            //builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+            //{
+            //    options.TokenLifespan = TimeSpan.FromHours(24);
+            //});
 
-            IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
+            //IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
 
-            serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
+            //serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
-                options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
-            });
-            
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
+            //    options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
+            //});
 
-            builder.Services.AddMemoryCache();
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
 
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.IncludeErrorDetails = true;
+            //        options.RequireHttpsMetadata = false;
+
+            //        options.SaveToken = true;
+            //        options.RequireHttpsMetadata = false;
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            //            ValidAudience = builder.Configuration["Jwt:Audience"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey))
+            //        };
+            //        options.Events = new JwtBearerEvents
+            //        {
+            //            OnChallenge = context =>
+            //            {
+            //                // Customize the response for unauthorized requests
+            //                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //                context.Response.ContentType = "application/json";
+
+            //                var result = JsonSerializer.Serialize(new
+            //                {
+            //                    error = "Unauthorized",
+            //                    description = "You are not authorized to access this resource."
+            //                });
+
+            //                return context.Response.WriteAsync(result);
+            //            }
+            //        };
+            //        options.Events = new JwtBearerEvents
+            //        {
+            //            OnForbidden = context =>
+            //            {
+            //                // Customize the response for unauthorized requests
+            //                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            //                context.Response.ContentType = "application/json";
+
+            //                var result = JsonSerializer.Serialize(new
+            //                {
+            //                    error = "Unauthorized",
+            //                    description = "You are not authorized to access this resource."
+            //                });
+
+            //                return context.Response.WriteAsync(result);
+            //            }
+            //        };
+            //    });
+            #endregion
+
+            #region Clerk          
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-
-                .AddJwtBearer(options =>
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "https://clerk.<your-domain>.clerk.accounts"; // Clerk issuer URL
+                options.Audience = "<your-clerk-api-audience>"; // usually your Clerk frontend API key or API identifier
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.IncludeErrorDetails = true;
-                    options.RequireHttpsMetadata = false;
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                };
 
-                    options.SaveToken = true;
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
+                // Optional: To debug token validation failures
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey))
-                    };
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnChallenge = context =>
-                        {
-                            // Customize the response for unauthorized requests
-                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                            context.Response.ContentType = "application/json";
+                        Console.WriteLine("Authentication failed: " + context.Exception.Message);
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
-                            var result = JsonSerializer.Serialize(new
-                            {
-                                error = "Unauthorized",
-                                description = "You are not authorized to access this resource."
-                            });
+            builder.Services.AddAuthorization();
 
-                            return context.Response.WriteAsync(result);
-                        }
-                    };
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnForbidden = context =>
-                        {
-                            // Customize the response for unauthorized requests
-                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                            context.Response.ContentType = "application/json";
 
-                            var result = JsonSerializer.Serialize(new
-                            {
-                                error = "Unauthorized",
-                                description = "You are not authorized to access this resource."
-                            });
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AdminOnly", policy =>
+            //        policy.RequireClaim("org:role", "admin"));
+            //});
 
-                            return context.Response.WriteAsync(result);
-                        }
-                    };
-                });
             #endregion
 
             #region GraphQl
@@ -331,6 +370,8 @@ namespace SegmentSniper.Api.Configuration
 
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
+
+            builder.Services.AddMemoryCache();
 
             ServiceRegistrations.RegisterServices(builder.Services);
 
