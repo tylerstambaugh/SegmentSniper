@@ -1,4 +1,4 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router'
 import './index.css';
 import Header from './components/Organisms/Header/Header';
 import Routes from './SegmentSniper.routes';
@@ -11,6 +11,7 @@ import AuthenticatedUserMonitor from './components/Organisms/Authentication/Auth
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 
@@ -24,40 +25,38 @@ const queryClient = new QueryClient({
   },
 });
 
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Missing Publishable Key')
+}
+
+
+
+
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
-  <>
-    <ErrorBoundary>
-      <ApolloClientProvider>
-        <QueryClientProvider client={queryClient}>
-          <Router>
+  <ErrorBoundary>
+    <ApolloClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
             <InitializeApp>
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
               <AuthenticatedUserMonitor />
               <Header />
-              <Routes />
+              <AppRoutes />
               <Footer />
             </InitializeApp>
-          </Router>
-          <Toaster
-            toastOptions={{
-              success: {
-                duration: 3000,
-                style: {
-                  background: 'green',
-                },
-              },
-              error: {
-                duration: 5000,
-                style: {
-                  background: '#fd2c60',
-                },
-              },
-            }}
-          />
-        </QueryClientProvider>
-      </ApolloClientProvider>
-    </ErrorBoundary>
-  </>
+            <Toaster
+              toastOptions={{
+                success: { duration: 3000, style: { background: 'green' } },
+                error: { duration: 5000, style: { background: '#fd2c60' } },
+              }}
+            />
+          </ClerkProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ApolloClientProvider>
+  </ErrorBoundary>
 );

@@ -9,6 +9,7 @@ import logo from '../../../assets/images/segment_sniper_logo_v3.webp';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 function Header() {
   const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
@@ -72,9 +73,9 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="w-100 d-flex justify-content-end">
             {tokenData !== null &&
-            tokenData!.accessToken &&
-            user !== null &&
-            user!.id ? (
+              tokenData!.accessToken &&
+              user !== null &&
+              user!.id ? (
               <>
                 <Nav.Item className={'fw-semibold text-end'}>
                   <Navbar.Text>
@@ -109,7 +110,7 @@ function Header() {
                       </span>
                       {user!.firstName}
                     </Link>
-                    {}
+                    { }
                   </Navbar.Text>
                 </Nav.Item>
                 <div className={'border-end mx-3 d-none d-md-block'}></div>
@@ -151,6 +152,12 @@ function Header() {
               </>
             )}
           </Nav>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </Navbar.Collapse>
       </Container>
     </Navbar>
