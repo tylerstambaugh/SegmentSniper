@@ -18,7 +18,11 @@ const PrivateRoute = ({ children, userRoles = [] }: Props) => {
   const userHasRequiredRole =
     user &&
     (userRoles.length === 0 ||
-      userRoles.some((role) => user.publicMetadata?.roles === role));
+      userRoles.some((role) =>
+        Array.isArray(user.publicMetadata?.roles)
+          ? user.publicMetadata.roles.includes(role)
+          : user.publicMetadata?.roles === role
+      ));
 
   return (
     <>
