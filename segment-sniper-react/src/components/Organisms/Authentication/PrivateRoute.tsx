@@ -1,59 +1,62 @@
 import { Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import useTokenDataStore from "../../../stores/useTokenStore";
+import { SignedIn, SignedOut, useUser } from "@clerk/react-router";
 import { UserRole } from "../../../enums/Roles";
-import useUserStore from "../../../stores/useUserStore";
 import { AppRoutes } from "../../../enums/AppRoutes";
 
 import type { JSX } from "react";
 
 type Props = {
   children: JSX.Element;
-  userRoles?: Array<UserRole>;
+  userRoles?: Array<string>;
 };
 
-const PrivateRoute = (props: Props) => {
-  const [isAuthenticated] = useTokenDataStore((state) => [
-    state.isAuthenticated,
-  ]);
-  const user = useUserStore((state) => state.user);
+const PrivateRoute = ({ children, userRoles = [] }: Props) => {
+  const { user } = useUser();
 
+  // Check roles from Clerk's publicMetadata
   const userHasRequiredRole =
-    user && props.userRoles?.every((role) => user.roles?.includes(role))
-      ? true
-      : false;
+    user &&
+    (userRoles.length === 0 ||
+      userRoles.some((role) =>
+        Array.isArray(user.publicMetadata?.roles)
+          ? user.publicMetadata.roles.includes(role)
+          : user.publicMetadata?.roles === role
+      ));
 
-  if (!isAuthenticated || user === null) {
-    return (
-      <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-        <Row className="text-center ">
-          <Col>
-            <p>You must be logged in to access this resource.</p>
-            <Link to={`/${AppRoutes.Login}`}>
-              <Button>Login</Button>
-            </Link>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+  return (
+    <>
+      <SignedOut>
+        <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
+          <Row className="text-center ">
+            <Col>
+              <p>You must be logged in to access this resource.</p>
+              <Link to={`/${AppRoutes.Login}`}>
+                <Button>Login</Button>
+              </Link>
+            </Col>
+          </Row>
+        </Container>
+      </SignedOut>
 
-  if (isAuthenticated && !userHasRequiredRole) {
-    return (
-      <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-        <Row className="text-center ">
-          <Col>
-            <p>You do have permission to access this resource.</p>
-            <Link to={`/${AppRoutes.Home}`}>
-              <Button>Home</Button>
-            </Link>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-
-  if (isAuthenticated && userHasRequiredRole) return props.children;
+      <SignedIn>
+        {!userHasRequiredRole ? (
+          <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
+            <Row className="text-center ">
+              <Col>
+                <p>You do not have permission to access this resource.</p>
+                <Link to={`/${AppRoutes.Home}`}>
+                  <Button>Home</Button>
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        ) : (
+          children
+        )}
+      </SignedIn>
+    </>
+  );
 };
 
 export default PrivateRoute;
