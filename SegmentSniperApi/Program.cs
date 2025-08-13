@@ -17,7 +17,7 @@ var app = builder.Build();
 // Configure the application
 Configure(app, app.Environment, app.Services.GetRequiredService<Microsoft.Extensions.Logging.ILoggerFactory>());
 
-await SeedData.Initialize(app.Services, configuration);
+//await SeedData.Initialize(app.Services, configuration);
 app.Run();
 
 

@@ -1,7 +1,6 @@
 import { BrowserRouter, Route } from 'react-router'
 import './index.css';
 import Header from './components/Organisms/Header/Header';
-import Routes from './SegmentSniper.routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createRoot } from 'react-dom/client';
@@ -14,6 +13,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
+import AppRoutesComponent from './SegmentSniper.routes';
 
 
 const queryClient = new QueryClient({
@@ -40,12 +40,12 @@ root.render(
   <ErrorBoundary>
     <ApolloClientProvider>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <BrowserRouter>
             <InitializeApp>
               <AuthenticatedUserMonitor />
               <Header />
-              <AppRoutes />
+              <AppRoutesComponent />
               <Footer />
             </InitializeApp>
             <Toaster
@@ -54,8 +54,8 @@ root.render(
                 error: { duration: 5000, style: { background: '#fd2c60' } },
               }}
             />
-          </ClerkProvider>
-        </BrowserRouter>
+          </BrowserRouter>
+        </ClerkProvider>
       </QueryClientProvider>
     </ApolloClientProvider>
   </ErrorBoundary>

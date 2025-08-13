@@ -1,144 +1,146 @@
-﻿using IdentityModel;
-using Microsoft.AspNetCore.Identity;
-using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Models.Models.Auth;
-using SegmentSniper.Models.Models.Auth.User;
-using SegmentSniper.Services.AuthServices;
-using SegmentSniper.Services.AuthServices.Token;
-using SegmentSniper.Services.StravaToken;
-using System.IdentityModel.Tokens.Jwt;
-using Serilog;
-using Serilog.Context;
-using Microsoft.Extensions.Configuration;
+﻿//using IdentityModel;
+//using Microsoft.AspNetCore.Identity;
+//using SegmentSniper.Data.Entities.Auth;
+//using SegmentSniper.Models.Models.Auth;
+//using SegmentSniper.Models.Models.Auth.User;
+//using SegmentSniper.Services.AuthServices;
+//using SegmentSniper.Services.AuthServices.Token;
+//using SegmentSniper.Services.StravaToken;
+//using System.IdentityModel.Tokens.Jwt;
+//using Serilog;
+//using Serilog.Context;
+//using Microsoft.Extensions.Configuration;
 
-namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
-{
-    public class LoginUserActionHandler : ILoginUserActionHandler
-    {
-        private readonly IAuthenticateUser _authenticateUserService;
-        private readonly ICreateToken _createToken;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
-        private readonly IGenerateRefreshToken _generateRefreshToken;
-        private readonly IGetUserRoles _getUserRoles;
-        private readonly IGetStravaTokenForUser _getStravaTokenForUser;
 
-        public LoginUserActionHandler(IAuthenticateUser authenticateUserService,
-            ICreateToken createTokenService,
-            UserManager<ApplicationUser> userManager,
-            IConfiguration configuration,
-            IGenerateRefreshToken generateRefreshToken,
-            IGetUserRoles getUserRoles,
-            IGetStravaTokenForUser getStravaTokenForUser)
-        {
-            _authenticateUserService = authenticateUserService;
-            _createToken = createTokenService;
-            _userManager = userManager;
-            _configuration = configuration;
-            _generateRefreshToken = generateRefreshToken;
-            _getUserRoles = getUserRoles;
-            _getStravaTokenForUser = getStravaTokenForUser;
-        }
+//namespace SegmentSniper.ApplicationLogic.ActionHandlers.Authentication
+//{
+//    [Obsolete]
+//    public class LoginUserActionHandler : ILoginUserActionHandler
+//    {
+//        private readonly IAuthenticateUser _authenticateUserService;
+//        private readonly ICreateToken _createToken;
+//        private readonly UserManager<ApplicationUser> _userManager;
+//        private readonly IConfiguration _configuration;
+//        private readonly IGenerateRefreshToken _generateRefreshToken;
+//        private readonly IGetUserRoles _getUserRoles;
+//        private readonly IGetStravaTokenForUser _getStravaTokenForUser;
 
-        public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
-        {
-            ValidateRequest(request);
-            try
-            {
-                var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
+//        public LoginUserActionHandler(IAuthenticateUser authenticateUserService,
+//            ICreateToken createTokenService,
+//            UserManager<ApplicationUser> userManager,
+//            IConfiguration configuration,
+//            IGenerateRefreshToken generateRefreshToken,
+//            IGetUserRoles getUserRoles,
+//            IGetStravaTokenForUser getStravaTokenForUser)
+//        {
+//            _authenticateUserService = authenticateUserService;
+//            _createToken = createTokenService;
+//            _userManager = userManager;
+//            _configuration = configuration;
+//            _generateRefreshToken = generateRefreshToken;
+//            _getUserRoles = getUserRoles;
+//            _getStravaTokenForUser = getStravaTokenForUser;
+//        }
 
-                //need to check if user.LoggedInUser is null and handle
-                if (user == null)
-                {
-                    return new LoginUserRequest.Response
-                    {
-                        ErrorMessage = "User not found"
-                    };
-                }
-                var authenticatedUser = user.LoggedInUser;
-                if (authenticatedUser != null)
-                {
-                    var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
+//        public async Task<LoginUserRequest.Response> Handle(LoginUserRequest request)
+//        {
+//            ValidateRequest(request);
+//            try
+//            {
+//                var user = await _authenticateUserService.ExecuteAsync(new AuthenticateUserContract(request.UserLogin));
 
-                    var token = _createToken.Execute(new CreateTokenContract(authClaims));
+//                //need to check if user.LoggedInUser is null and handle
+//                if (user == null)
+//                {
+//                    return new LoginUserRequest.Response
+//                    {
+//                        ErrorMessage = "User not found"
+//                    };
+//                }
+//                var authenticatedUser = user.LoggedInUser;
+//                if (authenticatedUser != null)
+//                {
+//                    var authClaims = _getUserRoles.Execute(new GetUserRolesContract(user.LoggedInUser)).Result.Roles;
 
-                    var refreshToken = _generateRefreshToken.Execute();
+//                    var token = _createToken.Execute(new CreateTokenContract(authClaims));
 
-                    _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
+//                    var refreshToken = _generateRefreshToken.Execute();
 
-                    // set the refresh token on the user in the db:
-                    authenticatedUser.RefreshToken = refreshToken;
-                    authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
-                    authenticatedUser.LastLogin = DateTime.Now;
+//                    _ = int.TryParse(_configuration["JWT:RefreshTokenValidityInDays"], out int refreshTokenValidityInDays);
 
-                    await _userManager.UpdateAsync(authenticatedUser);
+//                    // set the refresh token on the user in the db:
+//                    authenticatedUser.RefreshToken = refreshToken;
+//                    authenticatedUser.RefreshTokenExpiration = DateTime.Now.AddDays(refreshTokenValidityInDays);
+//                    authenticatedUser.LastLogin = DateTime.Now;
 
-                    var tokenModel = new SegmentSniperTokenData
-                    {
-                        AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                        RefreshToken = refreshToken,
-                        Expiration = token.ValidTo
-                    };
+//                    await _userManager.UpdateAsync(authenticatedUser);
 
-                    var userStravaTokenResult = await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(authenticatedUser.Id));
+//                    var tokenModel = new SegmentSniperTokenData
+//                    {
+//                        AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+//                        RefreshToken = refreshToken,
+//                        Expiration = token.ValidTo
+//                    };
 
-                    var userStravaToken = userStravaTokenResult.StravaToken;
+//                    var userStravaTokenResult = await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(authenticatedUser.Id));
 
-                    var hasStravaTokenData = userStravaToken != null && userStravaToken.ExpiresAt < DateTime.Now.ToEpochTime();
+//                    var userStravaToken = userStravaTokenResult.StravaToken;
 
-                    var userDto = new UserDto
-                    {
-                        Id = authenticatedUser.Id,
-                        FirstName = authenticatedUser.FirstName,
-                        Email = authenticatedUser.Email,
-                        HasStravaTokenData = hasStravaTokenData,
-                        VerifiedEmail = authenticatedUser.EmailConfirmed,
-                        Roles = user.Roles,
-                    };
+//                    var hasStravaTokenData = userStravaToken != null && userStravaToken.ExpiresAt < DateTime.Now.ToEpochTime();
 
-                    Log.Debug($"User {authenticatedUser.Email} logged in");
+//                    var userDto = new UserDto
+//                    {
+//                        Id = authenticatedUser.Id,
+//                        FirstName = authenticatedUser.FirstName,
+//                        Email = authenticatedUser.Email,
+//                        HasStravaTokenData = hasStravaTokenData,
+//                        VerifiedEmail = authenticatedUser.EmailConfirmed,
+//                        Roles = user.Roles,
+//                    };
 
-                    using(LogContext.PushProperty("UserId", "System"))
-                    {
-                        Log.Debug("writing event as system user");
-                    }
+//                    Log.Debug($"User {authenticatedUser.Email} logged in");
 
-                    return new LoginUserRequest.Response
-                    {
-                        UserData = userDto,
-                        TokenData = tokenModel
-                    };
+//                    using(LogContext.PushProperty("UserId", "System"))
+//                    {
+//                        Log.Debug("writing event as system user");
+//                    }
 
-                }
-                else
-                {
-                    throw new ApplicationException("Unable to login user");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to login user", ex);
-            }
-        }
+//                    return new LoginUserRequest.Response
+//                    {
+//                        UserData = userDto,
+//                        TokenData = tokenModel
+//                    };
 
-        private void ValidateRequest(LoginUserRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-            if (request.UserLogin == null)
-            {
-                throw new ArgumentNullException(nameof(request.UserLogin));
-            }
-            if (string.IsNullOrWhiteSpace(request.UserLogin.UserName))
-            {
-                throw new ArgumentException(nameof(request.UserLogin.UserName));
-            }
-            if (string.IsNullOrWhiteSpace(request.UserLogin.Password))
-            {
-                throw new ArgumentException(nameof(request.UserLogin.Password));
-            }
-        }
-    }
-}
+//                }
+//                else
+//                {
+//                    throw new ApplicationException("Unable to login user");
+//                }
+//            }
+//            catch (Exception ex)
+//            {
+//                throw new ApplicationException("Unable to login user", ex);
+//            }
+//        }
+
+//        private void ValidateRequest(LoginUserRequest request)
+//        {
+//            if (request == null)
+//            {
+//                throw new ArgumentNullException(nameof(request));
+//            }
+//            if (request.UserLogin == null)
+//            {
+//                throw new ArgumentNullException(nameof(request.UserLogin));
+//            }
+//            if (string.IsNullOrWhiteSpace(request.UserLogin.UserName))
+//            {
+//                throw new ArgumentException(nameof(request.UserLogin.UserName));
+//            }
+//            if (string.IsNullOrWhiteSpace(request.UserLogin.Password))
+//            {
+//                throw new ArgumentException(nameof(request.UserLogin.Password));
+//            }
+//        }
+//    }
+//}
