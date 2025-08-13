@@ -1,20 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { SignedIn, SignedOut, useUser } from "@clerk/react-router";
-import { UserRole } from "../../../enums/Roles";
 import { AppRoutes } from "../../../enums/AppRoutes";
 
-import type { JSX } from "react";
-
 type Props = {
-  children: JSX.Element;
   userRoles?: Array<string>;
 };
 
-const PrivateRoute = ({ children, userRoles = [] }: Props) => {
+const PrivateRoute = ({ userRoles = [] }: Props) => {
   const { user } = useUser();
 
-  // Check roles from Clerk's publicMetadata
   const userHasRequiredRole =
     user &&
     (userRoles.length === 0 ||
@@ -28,7 +23,7 @@ const PrivateRoute = ({ children, userRoles = [] }: Props) => {
     <>
       <SignedOut>
         <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-          <Row className="text-center ">
+          <Row className="text-center">
             <Col>
               <p>You must be logged in to access this resource.</p>
               <Link to={`/${AppRoutes.Login}`}>
@@ -42,7 +37,7 @@ const PrivateRoute = ({ children, userRoles = [] }: Props) => {
       <SignedIn>
         {!userHasRequiredRole ? (
           <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-            <Row className="text-center ">
+            <Row className="text-center">
               <Col>
                 <p>You do not have permission to access this resource.</p>
                 <Link to={`/${AppRoutes.Home}`}>
@@ -52,7 +47,7 @@ const PrivateRoute = ({ children, userRoles = [] }: Props) => {
             </Row>
           </Container>
         ) : (
-          children
+          <Outlet />
         )}
       </SignedIn>
     </>

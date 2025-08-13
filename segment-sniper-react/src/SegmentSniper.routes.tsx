@@ -1,10 +1,5 @@
 import { useEffect } from "react";
-import {
-  Routes as RRRoutes,
-  Route,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/Authentication/Register";
 import { AppRoutes } from "./enums/AppRoutes";
@@ -31,152 +26,42 @@ import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 import BikeDetails from "./pages/Garage/BikeDetails";
 import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
 
-interface Props {
-  defaultPage?: string;
-}
 
-export default function Routes({ defaultPage }: Props) {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (defaultPage) {
-      navigate(defaultPage);
-    }
-    // else {
-    //   const currentPathWithSearch = location.pathname + window.location.search;
-    //   navigate(currentPathWithSearch);
-    // }
-  }, []);
+export default function AppRoutesComponent() {
 
   return (
-    <>
-      <RRRoutes>
-        <Route path="/" element={<Outlet />}>
-          <Route path={AppRoutes.Home} element={<Home />} />
-          <Route path={AppRoutes.ForgotPassword} element={<ForgotPassword />} />
-          <Route path={AppRoutes.ResetPassword} element={<ResetPassword />} />
-          <Route path={AppRoutes.Register} element={<Register />} />
-          <Route path={AppRoutes.Login} element={<Login />} />
-          <Route
-            path={AppRoutes.ConfirmEmailCheckCode}
-            element={<ConfirmEmailCheckCode />}
-          />
-          <Route
-            path={AppRoutes.ConnectWithStravaSuccess}
-            element={<ConnectWithStravaSuccess />}
-          />
-          <Route
-            path={AppRoutes.ConnectWithStravaError}
-            element={<ConnectWithStravaError />}
-          />
-          <Route
-            path={AppRoutes.Logout}
-            element={<Logout inactive={false} />}
-          />
-          <Route
-            path={AppRoutes.InactiveLogout}
-            element={<AutoLoggedOut />}
-          />
-          <Route path={AppRoutes.About} element={<About />} />
-          <Route
-            path={AppRoutes.Dashboard}
-            element={
-              <PrivateRoute userRoles={[]}>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.Admin}
-            element={
-              <PrivateRoute userRoles={[UserRole.Admin]}>
-                <Admin />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.UserManagement}
-            element={
-              <PrivateRoute userRoles={[UserRole.Admin]}>
-                <BikeDetails />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.StravaWebhookManageMent}
-            element={
-              <PrivateRoute userRoles={[UserRole.Admin]}>
-                <ManageStravaWebhook />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.ConfirmEmail}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <ConfirmEmail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.Snipe}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <SegmentSniper />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.ActivitySearchResults}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <ActivitySearchResults />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.ActivityDetails}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <ActivityDetails />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.Profile}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <ProfileMain />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.SegmentPredictor}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <SegmentPredictions />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.Garage}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <GarageMenu />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={AppRoutes.BikeDetails}
-            element={
-              <PrivateRoute userRoles={[UserRole.User]}>
-                <BikeDetails />
-              </PrivateRoute>
-            }
-          />
+    <Routes>
+      {/* Public routes */}
+      <Route path={AppRoutes.Home} element={<Home />} />
+      <Route path={AppRoutes.About} element={<About />} />
+      <Route path={AppRoutes.Login} element={<Login />} />
+      <Route path={AppRoutes.Register} element={<Register />} />
+      <Route path={AppRoutes.ForgotPassword} element={<ForgotPassword />} />
+      <Route path={AppRoutes.ResetPassword} element={<ResetPassword />} />
+      <Route path={AppRoutes.ConfirmEmailCheckCode} element={<ConfirmEmailCheckCode />} />
+      <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
+      <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
 
-        </Route>
-      </RRRoutes>
-    </>
+      {/* User-protected routes */}
+      <Route element={<PrivateRoute userRoles={[UserRole.User]} />}>
+        <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
+        <Route path={AppRoutes.ConfirmEmail} element={<ConfirmEmail />} />
+        <Route path={AppRoutes.Snipe} element={<SegmentSniper />} />
+        <Route path={AppRoutes.ActivitySearchResults} element={<ActivitySearchResults />} />
+        <Route path={AppRoutes.ActivityDetails} element={<ActivityDetails />} />
+        <Route path={AppRoutes.Profile} element={<ProfileMain />} />
+        <Route path={AppRoutes.SegmentPredictor} element={<SegmentPredictions />} />
+        <Route path={AppRoutes.Garage} element={<GarageMenu />} />
+        <Route path={AppRoutes.BikeDetails} element={<BikeDetails />} />
+        <Route path={AppRoutes.ConnectWithStravaSuccess} element={<ConnectWithStravaSuccess />} />
+      </Route>
+
+      {/* Admin-protected routes */}
+      <Route element={<PrivateRoute userRoles={[UserRole.Admin]} />}>
+        <Route path={AppRoutes.Admin} element={<Admin />} />
+        <Route path={AppRoutes.UserManagement} element={<BikeDetails />} />
+        <Route path={AppRoutes.StravaWebhookManageMent} element={<ManageStravaWebhook />} />
+      </Route>
+    </Routes>
   );
 }

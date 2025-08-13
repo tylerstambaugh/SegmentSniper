@@ -1,46 +1,46 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SegmentSniper.Data.Entities.Auth;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Tests.Helpers;
+﻿//using Microsoft.AspNetCore.Identity;
+//using SegmentSniper.Data.Entities.Auth;
+//using Microsoft.EntityFrameworkCore;
+//using Moq;
+//using SegmentSniper.Data;
+//using SegmentSniper.Data.Entities.Auth;
+//using SegmentSniper.Tests.Helpers;
 
-namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
+//namespace SegmentSniper.Tests.Services.AuthServices.RegisterUser
 
-{
-    [TestClass]
-    public abstract class TestBase
-    {
-        protected SegmentSniper.Services.AuthServices.RegisterUser Service;
-        protected Mock<ISegmentSniperDbContext> Context;
-        protected Mock<UserManager<ApplicationUser>> UserMgr;
-        protected Mock<DbSet<ApplicationUser>> Users;
-        protected List<ApplicationUser> _users = new List<ApplicationUser>();
+//{
+//    [TestClass]
+//    public abstract class TestBase
+//    {
+//        protected SegmentSniper.Services.AuthServices.RegisterUser Service;
+//        protected Mock<ISegmentSniperDbContext> Context;
+//        protected Mock<UserManager<ApplicationUser>> UserMgr;
+//        protected Mock<DbSet<ApplicationUser>> Users;
+//        protected List<ApplicationUser> _users = new List<ApplicationUser>();
 
-        [TestInitialize]
-        public virtual void Arrange()
-        {
+//        [TestInitialize]
+//        public virtual void Arrange()
+//        {
 
-            UserMgr = MockUserManager.MockUserMgr(_users);
+//            UserMgr = MockUserManager.MockUserMgr(_users);
 
-            Context = new Mock<ISegmentSniperDbContext>().As<ISegmentSniperDbContext>();
+//            Context = new Mock<ISegmentSniperDbContext>().As<ISegmentSniperDbContext>();
 
-            Users = new Mock<DbSet<ApplicationUser>>();
+//            Users = new Mock<DbSet<ApplicationUser>>();
 
-            IQueryable<ApplicationUser> queryableUsers = _users.AsQueryable();
-            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Provider).Returns(queryableUsers.Provider);
-            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Expression).Returns(queryableUsers.Expression);
-            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.ElementType).Returns(queryableUsers.ElementType);
-            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.GetEnumerator()).Returns(() => queryableUsers.GetEnumerator());
+//            IQueryable<ApplicationUser> queryableUsers = _users.AsQueryable();
+//            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Provider).Returns(queryableUsers.Provider);
+//            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.Expression).Returns(queryableUsers.Expression);
+//            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.ElementType).Returns(queryableUsers.ElementType);
+//            Users.As<IQueryable<ApplicationUser>>().Setup(m => m.GetEnumerator()).Returns(() => queryableUsers.GetEnumerator());
 
-            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
+//            Context.Setup(ctx => ctx.Users).Returns(Users.Object);
 
-            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
+//            Service = new SegmentSniper.Services.AuthServices.RegisterUser(Context.Object, UserMgr.Object);
 
-            InternalArrange();
-        }
+//            InternalArrange();
+//        }
 
-        protected abstract void InternalArrange();
-    }
-}
+//        protected abstract void InternalArrange();
+//    }
+//}
