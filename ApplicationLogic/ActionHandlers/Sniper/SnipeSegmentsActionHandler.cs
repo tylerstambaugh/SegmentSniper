@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using StravaApiClient;

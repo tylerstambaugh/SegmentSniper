@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using SegmentSniper.Models.Models.Strava.Webhook;
+using SegmentSniper.Models.Strava.Webhook;
 using SegmentSniper.Services.StravaWebhook;
 using StravaApiClient.Models.Webhook;
 using StravaApiClient.Services.Webhook;

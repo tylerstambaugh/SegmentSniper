@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using Serilog;
 
 namespace SegmentSniper.Services.Garage

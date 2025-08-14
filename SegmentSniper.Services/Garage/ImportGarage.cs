@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {

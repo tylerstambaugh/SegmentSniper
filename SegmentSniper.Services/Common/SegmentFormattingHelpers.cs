@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Segment;
+﻿using SegmentSniper.Models.Strava.Segment;
 using System.Text.RegularExpressions;
 
 namespace SegmentSniper.Services.Common

@@ -1,5 +1,5 @@
-﻿using SegmentSniper.Models.Models.Auth.User;
-using SegmentSniper.Models.Models.ManageProfile;
+﻿using SegmentSniper.Models.ManageProfile;
+using SegmentSniper.Models.Models.Auth.User;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.ManageProfile

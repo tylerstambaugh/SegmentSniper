@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Models.Models.Strava.Activity;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.MachineLearning;

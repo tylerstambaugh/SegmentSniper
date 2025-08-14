@@ -1,6 +1,6 @@
 ﻿using GraphQL.Types;
 using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.GraphQL.Types
 {

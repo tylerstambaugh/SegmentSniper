@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Activity;
+﻿using SegmentSniper.Models.Strava.Activity;
 
 namespace StravaApiClient.Services.Activity
 {

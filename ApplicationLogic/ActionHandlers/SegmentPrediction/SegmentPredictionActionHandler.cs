@@ -2,7 +2,7 @@
 using SegmentSniper.Data;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using Serilog;
