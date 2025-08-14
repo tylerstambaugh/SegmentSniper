@@ -1,25 +1,19 @@
-﻿using AutoMapper;
-using Azure.Identity;
-using Clerk.Net.DependencyInjection;
-using Duende.IdentityServer.EntityFramework.Options;
+﻿using Azure.Identity;
 using GraphQL;
-using GraphQL.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SegmentSniper.Api.Configuration.MappingProfiles;
+using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Auth;
 using SegmentSniper.GraphQL;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
+using TorchSharp.Modules;
+
 
 namespace SegmentSniper.Api.Configuration
 {
@@ -27,15 +21,10 @@ namespace SegmentSniper.Api.Configuration
     {
         public static WebApplicationBuilder ConfigureBuilder(IConfiguration configuration)
         {
-            // var thumbPrint = configuration["CertificateThumbprint"];
 
             var builder = WebApplication.CreateBuilder();
 
             var connectionString = "";
-            var jwtKey = builder.Configuration["Jwt-Key"];
-
-            if (jwtKey == null)
-                throw new ApplicationException("Unable to load JWT Key");
 
             // Setup configuration sources
             //This is being done in program.cs
@@ -55,8 +44,8 @@ namespace SegmentSniper.Api.Configuration
             else
             {
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
-                if(!string.IsNullOrEmpty(keyVaultEndpoint))
-                builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
+                if (!string.IsNullOrEmpty(keyVaultEndpoint))
+                    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
             }
 
             builder.Services.AddApplicationInsightsTelemetry();
@@ -70,23 +59,7 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
 
-            //REMOVE WHEN CLERK WORKING
-            //builder.Services.Configure<OperationalStoreOptions>(options =>
-            //{
-            //    options.ConfigureDbContext = builder =>
-            //        builder.UseSqlServer(connectionString,
-            //                             sql => sql.MigrationsAssembly("SegmentSniper.Data"));
-
-            //    // Token cleanup interval (default is 1 hour)
-            //    options.TokenCleanupInterval = 3600; // in seconds, e.g., 1 hour
-
-            //    // Tokens to be cleaned
-            //    options.TokenCleanupBatchSize = 100; // number of tokens to be cleaned in each batch
-
-            //    // Automatic token cleanup (default is true)
-            //    options.EnableTokenCleanup = true;
-            //});
-
+            builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -103,103 +76,6 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Host.UseSerilog();
 
-            #endregion
-
-            //REMOVE WHEN CLERK WORKING
-            #region Identity
-            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            //    {
-            //        options.SignIn.RequireConfirmedAccount = true;
-
-            //        options.Password.RequireDigit = true;
-            //        options.Password.RequireLowercase = true;
-            //        options.Password.RequireNonAlphanumeric = true;
-            //        options.Password.RequireUppercase = true;
-            //        options.Password.RequiredLength = 6;
-            //        options.Password.RequiredUniqueChars = 1;
-            //        options.User.RequireUniqueEmail = true;
-
-            //        options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-            //    }
-            //)
-            //   .AddRoles<IdentityRole>()
-            //   .AddDefaultTokenProviders()
-            //   .AddEntityFrameworkStores<SegmentSniperDbContext>();
-
-            //builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-            //{
-            //    options.TokenLifespan = TimeSpan.FromHours(24);
-            //});
-
-            //IIdentityServerBuilder serverBuilder = builder.Services.AddIdentityServer();
-
-            //serverBuilder.ConfigureIdentityServer(configuration, builder.Environment);
-
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("AdminPolicy", _ => _.RequireClaim("role", "Admin"));
-            //    options.AddPolicy("UserPolicy", _ => _.RequireAuthenticatedUser());
-            //});
-
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.IncludeErrorDetails = true;
-            //        options.RequireHttpsMetadata = false;
-
-            //        options.SaveToken = true;
-            //        options.RequireHttpsMetadata = false;
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            //            ValidAudience = builder.Configuration["Jwt:Audience"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey))
-            //        };
-            //        options.Events = new JwtBearerEvents
-            //        {
-            //            OnChallenge = context =>
-            //            {
-            //                // Customize the response for unauthorized requests
-            //                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            //                context.Response.ContentType = "application/json";
-
-            //                var result = JsonSerializer.Serialize(new
-            //                {
-            //                    error = "Unauthorized",
-            //                    description = "You are not authorized to access this resource."
-            //                });
-
-            //                return context.Response.WriteAsync(result);
-            //            }
-            //        };
-            //        options.Events = new JwtBearerEvents
-            //        {
-            //            OnForbidden = context =>
-            //            {
-            //                // Customize the response for unauthorized requests
-            //                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            //                context.Response.ContentType = "application/json";
-
-            //                var result = JsonSerializer.Serialize(new
-            //                {
-            //                    error = "Unauthorized",
-            //                    description = "You are not authorized to access this resource."
-            //                });
-
-            //                return context.Response.WriteAsync(result);
-            //            }
-            //        };
-            //    });
             #endregion
 
             #region Clerk          
@@ -357,28 +233,18 @@ namespace SegmentSniper.Api.Configuration
 
             #endregion
 
-            var mapperConfig = new MapperConfiguration(cfg =>
+            builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
             });
 
-            IMapper mapper = mapperConfig.CreateMapper();
-
-
-            builder.Services.AddSingleton(mapperConfig); 
-            builder.Services.AddSingleton<IMapper>(mapper);
-
-
-            builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
             builder.Services.AddMemoryCache();
 
             ServiceRegistrations.RegisterServices(builder.Services);
 
-
             return builder;
         }
-
     }
 
     public class CustomAuthorizationHandler : IExceptionHandler

@@ -2,14 +2,14 @@
 using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Models.MachineLearning;
-using SegmentSniper.Models.Models.Garage;
-using SegmentSniper.Models.Models.Strava.Activity;
-using SegmentSniper.Models.Models.Strava.Athlete;
-using SegmentSniper.Models.Models.Strava.Misc;
-using SegmentSniper.Models.Models.Strava.Segment;
-using SegmentSniper.Models.Models.Strava.Token;
-using SegmentSniper.Models.Models.Strava.Webhook;
+using SegmentSniper.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Athlete;
+using SegmentSniper.Models.Strava.Misc;
+using SegmentSniper.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Webhook;
 using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
 using StravaApiClient.Models.Activity;
@@ -36,7 +36,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.StravaAthlete, opt => opt.MapFrom(src => src.StravaApiAthlete))
                 .ReverseMap();
 
-            CreateMap<StravaApiToken, StravaTokenModel>()
+            CreateMap<StravaAthleteInfo, StravaTokenModel>()
                .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken))
                .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
                .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.ExpiresIn))

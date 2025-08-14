@@ -1,6 +1,6 @@
 ﻿using GraphQL.Resolvers;
 using GraphQL.Types;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.GraphQL.Types
 {

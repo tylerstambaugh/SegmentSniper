@@ -271,7 +271,7 @@ namespace StravaApiClient
                 }
                 catch (Exception) { }
 
-                _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
+                _cache.Set(_config.AuthUserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
             }
         }
 
@@ -279,14 +279,14 @@ namespace StravaApiClient
         {
             try
             {
-                if (_cache.TryGetValue(_config.UserId, out string accessToken))
+                if (_cache.TryGetValue(_config.AuthUserId, out string accessToken))
                 {
                     return accessToken;
                 }
                 else
                 {
                     await PostRefreshToken();
-                    return _cache.Get<string>(_config.UserId);
+                    return _cache.Get<string>(_config.AuthUserId);
                 }
             }
             catch(Exception e)

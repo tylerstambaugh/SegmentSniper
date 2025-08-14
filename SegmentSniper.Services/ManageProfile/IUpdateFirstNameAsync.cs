@@ -1,5 +1,5 @@
 ﻿using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Models.Models.ManageProfile;
+using SegmentSniper.Models.ManageProfile;
 
 namespace SegmentSniper.Services.ManageProfile
 {

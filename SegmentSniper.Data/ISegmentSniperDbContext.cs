@@ -13,10 +13,7 @@ namespace SegmentSniper.Data
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
-
-        DbSet<ApplicationUser> Users { get; set; }
-        DbSet<StravaApiToken> StravaTokens { get; set; }
-        DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
+        DbSet<StravaAthleteInfo> StravaTokens { get; set; }
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }

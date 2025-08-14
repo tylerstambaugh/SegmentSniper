@@ -4,7 +4,7 @@ using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.GraphQL.Types;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.Garage.Equipment;
 

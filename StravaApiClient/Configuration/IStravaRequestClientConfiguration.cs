@@ -7,7 +7,7 @@
         string RefreshToken { get; set; }
         string BaseUrl { get; }
         string OauthBaseUrl { get; }
-        string UserId { get; set; }
+        string AuthUserId { get; set; }
 
     }
 }

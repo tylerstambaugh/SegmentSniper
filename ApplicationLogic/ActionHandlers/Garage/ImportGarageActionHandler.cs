@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;

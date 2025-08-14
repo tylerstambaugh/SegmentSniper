@@ -2,8 +2,8 @@
 using IdentityModel;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Enums;
-using SegmentSniper.Models.Models.Garage;
-using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Garage;
+using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Models.UIModels.Activity;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;

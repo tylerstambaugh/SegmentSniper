@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.StravaToken;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Token;
 
 namespace SegmentSniper.Services.StravaToken
 {
@@ -27,7 +27,7 @@ namespace SegmentSniper.Services.StravaToken
             {
                 return new GetStravaTokenForUserContract.Result
                 {
-                    StravaToken = _mapper.Map<StravaApiToken, StravaTokenModel>(stravaToken)
+                    StravaToken = _mapper.Map<StravaAthleteInfo, StravaTokenModel>(stravaToken)
                 };
             }
             else

@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Token;
+﻿using SegmentSniper.Models.Strava.Token;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {

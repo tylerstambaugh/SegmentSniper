@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
 using SegmentSniper.Models.Models.Garage;
-using SegmentSniper.Models.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Services.Garage;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
