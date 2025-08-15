@@ -43,7 +43,7 @@ root.render(
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <BrowserRouter>
             <InitializeApp>
-              <AuthenticatedUserMonitor />
+              {/* <AuthenticatedUserMonitor /> */}
               <Header />
               <AppRoutesComponent />
               <Footer />

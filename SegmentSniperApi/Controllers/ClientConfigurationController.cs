@@ -22,6 +22,8 @@ namespace SegmentSniper.Api.Controllers
         public ActionResult<ClientConfigurationRequest.Response> GetClientConfiguration()
         {
             var stravaApiClientId = _configuration["StravaApiSettings-ClientId"];
+            // need to rethink this so that we keep it on the server and
+            //deliver the maps down to the client.
             var googleMapsApiKey = _configuration["GoogleMapsApi-Key"];
             var clientConfig = new ClientConfigurationRequest.Response(stravaApiClientId, googleMapsApiKey);
 
