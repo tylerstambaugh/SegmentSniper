@@ -18,7 +18,6 @@ import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
 import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ConfirmEmailCheckCode from "./pages/Authentication/ConfirmEmailCheckCode";
 import ResetPassword from "./pages/Authentication/ResetPassword";
-import ProfileMain from "./components/Organisms/Profile/ProfileMain";
 import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
@@ -49,7 +48,6 @@ export default function AppRoutesComponent() {
         <Route path={AppRoutes.Snipe} element={<SegmentSniper />} />
         <Route path={AppRoutes.ActivitySearchResults} element={<ActivitySearchResults />} />
         <Route path={AppRoutes.ActivityDetails} element={<ActivityDetails />} />
-        <Route path={AppRoutes.Profile} element={<ProfileMain />} />
         <Route path={AppRoutes.SegmentPredictor} element={<SegmentPredictions />} />
         <Route path={AppRoutes.Garage} element={<GarageMenu />} />
         <Route path={AppRoutes.BikeDetails} element={<BikeDetails />} />
