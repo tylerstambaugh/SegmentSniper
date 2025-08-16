@@ -3,12 +3,12 @@ import getUserHasStravaToken from '../../../services/Api/Auth/getUserHasStravaTo
 import useApiConfigStore from '../../../stores/useApiConfigStore';
 import useUserStore from '../../../stores/useUserStore';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
-import useTokenDataStore from '../../../stores/useTokenStore';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useGetUserHasStravaToken = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
   const [user, setUser] = useUserStore((state) => [state.user, state.setUser]);
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
+  const { getToken } = useAuth();
 
   const { data, refetch, isLoading, isError, error } = useQuery({
     queryFn: triggerQuery,
@@ -21,9 +21,10 @@ export const useGetUserHasStravaToken = () => {
   const abortController = new AbortController();
 
   async function triggerQuery() {
+    const accessToken = await getToken({ template: 'SegmentSniper' });
     const contract: ApiContract = {
       baseUrl: apiConfig!.baseRestApiUrl,
-      token: tokenData?.accessToken ?? '',
+      token: accessToken ?? '',
       abortController,
     };
 
