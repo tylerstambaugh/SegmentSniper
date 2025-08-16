@@ -29,7 +29,7 @@ namespace SegmentSniper.Services.Garage.Equipment
             try
             {
                 var equipmentToDelete = _segmentSniperDbContext.Equipment
-                    .Where(e => e.EquipmentId == contract.EquipmentId && e.UserId == contract.UserId)
+                    .Where(e => e.EquipmentId == contract.EquipmentId && e.AuthUserId == contract.UserId)
                     .FirstOrDefault();
 
                 if (equipmentToDelete != null)

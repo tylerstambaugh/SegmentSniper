@@ -1,7 +1,4 @@
-﻿
-
-using SegmentSniper.Data.Entities.Auth;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Equiment
@@ -11,9 +8,7 @@ namespace SegmentSniper.Data.Entities.Equiment
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public required string BikeId { get; set; }
-        [ForeignKey("Users")]
-        public required string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public required string AuthUserId { get; set; }
         public bool IsPrimary { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }

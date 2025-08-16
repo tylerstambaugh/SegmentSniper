@@ -38,7 +38,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             ValidateRequest(request);
             _userId = request.UserId;
 
-            var token = _context.StravaTokens.Where(t => t.UserId == _userId).FirstOrDefault();
+            var token = _context.StravaAthleteInfo.Where(t => t.UserId == _userId).FirstOrDefault();
             if (token != null)
             {
                 try
@@ -86,7 +86,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             {
                 return new ML_SegmentEffort
                 {
-                    UserId = _userId,
+                    AuthUserId = _userId,
                     StravaSegmentEffortId = dse.SegmentEffortId,
                     StravaSegmentId = detailedSegment.SegmentId,
                     SegmentName = detailedSegment.Name,

@@ -13,14 +13,14 @@ namespace SegmentSniper.Services.User
 
         public async Task<GetUserByStravaAthleteIdContract.Result> ExecuteAsync(GetUserByStravaAthleteIdContract contract)
         {
-            var user = _segmentSniperDbContext.Users
-                .Where(u => u.StravaAthleteId == contract.StravaAthleteId)
+            var user = _segmentSniperDbContext.StravaAthleteInfo
+                .Where(u => u.StravaAthleteId == contract.StravaAthleteId.ToString())
                 .FirstOrDefault();
             if (user == null)
             {
-                return new GetUserByStravaAthleteIdContract.Result("", "" , "User not found");
+                return new GetUserByStravaAthleteIdContract.Result(0, "User not found");
             }
-            return new GetUserByStravaAthleteIdContract.Result(user.Id, user.UserName, "");
+            return new GetUserByStravaAthleteIdContract.Result(user.Id, "");
         }
     }
 }

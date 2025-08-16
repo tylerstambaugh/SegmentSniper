@@ -24,7 +24,7 @@ namespace SegmentSniper.Services.Garage
             try
             {
 
-            var existingBikes = await _segmentSniperDbContext.Bikes.Where(b => b.UserId == contract.UserId).ToListAsync();
+            var existingBikes = await _segmentSniperDbContext.Bikes.Where(b => b.AuthUserId == contract.UserId).ToListAsync();
 
             //If we want to seed the bike activities with data 
             //var existingBikeActivies = _segmentSniperDbContext.BikeActivities.Where(b => b.UserId == contract.UserId);
@@ -39,7 +39,7 @@ namespace SegmentSniper.Services.Garage
             {
                 var mappedBike = _mapper.Map<BikeModel, Bike>(bike);
                 mappedBike.ImportedFromStrava = true;
-                mappedBike.UserId = contract.UserId;
+                mappedBike.AuthUserId = contract.UserId;
                 mappedBikes.Add(mappedBike);
             }
                         

@@ -34,7 +34,7 @@ namespace SegmentSniper.Services.Garage
                     }
 
                     var bikeToDelete = await _segmentSniperDbContext.Bikes
-                        .FirstOrDefaultAsync(b => b.BikeId == bikeId && b.UserId == contract.UserId);
+                        .FirstOrDefaultAsync(b => b.BikeId == bikeId && b.AuthUserId == contract.UserId);
 
                     if (bikeToDelete == null)
                     {

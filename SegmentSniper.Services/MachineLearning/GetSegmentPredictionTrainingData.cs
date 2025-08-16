@@ -20,7 +20,7 @@ namespace SegmentSniper.Services.MachineLearning
 
         public async Task<GetSegmentPredictionTrainingDataContract.Result> ExecuteAsync(GetSegmentPredictionTrainingDataContract contract)
         {
-            var user = await _segmentSniperDbContext.Users.FirstOrDefaultAsync(u => u.Id == contract.UserId);
+            var user = await _segmentSniperDbContext.StravaAthleteInfo.FirstOrDefaultAsync(u => u.AuthUserId == contract.UserId);
 
             if (user == null)
             {
@@ -28,7 +28,7 @@ namespace SegmentSniper.Services.MachineLearning
             }
 
             var segmentEfforts = await _segmentSniperDbContext.ML_SegmentEfforts
-                .Where(e => e.UserId == contract.UserId)
+                .Where(e => e.AuthUserId == contract.UserId)
                 .ToListAsync();
 
             var segmentDataRecords = segmentEfforts
@@ -44,7 +44,7 @@ namespace SegmentSniper.Services.MachineLearning
         public async Task<int> GetCountOfTrainingRecords(string userId)
         {
             int segmentEffortCount = await _segmentSniperDbContext.ML_SegmentEfforts
-                .Where(e => e.UserId == userId)
+                .Where(e => e.AuthUserId == userId)
                 .CountAsync();
 
             return segmentEffortCount;

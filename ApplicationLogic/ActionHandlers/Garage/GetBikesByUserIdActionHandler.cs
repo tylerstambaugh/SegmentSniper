@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.StravaToken;
@@ -74,7 +73,7 @@ public class GetBikesByUserIdActionHandler : IGetBikesByUserIdActionHandler
         {
             throw new ArgumentNullException(nameof(request));
         }
-        if(string.IsNullOrEmpty(request.UserId))
+        if (string.IsNullOrEmpty(request.UserId))
         {
             throw new ArgumentNullException(nameof(request.UserId));
         }

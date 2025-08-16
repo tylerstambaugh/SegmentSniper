@@ -18,7 +18,7 @@ namespace SegmentSniper.Services.MachineLearning
 
         public async Task<GetSegmentPredictionModelContract.Result> ExecuteAsync(GetSegmentPredictionModelContract contract)
         {
-            var user = await _segmentSniperDbContext.Users.FirstOrDefaultAsync(u => u.Id == contract.UserId);
+            var user = await _segmentSniperDbContext.StravaAthleteInfo.FirstOrDefaultAsync(u => u.AuthUserId == contract.UserId);
 
             if (user == null)
             {
@@ -26,11 +26,11 @@ namespace SegmentSniper.Services.MachineLearning
             }
 
             var userSegmentPredictionModel = _segmentSniperDbContext.ML_SegmentPredictionModels
-                .Where(t => t.UserId == contract.UserId)
+                .Where(t => t.AuthUserId == contract.UserId)
                                   .Select(s => new
                                   {
                                       s.Id,
-                                      s.UserId,
+                                      s.AuthUserId,
                                       s.CreatedDate,
                                       s.UpdatedDate,
                                       s.SegmentPredictionModelData

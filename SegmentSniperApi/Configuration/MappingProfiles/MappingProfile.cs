@@ -242,7 +242,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             //Garage Mappings:
             CreateMap<Bike, BikeModel>()
                 .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.AuthUserId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.FrameType, opt => opt.MapFrom(src => src.FrameType))
@@ -256,7 +256,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             CreateMap<Equipment, EquipmentModel>()
                 .ForMember(dest => dest.EquipmentId, opt => opt.MapFrom(src => src.EquipmentId))
                 .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.AuthUserId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.InstallDate, opt => opt.MapFrom(src => src.InstallDate))

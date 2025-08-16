@@ -17,7 +17,7 @@ namespace SegmentSniper.Data
             : base(options)
         {
         }
-        public virtual DbSet<StravaAthleteInfo> StravaTokens { get; set; }
+        public virtual DbSet<StravaAthleteInfo> StravaAthleteInfo { get; set; }
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }

@@ -1,5 +1,4 @@
-import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import { SnipeSegmentListItem } from '../../models/Segment/SnipeSegmentListItem';
 
 const useHandlePercentageFromLeaderChange = () => {
   async function Handle(

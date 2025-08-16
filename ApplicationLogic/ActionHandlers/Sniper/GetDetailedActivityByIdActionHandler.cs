@@ -27,7 +27,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         public async Task<GetDetailedActivityByIdRequest.Response> HandleAsync(GetDetailedActivityByIdRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.StravaAthleteInfo.Where(t => t.UserId == request.UserId).FirstOrDefault();
             if (token?.RefreshToken != null)
             {
                 try
