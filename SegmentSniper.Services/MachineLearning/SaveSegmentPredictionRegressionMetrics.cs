@@ -17,7 +17,7 @@ namespace SegmentSniper.Services.MachineLearning
 
             var metricsToAdd = new SegmentPredictionRegressionMetrics
             {
-                UserId = contract.UserId,
+                AuthUserId = contract.UserId,
                 RegressionType = contract.RegressionType,
                 NumberOfLeaves = contract.NumberOfLeaves,
                 NumberOfTrees = contract.NumberOfTrees,

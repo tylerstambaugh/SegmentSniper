@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../stores/useTokenStore';
 import deleteStravaToken from '../../../services/Api/Profile/deleteStravaToken';
 import useProfileStore from '../../../stores/useProfileStore';
 import useUserStore from '../../../stores/useUserStore';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useDeleteStravaToken = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -16,12 +16,11 @@ export const useDeleteStravaToken = () => {
     state.user,
     state.setUser,
   ]);
-  const accessToken = useTokenDataStore(
-    (state) => state.tokenData?.accessToken
-  );
+  const { getToken } = useAuth();
 
   const mutate = useMutation({
     mutationFn: async () => {
+      const accessToken = await getToken({ template: 'SegmentSniper' });
       const contract: ApiContract = {
         baseUrl: apiConfig!.baseRestApiUrl,
         token: accessToken!,

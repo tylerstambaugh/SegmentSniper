@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using SegmentSniper.Models.Strava.Webhook;
-using SegmentSniper.Services.StravaWebhook;
 using StravaApiClient.Models.Webhook;
 using StravaApiClient.Services.Webhook;
 
@@ -9,19 +8,19 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {
     public class ViewStravaWebhookSubscriptionHandler : IViewStravaWebhookSubscriptionHandler
     {
-        private readonly IViewStravaWebhookSubscription _viewStravaWebhookSubscription;        
+        private readonly IViewStravaWebhookSubscription _viewStravaWebhookSubscription;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
         public ViewStravaWebhookSubscriptionHandler(IViewStravaWebhookSubscription viewStravaWebhookSubscription, IConfiguration configuration, IMapper mapper)
         {
-            _viewStravaWebhookSubscription = viewStravaWebhookSubscription;            
+            _viewStravaWebhookSubscription = viewStravaWebhookSubscription;
             _configuration = configuration;
             _mapper = mapper;
         }
 
         public async Task<ViewStravaWebhookSubscriptionRequest.Response> HandleAsync()
-        {        
+        {
             var clientId = _configuration["StravaApiSettings-ClientId"];
             if (string.IsNullOrWhiteSpace(clientId))
             {
@@ -46,12 +45,12 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
                 var responseModel = _mapper.Map<ViewSubscriptionApiResponse, ViewSubscriptionResponseModel>(response.ViewSubscriptionApiResponse);
 
-               if( responseModel == null)
+                if (responseModel == null)
                 {
                     throw new InvalidOperationException("Failed to map Strava webhook subscription response.");
                 }
 
-                return new ViewStravaWebhookSubscriptionRequest.Response(responseModel);                
+                return new ViewStravaWebhookSubscriptionRequest.Response(responseModel);
             }
             catch (Exception ex)
             {

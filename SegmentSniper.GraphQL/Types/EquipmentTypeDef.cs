@@ -1,5 +1,4 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.GraphQL.Types
@@ -7,7 +6,7 @@ namespace SegmentSniper.GraphQL.Types
     public sealed class EquipmentTypeDef : ObjectGraphType<EquipmentModel>
     {
         public EquipmentTypeDef()
-        {            
+        {
             Name = nameof(EquipmentModel);
             Description = "A piece of equipment belonging to a bike";
 

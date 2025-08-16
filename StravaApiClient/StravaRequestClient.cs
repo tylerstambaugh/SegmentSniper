@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Token;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
 using StravaApiClient.Services.Webhook;
@@ -188,7 +188,7 @@ namespace StravaApiClient
 
                 var response = await httpClient.PostAsync(url, formContent);
 
-                await VerifyResponse(response); 
+                await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<TResponse>(stringResult);
@@ -289,7 +289,7 @@ namespace StravaApiClient
                     return _cache.Get<string>(_config.AuthUserId);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception("Error in GetAccessToken");
             }

@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
 import useUserStore from '../../../stores/useUserStore';
 import getUsers from '../../../services/Api/Admin/getUsers';
-import useTokenDataStore from '../../../stores/useTokenStore';
 import { useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 
 const useGetUsersQuery = () => {
   const setUsers = useUserStore((state) => state.setUsers);
-  const [tokenData] = useTokenDataStore((state) => [state.tokenData]);
+  const { getToken } = useAuth();
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
 
   const abortController = new AbortController();
@@ -18,10 +18,11 @@ const useGetUsersQuery = () => {
   });
 
   async function getUsersQuery() {
+    const accessToken = await getToken({ template: 'SegmentSniper' });
     const usersResponse = await getUsers({
       baseUrl: apiConfig!.baseRestApiUrl,
       abortController,
-      token: tokenData?.accessToken ?? '',
+      token: accessToken ?? '',
     });
 
     setUsers(usersResponse.users);

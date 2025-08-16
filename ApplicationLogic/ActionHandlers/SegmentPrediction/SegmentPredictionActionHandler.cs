@@ -37,7 +37,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
         {
 
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.StravaAthleteInfo.Where(t => t.UserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try
@@ -51,7 +51,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 
                     var segmentUiModel = CreateSegmentUiModel(segment);
                     var predictionModelExists = _context.ML_SegmentPredictionModels
-                        .Any(m => m.UserId == request.UserId);
+                        .Any(m => m.AuthUserId == request.UserId);
                     if (predictionModelExists != null)
                     {
                         var segmentToPredict = new SegmentDetailDataForPrediction

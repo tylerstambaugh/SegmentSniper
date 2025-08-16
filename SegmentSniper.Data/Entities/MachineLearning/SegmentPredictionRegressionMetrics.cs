@@ -1,6 +1,4 @@
-﻿using SegmentSniper.Data.Entities.Auth;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SegmentSniper.Data.Entities.MachineLearning
 {
@@ -8,9 +6,8 @@ namespace SegmentSniper.Data.Entities.MachineLearning
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Users")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+
+        public string AuthUserId { get; set; }
         public string RegressionType { get; set; }
         public int NumberOfLeaves { get; set; }
         public int MinimumExampleCountPerLeaf { get; set; }

@@ -21,7 +21,7 @@ namespace SegmentSniper.Services.StravaToken
         {
             ValidateContract(contract);
 
-            var stravaToken = await _context.StravaTokens.FirstOrDefaultAsync(x => x.UserId == contract.UserId);
+            var stravaToken = await _context.StravaAthleteInfo.FirstOrDefaultAsync(x => x.AuthUserId == contract.UserId);
 
             if (stravaToken != null)
             {

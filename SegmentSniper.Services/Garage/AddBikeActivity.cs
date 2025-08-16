@@ -26,7 +26,7 @@ namespace SegmentSniper.Services.Garage
                     {   
                         var bikeActivityToAdd = new BikeActivity
                         {
-                            UserId = bikeActivity.UserId,
+                            AuthUserId = bikeActivity.UserId,
                             StravaActivityId = bikeActivity.StravaActivityId,
                             BikeId = bikeActivity.BikeId,
                             DistanceInMeters = bikeActivity.DistanceInMeters,
