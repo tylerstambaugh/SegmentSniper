@@ -10,7 +10,7 @@ namespace SegmentSniper.Services.Garage
     {
         public DeleteBikeActivityContract() { }
 
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public string ActivityId { get; set; }
     }
 }

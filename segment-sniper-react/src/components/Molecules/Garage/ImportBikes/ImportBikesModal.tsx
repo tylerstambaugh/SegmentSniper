@@ -4,7 +4,7 @@ import { useImportGarage } from "./GraphQl/useImportGarage";
 import toast from "react-hot-toast";
 import { useRef } from "react";
 import { BikeModel, GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables } from "../../../../graphql/generated";
-import GetBikesByUserId from "../../Molecules/Garage/GraphQl/GetBikesByUserId.graphql";
+import GetBikesByUserId from "../../../Molecules/Garage/GraphQl/GetBikesByUserId.graphql";
 import { ApolloError } from "@apollo/client";
 
 

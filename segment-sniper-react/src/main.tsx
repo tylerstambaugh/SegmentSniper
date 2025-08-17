@@ -6,7 +6,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import AuthenticatedUserMonitor from './components/Organisms/Authentication/AuthenticatedUserMonitor';
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -38,9 +37,9 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <ErrorBoundary>
-    <ApolloClientProvider>
-      <QueryClientProvider client={queryClient}>
-        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ApolloClientProvider>
+        <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <InitializeApp>
               {/* <AuthenticatedUserMonitor /> */}
@@ -55,8 +54,8 @@ root.render(
               }}
             />
           </BrowserRouter>
-        </ClerkProvider>
-      </QueryClientProvider>
-    </ApolloClientProvider>
+        </QueryClientProvider>
+      </ApolloClientProvider>
+    </ClerkProvider>
   </ErrorBoundary>
 );

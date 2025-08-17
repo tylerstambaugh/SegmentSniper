@@ -29,7 +29,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
-                var activityDetails = await _getDetailedActivityByIdActionHandler.HandleAsync(new GetDetailedActivityByIdRequest(payload.ObjectId.ToString(), user.UserId));
+                var activityDetails = await _getDetailedActivityByIdActionHandler.HandleAsync(new GetDetailedActivityByIdRequest(user.UserId.ToString(), payload.ObjectId.ToString()));
 
                 if(activityDetails == null || activityDetails.DetailedActivity == null)
                 {                 

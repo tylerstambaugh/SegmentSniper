@@ -3,19 +3,18 @@ import { useLocation } from "react-router-dom";
 import { LoadScriptNext } from "@react-google-maps/api";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
-import useRefreshTokenQuery from "../hooks/Api/Auth/useRefreshTokenQuery";
+
 import { CustomToast } from "./Molecules/Toast/CustomToast";
-import useTokenDataStore from "../stores/useTokenStore";
+
 
 interface InitializeComponentProps {
   children: ReactNode;
 }
 
 const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
-  const { refetch: refetchToken } = useRefreshTokenQuery();
   const [setAppConfig] = useAppConfigStore((state) => [state.setAppConfig]);
   const googleMapsApiKey = useAppConfigStore((state) => state.appConfig?.googleMapsApiKey);
-  const isAuthenticated = useTokenDataStore((state) => state.isAuthenticated);
+
 
   const { data: appConfigData, isLoading, isError, error } = useGetClientConfiguration();
   const location = useLocation();
@@ -73,15 +72,15 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
   // }, []);
 
   // Trigger token refresh on navigation
-  useEffect(() => {
-    if (isAuthenticated) {
-      const refreshTokenOnNavigation = async () => {
-        await refetchToken();
-      };
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     const refreshTokenOnNavigation = async () => {
+  //       await refetchToken();
+  //     };
 
-      refreshTokenOnNavigation();
-    }
-  }, [location, refetchToken, isAuthenticated]);
+  //     refreshTokenOnNavigation();
+  //   }
+  // }, [location, refetchToken, isAuthenticated]);
 
   if (!apiKeyLoaded) {
     return null; // Prevent rendering until API key is available
