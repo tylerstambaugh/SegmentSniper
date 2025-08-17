@@ -21,7 +21,7 @@ namespace SegmentSniper.Api.Configuration
         string IStravaRequestClientConfiguration.BaseUrl => _stravaApiSettings.BaseUrl;
         string IStravaRequestClientConfiguration.OauthBaseUrl => _stravaApiSettings.OAuthBaseUrl;
         string IStravaRequestClientConfiguration.RefreshToken { get; set; }
-        string IStravaRequestClientConfiguration.UserId { get; set; }
+        string IStravaRequestClientConfiguration.AuthUserId { get; set; }
     }
 
     public class StravaApiSettings

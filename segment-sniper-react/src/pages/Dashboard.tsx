@@ -10,7 +10,7 @@ import { CustomToast } from "../components/Molecules/Toast/CustomToast";
 export default function Dashboard() {
   const user = useUserStore((state) => state.user);
   const checkUserHasTokenData = useGetUserHasStravaToken();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   //TODO: REMOVE THIS - mebbe
   // useEffect(() => {
@@ -33,11 +33,11 @@ export default function Dashboard() {
     }
   }, [checkUserHasTokenData.error, checkUserHasTokenData.isLoading]);
 
-  useEffect(() => {
-    if (!user?.verifiedEmail) {
-      navigate("/confirm-email");
-    }
-  });
+  // useEffect(() => {
+  //   if (!user?.verifiedEmail) {
+  //     navigate("/confirm-email");
+  //   }
+  // });
 
   return (
     <>

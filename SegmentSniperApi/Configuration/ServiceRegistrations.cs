@@ -1,6 +1,4 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
-using SegmentSniper.ApplicationLogic.ActionHandlers.Authentication;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
@@ -11,9 +9,6 @@ using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandlers;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
-using SegmentSniper.Services.Admin;
-using SegmentSniper.Services.AuthServices;
-using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;
@@ -57,33 +52,28 @@ namespace SegmentSniper.Api.Configuration
             //strava webhook action handlers
             services.AddScoped<ICreateStravaWebhookSubscriptionHandler, CreateStravaWebhookSubscriptionHandler>();
             services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
-            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();            
+            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();
 
             services.AddScoped<WebhookEventHandlerFactory>();
             services.AddTransient<CreateWebhookEventHandler>();
             services.AddTransient<UpdateWebhookEventHandler>();
             services.AddTransient<DeleteWebhookEventHandler>();
 
-            //profile action handlers
-            services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
+            //profile action handlers            
             services.AddScoped<IRevokeStravaTokenAsyncActionHandler, RevokeStravaTokenAsyncActionHandler>();
-            services.AddScoped<IDeleteProfileActionHandlerAsync, DeleteProfileActionHandlerAsync>();
+            
 
             //segment prediction action handlers
             services.AddScoped<ISegmentPredictionActionHandler, SegmentPredictionActionHandler>();
             services.AddScoped<IGetSegmentPredictionTrainedModelMetaDataActionHandler, GetSegmentPredictionTrainedModelMetaDataActionHandler>();
             services.AddScoped<ITrainSegmentPredictionModelActionHandler, TrainSegmentPredictionModelActionHandler>();
 
-            ////admin action handlers
-            services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
-            services.AddScoped<IRemoveUserActionHandler, RemoveUserActionHandler>();
-
+            
             //garage actionhandlers
             services.AddScoped<IImportGarageActionHandler, ImportGarageActionHandler>();
             services.AddScoped<IGetBikesByUserIdActionHandler, GetBikesByUserIdActionHandler>();
 
-            //profile services
-            services.AddScoped<IGetProfile, GetProfile>();
+            //profile services            
             services.AddScoped<IDeleteStravaTokenAsync, DeleteStravaTokenAsync>();
 
             //admin services
@@ -112,7 +102,7 @@ namespace SegmentSniper.Api.Configuration
             //strava services
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
             services.AddScoped<IUpdateStravaTokenForUser, UpdateStravaTokenForUser>();
-            //services.AddScoped<IAddStravaToken, AddStravaToken>();
+            services.AddScoped<IAddStravaToken, AddStravaToken>();
             services.AddScoped<IGetSummaryActivityForTimeRange, GetSummaryActivityForTimeRange>();
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();

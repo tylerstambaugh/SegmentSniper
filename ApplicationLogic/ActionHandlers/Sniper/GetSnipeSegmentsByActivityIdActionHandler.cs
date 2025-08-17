@@ -38,7 +38,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             ValidateRequest(request);
             _userId = request.UserId;
 
-            var token = _context.StravaAthleteInfo.Where(t => t.UserId == _userId).FirstOrDefault();
+            var token = _context.StravaAthleteInfo.Where(t => t.AuthUserId == _userId).FirstOrDefault();
             if (token != null)
             {
                 try

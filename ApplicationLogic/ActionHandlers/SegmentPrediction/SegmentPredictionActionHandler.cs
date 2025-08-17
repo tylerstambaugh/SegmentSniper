@@ -37,7 +37,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
         {
 
             ValidateRequest(request);
-            var token = _context.StravaAthleteInfo.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.StravaAthleteInfo.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try

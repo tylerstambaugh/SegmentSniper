@@ -8,7 +8,6 @@
         string BaseUrl { get; }
         string OauthBaseUrl { get; }
         string AuthUserId { get; set; }
-
     }
 }
 

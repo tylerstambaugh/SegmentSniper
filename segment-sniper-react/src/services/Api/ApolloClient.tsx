@@ -2,14 +2,14 @@
 import React from 'react';
 import useApiConfigStore from '../../stores/useApiConfigStore';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink, Observable } from '@apollo/client';
-import useTokenDataStore from '../../stores/useTokenStore';
 import { setContext } from '@apollo/client/link/context';
+import { useAuth } from '@clerk/clerk-react';
 
 export const ApolloClientProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const baseUrl = useApiConfigStore((state) => state.apiConfig?.baseGraphqlUrl);
-
+  const { getToken } = useAuth();
 
   const httpLink = new HttpLink({
     uri: `${baseUrl}`,
@@ -19,14 +19,17 @@ export const ApolloClientProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const authLink = setContext((_, { headers }) => {
-    const token = useTokenDataStore.getState().tokenData?.accessToken;
-    if (!token) {
+
+    //TODO Make this awaited
+    const accessToken = getToken({ template: 'SegmentSniper' });
+
+    if (!accessToken) {
       throw new Error('Unauthorized: No access token provided');
     }
     return {
       headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: accessToken ? `Bearer ${accessToken}` : '',
       },
     };
   });
