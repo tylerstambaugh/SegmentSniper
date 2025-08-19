@@ -26,7 +26,7 @@ const PrivateRoute = ({ userRoles = [] }: Props) => {
           <Row className="text-center">
             <Col>
               <p>You must be logged in to access this resource.</p>
-              <Link to={`/${AppRoutes.Login}`}>
+              <Link to={`/${AppRoutes.SignIn}`}>
                 <Button>Login</Button>
               </Link>
             </Col>

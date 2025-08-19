@@ -86,8 +86,9 @@ namespace SegmentSniper.Api.Configuration
             })
             .AddJwtBearer(options =>
             {
-                options.Authority = "https://clerk.<your-domain>.clerk.accounts"; // Clerk issuer URL
-                options.Audience = "<your-clerk-api-audience>"; // usually your Clerk frontend API key or API identifier
+                options.Authority = "https://clerk.fresh-fowl-84.clerk.accounts.dev";                // Clerk issuer URL
+                //TODO put this in a config file
+                options.Audience = "SegmentSniperAPI"; // usually your Clerk frontend API key or API identifier
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
