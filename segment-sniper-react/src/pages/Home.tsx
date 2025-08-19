@@ -39,7 +39,7 @@ function Home() {
               </Row>
               <Row>
                 <Col sm={12}>
-                  <Button onClick={() => navigate(`/${AppRoutes.Login}`)}>
+                  <Button onClick={() => navigate(`/${AppRoutes.SignIn}`)}>
                     Start Sniping!
                   </Button>
                 </Col>

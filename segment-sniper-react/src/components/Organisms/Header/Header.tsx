@@ -9,12 +9,13 @@ import logo from '../../../assets/images/segment_sniper_logo_v3.webp';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 
 function Header() {
 
 
-  const [user] = useUserStore((state) => [state.user]);
+
+  const { isSignedIn, user } = useUser();
   const [isNavbarOpen, setNavbarOpen] = useState(false);
   const navbarRef = useRef(null);
   const handleNavbarToggle = () => setNavbarOpen(!isNavbarOpen);
@@ -50,7 +51,7 @@ function Header() {
         <Navbar.Brand className={'ps-3'}>
           <Link
             to={
-              !isAuthenticated
+              !isSignedIn
                 ? `/${AppRoutes.Home}`
                 : `/${AppRoutes.Dashboard}`
             }
@@ -93,28 +94,7 @@ function Header() {
                 </Navbar.Text>
               </Nav.Item>
               <div className={'border-end mx-3 d-none d-md-block'}></div>
-              <div className={'border-top mt-1 d-md-none'}></div>
-              <Nav.Item className={'text-end'}>
-                <Navbar.Text>
-                  Signed in as:{' '}
-                  <Link to={`/${AppRoutes.Profile}`}>
-                    <span style={{ textDecoration: 'none' }}>
-                      <FontAwesomeIcon icon={faUser} />{' '}
-                    </span>
-                    {user!.firstName}
-                  </Link>
-                  { }
-                </Navbar.Text>
-              </Nav.Item>
-              <div className={'border-end mx-3 d-none d-md-block'}></div>
-              <div className={'border-top mt-1 d-md-none'}></div>
-              <Nav.Item className={'fw-semibold text-end'}>
-                <Navbar.Text className="">
-                  <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
-                    Logout
-                  </Link>
-                </Navbar.Text>
-              </Nav.Item>
+
             </SignedIn >
             <SignedOut>
               <div className={'d-flex justify-content-end pt-md-0 me-md-3'}>
@@ -133,7 +113,7 @@ function Header() {
                 <Nav.Item className={'fw-semibold'}>
                   <Navbar.Text className="d-flex">
                     <Link
-                      to={`/${AppRoutes.Login}`}
+                      to={`/${AppRoutes.SignIn}`}
                       onClick={handleLinkClick}
                     >
                       Login
@@ -143,12 +123,13 @@ function Header() {
               </div>
             </SignedOut>
           </Nav>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <Nav.Item className={'fw-semibold'}>
+            <Navbar.Text className="d-flex">
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </Navbar.Text>
+          </Nav.Item>
         </Navbar.Collapse>
       </Container>
     </Navbar>

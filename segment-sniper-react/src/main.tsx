@@ -37,10 +37,10 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <ErrorBoundary>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <ApolloClientProvider>
-        <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+    <BrowserRouter>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <ApolloClientProvider>
+          <QueryClientProvider client={queryClient}>
             <InitializeApp>
               {/* <AuthenticatedUserMonitor /> */}
               <Header />
@@ -53,9 +53,9 @@ root.render(
                 error: { duration: 5000, style: { background: '#fd2c60' } },
               }}
             />
-          </BrowserRouter>
-        </QueryClientProvider>
-      </ApolloClientProvider>
-    </ClerkProvider>
+          </QueryClientProvider>
+        </ApolloClientProvider>
+      </ClerkProvider>
+    </BrowserRouter>
   </ErrorBoundary>
 );

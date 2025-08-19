@@ -41,6 +41,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
 
             //strava action handlers
+            services.AddScoped<IAddStravaAthleteActionHandler, AddStravaAthleteActionHandler>();
             services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
@@ -100,6 +101,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetStravaWebhookSubscriptionId, GetStravaWebhookSubscriptionId>();
 
             //strava services
+            services.AddScoped<IAddStravaAthlete, AddStravaAthlete>();
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
             services.AddScoped<IUpdateStravaTokenForUser, UpdateStravaTokenForUser>();
             services.AddScoped<IAddStravaToken, AddStravaToken>();

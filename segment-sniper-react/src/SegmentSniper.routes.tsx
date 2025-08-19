@@ -14,13 +14,14 @@ import Admin from "./pages/Admin/Admin";
 import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/SegmentSniper/ActivitySearchResults";
 import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
-
 import SegmentPredictions from "./pages/SegmentPrediction";
 import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
 import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 import BikeDetails from "./pages/Garage/BikeDetails";
 import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
+import SignIn from "./pages/Authentication/SignIn";
+import SignUp from "./pages/Authentication/SignUp";
 
 
 export default function AppRoutesComponent() {
@@ -30,11 +31,14 @@ export default function AppRoutesComponent() {
       {/* Public routes */}
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
+      <Route path={`${AppRoutes.SignIn}/*`} element={<SignIn />} />
+
+      <Route path={`${AppRoutes.SignUp}/*`} element={<SignUp />} />
       <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
 
       {/* User-protected routes */}
-      <Route element={<PrivateRoute userRoles={[UserRole.User]} />}>
+      <Route element={<PrivateRoute userRoles={[UserRole.Member]} />}>
         <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.Snipe} element={<SegmentSniper />} />
         <Route path={AppRoutes.ActivitySearchResults} element={<ActivitySearchResults />} />
