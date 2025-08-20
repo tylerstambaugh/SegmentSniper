@@ -12,5 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
   </ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Entities\StravaToken\" />
+	</ItemGroup>
 
 </Project>

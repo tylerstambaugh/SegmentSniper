@@ -57,7 +57,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
                     ActivityType parsedActivity;
                     Enum.TryParse<ActivityType>(request.ActivityType, true, out parsedActivity);

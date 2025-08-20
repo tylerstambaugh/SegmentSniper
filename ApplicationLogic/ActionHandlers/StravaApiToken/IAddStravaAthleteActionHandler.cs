@@ -16,6 +16,13 @@
         public int StravaAthlete { get; }
         public class Response
         {
+            public Response(bool success, string message)
+            {
+                Success = success;
+                Message = message;
+            }
+            public bool Success { get; }
+            public string Message { get; }
         }
     }
 }

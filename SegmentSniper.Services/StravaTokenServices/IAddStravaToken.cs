@@ -9,12 +9,12 @@ namespace SegmentSniper.Services.StravaTokenServices
     }
     public class AddStravaTokenContract
     {
-        public AddStravaTokenContract(string userId, StravaTokenModel token)
+        public AddStravaTokenContract(string authUserId, StravaTokenModel token)
         {
-            UserId = userId;
+            AuthUserId = authUserId;
             Token = token;
         }
-        public string UserId { get; set; }
+        public string AuthUserId { get; set; }
         public StravaTokenModel Token { get; set; }
         public class Result
         {

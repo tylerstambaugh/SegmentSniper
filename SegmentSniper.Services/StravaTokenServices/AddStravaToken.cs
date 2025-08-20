@@ -18,20 +18,18 @@ namespace SegmentSniper.Services.StravaTokenServices
             ValidateContract(contract);
             try
             {
-                var user = await _context.StravaAthleteInfo.Where(a => a.AuthUserId == contract.UserId).FirstOrDefaultAsync();
+                var stravaAthleteInfo = await _context.StravaAthleteInfo.Where(a => a.AuthUserId == contract.AuthUserId).FirstOrDefaultAsync();
 
-                if (user != null && contract.Token.StravaAthlete?.Id != 0)
+                if (stravaAthleteInfo != null && contract.Token.StravaAthlete?.Id != 0)
                 {
-                    user.StravaAthleteId = contract.Token.StravaAthlete?.Id.ToString();
+                    stravaAthleteInfo.StravaAthleteId = (long)(contract.Token.StravaAthlete?.Id);
 
-                    var tokenToAdd = new Data.Entities.StravaToken.StravaAthleteInfo
-                    {
-                        AuthUserId = contract.UserId,
-                        ExpiresAt = contract.Token.ExpiresAt,
-                        ExpiresIn = contract.Token.ExpiresIn,
-                        RefreshToken = contract.Token.RefreshToken,
+                    var tokenToAdd = new Data.Entities.StravaToken.User
+                    {                        
+                        StravaTokenExpiresAt = contract.Token.ExpiresAt,
+                        StravaTokenExpiresIn = contract.Token.ExpiresIn,
+                        StravaRefreshToken = contract.Token.RefreshToken,
                     };
-
 
                     _context.StravaAthleteInfo.Add(tokenToAdd);
                     await _context.SaveChangesAsync();
@@ -55,11 +53,11 @@ namespace SegmentSniper.Services.StravaTokenServices
             {
                 throw new ArgumentNullException(nameof(contract.Token));
             }
-            if (_context.StravaAthleteInfo.Where(t => t.AuthUserId == contract.UserId).FirstOrDefault() != null)
+            if (_context.StravaAthleteInfo.Where(t => t.AuthUserId == contract.AuthUserId).FirstOrDefault() != null)
             {
                 throw new ApplicationException("Token already exists");
             }
-            if (_context.StravaAthleteInfo.Count(u => u.AuthUserId == contract.UserId) == 0)
+            if (_context.StravaAthleteInfo.Count(u => u.AuthUserId == contract.AuthUserId) == 0)
             {
                 throw new ApplicationException("User does not exist");
             }

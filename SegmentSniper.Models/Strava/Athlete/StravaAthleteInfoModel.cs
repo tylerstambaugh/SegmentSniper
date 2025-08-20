@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SegmentSniper.Data.Entities.StravaToken
+﻿namespace SegmentSniper.Models.Strava.Athlete
 {
-    public class StravaAthleteInfo
+    public class StravaAthleteInfoModel
     {
-        [Key]
         public int Id { get; set; }
 
         public string AuthUserId { get; set; }
@@ -14,7 +11,6 @@ namespace SegmentSniper.Data.Entities.StravaToken
         public long ExpiresAt { get; set; }
 
         public long ExpiresIn { get; set; }
-        public string StravaAthleteId { get; set; }
+        public long StravaAthleteId { get; set; }
     }
 }
-

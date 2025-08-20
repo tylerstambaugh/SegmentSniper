@@ -2,8 +2,8 @@
 using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
+using SegmentSniper.Data.Entities.User;
 
 namespace SegmentSniper.Data
 {
@@ -11,7 +11,7 @@ namespace SegmentSniper.Data
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
-        DbSet<StravaAthleteInfo> StravaAthleteInfo { get; set; }
+        DbSet<User> StravaAthleteInfo { get; set; }
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }

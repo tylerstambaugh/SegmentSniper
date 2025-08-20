@@ -28,12 +28,12 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         {
             ValidateRequest(request);
             var token = _context.StravaAthleteInfo.Where(t => t.AuthUserId == request.UserId.ToString()).FirstOrDefault();
-            if (token?.RefreshToken != null)
+            if (token?.StravaRefreshToken != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId.ToString();
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 

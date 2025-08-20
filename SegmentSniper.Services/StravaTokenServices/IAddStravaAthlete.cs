@@ -7,15 +7,23 @@
 
     public class AddStravaAthleteContract
     {
-        public AddStravaAthleteContract(string userId, int stravaAthleteId)
+        public AddStravaAthleteContract(string userId, long stravaAthleteId)
         {
             UserId = userId;
-            StravaAthlete = stravaAthleteId;
+            StravaAthleteId = stravaAthleteId;
         }
         public string UserId { get; }
-        public int StravaAthlete { get; }
+        public long StravaAthleteId { get; }
         public class Result
         {
+            public Result(bool success, string message = null)
+            {
+                Success = success;
+                Message = message;
+            }
+            public bool Success { get; }
+            public string Message { get; }
         }
+            
     }
 }
