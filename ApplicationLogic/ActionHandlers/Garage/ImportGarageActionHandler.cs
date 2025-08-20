@@ -36,12 +36,12 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
         {
             ValidateRequest(request);
             var token = _context.StravaAthleteInfo.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
-            if (token != null && token.RefreshToken != null)
+            if (token != null && token.StravaRefreshToken != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
                     var startDate = CommonConversionHelpers.ConvertToEpochTime(DateTime.Now.AddYears(-1));
                     var endDate = CommonConversionHelpers.ConvertToEpochTime(DateTime.Now);
 

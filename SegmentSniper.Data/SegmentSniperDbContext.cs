@@ -1,13 +1,9 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
+using SegmentSniper.Data.Entities.User;
 
 namespace SegmentSniper.Data
 {
@@ -17,7 +13,7 @@ namespace SegmentSniper.Data
             : base(options)
         {
         }
-        public virtual DbSet<StravaAthleteInfo> StravaAthleteInfo { get; set; }
+        public virtual DbSet<User> StravaAthleteInfo { get; set; }
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }

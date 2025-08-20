@@ -20,7 +20,15 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken
 
         private void ValidateRequest(AddStravaAthleteRequest request)
         {
-            return;
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request), "Request cannot be null.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                throw new ArgumentException("UserId cannot be null or empty.", nameof(request.UserId));
+            }
         }
 
     }
