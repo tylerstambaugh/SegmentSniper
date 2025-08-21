@@ -35,7 +35,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
         public async Task<ImportGarageRequest.Response> ExecuteAsync(ImportGarageRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaAthleteInfo.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
+            var token = _context.Users.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
             if (token != null && token.StravaRefreshToken != null)
             {
                 try

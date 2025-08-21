@@ -13,7 +13,7 @@ namespace SegmentSniper.Services.User
 
         public async Task<GetUserByStravaAthleteIdContract.Result> ExecuteAsync(GetUserByStravaAthleteIdContract contract)
         {
-            var user = _segmentSniperDbContext.StravaAthleteInfo
+            var user = _segmentSniperDbContext.Users
                 .Where(u => u.StravaAthleteId == contract.StravaAthleteId.ToString())
                 .FirstOrDefault();
             if (user == null)

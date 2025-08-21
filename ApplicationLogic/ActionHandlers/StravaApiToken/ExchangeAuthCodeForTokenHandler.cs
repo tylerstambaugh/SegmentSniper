@@ -56,7 +56,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken
                 throw new ArgumentNullException(nameof(request.UserId));
             }
 
-            if (_context.StravaAthleteInfo.Where(u => u.AuthUserId == request.UserId) == null)
+            if (_context.Users.Where(u => u.AuthUserId == request.UserId) == null)
             {
                 throw new ArgumentException($"User {request.UserId} not found", nameof(request.UserId));
             }

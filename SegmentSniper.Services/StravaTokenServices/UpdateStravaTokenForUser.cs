@@ -14,13 +14,13 @@ namespace SegmentSniper.Services.StravaTokenServices
         {
             ValidateContract(contract);
 
-            var tokenToUpdate = _context.StravaAthleteInfo.Where(t => t.StravaRefreshToken == contract.StravaToken.RefreshToken).FirstOrDefault();
+            var tokenToUpdate = _context.Users.Where(t => t.StravaRefreshToken == contract.StravaToken.RefreshToken).FirstOrDefault();
 
             tokenToUpdate.StravaRefreshToken = contract.StravaToken.RefreshToken;
             tokenToUpdate.StravaTokenExpiresIn = contract.StravaToken.ExpiresIn;
             tokenToUpdate.StravaTokenExpiresAt = contract.StravaToken.ExpiresAt;
 
-            _context.StravaAthleteInfo.Update(tokenToUpdate);
+            _context.Users.Update(tokenToUpdate);
             bool wasSuccess = _context.SaveChanges() == 1;
             return new UpdateStravaTokenContract.Result(wasSuccess);
         }

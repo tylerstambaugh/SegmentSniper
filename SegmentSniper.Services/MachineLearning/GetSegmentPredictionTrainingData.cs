@@ -20,7 +20,7 @@ namespace SegmentSniper.Services.MachineLearning
 
         public async Task<GetSegmentPredictionTrainingDataContract.Result> ExecuteAsync(GetSegmentPredictionTrainingDataContract contract)
         {
-            var user = await _segmentSniperDbContext.StravaAthleteInfo.FirstOrDefaultAsync(u => u.AuthUserId == contract.UserId);
+            var user = await _segmentSniperDbContext.Users.FirstOrDefaultAsync(u => u.AuthUserId == contract.UserId);
 
             if (user == null)
             {
