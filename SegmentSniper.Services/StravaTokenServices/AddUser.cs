@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {

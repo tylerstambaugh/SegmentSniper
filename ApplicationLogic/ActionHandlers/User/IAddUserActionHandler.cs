@@ -1,13 +1,13 @@
 ﻿namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken
 {
-    public interface IAddStravaAthleteActionHandler
+    public interface IAddUserActionHandler
     {
-        Task<AddStravaAthleteRequest.Response> HandleAsync(AddStravaAthleteRequest request);
+        Task<AddUserRequest.Response> HandleAsync(AddUserRequest request);
     }
 
-    public class AddStravaAthleteRequest
+    public class AddUserRequest
     {
-        public AddStravaAthleteRequest(string userId, int stravaAthlete)
+        public AddUserRequest(string userId, int stravaAthlete)
         {
             UserId = userId;
             StravaAthlete = stravaAthlete;

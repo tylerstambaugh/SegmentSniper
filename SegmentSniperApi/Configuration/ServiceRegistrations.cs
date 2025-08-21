@@ -7,6 +7,7 @@ using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandlers;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
+using SegmentSniper.ApplicationLogic.ActionHandlers.User;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Services.Common;
@@ -41,7 +42,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
 
             //strava action handlers
-            services.AddScoped<IAddStravaAthleteActionHandler, AddStravaAthleteActionHandler>();
+            services.AddScoped<IAddUserActionHandler, AddUserActionHandler>();
             services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
