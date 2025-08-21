@@ -1,16 +1,22 @@
 import { User } from '../../../models/User';
 import { ApiContract } from '../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
-import { apiGet } from '../BaseApiService';
+import { apiPost } from '../BaseApiService';
 
-export type UsersListResponse = {
-  users: User[];
+export type AddUserRequest = {
+  authUserId: string;
 };
 
-export default async function getUsers(contract: ApiContract) {
+export type AddUserResponse = {
+  user: User;
+};
+
+export default async function postUser(
+  contract: ApiContract<AddUserRequest>
+): Promise<AddUserResponse> {
   try {
-    const response = await apiGet<UsersListResponse>(
-      `${contract.baseUrl}/admin/getUsers`,
+    const response = await apiPost<AddUserRequest, AddUserResponse>(
+      `${contract.baseUrl}/admin/add-user`,
       contract
     );
     return response;

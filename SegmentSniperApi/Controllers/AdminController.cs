@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using SegmentSniper.ApplicationLogic.ActionHandlers.User;
+using SegmentSniper.Services.StravaTokenServices;
 
 namespace SegmentSniper.Api.Controllers
 {
@@ -11,24 +13,25 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAddStravaAthlete _addStravaAthlete;
+        private readonly IAddUserActionHandler _addUserActionHandler;
+
 
         // private readonly IRemoveUserActionHandler _removeUserActionHandler;
         // private readonly IGetUsersActionHandler _getUsersActionHandler;
 
-        public AdminController(IAddStravaAthlete addStravaAthlete)
+        public AdminController(IAddUserActionHandler addUserActionHandler)
         {
-            _addStravaAthlete = addStravaAthlete;
+            _addUserActionHandler = addUserActionHandler;
         }
 
 
         [HttpPost]
-        [Route("add-strava-athlete")]
-        public async Task<IActionResult> AddStravaAthlete(AddStravaAthleteRequest request)
+        [Route("add-user")]
+        public async Task<IActionResult> AddStravaAthlete(AddUserRequest request)
         {
             try
             {
-                var response = await _addStravaAthlete.ExecuteAsync(request);
+                var response = await _addUserActionHandler.HandleAsync(request);
                 return Ok(response);
             }
             catch (Exception ex)
