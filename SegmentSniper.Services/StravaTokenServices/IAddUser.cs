@@ -1,13 +1,13 @@
 ﻿namespace SegmentSniper.Services.StravaTokenServices
 {
-    public interface IAddStravaAthlete
+    public interface IAddUser
     {
-        Task<AddStravaAthleteContract.Result> ExecuteAsync(AddStravaAthleteContract contract);
+        Task<AddUserContract.Result> ExecuteAsync(AddUserContract contract);
     }
 
-    public class AddStravaAthleteContract
+    public class AddUserContract
     {
-        public AddStravaAthleteContract(string userId, long stravaAthleteId)
+        public AddUserContract(string userId, long stravaAthleteId)
         {
             UserId = userId;
             StravaAthleteId = stravaAthleteId;

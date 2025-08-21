@@ -4,9 +4,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken
 {
     public class AddStravaAthleteActionHandler : IAddStravaAthleteActionHandler
     {
-        private readonly IAddStravaAthlete _addStravaAthlete;
+        private readonly IAddUser _addStravaAthlete;
 
-        public AddStravaAthleteActionHandler(IAddStravaAthlete addStravaAthlete)
+        public AddStravaAthleteActionHandler(IAddUser addStravaAthlete)
         {
             _addStravaAthlete = addStravaAthlete;
         }
@@ -14,7 +14,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken
         public async Task<AddStravaAthleteRequest.Response> HandleAsync(AddStravaAthleteRequest request)
         {
             ValidateRequest(request);
-            var result = await _addStravaAthlete.ExecuteAsync(new AddStravaAthleteContract(request.UserId, request.StravaAthlete));
+            var result = await _addStravaAthlete.ExecuteAsync(new AddUserContract(request.UserId, request.StravaAthlete));
             return new AddStravaAthleteRequest.Response(result.Success, result.Message);
         }
 
