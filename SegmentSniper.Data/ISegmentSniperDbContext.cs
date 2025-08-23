@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;

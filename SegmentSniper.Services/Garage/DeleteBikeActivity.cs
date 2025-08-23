@@ -26,7 +26,7 @@ namespace SegmentSniper.Services.Garage
 
         private void ValidateContrct(DeleteBikeActivityContract contract)
         {
-            if (contract.UserId == 0)
+            if (string.IsNullOrEmpty(contract.UserId))
             {
                 throw new ArgumentException("UserId cannot be null or empty.", nameof(contract.UserId));
             }

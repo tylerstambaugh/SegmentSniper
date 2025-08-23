@@ -19,13 +19,13 @@ public class ClerkWebhookController : ControllerBase
     {
         var userId = (string)payload.data.id;
 
-        await _clerk.Users.(userId, new UserUpdate
-        {
-            PublicMetadata = new Dictionary<string, object>
-            {
-                { "roles", new[] { "member" } }
-            }
-        });
+        //await _clerk.Users.(userId, new UserUpdate
+        //{
+        //    PublicMetadata = new Dictionary<string, object>
+        //    {
+        //        { "roles", new[] { "member" } }
+        //    }
+        //});
 
         return Ok();
     }

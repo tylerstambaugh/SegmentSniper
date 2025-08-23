@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
@@ -44,7 +44,17 @@ namespace SegmentSniper.Data
            .WithOne(e => e.Bike)      // Each Equipment belongs to one Bike
            .HasForeignKey(e => e.BikeId); // Equipment's foreign key is BikeId
 
+            modelBuilder.Entity<SegmentPredictionRegressionMetrics>()
+            .HasIndex(m => m.AuthUserId)
+            .IsUnique();
 
+            modelBuilder.Entity<AppUser>()
+            .Property(u => u.AuthUserId)
+            .HasMaxLength(255);
+
+            modelBuilder.Entity<BikeActivity>()
+            .HasIndex(b => b.StravaActivityId)
+            .IsUnique();
         }
 
         // Define a dummy entity class for the log table

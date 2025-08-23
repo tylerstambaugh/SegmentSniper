@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.User;
 using SegmentSniper.Models.Garage;
@@ -12,6 +12,7 @@ using SegmentSniper.Models.Strava.Token;
 using SegmentSniper.Models.Strava.Webhook;
 using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
+using SegmentSniper.Models.User;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Athlete;
 using StravaApiClient.Models.Misc;
@@ -28,6 +29,17 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
+
+            CreateMap<AppUser, AppUserModel>()
+                .ForMember(dest => dest.AuthUserId, opt => opt.MapFrom(src => src.AuthUserId))
+                .ForMember(dest => dest.StravaAthleteId, opt => opt.MapFrom(src => src.StravaAthleteId))
+                .ForMember(dest => dest.StravaRefreshToken, opt => opt.MapFrom(src => src.StravaRefreshToken))
+                .ForMember(dest => dest.StravaTokenExpiresAt, opt => opt.MapFrom(src => src.StravaTokenExpiresAt))
+                .ForMember(dest => dest.StravaTokenExpiresIn, opt => opt.MapFrom(src => src.StravaTokenExpiresIn))
+                .ForMember(dest => dest.Bikes, opt => opt.MapFrom(src => src.Bikes))
+                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment))
+                .ForMember(dest => dest.BikeActivities, opt => opt.MapFrom(src => src.BikeActivities))                
+                .ReverseMap();
 
             CreateMap<StravaTokenApiModel, StravaTokenModel>()
                 .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken))

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Equiment;
 using SegmentSniper.Services.Common;
 
 namespace SegmentSniper.Services.Garage
@@ -21,7 +20,6 @@ namespace SegmentSniper.Services.Garage
             var result = new DeleteResult(false);
             try            
             {
-
                 foreach (var bikeId in contract.BikeIds)
                 {
 

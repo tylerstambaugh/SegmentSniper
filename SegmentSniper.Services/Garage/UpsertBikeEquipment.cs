@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using EquipmentEntity = SegmentSniper.Data.Entities.Equiment;
+using EquipmentEntity = SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage

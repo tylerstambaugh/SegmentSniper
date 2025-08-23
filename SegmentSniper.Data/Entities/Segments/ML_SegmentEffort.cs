@@ -1,13 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SegmentSniper.Data.Entities.User;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Segments
 {
     public class ML_SegmentEffort
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SegmentEffortId { get; set; }
-
-        public string AuthUserId { get; set; }
+                
+        public required string AuthUserId { get; set; }
+        [ForeignKey(nameof(AuthUserId))]
+        public virtual AppUser AppUser { get; set; }
 
         public string StravaSegmentEffortId { get; set; }
         public string StravaSegmentId { get; set; }

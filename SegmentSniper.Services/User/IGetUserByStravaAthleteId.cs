@@ -14,13 +14,13 @@
         }
         public class Result
         {
-            public Result(int userId, string errorMessage)
+            public Result(string userId, string errorMessage)
             {
                 UserId = userId;
                 ErrorMessage = errorMessage;
             }
             public string ErrorMessage { get; set; }
-            public int UserId { get; set; }
+            public string? UserId { get; set; }
         }
     }
 }
