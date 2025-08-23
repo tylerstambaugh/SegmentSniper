@@ -36,7 +36,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.StravaAthlete, opt => opt.MapFrom(src => src.StravaApiAthlete))
                 .ReverseMap();
 
-            CreateMap<User, StravaTokenModel>()
+            CreateMap<AppUser, StravaTokenModel>()
                .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.StravaRefreshToken))
                .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.StravaTokenExpiresAt))
                .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.StravaTokenExpiresIn))

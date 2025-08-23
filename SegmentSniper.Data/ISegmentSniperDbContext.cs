@@ -11,7 +11,7 @@ namespace SegmentSniper.Data
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
-        DbSet<User> Users { get; set; }
+        DbSet<AppUser> Users { get; set; }
         DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }

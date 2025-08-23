@@ -3,16 +3,16 @@ using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.User
 {
-    public class GetUserByAuthId : IGetUserByAuthId, IExecutableServiceAsync<GetUserByAuthIdContract, GetUserByAuthIdContract.Result>
+    public class GetAppUserByAuthId : IGetAppUserByAuthId, IExecutableServiceAsync<GetAppUserByAuthIdContract, GetAppUserByAuthIdContract.Result>
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public GetUserByAuthId(ISegmentSniperDbContext segmentSniperDbContext)
+        public GetAppUserByAuthId(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<GetUserByAuthIdContract.Result> ExecuteAsync(GetUserByAuthIdContract contract)
+        public async Task<GetAppUserByAuthIdContract.Result> ExecuteAsync(GetAppUserByAuthIdContract contract)
         {
             ValidateContract(contract);
 
@@ -21,12 +21,12 @@ namespace SegmentSniper.Services.User
                 .FirstOrDefault();
             if (user == null)
             {
-                return new GetUserByAuthIdContract.Result(0, "User not found");
+                return new GetAppUserByAuthIdContract.Result();
             }
-            return new GetUserByAuthIdContract.Result(user.Id, "");
+            return new GetAppUserByAuthIdContract.Result(user);
         }
 
-        private void ValidateContract(GetUserByAuthIdContract contract)
+        private void ValidateContract(GetAppUserByAuthIdContract contract)
         {
 
         }
