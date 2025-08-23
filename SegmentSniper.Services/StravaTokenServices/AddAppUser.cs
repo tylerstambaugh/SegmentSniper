@@ -1,19 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Data.Entities.User;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {
-    public class AddUser : IExecutableServiceAsync<AddUserContract, AddUserContract.Result>, IAddUser
+    public class AddAppUser : IExecutableServiceAsync<AddAppUserContract, AddAppUserContract.Result>, IAddAppUser
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public AddUser(ISegmentSniperDbContext segmentSniperDbContext)
+        public AddAppUser(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<AddUserContract.Result> ExecuteAsync(AddUserContract contract)
+        public async Task<AddAppUserContract.Result> ExecuteAsync(AddAppUserContract contract)
         {
             ValidateContract(contract);
             try
@@ -22,9 +23,9 @@ namespace SegmentSniper.Services.StravaTokenServices
                     .FirstOrDefaultAsync(a => a.StravaAthleteId == contract.StravaAthleteId);
                 if (existingUser != null)
                 {
-                    return new AddUserContract.Result(false, "Athlete already exists.");
+                    return new AddAppUserContract.Result(false, "Athlete already exists.");
                 }
-                var newUser = new SegmentSniper.Data.Entities.User.User // Fully qualify the User type to avoid ambiguity with the namespace
+                var newUser = new AppUser
                 {
                     AuthUserId = contract.UserId,
                     StravaAthleteId = contract.StravaAthleteId
@@ -32,16 +33,16 @@ namespace SegmentSniper.Services.StravaTokenServices
 
                 _segmentSniperDbContext.Users.Add(newUser);
                 var result = await _segmentSniperDbContext.SaveChangesAsync() == 1;
-                return new AddUserContract.Result(result);
+                return new AddAppUserContract.Result(result);
 
 
             }
             catch (Exception ex)
             {
-                return new AddUserContract.Result(false, $"Error adding athlete: {ex.Message}");
+                return new AddAppUserContract.Result(false, $"Error adding athlete: {ex.Message}");
             }
         }
-        private void ValidateContract(AddUserContract contract)
+        private void ValidateContract(AddAppUserContract contract)
         {
             throw new NotImplementedException();
         }

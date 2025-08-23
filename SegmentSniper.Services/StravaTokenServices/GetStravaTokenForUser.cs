@@ -26,7 +26,7 @@ namespace SegmentSniper.Services.StravaToken
             {
                 return new GetStravaTokenForUserContract.Result
                 {
-                    StravaToken = _mapper.Map<Data.Entities.User.User, StravaTokenModel>(stravaToken)
+                    StravaToken = _mapper.Map<Data.Entities.User.AppUser, StravaTokenModel>(stravaToken)
                 };
             }
             else

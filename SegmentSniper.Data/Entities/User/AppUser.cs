@@ -2,7 +2,7 @@
 
 namespace SegmentSniper.Data.Entities.User
 {
-    public class User
+    public class AppUser
     {
         [Key]
         public int Id { get; set; }

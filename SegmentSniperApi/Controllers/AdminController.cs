@@ -13,13 +13,13 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAddUserActionHandler _addUserActionHandler;
+        private readonly IAddAppUserActionHandler _addUserActionHandler;
 
 
         // private readonly IRemoveUserActionHandler _removeUserActionHandler;
         // private readonly IGetUsersActionHandler _getUsersActionHandler;
 
-        public AdminController(IAddUserActionHandler addUserActionHandler)
+        public AdminController(IAddAppUserActionHandler addUserActionHandler)
         {
             _addUserActionHandler = addUserActionHandler;
         }
@@ -27,7 +27,7 @@ namespace SegmentSniper.Api.Controllers
 
         [HttpPost]
         [Route("add-user")]
-        public async Task<IActionResult> AddStravaAthlete(AddUserRequest request)
+        public async Task<IActionResult> AddUser(AddAppUserRequest request)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing the request. Error: {ex}"));
+                return BadRequest(StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while adding the user. Error: {ex}"));
             }
         }
         //[HttpGet]
