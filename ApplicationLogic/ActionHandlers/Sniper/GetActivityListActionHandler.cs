@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using IdentityModel;
+﻿using System;
+using AutoMapper;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Enums;
 using SegmentSniper.Models.Garage;
@@ -30,7 +30,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         private readonly int maxActivityResults = 200;
 
         public GetActivityListActionHandler(
-            ISegmentSniperDbContext context,            
+            ISegmentSniperDbContext context,
             IStravaRequestService stravaRequestService,
             IMapper mapper, IActivityAdapter activityAdapter,
             IGetAllBikesByUserId getAllBikesByUserId,
@@ -126,7 +126,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             var existingBikes = await _getAllBikesByUserId.ExecuteAsync(contract: new GetAllBikesByUserIdContract(userId));
             var userBikeActivities = await _getAllBikeActivitiesByUserId.ExecuteAsync(contract: new GetAllBikeActivitiesByUserIdContract(userId));
             foreach (var summaryActivity in listOfSummaryActivities.Where(sa => sa.GearId != null && sa.Type == ActivityType.Ride.ToString()))
-            {             
+            {
                 if (existingBikes.Bikes.Any(b => b.BikeId == summaryActivity.GearId))
                 {
                     //need to check if the bikeActivity exists and create it if not
@@ -165,7 +165,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 
                     //and add the bikeActivity
                     var bikeActivity = userBikeActivities.BikeActivities.Any(ba => ba.StravaActivityId == summaryActivity.Id);
-                    
+
                     var bikeActivityAdded = await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
                         new BikeActivityModel
                         {
@@ -177,7 +177,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 
                         })
                     );
-                    if(!bikeActivityAdded.Success)
+                    if (!bikeActivityAdded.Success)
                     {
                         Log.Error("Failed to add bikeActivity {ActivityId} from GetActivityListHandler.", summaryActivity.Id);
                     }
@@ -187,8 +187,14 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 
         private DaysAndPagesContract.Result GetDaysRange(DaysAndPagesContract contract)
         {
-            long startDateUnix = contract.StartDate?.AddHours(-5).ToEpochTime() ?? DateTime.UtcNow.AddDays(-180).ToEpochTime();
-            long endDateUnix = contract.EndDate?.AddDays(1).ToEpochTime() ?? DateTime.UtcNow.AddDays(1).ToEpochTime();
+            long startDateUnix = contract.StartDate != null
+                ? new DateTimeOffset(contract.StartDate.Value.AddHours(-5).ToUniversalTime()).ToUnixTimeSeconds()
+                : new DateTimeOffset(DateTime.UtcNow.AddDays(-180)).ToUnixTimeSeconds();
+
+            long endDateUnix = contract.EndDate != null
+                ? new DateTimeOffset(contract.EndDate.Value.AddDays(1).ToUniversalTime()).ToUnixTimeSeconds()
+                : new DateTimeOffset(DateTime.UtcNow.AddDays(1)).ToUnixTimeSeconds();
+
 
             return new DaysAndPagesContract.Result
             {

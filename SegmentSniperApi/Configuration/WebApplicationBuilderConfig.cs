@@ -12,6 +12,8 @@ using SegmentSniper.Data;
 using SegmentSniper.GraphQL;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using System;
+using System.Security.Claims;
 using TorchSharp.Modules;
 
 
@@ -24,37 +26,27 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            var connectionString = "";
-
-            // Setup configuration sources
-            //This is being done in program.cs
-            //builder.Configuration
-            //    .SetBasePath(builder.Environment.ContentRootPath)
-            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            //    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
-            //    .AddEnvironmentVariables();
-
             var isDevelopment = builder.Environment.IsDevelopment();
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
             if (isDevelopment)
             {
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
-                builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
+                builder.Configuration.AddJsonFile(secretsFilePath, optional: true)
+                     .AddJsonFile($"appsettings.{environment}.json", optional: false);
             }
             else
             {
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
                 if (!string.IsNullOrEmpty(keyVaultEndpoint))
                     builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
+
+                builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
             }
 
+            var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
+
             builder.Services.AddApplicationInsightsTelemetry();
-
-            // Connection string
-            connectionString = builder.Configuration[
-                isDevelopment ? "SegmentSniperConnectionStringDev" : "SegmentSniperConnectionString"
-            ];
-
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
                     options.UseSqlServer(connectionString));
@@ -86,20 +78,46 @@ namespace SegmentSniper.Api.Configuration
             })
             .AddJwtBearer(options =>
             {
-                options.Authority = "https://clerk.fresh-fowl-84.clerk.accounts.dev";                // Clerk issuer URL
-                //TODO put this in a config file
-                options.Audience = "SegmentSniperAPI"; // usually your Clerk frontend API key or API identifier
+                var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+                options.Authority = jwtSettings["Issuer"];
+                options.Audience = jwtSettings["Audience"];
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = jwtSettings["Issuer"],
                     ValidateAudience = true,
+                    ValidAudience = jwtSettings["Audience"],
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    RoleClaimType = "roles"
                 };
 
-                // Optional: To debug token validation failures
                 options.Events = new JwtBearerEvents
                 {
+                    OnTokenValidated = context =>
+                    {
+                        var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                        var roles = claimsIdentity?.FindFirst("roles")?.Value;
+
+                        if (!string.IsNullOrEmpty(roles))
+                        {
+                            // roles might come as JSON array string -> parse
+                            var roleList = System.Text.Json.JsonSerializer.Deserialize<string[]>(roles);
+
+                            if (roleList != null)
+                            {
+                                foreach (var role in roleList)
+                                {
+                                    claimsIdentity?.AddClaim(new Claim(claimsIdentity.RoleClaimType, role));
+                                }
+                            }
+                        }
+
+                        return Task.CompletedTask;
+                    },
+
                     OnAuthenticationFailed = context =>
                     {
                         Console.WriteLine("Authentication failed: " + context.Exception.Message);

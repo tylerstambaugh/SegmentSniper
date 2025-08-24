@@ -137,7 +137,7 @@ namespace SegmentSniper.MachineLearning
 
                 var segmentPredictionTrainingData = new SegmentPredictionTrainedData
                 {
-                    UserId = userId,
+                    AuthUserId = userId,
                     SegmentPredictionModelData = modelBytes,
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,

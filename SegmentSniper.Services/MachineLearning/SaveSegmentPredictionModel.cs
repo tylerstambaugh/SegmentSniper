@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Models.MachineLearning;
@@ -20,12 +21,11 @@ namespace SegmentSniper.Services.MachineLearning
         {
             try
             {
-
                 var modelToSave = _mapper.Map<SegmentPredictionTrainedData, ML_SegmentPredictionModel>(contract.SegmentPredictionTrainingData);
 
-                var existingModel = _segmentSniperDbContext.ML_SegmentPredictionModels
-                    .Where(m => m.AuthUserId == contract.SegmentPredictionTrainingData.UserId)
-                    .FirstOrDefault();
+                var existingModel = await _segmentSniperDbContext.ML_SegmentPredictionModels
+                    .Where(m => m.AuthUserId == contract.SegmentPredictionTrainingData.AuthUserId)
+                    .FirstOrDefaultAsync();
 
                 if (existingModel is not null)
                 {

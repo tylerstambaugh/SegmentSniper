@@ -1,5 +1,4 @@
-﻿using Duende.IdentityServer.Validation;
-using SegmentSniper.Services.ManageProfile;
+﻿using SegmentSniper.Services.ManageProfile;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 {
@@ -22,7 +21,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile
 
                 return new RevokeStravaTokenAsyncActionHandlerRequest.Response(result.Success);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new ApplicationException("Unable to revoke Strava token", ex);
             }
