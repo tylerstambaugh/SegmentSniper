@@ -8,8 +8,7 @@ namespace SegmentSniper.Data
     {
         public SegmentSniperDbContext CreateDbContext(string[] args)
         {
-
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../SegmentSniperApi"))
@@ -18,6 +17,9 @@ namespace SegmentSniper.Data
                 .Build();
 
             var connectionString = configuration.GetConnectionString("SegmentSniperConnectionString");
+
+            if (string.IsNullOrEmpty(connectionString))
+                throw new InvalidOperationException("Connection string 'SegmentSniperConnectionString' not found.");
 
             var optionsBuilder = new DbContextOptionsBuilder<SegmentSniperDbContext>();
             optionsBuilder.UseSqlServer(connectionString);
