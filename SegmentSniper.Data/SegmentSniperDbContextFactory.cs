@@ -6,6 +6,7 @@ namespace SegmentSniper.Data
 {
     public class SegmentSniperDbContextFactory : IDesignTimeDbContextFactory<SegmentSniperDbContext>
     {
+     //drop the db today and deleted the migrations
         public SegmentSniperDbContext CreateDbContext(string[] args)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
