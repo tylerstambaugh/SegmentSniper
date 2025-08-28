@@ -49,7 +49,9 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.AddApplicationInsightsTelemetry();
 
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
-                    options.UseSqlServer(connectionString));
+                    options.UseSqlServer(connectionString,
+                            b => b.MigrationsAssembly("SegmentSniper.Data"))
+);
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 

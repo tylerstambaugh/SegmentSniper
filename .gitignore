@@ -9,8 +9,6 @@ secrets.json
 SegmentSniper.Data/RunTruncateSegmentSniperLogTableStoredProcedure.ps1
 SegmentSniper.Data/RunTruncateSegmentSniperLogTableStoredProcedure.bat
 
-SegmentSniper.Data/Migrations/
-
 # User-specific files
 *.rsuser
 *.suo

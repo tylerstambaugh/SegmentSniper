@@ -20,6 +20,7 @@
 	
 	<ItemGroup>
 	  <Folder Include="Entities\StravaToken\" />
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
 </Project>

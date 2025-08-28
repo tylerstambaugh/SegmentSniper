@@ -52,9 +52,31 @@ namespace SegmentSniper.Data
             .Property(u => u.AuthUserId)
             .HasMaxLength(255);
 
-            modelBuilder.Entity<BikeActivity>()
-            .HasIndex(b => b.StravaActivityId)
-            .IsUnique();
+            modelBuilder.Entity<BikeActivity>(entity =>
+            {
+                // Unique index
+                entity.HasIndex(b => b.StravaActivityId)
+                      .IsUnique();
+
+                // Relationship to AppUser
+                entity.HasOne(ba => ba.AppUser)
+                      .WithMany(u => u.BikeActivities)
+                      .HasForeignKey(ba => ba.AuthUserId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Equipment>(entity =>
+            {
+                entity.HasOne(e => e.Bike)
+                      .WithMany(b => b.Equipment)
+                      .HasForeignKey(e => e.BikeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                // Relationship to AppUser
+                entity.HasOne(e => e.AppUser)
+                      .WithMany(u => u.Equipment)
+                      .HasForeignKey(e => e.AuthUserId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
         }
 
         // Define a dummy entity class for the log table
