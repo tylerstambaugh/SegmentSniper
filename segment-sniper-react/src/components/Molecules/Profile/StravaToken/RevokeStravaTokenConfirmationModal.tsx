@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Spinner } from "react-bootstrap";
-import useHandleDeleteStravaToken from "../../../../hooks/Api/Profile/Handlers/useHandleDeleteStravaToken";
+import useHandleDeleteStravaToken from "../../../../hooks/Api/User/Handlers/useHandleDeleteStravaToken";
 import styles from "./RevokeStravaToken.module.scss";
 
 export type RevokeStravaTokenConfirmationModalProps = {

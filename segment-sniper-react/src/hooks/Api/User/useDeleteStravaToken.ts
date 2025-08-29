@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import deleteStravaToken from '../../../services/Api/Profile/deleteStravaToken';
+import deleteStravaToken from '../../../services/Api/User/deleteStravaToken';
 import useProfileStore from '../../../stores/useProfileStore';
 import useUserStore from '../../../stores/useUserStore';
 import { useAuth } from '@clerk/clerk-react';

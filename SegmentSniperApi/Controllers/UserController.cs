@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile;
+using SegmentSniper.ApplicationLogic.ActionHandlers.User;
 using System.Security.Claims;
 
 namespace SegmentSniper.Api.Controllers
@@ -10,16 +11,36 @@ namespace SegmentSniper.Api.Controllers
     [EnableCors("AllowReactApp")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class UserController : ControllerBase
     {
+        private readonly IGetAppUserByAuthUSerIdActionHandler _getAppUserByAuthUSerIdActionHandler;
         private readonly IRevokeStravaTokenAsyncActionHandler _revokeStravaTokenAsyncActionHandler;
 
-        public ProfileController(
-            IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
+        public UserController(IGetAppUserByAuthUSerIdActionHandler getAppUserByAuthUSerIdActionHandler, IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
         {
-            _revokeStravaTokenAsyncActionHandler = revokeStravaTokenAsyncActionHandler;            
+            _getAppUserByAuthUSerIdActionHandler = getAppUserByAuthUSerIdActionHandler;
+            _revokeStravaTokenAsyncActionHandler = revokeStravaTokenAsyncActionHandler;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("me")]
+        public async Task<IActionResult> GetMe()
+        {
+            try
+            {
+                var userId = User.FindFirst("sub")?.Value;
+
+                var user = await _getAppUserByAuthUSerIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(422, $"Unable to get user profile. \n {ex.Message}");
+
+            }
+        }
 
         [HttpDelete]
         [Authorize]
@@ -41,7 +62,7 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to update password. \n {ex.Message}");
+                return StatusCode(422, $"Unable to remove Strava token. \n {ex.Message}");
             }
         }
 

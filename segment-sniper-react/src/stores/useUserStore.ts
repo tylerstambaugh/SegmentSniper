@@ -13,22 +13,12 @@ const devtoolOptions = {
   name: 'User Store',
 };
 
-export type User = {
-  id?: string | null;
-  firstName?: string | null;
-  emailAddress?: string | null;
-  hasStravaTokenData?: boolean;
-  verifiedEmail?: boolean;
-  roles?: string[];
-};
-
 const initialUserState: User = {
   id: null,
-  firstName: null,
-  emailAddress: null,
-  hasStravaTokenData: false,
-  verifiedEmail: false,
-  roles: [],
+  authUSerId: null,
+  refreshToken: null,
+  refreshTokenExpiration: null,
+  stravaAthleteId: null,
 };
 
 const useUserStore = create<UserStore>()(
