@@ -41,7 +41,7 @@ export default function AppRoutesComponent() {
       <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
       <Route path={AppRoutes.Unauthorized} element={<Unauthorized />} />
 
-      <Route path="*" element={<div>404 Not Found</div>} />
+      {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
 
       {/* User-protected routes */}
       <Route element={<PrivateRoute userRoles={[UserRole.Member]} />}>
