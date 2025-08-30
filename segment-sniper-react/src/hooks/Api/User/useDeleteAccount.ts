@@ -5,7 +5,7 @@ import useProfileStore from '../../../stores/useProfileStore';
 import useUserStore from '../../../stores/useUserStore';
 import deleteAccount, {
   DeleteAccountResponse,
-} from '../../../services/Api/Profile/deleteAccount';
+} from '../../../services/Api/User/deleteAccount';
 import { useAuth } from '@clerk/clerk-react';
 
 export const useDeleteAccount = () => {

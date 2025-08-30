@@ -13,7 +13,7 @@ import { ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 import AppRoutesComponent from './SegmentSniper.routes';
-
+import { AuthSync } from './components/Organisms/Authentication/AuthSync';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,9 +30,6 @@ if (!PUBLISHABLE_KEY) {
   throw new Error('Missing Publishable Key')
 }
 
-
-
-
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
@@ -42,9 +39,10 @@ root.render(
         <ApolloClientProvider>
           <QueryClientProvider client={queryClient}>
             <InitializeApp>
-              {/* <AuthenticatedUserMonitor /> */}
               <Header />
-              <AppRoutesComponent />
+              <AuthSync>
+                <AppRoutesComponent />
+              </AuthSync>
               <Footer />
             </InitializeApp>
             <Toaster
