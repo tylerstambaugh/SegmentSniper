@@ -6,6 +6,7 @@ export enum AppRoutes {
   SignUp = 'sign-up',
   Logout = 'logout',
   InactiveLogout = 'inactive-logout',
+  ConnectWithStrava = 'connect-strava',
   ConnectWithStravaSuccess = 'connect-with-strava-success',
   ConnectWithStravaError = 'connect-with-strava-error',
   Snipe = 'snipe',
@@ -20,4 +21,5 @@ export enum AppRoutes {
   BikeDetails = 'garage/bike-details/:bikeId',
   UserManagement = 'admin/user-management',
   StravaWebhookManageMent = 'admin/strava-webhook-management',
+  Unauthorized = 'unauthorized',
 }

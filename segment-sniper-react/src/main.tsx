@@ -39,11 +39,11 @@ root.render(
         <ApolloClientProvider>
           <QueryClientProvider client={queryClient}>
             <InitializeApp>
+              <Header />
               <AuthSync>
-                <Header />
                 <AppRoutesComponent />
-                <Footer />
               </AuthSync>
+              <Footer />
             </InitializeApp>
             <Toaster
               toastOptions={{

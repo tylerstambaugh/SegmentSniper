@@ -31,6 +31,11 @@ namespace SegmentSniper.Api.Controllers
             {
                 var userId = User.FindFirst("sub")?.Value;
 
+                if(string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("User ID not found in token.");
+                }
+
                 var user = await _getAppUserByAuthUSerIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
 
                 return Ok(user);
