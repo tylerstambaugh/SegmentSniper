@@ -4,7 +4,7 @@ using SegmentSniper.Services.User;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
 {
-    public class GetAppUserByAuthUserIdActionHandler : IGetAppUserByAuthUSerIdActionHandler
+    public class GetAppUserByAuthUserIdActionHandler : IGetAppUserByAuthUserIdActionHandler
     {
         private readonly IGetAppUserByAuthId _getAppUserByAuthId;
         private readonly IMapper _mapper;

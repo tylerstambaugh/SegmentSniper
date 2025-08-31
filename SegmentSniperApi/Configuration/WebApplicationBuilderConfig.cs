@@ -137,7 +137,7 @@ namespace SegmentSniper.Api.Configuration
             //add clerkApiClient
             builder.Services.AddClerkApiClient(options =>
             {
-                var secretKey = configuration["Clerk:SecretKey"];
+                var secretKey = configuration["ClerkSecretKey"];
 
                 if (string.IsNullOrEmpty(secretKey))
                     throw new InvalidOperationException("Clerk SecretKey is not configured.");

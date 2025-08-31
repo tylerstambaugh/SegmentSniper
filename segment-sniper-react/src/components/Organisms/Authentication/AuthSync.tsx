@@ -6,18 +6,24 @@ import { AppRoutes } from "../../../enums/AppRoutes";
 import { Col, Container, Spinner } from "react-bootstrap";
 
 export const AuthSync = ({ children }: { children: React.ReactNode }) => {
-    const { user, isSignedIn } = useUser();
+    const { isSignedIn } = useUser();
     const navigate = useNavigate();
     const [checked, setChecked] = useState(false);
 
-    // Call your backend to check if user has Strava refresh token
-    const { data, isLoading, isError, error } = useGetMeQuery();
+    const { data, isLoading, isError } = useGetMeQuery({
+        enabled: isSignedIn,
+    });
 
     useEffect(() => {
-        if (!isSignedIn || isLoading) return;
+
+        if (!isSignedIn) {
+            setChecked(true);
+            return;
+        }
+
+        if (isLoading) return;
 
         if (isError) {
-            // If API rejects (e.g., 401), send user to a "Not Authorized" route
             navigate(AppRoutes.Unauthorized);
             setChecked(true);
             return;
@@ -32,7 +38,7 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
         setChecked(true);
     }, [isSignedIn, isLoading, isError, data, navigate]);
 
-    if (!checked || isLoading) {
+    if (isSignedIn && (!checked || isLoading)) {
         return (
             <Container className="d-flex flex-column justify-content-center">
                 <Col>
