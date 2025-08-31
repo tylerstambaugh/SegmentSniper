@@ -1,10 +1,14 @@
 ﻿using Azure.Identity;
+using Clerk.Net.Client;
+using Clerk.Net.DependencyInjection;
 using GraphQL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.OpenApi.Models;
 using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Api.Configuration.MappingProfiles;
@@ -130,7 +134,18 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.AddAuthorization();
 
+            //add clerkApiClient
+            builder.Services.AddClerkApiClient(options =>
+            {
+                var secretKey = configuration["Clerk:SecretKey"];
 
+                if (string.IsNullOrEmpty(secretKey))
+                    throw new InvalidOperationException("Clerk SecretKey is not configured.");
+
+                options.SecretKey = secretKey; 
+            });
+
+           
             //builder.Services.AddAuthorization(options =>
             //{
             //    options.AddPolicy("AdminOnly", policy =>

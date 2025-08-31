@@ -1,4 +1,4 @@
-﻿namespace SegmentSniper.Services.StravaTokenServices
+﻿namespace SegmentSniper.Services.User
 {
     public interface IAddAppUser
     {
@@ -7,13 +7,11 @@
 
     public class AddAppUserContract
     {
-        public AddAppUserContract(string userId, long stravaAthleteId)
+        public AddAppUserContract(string userId)
         {
             UserId = userId;
-            StravaAthleteId = stravaAthleteId;
         }
         public string UserId { get; }
-        public long StravaAthleteId { get; }
         public class Result
         {
             public Result(bool success, string message = null)
