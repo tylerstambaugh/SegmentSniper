@@ -7,13 +7,11 @@
 
     public class AddAppUserRequest
     {
-        public AddAppUserRequest(string userId, int stravaAthlete)
+        public AddAppUserRequest(string userId)
         {
             UserId = userId;
-            StravaAthlete = stravaAthlete;
         }
         public string UserId { get; }
-        public int StravaAthlete { get; }
         public class Response
         {
             public Response(bool success, string message)

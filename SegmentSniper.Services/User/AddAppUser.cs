@@ -2,6 +2,7 @@
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.User;
 using SegmentSniper.Services.Interface;
+using SegmentSniper.Services.User;
 
 namespace SegmentSniper.Services.StravaTokenServices
 {
@@ -20,22 +21,19 @@ namespace SegmentSniper.Services.StravaTokenServices
             try
             {
                 var existingUser = await _segmentSniperDbContext.Users
-                    .FirstOrDefaultAsync(a => a.StravaAthleteId == contract.StravaAthleteId);
+                    .FirstOrDefaultAsync(a => a.AuthUserId == contract.UserId);
                 if (existingUser != null)
                 {
-                    return new AddAppUserContract.Result(false, "Athlete already exists.");
+                    return new AddAppUserContract.Result(false, "User already exists.");
                 }
                 var newUser = new AppUser
                 {
                     AuthUserId = contract.UserId,
-                    StravaAthleteId = contract.StravaAthleteId
                 };
 
                 _segmentSniperDbContext.Users.Add(newUser);
                 var result = await _segmentSniperDbContext.SaveChangesAsync() == 1;
                 return new AddAppUserContract.Result(result);
-
-
             }
             catch (Exception ex)
             {

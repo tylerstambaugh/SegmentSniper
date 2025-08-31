@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Services.StravaTokenServices;
+﻿using SegmentSniper.Services.User;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
 {
@@ -14,7 +14,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
         public async Task<AddAppUserRequest.Response> HandleAsync(AddAppUserRequest request)
         {
             ValidateRequest(request);
-            var result = await _addUser.ExecuteAsync(new AddAppUserContract(request.UserId, request.StravaAthlete));
+            var result = await _addUser.ExecuteAsync(new AddAppUserContract(request.UserId));
             return new AddAppUserRequest.Response(result.Success, result.Message);
         }
 
