@@ -34,11 +34,8 @@ export default function AppRoutesComponent() {
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
       <Route path={`${AppRoutes.SignIn}/*`} element={<SignIn />} />
-
       <Route path={`${AppRoutes.SignUp}/*`} element={<SignUp />} />
-      <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
-      <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
       <Route path={AppRoutes.Unauthorized} element={<Unauthorized />} />
 
       {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
@@ -53,6 +50,8 @@ export default function AppRoutesComponent() {
         <Route path={AppRoutes.Garage} element={<GarageMenu />} />
         <Route path={AppRoutes.BikeDetails} element={<BikeDetails />} />
         <Route path={AppRoutes.ConnectWithStravaSuccess} element={<ConnectWithStravaSuccess />} />
+        <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
+        <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
       </Route>
 
       {/* Admin-protected routes */}

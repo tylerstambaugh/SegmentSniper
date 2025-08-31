@@ -2,7 +2,7 @@
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
 {
-    public interface IGetAppUserByAuthUSerIdActionHandler
+    public interface IGetAppUserByAuthUserIdActionHandler
     {
         Task<GetAppUserByAuthIdRequest.Response> HandleAsync(GetAppUserByAuthIdRequest request);
     }

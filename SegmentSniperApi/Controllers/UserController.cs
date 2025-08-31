@@ -13,12 +13,12 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IGetAppUserByAuthUSerIdActionHandler _getAppUserByAuthUSerIdActionHandler;
+        private readonly IGetAppUserByAuthUserIdActionHandler _getAppUserByAuthUserIdActionHandler;
         private readonly IRevokeStravaTokenAsyncActionHandler _revokeStravaTokenAsyncActionHandler;
 
-        public UserController(IGetAppUserByAuthUSerIdActionHandler getAppUserByAuthUSerIdActionHandler, IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
+        public UserController(IGetAppUserByAuthUserIdActionHandler getAppUserByAuthUserIdActionHandler, IRevokeStravaTokenAsyncActionHandler revokeStravaTokenAsyncActionHandler)
         {
-            _getAppUserByAuthUSerIdActionHandler = getAppUserByAuthUSerIdActionHandler;
+            _getAppUserByAuthUserIdActionHandler = getAppUserByAuthUserIdActionHandler;
             _revokeStravaTokenAsyncActionHandler = revokeStravaTokenAsyncActionHandler;
         }
 
@@ -29,20 +29,21 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = User.FindFirst("sub")?.Value;
+                //var userId = User.FindFirst("sub")?.Value;
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if(string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(userId))
                 {
                     return Unauthorized("User ID not found in token.");
                 }
 
-                var user = await _getAppUserByAuthUSerIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
+                var user = await _getAppUserByAuthUserIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
 
                 return Ok(user);
             }
             catch (Exception ex)
             {
-                return StatusCode(422, $"Unable to get user profile. \n {ex.Message}");
+                return StatusCode(422, $"Unable to get user information. \n {ex.Message}");
 
             }
         }

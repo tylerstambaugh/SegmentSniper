@@ -1,21 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
 import useUserStore from '../../../stores/useUserStore';
 import { useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import getMe from '../../../services/Api/User/getMe';
+import { User } from '../../../models/User';
 
-const useGetMeQuery = () => {
+// Allow passing query options
+const useGetMeQuery = (
+  options?: Omit<UseQueryOptions<User, Error>, 'queryKey' | 'queryFn'>
+) => {
   const setUser = useUserStore((state) => state.setUser);
   const { getToken } = useAuth();
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
 
   const abortController = new AbortController();
-
-  const query = useQuery({
-    queryFn: getMeQuery,
-    queryKey: ['me'],
-  });
 
   async function getMeQuery() {
     const accessToken = await getToken({ template: 'SegmentSniper' });
@@ -31,6 +30,12 @@ const useGetMeQuery = () => {
     setUser(usersResponse);
     return usersResponse;
   }
+
+  const query = useQuery({
+    queryFn: getMeQuery,
+    queryKey: ['me'],
+    ...options,
+  });
 
   useEffect(() => {
     return () => {
