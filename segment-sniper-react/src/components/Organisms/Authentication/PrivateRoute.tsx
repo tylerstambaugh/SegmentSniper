@@ -10,6 +10,10 @@ type Props = {
 const PrivateRoute = ({ userRoles = [] }: Props) => {
   const { user } = useUser();
 
+  console.log("user:", user);
+
+  console.log("user roles:", user?.publicMetadata?.roles);
+
   const userHasRequiredRole =
     user &&
     (userRoles.length === 0 ||
