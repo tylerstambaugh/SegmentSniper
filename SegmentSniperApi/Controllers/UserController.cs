@@ -28,8 +28,7 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> GetMe()
         {
             try
-            {
-                //var userId = User.FindFirst("sub")?.Value;
+            {                
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(userId))
@@ -38,6 +37,9 @@ namespace SegmentSniper.Api.Controllers
                 }
 
                 var user = await _getAppUserByAuthUserIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
+
+                if (user.AppUserModel == null)
+                    return NotFound(user);
 
                 return Ok(user);
             }
