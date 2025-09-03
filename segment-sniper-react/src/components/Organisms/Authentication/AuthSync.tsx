@@ -29,7 +29,7 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
             return;
         }
 
-        if (data?.refreshToken) {
+        if (data?.stravaRefreshToken) {
             navigate(AppRoutes.Dashboard);
         } else {
             navigate(AppRoutes.ConnectWithStrava);

@@ -14,9 +14,8 @@ const devtoolOptions = {
 };
 
 const initialUserState: User = {
-  id: null,
-  authUSerId: null,
-  refreshToken: null,
+  authUserId: null,
+  stravaRefreshToken: null,
   refreshTokenExpiration: null,
   stravaAthleteId: null,
 };

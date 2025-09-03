@@ -20,8 +20,11 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
             ValidateRequest(request);
             var result = await _getAppUserByAuthId.ExecuteAsync(new GetAppUserByAuthIdContract(request.AuthUserId));
 
-            var returnModel = result.AppUser != null ? _mapper.Map<AppUserModel>(result.AppUser) : null;
-            return new GetAppUserByAuthIdRequest.Response(returnModel);
+            if (result.AppUser == null)
+            {
+                return new GetAppUserByAuthIdRequest.Response();
+            }
+            return new GetAppUserByAuthIdRequest.Response(result.AppUser);
         }
         private void ValidateRequest(GetAppUserByAuthIdRequest request)
         {

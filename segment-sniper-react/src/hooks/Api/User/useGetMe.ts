@@ -19,8 +19,6 @@ const useGetMeQuery = (
   async function getMeQuery() {
     const accessToken = await getToken({ template: 'SegmentSniper' });
 
-    console.log('Access Token:', accessToken); // Debug log
-
     const usersResponse = await getMe({
       baseUrl: apiConfig!.baseRestApiUrl,
       abortController,

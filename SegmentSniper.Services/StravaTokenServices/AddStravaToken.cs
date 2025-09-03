@@ -49,10 +49,7 @@ namespace SegmentSniper.Services.StravaTokenServices
             {
                 throw new ArgumentNullException(nameof(contract.Token));
             }
-            if (_context.Users.Where(t => t.AuthUserId == contract.AuthUserId).FirstOrDefault() != null)
-            {
-                throw new ApplicationException("Token already exists");
-            }
+   
             if (_context.Users.Count(u => u.AuthUserId == contract.AuthUserId) == 0)
             {
                 throw new ApplicationException("User does not exist");

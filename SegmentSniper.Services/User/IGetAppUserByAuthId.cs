@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Data.Entities.User;
+using SegmentSniper.Models.User;
 
 namespace SegmentSniper.Services.User
 {
@@ -16,13 +17,13 @@ namespace SegmentSniper.Services.User
         public string AuthUserId { get; }
         public class Result
         {
-            public AppUser? AppUser { get; }
+            public AppUserModel? AppUser { get; }
             public Result()
             {
                 
             }
 
-            public Result(AppUser user)
+            public Result(AppUserModel user)
             {
                 AppUser = user;
             }

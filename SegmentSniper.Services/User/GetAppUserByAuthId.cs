@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Data;
+using SegmentSniper.Models.User;
 using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.User
@@ -18,12 +19,25 @@ namespace SegmentSniper.Services.User
 
             var user = _segmentSniperDbContext.Users
                 .Where(u => u.AuthUserId == contract.AuthUserId)
+                .Select(u => new
+                {                                   
+                    u.AuthUserId,
+                    u.StravaAthleteId,
+                    u.StravaRefreshToken,
+                    u.StravaTokenExpiresIn,
+                    u.StravaTokenExpiresAt
+                })
                 .FirstOrDefault();
             if (user == null)
             {
                 return new GetAppUserByAuthIdContract.Result();
             }
-            return new GetAppUserByAuthIdContract.Result(user);
+            var userToReturn = new AppUserModel();
+
+            userToReturn.AuthUserId = user.AuthUserId;
+            userToReturn.StravaRefreshToken = user.StravaRefreshToken;
+
+            return new GetAppUserByAuthIdContract.Result(userToReturn);
         }
 
         private void ValidateContract(GetAppUserByAuthIdContract contract)
