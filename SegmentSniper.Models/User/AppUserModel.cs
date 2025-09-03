@@ -4,9 +4,6 @@ namespace SegmentSniper.Models.User
 {
     public class AppUserModel
     {
-
-        public int Id { get; set; }
-
         public string AuthUserId { get; set; }
 
         public string? StravaRefreshToken { get; set; }

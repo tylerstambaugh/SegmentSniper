@@ -33,7 +33,7 @@ namespace SegmentSniper.Api.Controllers
 
                 if (string.IsNullOrEmpty(userId))
                 {
-                    return Unauthorized("User ID not found in token.");
+                    return NotFound("User ID not found in token.");
                 }
 
                 var user = await _getAppUserByAuthUserIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));

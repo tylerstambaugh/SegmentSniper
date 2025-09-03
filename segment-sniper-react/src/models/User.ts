@@ -1,9 +1,8 @@
 import { DateTime } from 'luxon';
 
 export type User = {
-  id: string | null;
-  authUSerId: string | null;
-  refreshToken: string | null;
+  authUserId: string | null;
+  stravaRefreshToken: string | null;
   refreshTokenExpiration: DateTime | null;
   stravaAthleteId: string | null;
 };
