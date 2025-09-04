@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import { AppUserModel } from '../models/User';
+import { AppUserModel } from '../models/AppUserModel';
 
 const persistOptions = {
   name: 'user-store',

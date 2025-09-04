@@ -1,4 +1,4 @@
-import { AppUserModel } from '../../../models/User';
+import { AppUserModel } from '../../../models/AppUserModel';
 import { ApiContract } from '../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
 import { apiPost } from '../BaseApiService';

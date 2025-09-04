@@ -4,10 +4,10 @@ import useUserStore from '../../../stores/useUserStore';
 import { useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import getMe from '../../../services/Api/User/getMe';
-import { User } from '../../../models/User';
+import { AppUserModel } from '../../../models/AppUserModel';
 
 const useGetMeQuery = (
-  options?: Omit<UseQueryOptions<User, Error>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseQueryOptions<AppUserModel, Error>, 'queryKey' | 'queryFn'>
 ) => {
   const setUser = useUserStore((state) => state.setUser);
   const { getToken } = useAuth();
