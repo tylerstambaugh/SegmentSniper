@@ -13,8 +13,8 @@ namespace SegmentSniper.Models.User
         public long StravaTokenExpiresIn { get; set; }
         public long StravaAthleteId { get; set; }
 
-        public List<BikeModel> Bikes { get; set; } = new List<BikeModel>();
-        public List<EquipmentModel> Equipment { get; set; } = new List<EquipmentModel>();
-        public List<BikeActivityModel> BikeActivities { get; set; } = new List<BikeActivityModel>();        
+        public List<BikeModel>? Bikes { get; set; }
+        public List<EquipmentModel>? Equipment { get; set; } 
+        public List<BikeActivityModel>? BikeActivities { get; set; }
     }
 }

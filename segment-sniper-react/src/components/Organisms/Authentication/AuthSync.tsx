@@ -3,7 +3,8 @@ import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import useGetMeQuery from "../../../hooks/Api/User/useGetMe";
 import { AppRoutes } from "../../../enums/AppRoutes";
-import { Col, Container, Spinner } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+
 
 export const AuthSync = ({ children }: { children: React.ReactNode }) => {
     const { isSignedIn } = useUser();
@@ -15,6 +16,7 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
     });
 
     useEffect(() => {
+        console.log("data:", data);
 
         if (!isSignedIn) {
             setChecked(true);
@@ -29,10 +31,10 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
             return;
         }
 
-        if (data?.stravaRefreshToken) {
-            navigate(AppRoutes.Dashboard);
-        } else {
-            navigate(AppRoutes.ConnectWithStrava);
+        if (data?.stravaRefreshToken === null) {
+            if (location.pathname !== AppRoutes.ConnectWithStrava) {
+                navigate(AppRoutes.ConnectWithStrava, { replace: true });
+            }
         }
 
         setChecked(true);
@@ -41,11 +43,13 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
     if (isSignedIn && (!checked || isLoading)) {
         return (
             <Container className="d-flex flex-column justify-content-center">
-                <Col>
-                    <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </Spinner>
-                </Col>
+                <Row>
+                    <Col>
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    </Col>
+                </Row>
             </Container>
         );
     }

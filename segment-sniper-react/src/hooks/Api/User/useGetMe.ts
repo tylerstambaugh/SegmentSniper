@@ -6,7 +6,6 @@ import { useAuth } from '@clerk/clerk-react';
 import getMe from '../../../services/Api/User/getMe';
 import { User } from '../../../models/User';
 
-// Allow passing query options
 const useGetMeQuery = (
   options?: Omit<UseQueryOptions<User, Error>, 'queryKey' | 'queryFn'>
 ) => {
