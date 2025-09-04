@@ -40,8 +40,8 @@ export default function AppRoutesComponent() {
 
       {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
 
-      {/* User-protected routes */}
-      <Route element={<PrivateRoute userRoles={[UserRole.Member]} />}>
+      {/* User-protected routes (require strava sync) */}
+      <Route element={<PrivateRoute userRoles={[UserRole.Member]} requireStravaSync />}>
         <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.Snipe} element={<SegmentSniper />} />
         <Route path={AppRoutes.ActivitySearchResults} element={<ActivitySearchResults />} />
@@ -54,7 +54,7 @@ export default function AppRoutesComponent() {
         <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
       </Route>
 
-      {/* Admin-protected routes */}
+      {/* Admin-protected routes (no strava sync) */}
       <Route element={<PrivateRoute userRoles={[UserRole.Admin]} />}>
         <Route path={AppRoutes.Admin} element={<Admin />} />
         <Route path={AppRoutes.UserManagement} element={<BikeDetails />} />

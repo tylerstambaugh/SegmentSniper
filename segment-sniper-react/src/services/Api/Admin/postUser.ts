@@ -1,4 +1,4 @@
-import { User } from '../../../models/User';
+import { AppUserModel } from '../../../models/AppUserModel';
 import { ApiContract } from '../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
 import { apiPost } from '../BaseApiService';
@@ -8,7 +8,7 @@ export type AddUserRequest = {
 };
 
 export type AddUserResponse = {
-  user: User;
+  user: AppUserModel;
 };
 
 export default async function postUser(

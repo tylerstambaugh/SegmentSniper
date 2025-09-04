@@ -1,27 +1,23 @@
+// PrivateRoute.tsx
 import { Link, Outlet } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { SignedIn, SignedOut, useUser } from "@clerk/react-router";
 import { AppRoutes } from "../../../enums/AppRoutes";
+import { AuthSync } from "./AuthSync";
 
 type Props = {
   userRoles?: Array<string>;
+  requireStravaSync?: boolean; // ✅ new prop
 };
 
-const PrivateRoute = ({ userRoles = [] }: Props) => {
+const PrivateRoute = ({ userRoles = [], requireStravaSync = false }: Props) => {
   const { user } = useUser();
 
-  console.log("user:", user);
-
-  console.log("user roles:", user?.publicMetadata?.roles);
+  const roles = user?.publicMetadata?.roles;
+  const roleArray = Array.isArray(roles) ? roles : roles ? [roles] : [];
 
   const userHasRequiredRole =
-    user &&
-    (userRoles.length === 0 ||
-      userRoles.some((role) =>
-        Array.isArray(user.publicMetadata?.roles)
-          ? user.publicMetadata.roles.includes(role)
-          : user.publicMetadata?.roles === role
-      ));
+    user && (userRoles.length === 0 || userRoles.some((role) => roleArray.includes(role)));
 
   return (
     <>
@@ -30,7 +26,7 @@ const PrivateRoute = ({ userRoles = [] }: Props) => {
           <Row className="text-center">
             <Col>
               <p>You must be logged in to access this resource.</p>
-              <Link to={`/${AppRoutes.SignIn}`}>
+              <Link to={AppRoutes.SignIn}>
                 <Button>Login</Button>
               </Link>
             </Col>
@@ -44,12 +40,17 @@ const PrivateRoute = ({ userRoles = [] }: Props) => {
             <Row className="text-center">
               <Col>
                 <p>You do not have permission to access this resource.</p>
-                <Link to={`/${AppRoutes.Home}`}>
+                <Link to={AppRoutes.Home}>
                   <Button>Home</Button>
                 </Link>
               </Col>
             </Row>
           </Container>
+        ) : requireStravaSync ? (
+
+          <AuthSync>
+            <Outlet />
+          </AuthSync>
         ) : (
           <Outlet />
         )}

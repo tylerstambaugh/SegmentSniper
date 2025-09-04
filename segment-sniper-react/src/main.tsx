@@ -13,7 +13,7 @@ import { ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 import AppRoutesComponent from './SegmentSniper.routes';
-import { AuthSync } from './components/Organisms/Authentication/AuthSync';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,9 +40,7 @@ root.render(
           <QueryClientProvider client={queryClient}>
             <InitializeApp>
               <Header />
-              <AuthSync>
-                <AppRoutesComponent />
-              </AuthSync>
+              <AppRoutesComponent />
               <Footer />
             </InitializeApp>
             <Toaster

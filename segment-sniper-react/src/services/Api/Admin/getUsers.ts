@@ -1,10 +1,10 @@
-import { User } from '../../../models/User';
+import { AppUserModel } from '../../../models/AppUserModel';
 import { ApiContract } from '../ApiCommon/ApiContract';
 import UnsuccessfulHttpResponseError from '../ApiCommon/UnsuccessfulHttpResponseError';
 import { apiGet } from '../BaseApiService';
 
 export type UsersListResponse = {
-  users: User[];
+  users: AppUserModel[];
 };
 
 export default async function getUsers(contract: ApiContract) {
