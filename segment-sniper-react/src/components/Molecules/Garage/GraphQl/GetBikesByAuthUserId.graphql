@@ -1,6 +1,6 @@
-query GetBikesByUserId($userId: ID!) {
+query GetBikesByAuthUserId($authUserId: ID!) {
   bikes {
-    byUserId(userId: $userId) {
+    byAuthUserId(authUserId: $authUserId) {
       bikeId
       name
       brandName
