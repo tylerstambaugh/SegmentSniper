@@ -66,20 +66,20 @@ export type BikeModel = {
 
 export type BikeQueries = {
   __typename?: 'BikeQueries';
+  /** Retrieve all bikes for a user */
+  byAuthUserId?: Maybe<Array<Maybe<BikeModel>>>;
   /** Retrieve a bike by its Id */
   byBikeId?: Maybe<BikeModel>;
-  /** Retrieve all bikes for a user */
-  byUserId?: Maybe<Array<Maybe<BikeModel>>>;
+};
+
+
+export type BikeQueriesByAuthUserIdArgs = {
+  authUserId: Scalars['ID']['input'];
 };
 
 
 export type BikeQueriesByBikeIdArgs = {
   bikeId: Scalars['ID']['input'];
-};
-
-
-export type BikeQueriesByUserIdArgs = {
-  userId: Scalars['ID']['input'];
 };
 
 export type DeleteResult = {
@@ -247,12 +247,12 @@ export type GetBikeByIdQueryVariables = Exact<{
 
 export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
-export type GetBikesByUserIdQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
+export type GetBikesByAuthUserIdQueryVariables = Exact<{
+  authUserId: Scalars['ID']['input'];
 }>;
 
 
-export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+export type GetBikesByAuthUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byAuthUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 export type ImportGarageMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -521,10 +521,10 @@ export type GetBikeByIdQueryHookResult = ReturnType<typeof useGetBikeByIdQuery>;
 export type GetBikeByIdLazyQueryHookResult = ReturnType<typeof useGetBikeByIdLazyQuery>;
 export type GetBikeByIdSuspenseQueryHookResult = ReturnType<typeof useGetBikeByIdSuspenseQuery>;
 export type GetBikeByIdQueryResult = Apollo.QueryResult<GetBikeByIdQuery, GetBikeByIdQueryVariables>;
-export const GetBikesByUserIdDocument = gql`
-    query GetBikesByUserId($userId: ID!) {
+export const GetBikesByAuthUserIdDocument = gql`
+    query GetBikesByAuthUserId($authUserId: ID!) {
   bikes {
-    byUserId(userId: $userId) {
+    byAuthUserId(authUserId: $authUserId) {
       bikeId
       name
       brandName
@@ -547,37 +547,37 @@ export const GetBikesByUserIdDocument = gql`
     `;
 
 /**
- * __useGetBikesByUserIdQuery__
+ * __useGetBikesByAuthUserIdQuery__
  *
- * To run a query within a React component, call `useGetBikesByUserIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBikesByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBikesByAuthUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBikesByAuthUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetBikesByUserIdQuery({
+ * const { data, loading, error } = useGetBikesByAuthUserIdQuery({
  *   variables: {
- *      userId: // value for 'userId'
+ *      authUserId: // value for 'authUserId'
  *   },
  * });
  */
-export function useGetBikesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables> & ({ variables: GetBikesByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetBikesByAuthUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables> & ({ variables: GetBikesByAuthUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
+        return Apollo.useQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
       }
-export function useGetBikesByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>) {
+export function useGetBikesByAuthUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
+          return Apollo.useLazyQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
         }
-export function useGetBikesByUserIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>) {
+export function useGetBikesByAuthUserIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
+          return Apollo.useSuspenseQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
         }
-export type GetBikesByUserIdQueryHookResult = ReturnType<typeof useGetBikesByUserIdQuery>;
-export type GetBikesByUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByUserIdLazyQuery>;
-export type GetBikesByUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByUserIdSuspenseQuery>;
-export type GetBikesByUserIdQueryResult = Apollo.QueryResult<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>;
+export type GetBikesByAuthUserIdQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdQuery>;
+export type GetBikesByAuthUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdLazyQuery>;
+export type GetBikesByAuthUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdSuspenseQuery>;
+export type GetBikesByAuthUserIdQueryResult = Apollo.QueryResult<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>;
 export const ImportGarageDocument = gql`
     mutation ImportGarage($userId: ID!) {
   garage {

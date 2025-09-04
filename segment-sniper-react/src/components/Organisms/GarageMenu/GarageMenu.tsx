@@ -4,13 +4,14 @@ import { useRef, useState } from "react";
 import ImportBikesModal from "../../Molecules/Garage/ImportBikes/ImportBikesModal";
 import UpsertBikeModal, { UpsertBikeFormValues } from "../../Molecules/Garage/UpsertBike/UpsertBikeModal";
 import { useUpsertBikeMutation } from "../../Molecules/Garage/UpsertBike/GraphQl/useUpsertBikeMutation";
-import GetBikesByUserId from "../../Molecules/Garage/GraphQl/GetBikesByUserId.graphql";
-import useUserStore from "../../../stores/useUserStore";
+import GetBikesByAuthUserId from "../../Molecules/Garage/GraphQl/GetBikesByAuthUserId.graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FrameType, FrameTypeToEnumMap } from "../../../enums/FrameTypes";
-import { GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables } from "../../../graphql/generated";
+
 import { ApolloError } from "@apollo/client";
+import { useUser } from "@clerk/clerk-react";
+import { GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables } from "../../../graphql/generated";
 
 
 type GarageModalState =
@@ -18,7 +19,7 @@ type GarageModalState =
     | { type: "import" }
     | { type: "upsertBike" };
 export default function GarageMenu() {
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const [modalState, setModalState] = useState<GarageModalState>({ type: "none" });
     const abortRef = useRef<AbortController | null>(null);
 
@@ -40,7 +41,7 @@ export default function GarageMenu() {
         try {
             const result = await upsertBike({
                 variables: {
-                    userId: user?.id ?? '',
+                    userId: user?.user?.id ?? '',
                     bike: {
                         name: values.bikeName,
                         frameType: FrameTypeToEnumMap[values.bikeFrameType as FrameType],
@@ -57,27 +58,27 @@ export default function GarageMenu() {
                 },
                 update: (cache, { data }) => {
                     const newBike = data?.garage?.upsertBike;
-                    if (!newBike || !user?.id) return
+                    if (!newBike || !user?.user?.id) return
 
-                    const queryVars: GetBikesByUserIdQueryVariables = {
-                        userId: user.id,
+                    const queryVars: GetBikesByAuthUserIdQueryVariables = {
+                        authUserId: user?.user?.id ?? '',
                     };
 
                     try {
-                        const existingData = cache.readQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
-                            query: GetBikesByUserId,
+                        const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
                             variables: queryVars,
                         });
 
-                        if (!existingData?.bikes?.byUserId) return;
+                        if (!existingData?.bikes?.byAuthUserId) return;
 
-                        cache.writeQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
-                            query: GetBikesByUserId,
+                        cache.writeQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
                             variables: queryVars,
                             data: {
                                 bikes: {
                                     ...existingData.bikes,
-                                    byUserId: [...existingData.bikes.byUserId, newBike],
+                                    byAuthUserId: [...existingData.bikes.byAuthUserId, newBike],
                                 },
                             },
                         });
