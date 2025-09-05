@@ -104,7 +104,6 @@ const SnipeSegmentCardCarousel = ({
         <Col xs={1} className="d-flex justify-content-center align-items-center">
           {!isSmallScreen ? (
             <NextArrow onClick={() => {
-              console.log("next");
               carouselRef.current?.next(1)
             }} />
           ) : null}

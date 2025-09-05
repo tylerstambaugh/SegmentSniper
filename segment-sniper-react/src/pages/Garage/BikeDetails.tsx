@@ -16,7 +16,6 @@ const BikeDetails = () => {
 
     if (bikeLoading) return <p>Loading...</p>;
     if (bikeError) {
-        console.log("Error: ", bikeError);
         return <p>Error: {bikeError?.message}</p>;
     }
 

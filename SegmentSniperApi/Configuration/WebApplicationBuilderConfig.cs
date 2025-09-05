@@ -1,24 +1,17 @@
 ﻿using Azure.Identity;
-using Clerk.Net.Client;
 using Clerk.Net.DependencyInjection;
 using GraphQL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Kiota.Abstractions.Authentication;
-using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.OpenApi.Models;
-using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.GraphQL;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using System;
 using System.Security.Claims;
-using TorchSharp.Modules;
 
 
 namespace SegmentSniper.Api.Configuration
