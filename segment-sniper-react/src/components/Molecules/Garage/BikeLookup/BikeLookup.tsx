@@ -31,9 +31,6 @@ export const BikeLookup = () => {
         enableReinitialize: true,
         onSubmit: (values: BikeLookupForm) => {
             setValidated(true);
-
-            console.log("we're submitting", values);
-
         },
         validationSchema: validationSchema,
         validateOnBlur: validated,

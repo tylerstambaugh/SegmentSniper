@@ -13,7 +13,6 @@ export const BikeList = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) {
-        console.log("GetBikesByUserId query error: ", error);
         return <p>Error: {error.message}</p>;
     }
 

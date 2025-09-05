@@ -104,7 +104,6 @@ const ManageStravaWebhookWidget = () => {
                                             <Button
                                                 onClick={() => {
                                                     createSubscription();
-                                                    console.log("Create Subscription clicked");
                                                 }}
                                                 className={"me-1"}
                                             >Create Subscription

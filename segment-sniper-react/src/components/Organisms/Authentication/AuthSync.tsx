@@ -16,7 +16,6 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
     });
 
     useEffect(() => {
-        console.log("data:", data);
 
         if (!isSignedIn) {
             setChecked(true);
