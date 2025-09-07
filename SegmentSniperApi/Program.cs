@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Api.Configuration;
+using SegmentSniper.Data;
 using System.Net;
 using System.Reflection;
 
@@ -24,13 +26,14 @@ app.Run();
 void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
 {
     // Create a scope to resolve the SegmentSniperDbContext
-    //using (var scope = app.Services.CreateScope())
-    //{
-    //    var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+        context.Database.Migrate();
 
-    //    // Ensure database is created
-    //   //context.Database.EnsureCreated();
-    //}
+        // Ensure database is created
+        //context.Database.EnsureCreated();
+    }
 
 
     // Configure the HTTP request pipeline

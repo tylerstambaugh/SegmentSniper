@@ -21,9 +21,9 @@ import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 import BikeDetails from "./pages/Garage/BikeDetails";
 import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
 import SignIn from "./pages/Authentication/SignIn";
-import SignUp from "./pages/Authentication/SignUp";
 import ConnectWithStrava from "./components/Organisms/ConnectWithStrava/ConnectWithStrava";
 import Unauthorized from "./components/Unauthorized";
+import SignUpPage from "./pages/Authentication/SignUpPage";
 
 
 export default function AppRoutesComponent() {
@@ -34,7 +34,7 @@ export default function AppRoutesComponent() {
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
       <Route path={`${AppRoutes.SignIn}/*`} element={<SignIn />} />
-      <Route path={`${AppRoutes.SignUp}/*`} element={<SignUp />} />
+      <Route path={`${AppRoutes.SignUp}/*`} element={<SignUpPage />} />
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
       <Route path={AppRoutes.Unauthorized} element={<Unauthorized />} />
 
