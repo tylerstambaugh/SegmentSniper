@@ -12,7 +12,10 @@ export default function SignInPage() {
                     path="/sign-in"
                     routing="path"
                     signInUrl="/sign-in"
-                    forceRedirectUrl={SIGN_IN_REDIRECT} />
+                    forceRedirectUrl={SIGN_IN_REDIRECT}
+                    withSignUp
+                />
+
             </Col>
         </Container>
     )
