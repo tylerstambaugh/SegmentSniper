@@ -1,4 +1,13 @@
-﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+﻿IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = N'SegmentSniperDb')
+BEGIN
+    CREATE DATABASE SegmentSniperDb;
+END;
+GO
+USE SegmentSniperDb;
+GO
+
+
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
 BEGIN
     CREATE TABLE [__EFMigrationsHistory] (
         [MigrationId] nvarchar(150) NOT NULL,
