@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Garage;
-using SegmentSniper.Services.ManageProfile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage.Equipment
 {
@@ -24,12 +18,12 @@ namespace SegmentSniper.Services.Garage.Equipment
 
         public async Task<DeleteEquipmentContract.Result> ExecuteAsync(DeleteEquipmentContract contract)
         {
-           ValidateContract(contract);
+            ValidateContract(contract);
 
             try
             {
                 var equipmentToDelete = _segmentSniperDbContext.Equipment
-                    .Where(e => e.EquipmentId == contract.EquipmentId && e.UserId == contract.UserId)
+                    .Where(e => e.EquipmentId == contract.EquipmentId && e.AuthUserId == contract.UserId)
                     .FirstOrDefault();
 
                 if (equipmentToDelete != null)
@@ -37,7 +31,7 @@ namespace SegmentSniper.Services.Garage.Equipment
                     _segmentSniperDbContext.Equipment
                         .Remove(equipmentToDelete);
 
-                    var numRows = _segmentSniperDbContext.SaveChanges();                    
+                    var numRows = _segmentSniperDbContext.SaveChanges();
                 }
 
                 var updatedBike = await _segmentSniperDbContext.Bikes
@@ -60,17 +54,17 @@ namespace SegmentSniper.Services.Garage.Equipment
 
         private void ValidateContract(DeleteEquipmentContract contract)
         {
-            if(contract == null)
+            if (contract == null)
             {
                 throw new ArgumentNullException(nameof(contract));
             }
 
-            if(string.IsNullOrEmpty(contract.UserId))
+            if (string.IsNullOrEmpty(contract.UserId))
             {
                 throw new ArgumentException(nameof(contract.UserId));
             }
 
-            if(string.IsNullOrEmpty(contract.EquipmentId))
+            if (string.IsNullOrEmpty(contract.EquipmentId))
             {
                 throw new ArgumentException(nameof(contract.EquipmentId));
             }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Data.Entities.Garage;
+using SegmentSniper.Models.Garage;
 using Serilog;
 
 namespace SegmentSniper.Services.Garage
@@ -30,7 +30,7 @@ namespace SegmentSniper.Services.Garage
                     var bikeToAdd = new Bike
                     {
                         BikeId = contract.Bike.BikeId ?? Guid.NewGuid().ToString(),
-                        UserId = contract.Bike.UserId,
+                        AuthUserId = contract.Bike.UserId,
                         IsPrimary = contract.Bike.IsPrimary,                        
                         Name = contract.Bike.Name,
                         Description = contract.Bike.Description,

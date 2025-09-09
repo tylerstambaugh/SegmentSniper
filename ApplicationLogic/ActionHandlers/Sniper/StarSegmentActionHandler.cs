@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Segment;
 using StravaApiClient;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Services.Segment;
@@ -23,13 +23,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         public async Task<StarSegmentRequest.Response> HandleAsync(StarSegmentRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.Users.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
                     var response = await _stravaRequestService.StarSegment(new StarSegmentContract
                     {

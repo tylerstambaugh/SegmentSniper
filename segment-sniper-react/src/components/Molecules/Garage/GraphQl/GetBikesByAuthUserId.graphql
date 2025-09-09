@@ -1,0 +1,22 @@
+query GetBikesByAuthUserId($authUserId: ID!) {
+  bikes {
+    byAuthUserId(authUserId: $authUserId) {
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}

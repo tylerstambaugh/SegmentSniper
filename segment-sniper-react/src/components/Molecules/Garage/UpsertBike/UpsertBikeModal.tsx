@@ -167,10 +167,6 @@ const UpsertBikeModal = ({
                             <Col className="justify-content-between d-flex">
                                 {!loading ? (
                                     <Button variant="primary" type="submit" onClick={() => {
-                                        console.log("Submitting form", formik.values);
-                                        console.log("Submitting form errors", formik.errors);
-
-
                                     }}>
                                         Submit
                                     </Button>

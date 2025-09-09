@@ -1,5 +1,5 @@
-﻿using SegmentSniper.Models.Models.Strava.Activity;
-using SegmentSniper.Models.Models.Strava.Segment;
+﻿using SegmentSniper.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Activity;
 using SegmentSniper.Models.UIModels.Segment;
 

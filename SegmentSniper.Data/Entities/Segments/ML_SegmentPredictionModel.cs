@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Data.Entities.Auth;
+﻿
+using SegmentSniper.Data.Entities.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,11 +7,16 @@ namespace SegmentSniper.Data.Entities.Segments
 {
     public class ML_SegmentPredictionModel
     {
-        [Key] 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        [ForeignKey("Users")]
-        public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+
+        // Foreign key to AppUser
+        public required string AuthUserId { get; set; }
+        // Navigation property
+        [ForeignKey(nameof(AuthUserId))]
+        public virtual AppUser AppUser { get; set; }
+
         public byte[] SegmentPredictionModelData {  get; set; } 
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

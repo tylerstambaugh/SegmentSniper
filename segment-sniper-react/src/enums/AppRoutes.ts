@@ -2,14 +2,11 @@
 export enum AppRoutes {
   Home = '',
   Dashboard = 'dashboard',
-  Register = 'register',
-  ConfirmEmail = 'confirm-email',
-  ConfirmEmailCheckCode = 'confirm-email-check-code',
-  ForgotPassword = 'forgot-password',
-  ResetPassword = 'reset-password',
-  Login = 'login',
+  SignIn = 'sign-in',
+  SignUp = 'sign-up',
   Logout = 'logout',
   InactiveLogout = 'inactive-logout',
+  ConnectWithStrava = 'connect-strava',
   ConnectWithStravaSuccess = 'connect-with-strava-success',
   ConnectWithStravaError = 'connect-with-strava-error',
   Snipe = 'snipe',
@@ -24,4 +21,5 @@ export enum AppRoutes {
   BikeDetails = 'garage/bike-details/:bikeId',
   UserManagement = 'admin/user-management',
   StravaWebhookManageMent = 'admin/strava-webhook-management',
+  Unauthorized = 'unauthorized',
 }

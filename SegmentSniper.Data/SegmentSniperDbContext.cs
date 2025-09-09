@@ -1,27 +1,19 @@
-﻿using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using SegmentSniper.Data.Entities.Auth;
-using SegmentSniper.Data.Entities.Equiment;
+﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.MachineLearning;
-using SegmentSniper.Data.Entities.ManageProfile;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Data.Entities.StravaToken;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
+using SegmentSniper.Data.Entities.User;
 
 namespace SegmentSniper.Data
 {
-    public class SegmentSniperDbContext : ApiAuthorizationDbContext<ApplicationUser>, ISegmentSniperDbContext
+    public class SegmentSniperDbContext : DbContext, ISegmentSniperDbContext
     {
-        public SegmentSniperDbContext(DbContextOptions<SegmentSniperDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        public SegmentSniperDbContext(DbContextOptions<SegmentSniperDbContext> options)
+            : base(options)
         {
-
         }
-        public virtual DbSet<ApplicationUser> Users { get; set; }
-        public virtual DbSet<StravaApiToken> StravaTokens { get; set; }
-        public virtual DbSet<ChangeEmailVerificationCode> ChangeEmailVerificationCodes { get; set; }
+        public virtual DbSet<AppUser> Users { get; set; }
         public virtual DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
         public virtual DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
         public virtual DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
@@ -44,15 +36,6 @@ namespace SegmentSniper.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Override default AspNet Identity table names
-            modelBuilder.Entity<ApplicationUser>(entity => { entity.ToTable(name: "Users"); });
-            modelBuilder.Entity<IdentityRole>(entity => { entity.ToTable(name: "Roles"); });
-            modelBuilder.Entity<IdentityUserRole<string>>(entity => { entity.ToTable("UserRoles"); });
-            modelBuilder.Entity<IdentityUserClaim<string>>(entity => { entity.ToTable("UserClaims"); });
-            modelBuilder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable("UserLogins"); });
-            modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("UserTokens"); });
-            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaims"); });
-
             // Ignore the SegmentSniperLog table by its name
             modelBuilder.Entity<SegmentSniperLogEntity>().ToTable("SegmentSniperLog", t => t.ExcludeFromMigrations());
 
@@ -61,7 +44,39 @@ namespace SegmentSniper.Data
            .WithOne(e => e.Bike)      // Each Equipment belongs to one Bike
            .HasForeignKey(e => e.BikeId); // Equipment's foreign key is BikeId
 
+            modelBuilder.Entity<SegmentPredictionRegressionMetrics>()
+            .HasIndex(m => m.AuthUserId)
+            .IsUnique();
 
+            modelBuilder.Entity<AppUser>()
+            .Property(u => u.AuthUserId)
+            .HasMaxLength(255);
+
+            modelBuilder.Entity<BikeActivity>(entity =>
+            {
+                // Unique index
+                entity.HasIndex(b => b.StravaActivityId)
+                      .IsUnique();
+
+                // Relationship to AppUser
+                entity.HasOne(ba => ba.AppUser)
+                      .WithMany(u => u.BikeActivities)
+                      .HasForeignKey(ba => ba.AuthUserId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Equipment>(entity =>
+            {
+                entity.HasOne(e => e.Bike)
+                      .WithMany(b => b.Equipment)
+                      .HasForeignKey(e => e.BikeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                // Relationship to AppUser
+                entity.HasOne(e => e.AppUser)
+                      .WithMany(u => u.Equipment)
+                      .HasForeignKey(e => e.AuthUserId)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
         }
 
         // Define a dummy entity class for the log table

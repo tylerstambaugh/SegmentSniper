@@ -44,8 +44,11 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                    ?? throw new InvalidOperationException("User ID claim is missing.");
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new InvalidOperationException("User ID claim is missing.");
+                }
                 
                 request.UserId = userId;
                 var returnList = await _getActivityListActionHandler.HandleAsync(request);
@@ -67,9 +70,12 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> GetDetailedActivityById(string activityId)
         {
 
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                ?? throw new InvalidOperationException("User ID claim is missing.");
-            
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new InvalidOperationException("User ID claim is missing.");
+            }
+
             var request = new GetDetailedActivityByIdRequest(userId, activityId);
             var returnList = await _getDetailedActivityByIdActionHandler.HandleAsync(request);
 

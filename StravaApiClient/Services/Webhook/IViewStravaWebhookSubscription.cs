@@ -1,5 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Webhook;
-using StravaApiClient.Models.Webhook;
+﻿using StravaApiClient.Models.Webhook;
 
 namespace StravaApiClient.Services.Webhook
 {
@@ -21,7 +20,7 @@ namespace StravaApiClient.Services.Webhook
         public class Result
         {
             public ViewSubscriptionApiResponse ViewSubscriptionApiResponse { get; set; }
-            
+
             public Result(ViewSubscriptionApiResponse viewSubscriptionApiResponse)
             {
                 ViewSubscriptionApiResponse = viewSubscriptionApiResponse ?? throw new ArgumentNullException(nameof(viewSubscriptionApiResponse));

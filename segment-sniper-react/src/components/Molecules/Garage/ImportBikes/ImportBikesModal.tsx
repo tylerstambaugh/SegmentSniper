@@ -1,11 +1,12 @@
 import { Button, Col, Modal, Row, Spinner } from "react-bootstrap";
-import useUserStore from "../../../../stores/useUserStore";
+
 import { useImportGarage } from "./GraphQl/useImportGarage";
 import toast from "react-hot-toast";
 import { useRef } from "react";
-import { BikeModel, GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables } from "../../../../graphql/generated";
-import GetBikesByUserId from "../../Molecules/Garage/GraphQl/GetBikesByUserId.graphql";
+import { BikeModel, GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables } from "../../../../graphql/generated";
+import GetBikesByAuthUserId from "../../../Molecules/Garage/GraphQl/GetBikesByAuthUserId.graphql";
 import { ApolloError } from "@apollo/client";
+import { useUser } from "@clerk/clerk-react";
 
 
 export type ImportBikesModalProps = {
@@ -17,7 +18,8 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
     const abortRef = useRef<AbortController | null>(null);
 
 
-    const userId = useUserStore((state) => state.user?.id);
+    const user = useUser();
+    const userId = user?.user?.id ?? '';
     const [importGarage, { loading,
         error }] = useImportGarage();
 
@@ -35,7 +37,7 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
         try {
             const result = await importGarage({
                 variables: {
-                    userId: userId ?? "",
+                    userId: userId,
                 },
 
                 context: {
@@ -48,25 +50,25 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
                     const newBike = data?.garage?.upsertBike;
                     if (!newBike || !userId) return
 
-                    const queryVars: GetBikesByUserIdQueryVariables = {
-                        userId: userId,
+                    const queryVars: GetBikesByAuthUserIdQueryVariables = {
+                        authUserId: userId,
                     };
 
                     try {
-                        const existingData = cache.readQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
-                            query: GetBikesByUserId,
+                        const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
                             variables: queryVars,
                         });
 
-                        if (!existingData?.bikes?.byUserId) return;
+                        if (!existingData?.bikes?.byAuthUserId) return;
 
-                        cache.writeQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>({
-                            query: GetBikesByUserId,
+                        cache.writeQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
                             variables: queryVars,
                             data: {
                                 bikes: {
                                     ...existingData.bikes,
-                                    byUserId: [...existingData.bikes.byUserId, newBike],
+                                    byAuthUserId: [...existingData.bikes.byAuthUserId, newBike],
                                 },
                             },
                         });

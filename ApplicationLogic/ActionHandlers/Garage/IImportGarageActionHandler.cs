@@ -1,6 +1,6 @@
 ﻿
 
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 

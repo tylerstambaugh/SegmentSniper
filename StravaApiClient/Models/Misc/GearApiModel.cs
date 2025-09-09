@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
-using SegmentSniper.Models.Models.Garage;
+﻿using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 
 namespace StravaApiClient.Models.Misc

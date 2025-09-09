@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../stores/useTokenStore';
+
 import getSnipeSegmentsList, {
   SnipeSegmentsRequest,
   SnipeSegmentsResponse,
 } from '../../../services/Api/Segment/getSnipeSegmentsList';
 import useSnipeSegmentsListStore from '../../../stores/useSnipeSegmentsListStore';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
@@ -16,13 +17,13 @@ export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
       state.setSnipeSegment,
       state.setSnipeSegmentsList,
     ]);
-  const accessToken = useTokenDataStore(
-    (state) => state.tokenData?.accessToken
-  );
+  const { getToken } = useAuth();
 
   const query = useQuery<SnipeSegmentsResponse, Error>({
     queryKey: ['snipeSegments', request],
     queryFn: async () => {
+      const accessToken = await getToken({ template: 'SegmentSniper' });
+
       if (!apiConfig || !accessToken)
         throw new Error('Missing API config or token');
 
@@ -42,7 +43,7 @@ export const useSnipeSegments = (request: SnipeSegmentsRequest) => {
 
       return response;
     },
-    enabled: !!apiConfig && !!accessToken,
+    enabled: !!apiConfig,
   });
 
   return query;

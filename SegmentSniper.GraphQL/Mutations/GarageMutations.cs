@@ -4,7 +4,7 @@ using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.GraphQL.Types;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.Garage.Equipment;
 
@@ -15,7 +15,7 @@ namespace SegmentSniper.GraphQL.Mutations
         public GarageMutations()
         {
             Name = "GarageMutations";
-            
+
             AddField(new FieldType
             {
                 Name = "ImportGarage",
@@ -78,7 +78,7 @@ namespace SegmentSniper.GraphQL.Mutations
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
-                    new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> {  Name = "equipment", Description = "The details of the equipment being added."}
+                    new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> { Name = "equipment", Description = "The details of the equipment being added." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {

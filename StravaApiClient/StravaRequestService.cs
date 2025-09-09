@@ -27,8 +27,8 @@ namespace StravaApiClient
 
         public string UserId
         {
-            get => _config.UserId;
-            set => _config.UserId = value;
+            get => _config.AuthUserId;
+            set => _config.AuthUserId = value;
         }
 
         public Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract)

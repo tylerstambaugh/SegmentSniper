@@ -60,7 +60,6 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                         className="d-flex justify-content-center px-3"
                         variant="primary"
                         onClick={() => {
-                            console.log("Edit button clicked");
                             setModalState({ type: "addEdit", item: item })
                         }}>
 

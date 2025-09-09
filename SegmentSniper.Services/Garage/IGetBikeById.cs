@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Garage;
+﻿using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {

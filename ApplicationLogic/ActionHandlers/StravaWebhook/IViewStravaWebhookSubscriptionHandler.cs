@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Webhook;
+﻿using SegmentSniper.Models.Strava.Webhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 {

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.StravaToken;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Token;
 
 namespace SegmentSniper.Services.StravaToken
 {
@@ -21,13 +20,13 @@ namespace SegmentSniper.Services.StravaToken
         {
             ValidateContract(contract);
 
-            var stravaToken = await _context.StravaTokens.FirstOrDefaultAsync(x => x.UserId == contract.UserId);
+            var stravaToken = await _context.Users.FirstOrDefaultAsync(x => x.AuthUserId == contract.UserId);
 
             if (stravaToken != null)
             {
                 return new GetStravaTokenForUserContract.Result
                 {
-                    StravaToken = _mapper.Map<StravaApiToken, StravaTokenModel>(stravaToken)
+                    StravaToken = _mapper.Map<Data.Entities.User.AppUser, StravaTokenModel>(stravaToken)
                 };
             }
             else

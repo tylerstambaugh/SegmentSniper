@@ -1,6 +1,4 @@
-﻿using Duende.IdentityServer.Validation;
-using Org.BouncyCastle.Crypto.Signers;
-using SegmentSniper.Data;
+﻿using SegmentSniper.Data;
 
 namespace SegmentSniper.Services.ManageProfile
 {
@@ -20,11 +18,11 @@ namespace SegmentSniper.Services.ManageProfile
             try
             {
 
-            var stravaToken = _segmentSniperDbContext.StravaTokens.Where(x => x.UserId == contract.UserId).FirstOrDefault();
+                var stravaToken = _segmentSniperDbContext.Users.Where(x => x.AuthUserId == contract.UserId).FirstOrDefault();
 
                 if (stravaToken != null)
                 {
-                    _segmentSniperDbContext.StravaTokens.Remove(stravaToken);
+                    _segmentSniperDbContext.Users.Remove(stravaToken);
                     var numRows = _segmentSniperDbContext.SaveChanges();
 
                     return new DeleteStravaTokenContract.Result(numRows == 1);
@@ -52,7 +50,7 @@ namespace SegmentSniper.Services.ManageProfile
                 throw new ArgumentNullException(nameof(contract.UserId));
             }
 
-            if (_segmentSniperDbContext.Users.Count(u => u.Id == contract.UserId) == 0)
+            if (_segmentSniperDbContext.Users.Count(u => u.AuthUserId == contract.UserId) == 0)
             {
                 throw new ApplicationException("User does not exist");
             }

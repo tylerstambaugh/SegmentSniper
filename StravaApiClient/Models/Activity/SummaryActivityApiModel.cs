@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SegmentSniper.Models.Models.Strava.Misc;
-using StravaApiClient.Models.Misc;
+using SegmentSniper.Models.Strava.Misc;
 
 namespace StravaApiClient.Models.Activity
 {

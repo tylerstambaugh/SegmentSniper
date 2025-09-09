@@ -1,22 +1,22 @@
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { BikeListItem } from './BikeListItem';
-import useUserStore from '../../../../stores/useUserStore';
+
 import { FrameType, FrameTypeToString } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
 import sortBy from 'lodash/sortBy';
-import { useGetBikesByUserIdQuery } from '../GraphQl/useGetBikesByUserId';
+import { useGetBikesByUserIdQuery } from '../GraphQl/useGetBikesByAuthUserId';
+import { useUser } from '@clerk/clerk-react';
 
 export const BikeList = () => {
-    const userId = useUserStore((state) => state.user?.id)
-    const { data, loading, error } = useGetBikesByUserIdQuery({ variables: { userId: userId! } });
+    const user = useUser();
+    const { data, loading, error } = useGetBikesByUserIdQuery({ variables: { authUserId: user.user?.id ?? "" } });
 
     if (loading) return <p>Loading...</p>;
     if (error) {
-        console.log("GetBikesByUserId query error: ", error);
         return <p>Error: {error.message}</p>;
     }
 
-    const bikes = data?.bikes?.byUserId || [];
+    const bikes = data?.bikes?.byAuthUserId || [];
 
     const sortedBikes = sortBy(bikes, ['metersLogged']).reverse();
 

@@ -31,7 +31,7 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var response = await _segmentPredictionActionHandler.HandleAsync(new SegmentPredictionRequest(userId, request.SegmentId));
 
                 return Ok(response);
@@ -49,7 +49,7 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var response = await _trainSegmentPredictionModelActionHandler.HandleAsync(new TrainModelRequest(userId));
 
                 return Ok(response);
@@ -67,7 +67,7 @@ namespace SegmentSniper.Api.Controllers
         {
             try
             {
-                var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var trainedModel = await _getSegmentPredictionTrainedModelMetaDataActionHandler.HandleAsync(new GetSegmentPredictionTrainingModelActionHandlerRequest(userId));
                 if (trainedModel != null)
                     return Ok(trainedModel);

@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../stores/useTokenStore';
 import getSegmentPredictionTrainedModelData, {
   SegmentPredictionTrainedModelResponse,
 } from '../../../services/Api/SegmentPrediction/getSegmentPredictionTrainedModelData';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useGetSegmentPredictionTrainedModelQuery = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const { getToken } = useAuth();
 
   const { data, isLoading, isError, error } = useQuery<
     SegmentPredictionTrainedModelResponse,
@@ -16,9 +16,11 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
   >({
     queryKey: ['segmentPredictionTrainedModelData'],
     queryFn: async () => {
+      const accessToken = await getToken({ template: 'SegmentSniper' });
+
       const contract: ApiContract = {
         baseUrl: apiConfig!.baseRestApiUrl,
-        token: tokenData?.accessToken ?? '',
+        token: accessToken ?? '',
       };
 
       const response: SegmentPredictionTrainedModelResponse =
@@ -34,7 +36,7 @@ export const useGetSegmentPredictionTrainedModelQuery = () => {
       }
       return response;
     },
-    enabled: !!apiConfig && !!tokenData?.accessToken,
+    enabled: !!apiConfig,
   });
 
   return { data, isLoading, isError, error };

@@ -1,6 +1,4 @@
 ﻿using GraphQL.Types;
-using SegmentSniper.ApplicationLogic.ActionHandlers.Admin;
-using SegmentSniper.ApplicationLogic.ActionHandlers.Authentication;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.ApplicationLogic.ActionHandlers.ManageProfile;
 using SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction;
@@ -9,11 +7,9 @@ using SegmentSniper.ApplicationLogic.ActionHandlers.StravaApiToken;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandlers;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
+using SegmentSniper.ApplicationLogic.ActionHandlers.User;
 using SegmentSniper.GraphQL;
 using SegmentSniper.MachineLearning;
-using SegmentSniper.Services.Admin;
-using SegmentSniper.Services.AuthServices;
-using SegmentSniper.Services.AuthServices.Token;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;
@@ -43,17 +39,12 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISchema, GraphQlSchema>();
 
             // auth action handlers
-            services.AddScoped<ILoginUserActionHandler, LoginUserActionHandler>();
-            services.AddScoped<IRegisterUserActionHandler, RegisterUserActionHandler>();
-            services.AddScoped<IRevokeTokenActionHandler, RevokeTokenActionHandler>();
-            services.AddScoped<IRefreshTokenActionHandler, RefreshTokenActionHandler>();
             services.AddScoped<ICheckForStravaTokenActionHandler, CheckForStravaTokenActionHandler>();
-            services.AddScoped<IConfirmEmailActionHandler, ConfirmEmailActionHandler>();
-            services.AddScoped<ISendEmailConfirmationActionHandler, SendEmailConfirmationActionHandler>();
-            services.AddScoped<ISendResetPasswordEmailActionHandler, SendResetPasswordEmailActionHandler>();
-            services.AddScoped<IResetPasswordActionHandler, ResetPasswordActionHandler>();
+            services.AddScoped<IGetAppUserByAuthUserIdActionHandler, GetAppUserByAuthUserIdActionHandler>();
+            services.AddScoped<IAddAppUserActionHandler, AddAppUserActionHandler>();
 
             //strava action handlers
+            services.AddScoped<IAddAppUserActionHandler, AddAppUserActionHandler>();
             services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
@@ -65,63 +56,35 @@ namespace SegmentSniper.Api.Configuration
             //strava webhook action handlers
             services.AddScoped<ICreateStravaWebhookSubscriptionHandler, CreateStravaWebhookSubscriptionHandler>();
             services.AddScoped<IViewStravaWebhookSubscriptionHandler, ViewStravaWebhookSubscriptionHandler>();
-            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();            
+            services.AddScoped<IDeleteStravaWebhookSubscriptionHandler, DeleteStravaWebhookSubscriptionHandler>();
 
             services.AddScoped<WebhookEventHandlerFactory>();
             services.AddTransient<CreateWebhookEventHandler>();
             services.AddTransient<UpdateWebhookEventHandler>();
             services.AddTransient<DeleteWebhookEventHandler>();
 
-            //profile action handlers
-            services.AddScoped<IGetProfileActionHandler, GetProfileActionHandler>();
-            services.AddScoped<IUpdateFirstNameAsyncActionHandler, UpdateFirstNameAsyncActionHandler>();
-            services.AddScoped<IUpdatePasswordAsyncActionHandler, UpdatePasswordAsyncActionHandler>();
-            services.AddScoped<IUpdateEmailAddressAsyncActionHandler, UpdateEmailAddressAsyncActionHandler>();
-            services.AddScoped<IRequestChangeEmailVerificationCodeAsyncActionHandler, RequestChangeEmailVerificationCodeAsyncActionHandler>();
+            //profile action handlers            
             services.AddScoped<IRevokeStravaTokenAsyncActionHandler, RevokeStravaTokenAsyncActionHandler>();
-            services.AddScoped<IDeleteProfileActionHandlerAsync, DeleteProfileActionHandlerAsync>();
+            services.AddScoped<IGetAppUserByAuthId, GetAppUserByAuthId>();
+            services.AddScoped<IAddAppUser, AddAppUser>();
+
 
             //segment prediction action handlers
             services.AddScoped<ISegmentPredictionActionHandler, SegmentPredictionActionHandler>();
             services.AddScoped<IGetSegmentPredictionTrainedModelMetaDataActionHandler, GetSegmentPredictionTrainedModelMetaDataActionHandler>();
             services.AddScoped<ITrainSegmentPredictionModelActionHandler, TrainSegmentPredictionModelActionHandler>();
 
-            ////admin action handlers
-            services.AddScoped<IGetUsersActionHandler, GetUsersActionHandler>();
-            services.AddScoped<IRemoveUserActionHandler, RemoveUserActionHandler>();
-
+            
             //garage actionhandlers
             services.AddScoped<IImportGarageActionHandler, ImportGarageActionHandler>();
             services.AddScoped<IGetBikesByUserIdActionHandler, GetBikesByUserIdActionHandler>();
 
-            //auth services
-            services.AddScoped<IRegisterUser, RegisterUser>();
-            services.AddScoped<IRevokeToken, RevokeToken>();
-            services.AddScoped<ICreateToken, CreateToken>();
-            services.AddScoped<IRefreshToken, RefreshToken>();
-            services.AddScoped<IAuthenticateUser, AuthenticateUser>();
-            services.AddScoped<IGenerateRefreshToken, GenerateRefreshToken>();
-            services.AddScoped<IGetPrincipalFromExpiredToken, GetPrincipalFromExpiredToken>();
-            services.AddScoped<IGetUserRoles, GetUserRoles>();
-            services.AddScoped<ISendEmailConfirmation, SendEmailConfirmation>();
-            services.AddScoped<IConfirmEmail, ConfirmEmail>();
-            services.AddScoped<ISendPasswordResetEmail, SendPasswordResetEmail>();
-            services.AddScoped<ISendPasswordWasResetEmail, SendPasswordWasResetEmail>();
-            services.AddScoped<IResetPassword, ResetPassword>();
-            services.AddScoped<IGetAuthenticatedUser, GetAuthenticatedUser>();
-
-            //profile services
-            services.AddScoped<IGetProfile, GetProfile>();
-            services.AddScoped<IUpdateFirstNameAsync, UpdateFirstNameAsync>();
-            services.AddScoped<IUpdatePasswordAsync, UpdatePasswordAsync>();
-            services.AddScoped<IUpdateEmailAddressAsync, UpdateEmailAddressAsync>();
-            services.AddScoped<IGenerateVerificationCodeForEmailAddressChange, GenerateVerificationCodeForEmailAddressChange>();
-            services.AddScoped<IVerifyCodeForEmailAddressChange, VerifyCodeForEmailAddressChange>();
+            //profile services            
             services.AddScoped<IDeleteStravaTokenAsync, DeleteStravaTokenAsync>();
 
             //admin services
-            services.AddScoped<IRemoveUser, RemoveUser>();
-            services.AddScoped<IGetUsers, GetUsers>();
+            //services.AddScoped<IRemoveUser, RemoveUser>();
+            //services.AddScoped<IGetUsers, GetUsers>();
 
             //user services
             services.AddScoped<IGetUserByStravaAthleteId, GetUserByStravaAthleteId>();
@@ -143,6 +106,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetStravaWebhookSubscriptionId, GetStravaWebhookSubscriptionId>();
 
             //strava services
+            services.AddScoped<IAddAppUser, AddAppUser>();
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
             services.AddScoped<IUpdateStravaTokenForUser, UpdateStravaTokenForUser>();
             services.AddScoped<IAddStravaToken, AddStravaToken>();

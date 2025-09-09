@@ -1,24 +1,24 @@
 import { useMutation } from '@tanstack/react-query';
 import { ApiContract } from '../../../services/Api/ApiCommon/ApiContract';
 import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../stores/useTokenStore';
+
 import useActivityListStore from '../../../stores/useActivityListStore';
 import getActivityList, {
   ActivityListLookupRequest,
   ActivityListLookupResponse,
 } from '../../../services/Api/Activity/getActivityList';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useHandleActivitySearch = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const accessToken = useTokenDataStore(
-    (state) => state.tokenData?.accessToken
-  );
+  const { getToken } = useAuth();
   const setActivityList = useActivityListStore(
     (state) => state.setActivityList
   );
 
   const mutate = useMutation<void, Error, ActivityListLookupRequest>({
     mutationFn: async (request: ActivityListLookupRequest) => {
+      const accessToken = await getToken({ template: 'SegmentSniper' });
       if (apiConfig && accessToken) {
         const contract: ApiContract<ActivityListLookupRequest> = {
           baseUrl: apiConfig!.baseRestApiUrl,

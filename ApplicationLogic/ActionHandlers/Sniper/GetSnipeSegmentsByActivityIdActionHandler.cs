@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Models.Models.Strava.Activity;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.MachineLearning;
@@ -38,13 +38,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             ValidateRequest(request);
             _userId = request.UserId;
 
-            var token = _context.StravaTokens.Where(t => t.UserId == _userId).FirstOrDefault();
+            var token = _context.Users.Where(t => t.AuthUserId == _userId).FirstOrDefault();
             if (token != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
                     var activityResponse = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(activityResponse.DetailedActivity);
@@ -86,7 +86,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             {
                 return new ML_SegmentEffort
                 {
-                    UserId = _userId,
+                    AuthUserId = _userId,
                     StravaSegmentEffortId = dse.SegmentEffortId,
                     StravaSegmentId = detailedSegment.SegmentId,
                     SegmentName = detailedSegment.Name,

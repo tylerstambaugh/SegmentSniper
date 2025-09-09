@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Common.Adapters;
 using SegmentSniper.Services.Garage;
@@ -35,13 +35,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Garage
         public async Task<ImportGarageRequest.Response> ExecuteAsync(ImportGarageRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
-            if (token != null && token.RefreshToken != null)
+            var token = _context.Users.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
+            if (token != null && token.StravaRefreshToken != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
                     var startDate = CommonConversionHelpers.ConvertToEpochTime(DateTime.Now.AddYears(-1));
                     var endDate = CommonConversionHelpers.ConvertToEpochTime(DateTime.Now);
 

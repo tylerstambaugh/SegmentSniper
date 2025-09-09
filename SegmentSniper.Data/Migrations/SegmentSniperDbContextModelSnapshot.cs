@@ -17,373 +17,20 @@ namespace SegmentSniper.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
-                {
-                    b.Property<string>("UserCode")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasMaxLength(50000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("DeviceCode")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("Expiration")
-                        .IsRequired()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SessionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SubjectId")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("UserCode");
-
-                    b.HasIndex("DeviceCode")
-                        .IsUnique();
-
-                    b.HasIndex("Expiration");
-
-                    b.ToTable("DeviceCodes", (string)null);
-                });
-
-            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.Key", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Algorithm")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("DataProtected")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsX509Certificate")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Use")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Use");
-
-                    b.ToTable("Keys", (string)null);
-                });
-
-            modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("ClientId")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("ConsumedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasMaxLength(50000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime?>("Expiration")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SessionId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SubjectId")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Key");
-
-                    b.HasIndex("ConsumedTime");
-
-                    b.HasIndex("Expiration");
-
-                    b.HasIndex("SubjectId", "ClientId", "Type");
-
-                    b.HasIndex("SubjectId", "SessionId", "Type");
-
-                    b.ToTable("PersistedGrants", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("Roles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("UserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Auth.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int?>("EmailChangeVerificationCode")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LastLogin")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiration")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("StravaAthleteId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.Bike", b =>
                 {
                     b.Property<string>("BikeId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("BrandName")
                         .HasColumnType("nvarchar(max)");
@@ -415,18 +62,14 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("BikeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthUserId");
 
                     b.ToTable("Bikes");
                 });
 
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.BikeActivity", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.BikeActivity", b =>
                 {
                     b.Property<Guid>("BikeActivityId")
                         .ValueGeneratedOnAdd()
@@ -434,6 +77,10 @@ namespace SegmentSniper.Data.Migrations
 
                     b.Property<DateTime>("ActivityDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("BikeId")
                         .IsRequired()
@@ -444,25 +91,28 @@ namespace SegmentSniper.Data.Migrations
 
                     b.Property<string>("StravaActivityId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BikeActivityId");
 
+                    b.HasIndex("AuthUserId");
+
                     b.HasIndex("BikeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("StravaActivityId")
+                        .IsUnique();
 
                     b.ToTable("BikeActivities");
                 });
 
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.Equipment", b =>
                 {
                     b.Property<string>("EquipmentId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("BikeId")
                         .IsRequired()
@@ -493,15 +143,11 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<DateTime?>("RetiredDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("EquipmentId");
 
-                    b.HasIndex("BikeId");
+                    b.HasIndex("AuthUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("BikeId");
 
                     b.ToTable("Equipment");
                 });
@@ -513,6 +159,10 @@ namespace SegmentSniper.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<double>("LearningRate")
                         .HasColumnType("float");
@@ -545,40 +195,12 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<double?>("RootMeanSquaredError")
                         .HasColumnType("float");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthUserId")
+                        .IsUnique();
 
                     b.ToTable("SegmentPredictionRegressionMetrics");
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.ManageProfile.ChangeEmailVerificationCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("VerificationCode")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ChangeEmailVerificationCodes");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentEffort", b =>
@@ -591,6 +213,10 @@ namespace SegmentSniper.Data.Migrations
 
                     b.Property<int?>("AthleteCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<double?>("AverageGrade")
                         .HasColumnType("float");
@@ -649,13 +275,9 @@ namespace SegmentSniper.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("SegmentEffortId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthUserId");
 
                     b.ToTable("ML_SegmentEfforts");
                 });
@@ -663,7 +285,12 @@ namespace SegmentSniper.Data.Migrations
             modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentPredictionModel", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -675,43 +302,11 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthUserId");
 
                     b.ToTable("ML_SegmentPredictionModels");
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.StravaToken.StravaApiToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<long>("ExpiresAt")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ExpiresIn")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("StravaTokens");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.StravaWebhookSubscription.StravaWebhookSubscription", b =>
@@ -731,6 +326,29 @@ namespace SegmentSniper.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StravaWebhookSubscription");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.User.AppUser", b =>
+                {
+                    b.Property<string>("AuthUserId")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<long?>("StravaAthleteId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StravaRefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("StravaTokenExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("StravaTokenExpiresIn")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AuthUserId");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.SegmentSniperDbContext+SegmentSniperLogEntity", b =>
@@ -776,164 +394,104 @@ namespace SegmentSniper.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.Bike", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
+                        .WithMany("Bikes")
+                        .HasForeignKey("AuthUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.BikeActivity", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
+                        .WithMany("BikeActivities")
+                        .HasForeignKey("AuthUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
-                {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.BikeActivity", b =>
-                {
-                    b.HasOne("SegmentSniper.Data.Entities.Equiment.Bike", "Bike")
-                        .WithMany()
+                    b.HasOne("SegmentSniper.Data.Entities.Garage.Bike", "Bike")
+                        .WithMany("BikeActivities")
                         .HasForeignKey("BikeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AppUser");
 
                     b.Navigation("Bike");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Equipment", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.Equipment", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Equiment.Bike", "Bike")
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
+                        .WithMany("Equipment")
+                        .HasForeignKey("AuthUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SegmentSniper.Data.Entities.Garage.Bike", "Bike")
                         .WithMany("Equipment")
                         .HasForeignKey("BikeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AppUser");
 
                     b.Navigation("Bike");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
+                        .WithOne("RegressionMetrics")
+                        .HasForeignKey("SegmentSniper.Data.Entities.MachineLearning.SegmentPredictionRegressionMetrics", "AuthUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.ManageProfile.ChangeEmailVerificationCode", b =>
-                {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentEffort", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("AuthUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("SegmentSniper.Data.Entities.Segments.ML_SegmentPredictionModel", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
+                    b.HasOne("SegmentSniper.Data.Entities.User.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("AuthUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("SegmentSniper.Data.Entities.StravaToken.StravaApiToken", b =>
+            modelBuilder.Entity("SegmentSniper.Data.Entities.Garage.Bike", b =>
                 {
-                    b.HasOne("SegmentSniper.Data.Entities.Auth.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("BikeActivities");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SegmentSniper.Data.Entities.Equiment.Bike", b =>
-                {
                     b.Navigation("Equipment");
+                });
+
+            modelBuilder.Entity("SegmentSniper.Data.Entities.User.AppUser", b =>
+                {
+                    b.Navigation("BikeActivities");
+
+                    b.Navigation("Bikes");
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("RegressionMetrics");
                 });
 #pragma warning restore 612, 618
         }

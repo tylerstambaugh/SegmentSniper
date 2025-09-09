@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using EquipmentEntity = SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using EquipmentEntity = SegmentSniper.Data.Entities.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -28,7 +28,7 @@ namespace SegmentSniper.Services.Garage
                 var equipmentToAdd = new EquipmentEntity.Equipment
                 {
                     EquipmentId = Guid.NewGuid().ToString(),
-                    UserId = contract.UserId,
+                    AuthUserId = contract.UserId,
                     BikeId = contract.BikeId,
                     Name = contract.Equipment.Name,
                     Description = contract.Equipment.Description,

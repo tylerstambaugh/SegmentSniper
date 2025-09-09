@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SegmentSniper.Data;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using StravaApiClient;
@@ -28,13 +28,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         public async Task<SnipeSegmentsRequest.Response> Handle(SnipeSegmentsRequest request)
         {
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
-            if (token.RefreshToken != null)
+            var token = _context.Users.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
+            if (token.StravaRefreshToken != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;                   
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
                     //get detailed activity by Id
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
 

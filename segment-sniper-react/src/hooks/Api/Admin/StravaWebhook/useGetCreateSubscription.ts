@@ -4,13 +4,13 @@ import getCreateSubscription, {
   CreateSubscriptionResponse,
 } from '../../../../services/Api/Admin/StravaWebhook/getCreateSubscription';
 import useApiConfigStore from '../../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../../stores/useTokenStore';
+
 import { ApiContract } from '../../../../services/Api/ApiCommon/ApiContract';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useGetCreateSubscription = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
-
+  const { getToken } = useAuth();
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryFn: triggerQuery,
     queryKey: ['createQebhookSubscription'],
@@ -24,9 +24,10 @@ export const useGetCreateSubscription = () => {
   const abortController = new AbortController();
 
   async function triggerQuery() {
+    const accessToken = await getToken({ template: 'SegmentSniper' });
     const contract: ApiContract<CreateSubscriptionRequest> = {
       baseUrl: apiConfig!.baseRestApiUrl,
-      token: tokenData?.accessToken ?? '',
+      token: accessToken ?? '',
       abortController,
     };
 

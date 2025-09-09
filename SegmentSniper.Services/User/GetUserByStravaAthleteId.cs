@@ -18,9 +18,9 @@ namespace SegmentSniper.Services.User
                 .FirstOrDefault();
             if (user == null)
             {
-                return new GetUserByStravaAthleteIdContract.Result("", "" , "User not found");
+                return new GetUserByStravaAthleteIdContract.Result(null, "User not found");
             }
-            return new GetUserByStravaAthleteIdContract.Result(user.Id, user.UserName, "");
+            return new GetUserByStravaAthleteIdContract.Result(user.AuthUserId, "");
         }
     }
 }
