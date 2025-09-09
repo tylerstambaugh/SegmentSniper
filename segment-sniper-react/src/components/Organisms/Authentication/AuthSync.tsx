@@ -16,9 +16,6 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
 
-        console.log("pathname:", location.pathname);
-        console.log("expected:", AppRoutes.ConnectWithStrava);
-
         if (!isSignedIn) {
             setChecked(true);
             return;
@@ -33,9 +30,6 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
         }
 
         const refreshToken = data?.stravaRefreshToken;
-        console.log('data:', data);
-
-        console.log('refreshToken:', refreshToken);
 
         if (!refreshToken) {
             if (location.pathname !== `/${AppRoutes.ConnectWithStrava}`) {

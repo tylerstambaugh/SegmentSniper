@@ -16,6 +16,7 @@ import DeleteEquipmentModal, { DeleteBikeEquipmentValues } from "./DeleteEquipme
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDeleteEquipmentMutation } from "./GraphQl/useDeleteEquipment";
+import { useUser } from "@clerk/clerk-react";
 
 
 type EquipmentListProps = {
@@ -34,7 +35,7 @@ export type EquipmentModalState =
 const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
 
     const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const handleClosedModal = () => {
 
         setModalState({ type: "none" });
@@ -144,7 +145,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             variables: {
                 bikeId: bike!.bikeId,
                 equipment: equipmentInput,
-                userId: user?.id ?? '',
+                userId: user?.user?.id ?? '',
             },
         });
     }
@@ -161,7 +162,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                 variables: {
                     bikeId: bike!.bikeId,
                     equipmentId: values.equipmentId!,
-                    userId: user?.id ?? '',
+                    userId: user?.user?.id ?? '',
                     retireDate: values.retireDate?.toISODate() ?? ""
                 }
             });
@@ -185,7 +186,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             await deleteBikeEquipment({
                 variables: {
                     equipmentId: values.equipmentId!,
-                    userId: user?.id ?? ''
+                    userId: user?.user?.id ?? ''
                 }
             });
             handleClosedModal();
