@@ -11,6 +11,7 @@ import useUserStore from "../../../../stores/useUserStore";
 import DeleteBikeModal from "./DeleteBikeModal";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 
 type BikeDetailsCardProps = {
@@ -18,7 +19,7 @@ type BikeDetailsCardProps = {
 }
 
 const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const convert = useConversionHelpers();
     const navigate = useNavigate();
     const [showDeleteBikeModal, setShowDeleteBikeModal] = useState(false);
@@ -44,7 +45,7 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             await deleteBike({
                 variables: {
                     bikeIds: bike!.bikeId ? [bike.bikeId] : [],
-                    userId: user?.id ?? '',
+                    userId: user?.user?.id ?? '',
                 }
             });
             setShowDeleteBikeModal(false);

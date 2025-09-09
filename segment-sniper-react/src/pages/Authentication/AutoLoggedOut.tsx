@@ -21,7 +21,7 @@ export default function AutoLoggedOut() {
                                     <h2>You have been logged out due to inactivity.</h2>
 
                                     <h3>
-                                        <Link to={`/${AppRoutes.Login}`}>
+                                        <Link to={`/${AppRoutes.SignIn}`}>
                                             <Button className="px-4">Login</Button>
                                         </Link>{" "}
                                     </h3>

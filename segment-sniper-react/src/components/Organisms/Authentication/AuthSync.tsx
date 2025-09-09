@@ -5,13 +5,12 @@ import useGetMeQuery from "../../../hooks/Api/User/useGetMe";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 
-
 export const AuthSync = ({ children }: { children: React.ReactNode }) => {
-    const { isSignedIn } = useUser();
+    const { isSignedIn, user } = useUser();
     const navigate = useNavigate();
     const [checked, setChecked] = useState(false);
 
-    const { data, isLoading, isError } = useGetMeQuery({
+    const { data, isLoading, isError, refetch } = useGetMeQuery({
         enabled: isSignedIn,
     });
 
@@ -30,14 +29,29 @@ export const AuthSync = ({ children }: { children: React.ReactNode }) => {
             return;
         }
 
-        if (data?.stravaRefreshToken === null) {
-            if (location.pathname !== AppRoutes.ConnectWithStrava) {
+        const refreshToken = data?.stravaRefreshToken;
+
+        if (!refreshToken) {
+            if (location.pathname !== `/${AppRoutes.ConnectWithStrava}`) {
                 navigate(AppRoutes.ConnectWithStrava, { replace: true });
             }
+            setChecked(true);
+            return;
         }
 
+        if (refreshToken && location.pathname === `/${AppRoutes.ConnectWithStrava}`) {
+            navigate(AppRoutes.Dashboard, { replace: true });
+        }
+
+
         setChecked(true);
-    }, [isSignedIn, isLoading, isError, data, navigate]);
+    }, [isSignedIn, isLoading, user?.id, isError, data, navigate]);
+
+    useEffect(() => {
+        if (isSignedIn && user?.id) {
+            refetch();
+        }
+    }, [isSignedIn, user?.id, refetch]);
 
     if (isSignedIn && (!checked || isLoading)) {
         return (

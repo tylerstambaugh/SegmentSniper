@@ -34,7 +34,12 @@ export const useDeleteStravaToken = () => {
           stravaTokenExpiresAt: null,
         });
 
-        setUserData({ ...userData, hasStravaTokenData: false });
+        setUserData({
+          ...userData!,
+          stravaRefreshToken: null,
+          authUserId: userData!.authUserId ?? null,
+          stravaAthleteId: userData!.stravaAthleteId ?? null,
+        });
       }
       return response;
     },

@@ -5,11 +5,12 @@ import { apiGet } from '../BaseApiService';
 
 export default async function getMe(contract: ApiContract) {
   try {
-    const response = apiGet<AppUserModel>(
+    const response = await apiGet<{ appUserModel: AppUserModel }>(
       `${contract.baseUrl}/User/me`,
       contract
     );
-    return response;
+
+    return response.appUserModel; // ✅ unwrap before returning
   } catch (error) {
     if (error instanceof UnsuccessfulHttpResponseError) {
       throw error;
