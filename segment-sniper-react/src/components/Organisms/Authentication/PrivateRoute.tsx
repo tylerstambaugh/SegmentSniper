@@ -4,6 +4,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { SignedIn, SignedOut, useUser } from "@clerk/react-router";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import { AuthSync } from "./AuthSync";
+import { SessionCleanup } from "./SessionCleanUp";
 
 type Props = {
   userRoles?: Array<string>;
@@ -23,6 +24,7 @@ const PrivateRoute = ({ userRoles = [], requireStravaSync = false }: Props) => {
     <>
       <SignedOut>
         <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
+          <SessionCleanup />
           <Row className="text-center">
             <Col>
               <p>You must be logged in to access this resource.</p>

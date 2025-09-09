@@ -1,4 +1,4 @@
-import { BrowserRouter, Route } from 'react-router'
+import { BrowserRouter } from 'react-router'
 import './index.css';
 import Header from './components/Organisms/Header/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
