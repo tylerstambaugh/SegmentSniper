@@ -13,7 +13,7 @@ export type UpsertBikeModalProps = {
     show: boolean;
     onClose: () => void;
     loading?: boolean;
-    handleUpsertBike: (values: UpsertBikeFormValues) => Promise<void>;
+    handleUpsertBike: (values: UpsertBikeFormValues) => Promise<boolean>;
     error: ApolloError | undefined
     bike?: BikeModel;
 }
@@ -53,6 +53,7 @@ const UpsertBikeModal = ({
 
     const validationSchema = Yup.object({
         bikeName: Yup.string().required('Required'),
+        bikeFrameType: Yup.number().required('Frame type is required'),
         description: Yup.string().max(250, 'Description must be 250 characters or less'),
         milesLogged: Yup.number().min(0, 'Miles logged must be a positive number'),
     })
@@ -63,9 +64,8 @@ const UpsertBikeModal = ({
         validateOnBlur: validated,
         validateOnChange: validated,
         onSubmit: async (values: UpsertBikeFormValues) => {
-            console.log("calling upsert");
-            await handleUpsertBike(values).then(() => {
-                if (!loading && !error) {
+            await handleUpsertBike(values).then((result) => {
+                if (result === true) {
                     toast.success(`Bike ${isEdit ? 'updated' : 'added'} successfully`);
                     onClose();
                     formik.resetForm()
@@ -140,7 +140,7 @@ const UpsertBikeModal = ({
                         <Row className="mb-4">
                             <Form.Group controlId="bikeMetersLogged">
                                 <Form.Label className="mb-0">Miles Logged</Form.Label>
-                                <Form.Control type="number" placeholder="Enter meters logged" />
+                                <Form.Control type="number" placeholder="Enter miles logged" />
                                 <Form.Control.Feedback type="invalid">
                                     {formik.errors.bikeMetersLogged as FormikErrors<string>}
                                 </Form.Control.Feedback>
@@ -167,10 +167,6 @@ const UpsertBikeModal = ({
                             <Col className="justify-content-between d-flex">
                                 {!loading ? (
                                     <Button variant="primary" type="submit" onClick={() => {
-                                        console.log("Submitting form", formik.values);
-                                        console.log("Submitting form errors", formik.errors);
-
-
                                     }}>
                                         Submit
                                     </Button>

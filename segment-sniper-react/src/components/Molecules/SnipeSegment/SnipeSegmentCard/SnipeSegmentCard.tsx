@@ -82,8 +82,6 @@ const SnipeSegmentCard = ({
 
   const linkToSegmentOnStrava: string = `https://www.strava.com/segments/${snipeSegment.segmentId}`;
 
-  console.log("rendering segment card - segment id: ", snipeSegment.segmentId);
-
   return (
     <Col className="py-2 px-2">
       <Card>

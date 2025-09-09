@@ -1,8 +1,8 @@
-import { StravaMap } from "../StravaMap";
-import { AthleteSegmentStats } from "./AthleteSegmentStats";
-import { LocalLegend } from "./LocalLegend";
-import { SegmentEffort } from "./SegmentEffort";
-import { Xoms } from "./Xoms";
+import { StravaMap } from '../StravaMap';
+import { AthleteSegmentStats } from './AthleteSegmentStats';
+import { LocalLegend } from './LocalLegend';
+import { SegmentEffort } from './SegmentEffort';
+import { Xoms } from './Xoms';
 
 export interface SnipeSegmentListItem {
   activityId?: string;
@@ -32,6 +32,6 @@ export interface SnipeSegmentListItem {
   athleteSegmentStats?: AthleteSegmentStats;
   xoms?: Xoms;
   localLegend?: LocalLegend;
-  detailedSegmentEffort?: SegmentEffort;
+  detailedSegmentEffort: SegmentEffort;
   heading?: string;
 }

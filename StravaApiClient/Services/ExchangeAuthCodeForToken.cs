@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Token;
 using StravaApiClient.Configuration;
 using StravaApiClient.Models.Token;
 

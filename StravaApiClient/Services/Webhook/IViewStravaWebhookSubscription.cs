@@ -20,6 +20,7 @@ namespace StravaApiClient.Services.Webhook
         public class Result
         {
             public ViewSubscriptionApiResponse ViewSubscriptionApiResponse { get; set; }
+
             public Result(ViewSubscriptionApiResponse viewSubscriptionApiResponse)
             {
                 ViewSubscriptionApiResponse = viewSubscriptionApiResponse ?? throw new ArgumentNullException(nameof(viewSubscriptionApiResponse));

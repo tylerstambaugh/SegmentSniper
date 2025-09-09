@@ -1,19 +1,19 @@
 import * as Apollo from '@apollo/client';
-import DeleteBike from './deleteBike.graphql';
+import DeleteBikes from './deleteBikes.graphql';
 import {
   RootMutation,
-  GarageMutationsDeleteBikeArgs,
+  GarageMutationsDeleteBikesArgs,
 } from '../../../../graphql/generated';
 
 export function useDeleteBikeMutation(
   baseOptions?: Apollo.MutationHookOptions<
     { garage: RootMutation['garage'] },
-    GarageMutationsDeleteBikeArgs
+    GarageMutationsDeleteBikesArgs
   >
 ) {
   const options = { ...baseOptions };
   return Apollo.useMutation<
     { garage: RootMutation['garage'] },
-    GarageMutationsDeleteBikeArgs
-  >(DeleteBike, options);
+    GarageMutationsDeleteBikesArgs
+  >(DeleteBikes, options);
 }

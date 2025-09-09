@@ -27,8 +27,8 @@ namespace StravaApiClient
 
         public string UserId
         {
-            get => _config.UserId;
-            set => _config.UserId = value;
+            get => _config.AuthUserId;
+            set => _config.AuthUserId = value;
         }
 
         public Task<GetSummaryActivityForTimeRangeContract.Result> GetSummaryActivityForTimeRange(GetSummaryActivityForTimeRangeContract contract)
@@ -63,7 +63,7 @@ namespace StravaApiClient
 
         public Task<CreateStravaWebhookSubscriptionContract.Result> CreateStravaWebhookSubscription(CreateStravaWebhookSubscriptionContract contract)
         {
-            var service = new CreateStravaWebhookSubscription(_client);
+            var service = new CreateStravaWebhookSubscription(_client, _config);
             return service.ExecuteAsync(contract);
         }
     }

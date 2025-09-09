@@ -29,7 +29,6 @@ export interface UpsertEquipmentFormValues {
 }
 
 const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: UpsertEquipmentFormProps) => {
-    console.log("AddEquipmentFormUI", editEquipment);
 
     const [validated, setValidated] = useState(false);
     const isEdit = editEquipment !== undefined;
@@ -262,7 +261,6 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                                 {!loading ? (
 
                                     <Button variant="primary" type="submit" onClick={() => {
-                                        console.log("formik errors", formik.errors);
                                     }}>
                                         Submit
                                     </Button>

@@ -2,7 +2,7 @@
 using SegmentSniper.Data;
 using SegmentSniper.MachineLearning;
 using SegmentSniper.Models.MachineLearning;
-using SegmentSniper.Models.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Segment;
 using SegmentSniper.Models.UIModels.Segment;
 using SegmentSniper.Services.Common;
 using Serilog;
@@ -37,13 +37,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
         {
 
             ValidateRequest(request);
-            var token = _context.StravaTokens.Where(t => t.UserId == request.UserId).FirstOrDefault();
+            var token = _context.Users.Where(t => t.AuthUserId == request.UserId).FirstOrDefault();
             if (token != null)
             {
                 try
                 {
                     _stravaRequestService.UserId = request.UserId;
-                    _stravaRequestService.RefreshToken = token.RefreshToken;
+                    _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
                     var response = await _stravaRequestService.GetDetailedSegmentById(new GetDetailedSegmentByIdContract(request.SegmentId));
 
@@ -51,7 +51,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.SegmentPrediction
 
                     var segmentUiModel = CreateSegmentUiModel(segment);
                     var predictionModelExists = _context.ML_SegmentPredictionModels
-                        .Any(m => m.UserId == request.UserId);
+                        .Any(m => m.AuthUserId == request.UserId);
                     if (predictionModelExists != null)
                     {
                         var segmentToPredict = new SegmentDetailDataForPrediction

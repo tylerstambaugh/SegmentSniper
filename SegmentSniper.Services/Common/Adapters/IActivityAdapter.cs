@@ -1,4 +1,4 @@
-﻿using SegmentSniper.Models.Models.Strava.Activity;
+﻿using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Models.UIModels.Activity;
 
 namespace SegmentSniper.Services.Common.Adapters

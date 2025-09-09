@@ -1,16 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-
 import useApiConfigStore from '../../../../stores/useApiConfigStore';
-import useTokenDataStore from '../../../../stores/useTokenStore';
 import { ApiContract } from '../../../../services/Api/ApiCommon/ApiContract';
 import getViewSubscription, {
   ViewSubscriptionRequest,
   ViewSubscriptionResponse,
 } from '../../../../services/Api/Admin/StravaWebhook/getViewSubscription';
+import { useAuth } from '@clerk/clerk-react';
 
 export const useGetViewSubscription = () => {
   const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const tokenData = useTokenDataStore((state) => state.tokenData);
+  const { getToken } = useAuth();
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryFn: triggerQuery,
@@ -24,9 +23,10 @@ export const useGetViewSubscription = () => {
   const abortController = new AbortController();
 
   async function triggerQuery() {
+    const accessToken = await getToken({ template: 'SegmentSniper' });
     const contract: ApiContract<ViewSubscriptionRequest> = {
       baseUrl: apiConfig!.baseRestApiUrl,
-      token: tokenData?.accessToken ?? '',
+      token: accessToken ?? '',
       abortController,
     };
 

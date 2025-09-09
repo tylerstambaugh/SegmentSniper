@@ -1,17 +1,17 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
-import useTokenDataStore from "../../stores/useTokenStore";
+
 import useUserStore from "../../stores/useUserStore";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 
 export default function AutoLoggedOut() {
-    const tokenData = useTokenDataStore((state) => state.tokenData);
     const user = useUserStore((state) => state.user);
 
     return (
         <>
-            {tokenData === null && user === null ? (
+            <SignedOut>
                 <Row className="d-flex justify-content-center mt-5">
                     <Col md={6} lg={5} xs={10}>
                         <div className="border "></div>
@@ -21,7 +21,7 @@ export default function AutoLoggedOut() {
                                     <h2>You have been logged out due to inactivity.</h2>
 
                                     <h3>
-                                        <Link to={`/${AppRoutes.Login}`}>
+                                        <Link to={`/${AppRoutes.SignIn}`}>
                                             <Button className="px-4">Login</Button>
                                         </Link>{" "}
                                     </h3>
@@ -30,14 +30,15 @@ export default function AutoLoggedOut() {
                         </Card>
                     </Col>
                 </Row>
-            ) : (
+            </SignedOut>
+            <SignedIn>
+
                 <Container>
                     <Row>
                         <Col>Logging out...</Col>
                     </Row>
                 </Container>
-            )
-            }
+            </SignedIn>
         </>
     )
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.StravaToken;
 using StravaApiClient;
@@ -30,7 +29,7 @@ public class GetBikesByUserIdActionHandler : IGetBikesByUserIdActionHandler
     public async Task<GetBikesByUserIdRequest.Response> ExecuteAsync(GetBikesByUserIdRequest request)
     {
         ValidateRequest(request);
-        var token = _getStravaTokenForUser.Execute(new GetStravaTokenForUserContract(request.UserId));
+        var token = await _getStravaTokenForUser.ExecuteAsync(new GetStravaTokenForUserContract(request.UserId));
 
         if (token != null)
         {
@@ -74,7 +73,7 @@ public class GetBikesByUserIdActionHandler : IGetBikesByUserIdActionHandler
         {
             throw new ArgumentNullException(nameof(request));
         }
-        if(string.IsNullOrEmpty(request.UserId))
+        if (string.IsNullOrEmpty(request.UserId))
         {
             throw new ArgumentNullException(nameof(request.UserId));
         }

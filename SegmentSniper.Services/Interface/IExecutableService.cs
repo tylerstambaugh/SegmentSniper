@@ -15,7 +15,7 @@ namespace SegmentSniper.Services.Interface
 
     public interface IExecutableServiceAsync<TContract, TResult>
     {
-        Task<TResult> ExecuteAsync(TContract contract);
+       Task<TResult> ExecuteAsync(TContract contract);
     }
 
     public interface IExecutableServiceAsync<TContract>

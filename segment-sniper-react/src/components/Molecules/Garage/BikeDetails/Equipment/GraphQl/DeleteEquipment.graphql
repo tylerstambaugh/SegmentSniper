@@ -1,7 +1,22 @@
 mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
   garage {
     deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
-      success
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
-﻿using SegmentSniper.Models.Models.Strava.Misc;
-using SegmentSniper.Models.Models.Strava.Segment;
+﻿using SegmentSniper.Models.Strava.Misc;
+using SegmentSniper.Models.Strava.Segment;
 
 namespace SegmentSniper.Models.UIModels.Segment
 {

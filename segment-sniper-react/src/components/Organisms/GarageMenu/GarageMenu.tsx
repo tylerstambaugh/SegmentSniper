@@ -1,13 +1,17 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { BikeList } from "../../Molecules/Garage/BikeList/BikeList";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ImportBikesModal from "../../Molecules/Garage/ImportBikes/ImportBikesModal";
 import UpsertBikeModal, { UpsertBikeFormValues } from "../../Molecules/Garage/UpsertBike/UpsertBikeModal";
 import { useUpsertBikeMutation } from "../../Molecules/Garage/UpsertBike/GraphQl/useUpsertBikeMutation";
-import useUserStore from "../../../stores/useUserStore";
+import GetBikesByAuthUserId from "../../Molecules/Garage/GraphQl/GetBikesByAuthUserId.graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FrameType, FrameTypeToEnumMap } from "../../../enums/FrameTypes";
+
+import { ApolloError } from "@apollo/client";
+import { useUser } from "@clerk/clerk-react";
+import { GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables } from "../../../graphql/generated";
 
 
 type GarageModalState =
@@ -15,42 +19,29 @@ type GarageModalState =
     | { type: "import" }
     | { type: "upsertBike" };
 export default function GarageMenu() {
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const [modalState, setModalState] = useState<GarageModalState>({ type: "none" });
+    const abortRef = useRef<AbortController | null>(null);
+
     const handleClosedModal = () => {
+        abortRef.current?.abort();
         setModalState({ type: "none" });
     }
 
     const [upsertBike,
         { loading: upsertBikeLoading,
             error: upsertBikeError }
-    ] = useUpsertBikeMutation(
+    ] = useUpsertBikeMutation();
 
-            // {
-            //     update(cache, { data }) {
-            //         const updatedBike = data?.garage?.upsertBikeEquipment;
-            //         if (!updatedBike) return;
+    async function handleUpsertBike(values: UpsertBikeFormValues): Promise<boolean> {
 
-            //         cache.writeQuery({
-            //             query: GetBikeByIdQuery,
-            //             variables: { bikeId: updatedBike.bikeId },
-            //             data: {
-            //                 bikes: {
-            //                     __typename: "BikeQuery",
-            //                     byBikeId: updatedBike,
-            //                 },
-            //             },
-            //         });
-            //     },
-            // }
-        );
-
-    async function handleUpsertBike(values: UpsertBikeFormValues) {
+        abortRef.current?.abort();
+        abortRef.current = new AbortController();
 
         try {
-            await upsertBike({
+            const result = await upsertBike({
                 variables: {
-                    userId: user?.id ?? '',
+                    userId: user?.user?.id ?? '',
                     bike: {
                         name: values.bikeName,
                         frameType: FrameTypeToEnumMap[values.bikeFrameType as FrameType],
@@ -58,13 +49,57 @@ export default function GarageMenu() {
                         modelName: values.bikeModel,
                         metersLogged: values.bikeMetersLogged,
                         description: values.bikeDescription,
+                    },
+                },
+                context: {
+                    fetchOptions: {
+                        signal: abortRef.current.signal,
+                    },
+                },
+                update: (cache, { data }) => {
+                    const newBike = data?.garage?.upsertBike;
+                    if (!newBike || !user?.user?.id) return
+
+                    const queryVars: GetBikesByAuthUserIdQueryVariables = {
+                        authUserId: user?.user?.id ?? '',
+                    };
+
+                    try {
+                        const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
+                            variables: queryVars,
+                        });
+
+                        if (!existingData?.bikes?.byAuthUserId) return;
+
+                        cache.writeQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
+                            query: GetBikesByAuthUserId,
+                            variables: queryVars,
+                            data: {
+                                bikes: {
+                                    ...existingData.bikes,
+                                    byAuthUserId: [...existingData.bikes.byAuthUserId, newBike],
+                                },
+                            },
+                        });
+
+                    } catch (e: unknown) {
+                        if (e instanceof DOMException && e.name === 'AbortError') {
+                            console.info('Upsert bike request was aborted');
+                        } else if (e instanceof ApolloError) {
+                            console.error('Apollo error:', e.message, e.graphQLErrors);
+                        } else {
+                            console.error('Unexpected error upserting bike', e);
+                        }
+                        return false;
                     }
-                }
-            }
-            );
+                },
+            });
             handleClosedModal();
+            return !!result.data?.garage?.upsertBike;
         } catch (e) {
             console.error("Error upserting bike", e);
+            return false
         }
     }
 
@@ -90,9 +125,7 @@ export default function GarageMenu() {
 
                 <Row>
                     <Col className="d-flex justify-content-center">
-                        <Button onClick={() => {
-                            console.log("Import bikes clicked");
-                        }}>
+                        <Button onClick={() => setModalState({ type: "import" })}>
                             Import Bikes
                         </Button>
                     </Col>

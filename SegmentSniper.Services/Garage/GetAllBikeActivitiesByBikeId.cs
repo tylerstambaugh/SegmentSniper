@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -22,25 +21,25 @@ namespace SegmentSniper.Services.Garage
                 .Where(b => b.BikeId == contract.BikeId)
                 .Select(b => new BikeActivityModel
                 {
-                    UserId = b.UserId,
+                    UserId = b.AuthUserId,
                     BikeId = b.BikeId,
                     StravaActivityId = b.StravaActivityId,
                     ActivityDate = b.ActivityDate,
                     DistanceInMeters = b.DistanceInMeters,
-                }).ToListAsync();            
+                }).ToListAsync();
 
             return new GetAllBikeActivitiesByBikeIdContract.Result(existingBikeActivities);
         }
 
         private void ValidateContract(GetAllBikeActivitiesByBikeIdContract contract)
         {
-           if(contract is null)
+            if (contract is null)
             {
                 throw new ArgumentNullException(nameof(contract));
             }
-           if(string.IsNullOrEmpty(contract.BikeId))
+            if (string.IsNullOrEmpty(contract.BikeId))
             {
-                throw new ArgumentNullException(nameof (contract.BikeId));
+                throw new ArgumentNullException(nameof(contract.BikeId));
             }
         }
     }

@@ -1,21 +1,24 @@
 ﻿using AutoMapper;
-using SegmentSniper.Data.Entities.Equiment;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.Segments;
-using SegmentSniper.Data.Entities.StravaToken;
+using SegmentSniper.Data.Entities.User;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Models.MachineLearning;
-using SegmentSniper.Models.Models.Garage;
-using SegmentSniper.Models.Models.Strava.Activity;
-using SegmentSniper.Models.Models.Strava.Athlete;
-using SegmentSniper.Models.Models.Strava.Misc;
-using SegmentSniper.Models.Models.Strava.Segment;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Activity;
+using SegmentSniper.Models.Strava.Athlete;
+using SegmentSniper.Models.Strava.Misc;
+using SegmentSniper.Models.Strava.Segment;
+using SegmentSniper.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Webhook;
 using SegmentSniper.Models.UIModels.MachineLearning;
 using SegmentSniper.Models.UIModels.Segment;
+using SegmentSniper.Models.User;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Models.Athlete;
 using StravaApiClient.Models.Misc;
 using StravaApiClient.Models.Segment;
 using StravaApiClient.Models.Token;
+using StravaApiClient.Models.Webhook;
 
 namespace SegmentSniper.Api.Configuration.MappingProfiles
 {
@@ -27,6 +30,17 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
 
+            CreateMap<AppUser, AppUserModel>()
+                .ForMember(dest => dest.AuthUserId, opt => opt.MapFrom(src => src.AuthUserId))
+                .ForMember(dest => dest.StravaAthleteId, opt => opt.MapFrom(src => src.StravaAthleteId))
+                .ForMember(dest => dest.StravaRefreshToken, opt => opt.MapFrom(src => src.StravaRefreshToken))
+                .ForMember(dest => dest.StravaTokenExpiresAt, opt => opt.MapFrom(src => src.StravaTokenExpiresAt))
+                .ForMember(dest => dest.StravaTokenExpiresIn, opt => opt.MapFrom(src => src.StravaTokenExpiresIn))
+                .ForMember(dest => dest.Bikes, opt => opt.MapFrom(src => src.Bikes))
+                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment))
+                .ForMember(dest => dest.BikeActivities, opt => opt.MapFrom(src => src.BikeActivities))                
+                .ReverseMap();
+
             CreateMap<StravaTokenApiModel, StravaTokenModel>()
                 .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken))
                 .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
@@ -34,11 +48,19 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.StravaAthlete, opt => opt.MapFrom(src => src.StravaApiAthlete))
                 .ReverseMap();
 
-            CreateMap<StravaApiToken, StravaTokenModel>()
-               .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.RefreshToken))
-               .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
-               .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.ExpiresIn))
+            CreateMap<AppUser, StravaTokenModel>()
+               .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.StravaRefreshToken))
+               .ForMember(dest => dest.ExpiresAt, opt => opt.MapFrom(src => src.StravaTokenExpiresAt))
+               .ForMember(dest => dest.ExpiresIn, opt => opt.MapFrom(src => src.StravaTokenExpiresIn))
                .ReverseMap();
+
+            CreateMap<ViewSubscriptionApiResponse, ViewSubscriptionResponseModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CallbackUrl, opt => opt.MapFrom(src => src.CallbackUrl))
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+                .ForMember(dest => dest.ResourceState, opt => opt.MapFrom(src => src.ResourceState))
+                .ForMember(dest => dest.ApplicationId, opt => opt.MapFrom(src => src.ApplicationId));
 
 
             CreateMap<StravaAthleteApiModel, StravaAthleteModel>()
@@ -232,7 +254,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
             //Garage Mappings:
             CreateMap<Bike, BikeModel>()
                 .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.AuthUserId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.FrameType, opt => opt.MapFrom(src => src.FrameType))
@@ -240,12 +262,13 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandName))
                 .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.ModelName))
                 .ForMember(dest => dest.IsPrimary, opt => opt.MapFrom(src => src.IsPrimary))
-                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment));
+                .ForMember(dest => dest.Equipment, opt => opt.MapFrom(src => src.Equipment))
+                .ReverseMap();
 
             CreateMap<Equipment, EquipmentModel>()
                 .ForMember(dest => dest.EquipmentId, opt => opt.MapFrom(src => src.EquipmentId))
                 .ForMember(dest => dest.BikeId, opt => opt.MapFrom(src => src.BikeId))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.AuthUserId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.InstallDate, opt => opt.MapFrom(src => src.InstallDate))

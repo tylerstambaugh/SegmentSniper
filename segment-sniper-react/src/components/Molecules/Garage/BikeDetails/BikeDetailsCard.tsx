@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDeleteBikeMutation } from "../GraphQl/useDeleteBike";
 import useUserStore from "../../../../stores/useUserStore";
 import DeleteBikeModal from "./DeleteBikeModal";
+import { AppRoutes } from "../../../../enums/AppRoutes";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 
 type BikeDetailsCardProps = {
@@ -16,17 +19,18 @@ type BikeDetailsCardProps = {
 }
 
 const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const convert = useConversionHelpers();
+    const navigate = useNavigate();
     const [showDeleteBikeModal, setShowDeleteBikeModal] = useState(false);
 
     const [deleteBike] = useDeleteBikeMutation({
         variables: {
-            bikeId: bike?.bikeId ?? "",
+            bikeIds: bike?.bikeId ? [bike.bikeId] : [],
             userId: bike?.userId ?? "",
         },
         onCompleted: (data) => {
-            console.log("Bike deleted successfully", data);
+            navigate(`/${AppRoutes.Garage}`);
         },
         onError: (error) => {
             console.error("Error deleting bike", error);
@@ -40,13 +44,13 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             }
             await deleteBike({
                 variables: {
-                    bikeId: bike!.bikeId,
-                    userId: user?.id ?? '',
+                    bikeIds: bike!.bikeId ? [bike.bikeId] : [],
+                    userId: user?.user?.id ?? '',
                 }
             });
             setShowDeleteBikeModal(false);
         } catch (e) {
-            console.error("Error deleting equipment", e);
+            console.error("Error deleting bike", e);
         }
     }
 
@@ -66,11 +70,17 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
                 <Card.Body>
                     <Card.Title>
                         <Row>
-                            <Col xs={4} className="d-flex align-items-center">
-                                {bike?.name ?? "Bike Not Found"}
-                                <Button onClick={() => setShowDeleteBikeModal(true)} variant="link" className="ms-auto">
-                                    <FontAwesomeIcon icon={faTrashCan} />
-                                </Button>
+                            <Col >
+                                <div className="d-flex align-items-center">
+                                    <span>{bike?.name ?? "Bike Not Found"}</span>
+                                    <Button
+                                        onClick={() => setShowDeleteBikeModal(true)}
+                                        variant="link"
+                                        className="ms-2 p-0"
+                                    >
+                                        <FontAwesomeIcon icon={faTrashCan} />
+                                    </Button>
+                                </div>
                             </Col>
                         </Row>
                     </Card.Title>

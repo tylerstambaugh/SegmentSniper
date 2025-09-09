@@ -66,20 +66,20 @@ export type BikeModel = {
 
 export type BikeQueries = {
   __typename?: 'BikeQueries';
+  /** Retrieve all bikes for a user */
+  byAuthUserId?: Maybe<Array<Maybe<BikeModel>>>;
   /** Retrieve a bike by its Id */
   byBikeId?: Maybe<BikeModel>;
-  /** Retrieve all bikes for a user */
-  byUserId?: Maybe<Array<Maybe<BikeModel>>>;
+};
+
+
+export type BikeQueriesByAuthUserIdArgs = {
+  authUserId: Scalars['ID']['input'];
 };
 
 
 export type BikeQueriesByBikeIdArgs = {
   bikeId: Scalars['ID']['input'];
-};
-
-
-export type BikeQueriesByUserIdArgs = {
-  userId: Scalars['ID']['input'];
 };
 
 export type DeleteResult = {
@@ -146,8 +146,8 @@ export enum FrameTypeEnum {
 
 export type GarageMutations = {
   __typename?: 'GarageMutations';
-  deleteBike?: Maybe<DeleteResult>;
-  deleteEquipment?: Maybe<DeleteResult>;
+  deleteBikes?: Maybe<DeleteResult>;
+  deleteEquipment?: Maybe<BikeModel>;
   /** Updates the bikes in the user's garage. */
   importGarage?: Maybe<Array<Maybe<BikeModel>>>;
   retireEquipmentOnBike?: Maybe<BikeModel>;
@@ -156,8 +156,8 @@ export type GarageMutations = {
 };
 
 
-export type GarageMutationsDeleteBikeArgs = {
-  bikeId: Scalars['ID']['input'];
+export type GarageMutationsDeleteBikesArgs = {
+  bikeIds: Array<InputMaybe<Scalars['ID']['input']>>;
   userId: Scalars['ID']['input'];
 };
 
@@ -211,7 +211,7 @@ export type DeleteEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
+export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -232,13 +232,13 @@ export type UpsertBikeEquipmentMutationVariables = Exact<{
 
 export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
-export type DeleteBikeMutationVariables = Exact<{
+export type DeleteBikesMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
-  bikeId: Scalars['ID']['input'];
+  bikeIds: Array<InputMaybe<Scalars['ID']['input']>> | InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type DeleteBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteBike?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
+export type DeleteBikesMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteBikes?: { __typename?: 'DeleteResult', success: boolean } | null } | null };
 
 export type GetBikeByIdQueryVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -247,12 +247,19 @@ export type GetBikeByIdQueryVariables = Exact<{
 
 export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
-export type GetBikesByUserIdQueryVariables = Exact<{
+export type GetBikesByAuthUserIdQueryVariables = Exact<{
+  authUserId: Scalars['ID']['input'];
+}>;
+
+
+export type GetBikesByAuthUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byAuthUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+
+export type ImportGarageMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
 }>;
 
 
-export type GetBikesByUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+export type ImportGarageMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', importGarage?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 export type UpsertBikeMutationVariables = Exact<{
   bike: BikeInput;
@@ -267,7 +274,22 @@ export const DeleteEquipmentDocument = gql`
     mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
   garage {
     deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
-      success
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
     }
   }
 }
@@ -406,42 +428,42 @@ export function useUpsertBikeEquipmentMutation(baseOptions?: Apollo.MutationHook
 export type UpsertBikeEquipmentMutationHookResult = ReturnType<typeof useUpsertBikeEquipmentMutation>;
 export type UpsertBikeEquipmentMutationResult = Apollo.MutationResult<UpsertBikeEquipmentMutation>;
 export type UpsertBikeEquipmentMutationOptions = Apollo.BaseMutationOptions<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>;
-export const DeleteBikeDocument = gql`
-    mutation DeleteBike($userId: ID!, $bikeId: ID!) {
+export const DeleteBikesDocument = gql`
+    mutation DeleteBikes($userId: ID!, $bikeIds: [ID]!) {
   garage {
-    deleteBike(userId: $userId, bikeId: $bikeId) {
+    deleteBikes(userId: $userId, bikeIds: $bikeIds) {
       success
     }
   }
 }
     `;
-export type DeleteBikeMutationFn = Apollo.MutationFunction<DeleteBikeMutation, DeleteBikeMutationVariables>;
+export type DeleteBikesMutationFn = Apollo.MutationFunction<DeleteBikesMutation, DeleteBikesMutationVariables>;
 
 /**
- * __useDeleteBikeMutation__
+ * __useDeleteBikesMutation__
  *
- * To run a mutation, you first call `useDeleteBikeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteBikeMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteBikesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBikesMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteBikeMutation, { data, loading, error }] = useDeleteBikeMutation({
+ * const [deleteBikesMutation, { data, loading, error }] = useDeleteBikesMutation({
  *   variables: {
  *      userId: // value for 'userId'
- *      bikeId: // value for 'bikeId'
+ *      bikeIds: // value for 'bikeIds'
  *   },
  * });
  */
-export function useDeleteBikeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBikeMutation, DeleteBikeMutationVariables>) {
+export function useDeleteBikesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBikesMutation, DeleteBikesMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteBikeMutation, DeleteBikeMutationVariables>(DeleteBikeDocument, options);
+        return Apollo.useMutation<DeleteBikesMutation, DeleteBikesMutationVariables>(DeleteBikesDocument, options);
       }
-export type DeleteBikeMutationHookResult = ReturnType<typeof useDeleteBikeMutation>;
-export type DeleteBikeMutationResult = Apollo.MutationResult<DeleteBikeMutation>;
-export type DeleteBikeMutationOptions = Apollo.BaseMutationOptions<DeleteBikeMutation, DeleteBikeMutationVariables>;
+export type DeleteBikesMutationHookResult = ReturnType<typeof useDeleteBikesMutation>;
+export type DeleteBikesMutationResult = Apollo.MutationResult<DeleteBikesMutation>;
+export type DeleteBikesMutationOptions = Apollo.BaseMutationOptions<DeleteBikesMutation, DeleteBikesMutationVariables>;
 export const GetBikeByIdDocument = gql`
     query GetBikeById($bikeId: ID!) {
   bikes {
@@ -499,10 +521,10 @@ export type GetBikeByIdQueryHookResult = ReturnType<typeof useGetBikeByIdQuery>;
 export type GetBikeByIdLazyQueryHookResult = ReturnType<typeof useGetBikeByIdLazyQuery>;
 export type GetBikeByIdSuspenseQueryHookResult = ReturnType<typeof useGetBikeByIdSuspenseQuery>;
 export type GetBikeByIdQueryResult = Apollo.QueryResult<GetBikeByIdQuery, GetBikeByIdQueryVariables>;
-export const GetBikesByUserIdDocument = gql`
-    query GetBikesByUserId($userId: ID!) {
+export const GetBikesByAuthUserIdDocument = gql`
+    query GetBikesByAuthUserId($authUserId: ID!) {
   bikes {
-    byUserId(userId: $userId) {
+    byAuthUserId(authUserId: $authUserId) {
       bikeId
       name
       brandName
@@ -525,37 +547,87 @@ export const GetBikesByUserIdDocument = gql`
     `;
 
 /**
- * __useGetBikesByUserIdQuery__
+ * __useGetBikesByAuthUserIdQuery__
  *
- * To run a query within a React component, call `useGetBikesByUserIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBikesByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBikesByAuthUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBikesByAuthUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetBikesByUserIdQuery({
+ * const { data, loading, error } = useGetBikesByAuthUserIdQuery({
+ *   variables: {
+ *      authUserId: // value for 'authUserId'
+ *   },
+ * });
+ */
+export function useGetBikesByAuthUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables> & ({ variables: GetBikesByAuthUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
+      }
+export function useGetBikesByAuthUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
+        }
+export function useGetBikesByAuthUserIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
+        }
+export type GetBikesByAuthUserIdQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdQuery>;
+export type GetBikesByAuthUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdLazyQuery>;
+export type GetBikesByAuthUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdSuspenseQuery>;
+export type GetBikesByAuthUserIdQueryResult = Apollo.QueryResult<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>;
+export const ImportGarageDocument = gql`
+    mutation ImportGarage($userId: ID!) {
+  garage {
+    importGarage(userId: $userId) {
+      bikeId
+      name
+      brandName
+      modelName
+      frameType
+      metersLogged
+      equipment {
+        equipmentId
+        name
+        description
+        milesLogged
+        price
+        installDate
+        replaceAtMiles
+        retiredDate
+      }
+    }
+  }
+}
+    `;
+export type ImportGarageMutationFn = Apollo.MutationFunction<ImportGarageMutation, ImportGarageMutationVariables>;
+
+/**
+ * __useImportGarageMutation__
+ *
+ * To run a mutation, you first call `useImportGarageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportGarageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importGarageMutation, { data, loading, error }] = useImportGarageMutation({
  *   variables: {
  *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useGetBikesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables> & ({ variables: GetBikesByUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useImportGarageMutation(baseOptions?: Apollo.MutationHookOptions<ImportGarageMutation, ImportGarageMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
+        return Apollo.useMutation<ImportGarageMutation, ImportGarageMutationVariables>(ImportGarageDocument, options);
       }
-export function useGetBikesByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
-        }
-export function useGetBikesByUserIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>(GetBikesByUserIdDocument, options);
-        }
-export type GetBikesByUserIdQueryHookResult = ReturnType<typeof useGetBikesByUserIdQuery>;
-export type GetBikesByUserIdLazyQueryHookResult = ReturnType<typeof useGetBikesByUserIdLazyQuery>;
-export type GetBikesByUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByUserIdSuspenseQuery>;
-export type GetBikesByUserIdQueryResult = Apollo.QueryResult<GetBikesByUserIdQuery, GetBikesByUserIdQueryVariables>;
+export type ImportGarageMutationHookResult = ReturnType<typeof useImportGarageMutation>;
+export type ImportGarageMutationResult = Apollo.MutationResult<ImportGarageMutation>;
+export type ImportGarageMutationOptions = Apollo.BaseMutationOptions<ImportGarageMutation, ImportGarageMutationVariables>;
 export const UpsertBikeDocument = gql`
     mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
   garage {

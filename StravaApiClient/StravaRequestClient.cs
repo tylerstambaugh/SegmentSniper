@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using SegmentSniper.Models.Models.Strava.Token;
+using SegmentSniper.Models.Strava.Token;
 using SegmentSniper.Services.StravaTokenServices;
 using StravaApiClient.Configuration;
-using StravaApiClient.Models.Token;
+using StravaApiClient.Services.Webhook;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -41,7 +41,7 @@ namespace StravaApiClient
         {
             _accessToken = await GetAccessToken();
 
-            TResponse result = null;
+            TResponse? result = null;
             using (var httpClient = new HttpClient(Handler))
             {
                 ConfigureHttpClient(httpClient);
@@ -52,6 +52,11 @@ namespace StravaApiClient
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+
+                if (result == null)
+                {
+                    throw new InvalidOperationException($"Failed to deserialize API response to {typeof(TResponse).Name}. Received: {stringResult}");
+                }
             }
 
             return result;
@@ -65,7 +70,7 @@ namespace StravaApiClient
 
         public async Task<TResponse> PostAsync<TResponse>(string url) where TResponse : class
         {
-            return await Post<TResponse>(url, null);
+            return await Post<TResponse>(url);
         }
 
         public async Task<HttpResponseMessage> PostAsync<TRequest>(string url, TRequest data)
@@ -75,11 +80,11 @@ namespace StravaApiClient
             return result;
         }
 
-        private async Task<TResponse> Post<TResponse>(string url, StringContent data) where TResponse : class
+        private async Task<TResponse> Post<TResponse>(string url, StringContent? data = null) where TResponse : class
         {
             _accessToken = await GetAccessToken();
 
-            TResponse result = null;
+            TResponse? result = null;
             using (var httpClient = new HttpClient(Handler))
             {
                 ConfigureHttpClient(httpClient);
@@ -89,7 +94,11 @@ namespace StravaApiClient
                 await VerifyResponse(response);
 
                 var stringResult = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+
+                if (result == null)
+                {
+                    throw new InvalidOperationException($"Failed to deserialize API response to {typeof(TResponse).Name}. Received: {stringResult}");
+                }
             }
             return result;
         }
@@ -148,6 +157,53 @@ namespace StravaApiClient
 
                 await VerifyResponse(response);
 
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
+        public async Task<TResponse> PostWebhookSubscription<TRequest, TResponse>(string url, TRequest data) where TResponse : class
+        {
+            var formData = new List<KeyValuePair<string, string>>();
+
+            if (data is CreateStravaWebhookSubscriptionData subscriptionData)
+            {
+                formData.Add(new KeyValuePair<string, string>("client_id", subscriptionData.ClientId.ToString()));
+                formData.Add(new KeyValuePair<string, string>("client_secret", subscriptionData.ClientSecret));
+                formData.Add(new KeyValuePair<string, string>("callback_url", subscriptionData.CallbackUrl));
+                formData.Add(new KeyValuePair<string, string>("verify_token", subscriptionData.VerifyToken));
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported data type for webhook subscription.");
+            }
+
+            var formContent = new FormUrlEncodedContent(formData);
+
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await httpClient.PostAsync(url, formContent);
+
+                await VerifyResponse(response);
+
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
+        public async Task<TResponse> GetWebhookSubscription<TResponse>(string url) where TResponse : class
+        {
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await httpClient.GetAsync(url);
+                await VerifyResponse(response);
                 var stringResult = await response.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<TResponse>(stringResult);
             }
@@ -213,23 +269,31 @@ namespace StravaApiClient
                         }
                     });
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
 
-                _cache.Set(_config.UserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
+                _cache.Set(_config.AuthUserId, result.AccessToken, DateTimeOffset.Now.AddSeconds((result.ExpiresIn - _tokenExpirationBufferSeconds)));
             }
         }
 
         private async Task<string> GetAccessToken()
         {
-            if (_cache.TryGetValue(_config.UserId, out string accessToken))
+            try
             {
-                return accessToken;
+                if (_cache.TryGetValue(_config.AuthUserId, out string accessToken))
+                {
+                    return accessToken;
+                }
+                else
+                {
+                    await PostRefreshToken();
+                    return _cache.Get<string>(_config.AuthUserId);
+                }
             }
-            else
+            catch (Exception e)
             {
-                await PostRefreshToken();
-                return _cache.Get<string>(_config.UserId);
+                throw new Exception("Error in GetAccessToken");
             }
+
         }
 
         private class RefreshTokenResponse

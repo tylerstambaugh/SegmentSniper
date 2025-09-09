@@ -1,15 +1,18 @@
 import { Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../../enums/AppRoutes';
-import useUserStore from '../../../stores/useUserStore';
+import { useUser } from '@clerk/clerk-react';
 
 export default function MainMenu() {
-  const user = useUserStore((state) => state.user);
+  const { user } = useUser();
+  const roles = user?.publicMetadata?.roles;
+  const roleArray = Array.isArray(roles) ? roles : roles ? [roles] : [];
+
 
   return (
     <>
       <Row className="d-flex justify-content-center pt-3 ">
-        <Col >
+        <Col xl={6} lg={8} md={10} sm={12} xs={12}>
           <Card className="shadow">
             <Card.Body className="mx-3">
               <div className="mb-2 text-center">
@@ -58,7 +61,7 @@ export default function MainMenu() {
                     </Link>
                   </Col>
                 </Row>
-                {user?.roles?.some((r) => r.toString() === 'Admin') ? (
+                {roleArray?.some((r) => r.toString() === 'Admin') ? (
                   <Row>
                     <Col
                       md={12}

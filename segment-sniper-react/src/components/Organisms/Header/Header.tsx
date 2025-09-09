@@ -4,18 +4,18 @@ import { AppRoutes } from '../../../enums/AppRoutes';
 import { Col, Nav, Navbar, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useUserStore from '../../../stores/useUserStore';
-import useTokenDataStore from '../../../stores/useTokenStore';
+
 import logo from '../../../assets/images/segment_sniper_logo_v3.webp';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 
 function Header() {
-  const [tokenData, isAuthenticated] = useTokenDataStore((state) => [
-    state.tokenData,
-    state.isAuthenticated,
-  ]);
-  const [user] = useUserStore((state) => [state.user]);
+
+
+
+  const { isSignedIn, user } = useUser();
   const [isNavbarOpen, setNavbarOpen] = useState(false);
   const navbarRef = useRef(null);
   const handleNavbarToggle = () => setNavbarOpen(!isNavbarOpen);
@@ -51,7 +51,7 @@ function Header() {
         <Navbar.Brand className={'ps-3'}>
           <Link
             to={
-              !isAuthenticated
+              !isSignedIn
                 ? `/${AppRoutes.Home}`
                 : `/${AppRoutes.Dashboard}`
             }
@@ -71,86 +71,65 @@ function Header() {
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="w-100 d-flex justify-content-end">
-            {tokenData !== null &&
-            tokenData!.accessToken &&
-            user !== null &&
-            user!.id ? (
-              <>
-                <Nav.Item className={'fw-semibold text-end'}>
-                  <Navbar.Text>
+
+            <SignedIn>
+              <Nav.Item className={'fw-semibold text-end'}>
+                <Navbar.Text>
+                  <Link
+                    to={
+                      `/${AppRoutes.Dashboard}`
+                    }
+                  >
+                    Menu
+                  </Link>
+                </Navbar.Text>
+              </Nav.Item>
+              <div className={'border-end mx-3 d-none d-md-block'}></div>
+              <div className={'border-top mt-1 d-md-none'}></div>
+              <Nav.Item className={'fw-semibold text-end'}>
+                <Navbar.Text>
+                  <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
+                    About
+                  </Link>
+                </Navbar.Text>
+              </Nav.Item>
+              <div className={'border-end mx-3 d-none d-md-block'}></div>
+
+            </SignedIn >
+            <SignedOut>
+              <div className={'d-flex justify-content-end pt-md-0 me-md-3'}>
+                <Nav.Item className={'fw-semibold'}>
+                  <Navbar.Text className="d-flex">
                     <Link
-                      to={
-                        !isAuthenticated
-                          ? `/${AppRoutes.Home}`
-                          : `/${AppRoutes.Dashboard}`
-                      }
+                      to={`/${AppRoutes.About}`}
+                      onClick={handleLinkClick}
                     >
-                      Menu
-                    </Link>
-                  </Navbar.Text>
-                </Nav.Item>
-                <div className={'border-end mx-3 d-none d-md-block'}></div>
-                <div className={'border-top mt-1 d-md-none'}></div>
-                <Nav.Item className={'fw-semibold text-end'}>
-                  <Navbar.Text>
-                    <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
                       About
                     </Link>
                   </Navbar.Text>
                 </Nav.Item>
-                <div className={'border-end mx-3 d-none d-md-block'}></div>
-                <div className={'border-top mt-1 d-md-none'}></div>
-                <Nav.Item className={'text-end'}>
-                  <Navbar.Text>
-                    Signed in as:{' '}
-                    <Link to={`/${AppRoutes.Profile}`}>
-                      <span style={{ textDecoration: 'none' }}>
-                        <FontAwesomeIcon icon={faUser} />{' '}
-                      </span>
-                      {user!.firstName}
-                    </Link>
-                    {}
-                  </Navbar.Text>
-                </Nav.Item>
-                <div className={'border-end mx-3 d-none d-md-block'}></div>
-                <div className={'border-top mt-1 d-md-none'}></div>
-                <Nav.Item className={'fw-semibold text-end'}>
-                  <Navbar.Text className="">
-                    <Link to={`/${AppRoutes.Logout}`} onClick={handleLinkClick}>
-                      Logout
+              </div>
+              <div className={'d-flex justify-content-end pt-md-0'}>
+                <Nav.Item className={'fw-semibold'}>
+                  <Navbar.Text className="d-flex">
+                    <Link
+                      to={`/${AppRoutes.SignIn}`}
+                      onClick={handleLinkClick}
+                    >
+                      Login
                     </Link>
                   </Navbar.Text>
                 </Nav.Item>
-              </>
-            ) : (
-              <>
-                <div className={'d-flex justify-content-end pt-md-0 me-md-3'}>
-                  <Nav.Item className={'fw-semibold'}>
-                    <Navbar.Text className="d-flex">
-                      <Link
-                        to={`/${AppRoutes.About}`}
-                        onClick={handleLinkClick}
-                      >
-                        About
-                      </Link>
-                    </Navbar.Text>
-                  </Nav.Item>
-                </div>
-                <div className={'d-flex justify-content-end pt-md-0'}>
-                  <Nav.Item className={'fw-semibold'}>
-                    <Navbar.Text className="d-flex">
-                      <Link
-                        to={`/${AppRoutes.Login}`}
-                        onClick={handleLinkClick}
-                      >
-                        Login
-                      </Link>
-                    </Navbar.Text>
-                  </Nav.Item>
-                </div>
-              </>
-            )}
+              </div>
+            </SignedOut>
           </Nav>
+          <Nav.Item className={'fw-semibold'}>
+            <Navbar.Text className="d-flex">
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </Navbar.Text>
+          </Nav.Item>
         </Navbar.Collapse>
       </Container>
     </Navbar>

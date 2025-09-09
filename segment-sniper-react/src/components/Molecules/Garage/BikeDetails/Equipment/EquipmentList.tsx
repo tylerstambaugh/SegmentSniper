@@ -15,6 +15,8 @@ import toast from "react-hot-toast";
 import DeleteEquipmentModal, { DeleteBikeEquipmentValues } from "./DeleteEquipmentModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useDeleteEquipmentMutation } from "./GraphQl/useDeleteEquipment";
+import { useUser } from "@clerk/clerk-react";
 
 
 type EquipmentListProps = {
@@ -33,7 +35,7 @@ export type EquipmentModalState =
 const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
 
     const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
-    const user = useUserStore((state) => state.user);
+    const user = useUser();
     const handleClosedModal = () => {
 
         setModalState({ type: "none" });
@@ -100,9 +102,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         });
 
     const [deleteBikeEquipment,
-        { error: deleteBikeEquipmentError }] = useRetireBikeEquipmentMutation({
+        { error: deleteBikeEquipmentError }] = useDeleteEquipmentMutation({
             update(cache, { data }) {
-                const updatedBike = data?.garage?.retireEquipmentOnBike;
+                const updatedBike = data?.garage?.deleteEquipment;
                 if (!updatedBike) return;
 
                 cache.writeQuery({
@@ -143,7 +145,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             variables: {
                 bikeId: bike!.bikeId,
                 equipment: equipmentInput,
-                userId: user?.id ?? '',
+                userId: user?.user?.id ?? '',
             },
         });
     }
@@ -160,7 +162,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                 variables: {
                     bikeId: bike!.bikeId,
                     equipmentId: values.equipmentId!,
-                    userId: user?.id ?? '',
+                    userId: user?.user?.id ?? '',
                     retireDate: values.retireDate?.toISODate() ?? ""
                 }
             });
@@ -183,10 +185,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             }
             await deleteBikeEquipment({
                 variables: {
-                    bikeId: bike!.bikeId,
                     equipmentId: values.equipmentId!,
-                    userId: user?.id ?? '',
-                    retireDate: DateTime.now().toISODate() ?? ""
+                    userId: user?.user?.id ?? ''
                 }
             });
             handleClosedModal();

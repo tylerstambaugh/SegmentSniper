@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Api.Configuration;
 using SegmentSniper.Data;
 using System.Net;
@@ -11,27 +12,28 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-var builder = await WebApplicationBuilderConfig.ConfigureBuilder(configuration);
+var builder = WebApplicationBuilderConfig.ConfigureBuilder(configuration);
 
 var app = builder.Build();
 
 // Configure the application
 Configure(app, app.Environment, app.Services.GetRequiredService<Microsoft.Extensions.Logging.ILoggerFactory>());
 
-await SeedData.Initialize(app.Services, configuration);
+//await SeedData.Initialize(app.Services, configuration);
 app.Run();
 
 
 void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
 {
     // Create a scope to resolve the SegmentSniperDbContext
-    //using (var scope = app.Services.CreateScope())
-    //{
-    //    var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
+        context.Database.Migrate();
 
-    //    // Ensure database is created
-    //   //context.Database.EnsureCreated();
-    //}
+        // Ensure database is created
+        //context.Database.EnsureCreated();
+    }
 
 
     // Configure the HTTP request pipeline
@@ -53,10 +55,10 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
-  
+
     app.UseCors("AllowReactApp");
 
-    app.UseIdentityServer();
+    //app.UseIdentityServer();
     app.UseAuthentication();
     app.UseAuthorization();
 

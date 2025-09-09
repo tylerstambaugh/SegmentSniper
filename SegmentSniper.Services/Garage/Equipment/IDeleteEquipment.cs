@@ -1,4 +1,6 @@
-﻿namespace SegmentSniper.Services.Garage.Equipment
+﻿using SegmentSniper.Models.Garage;
+
+namespace SegmentSniper.Services.Garage.Equipment
 {
     public interface IDeleteEquipment
     {
@@ -18,7 +20,7 @@
         public string EquipmentId { get; set; }
         public class Result
         {
-            public bool Success { get; set; }
+            public BikeModel Bike{ get; set; }
         }
     }
 }

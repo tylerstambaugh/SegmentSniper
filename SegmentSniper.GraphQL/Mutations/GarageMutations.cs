@@ -4,7 +4,7 @@ using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
 using SegmentSniper.ApplicationLogic.ActionHandlers.Garage;
 using SegmentSniper.GraphQL.Types;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Models.Garage;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.Garage.Equipment;
 
@@ -16,7 +16,6 @@ namespace SegmentSniper.GraphQL.Mutations
         {
             Name = "GarageMutations";
 
-            // Define the updateGarage mutation
             AddField(new FieldType
             {
                 Name = "ImportGarage",
@@ -79,7 +78,7 @@ namespace SegmentSniper.GraphQL.Mutations
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
-                    new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> {  Name = "equipment", Description = "The details of the equipment being added."}
+                    new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> { Name = "equipment", Description = "The details of the equipment being added." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
@@ -132,35 +131,35 @@ namespace SegmentSniper.GraphQL.Mutations
             AddField(new FieldType
             {
                 Name = "DeleteEquipment",
-                Type = typeof(DeleteResultGraphType),
+                Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
                 ),
-                Resolver = new FuncFieldResolver<bool>(async context =>
+                Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
                     var userId = context.GetArgument<string>("userId");
                     var equipmentId = context.GetArgument<string>("equipmentId");
                     var service = context.RequestServices.GetRequiredService<IDeleteEquipment>();
                     var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
-                    return result.Success;
+                    return result.Bike;
                 }),
             });
 
             AddField(new FieldType
             {
-                Name = "DeleteBike",
+                Name = "DeleteBikes",
                 Type = typeof(DeleteResultGraphType),
                 Arguments = new QueryArguments(
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the equipment being retired." }
+                    new QueryArgument<NonNullGraphType<ListGraphType<IdGraphType>>> { Name = "bikeIds", Description = "The Ids of the bikes being deleted." }
                 ),
                 Resolver = new FuncFieldResolver<bool>(async context =>
                 {
                     var userId = context.GetArgument<string>("userId");
-                    var bikeId = context.GetArgument<string>("bikeId");
+                    var bikeIds = context.GetArgument<List<string>>("bikeIds");
                     var service = context.RequestServices.GetRequiredService<IDeleteBike>();
-                    var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeId));
+                    var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeIds));
                     return result.Success;
                 }),
             });

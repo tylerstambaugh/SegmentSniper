@@ -1,6 +1,6 @@
 ﻿using SegmentSniper.Data;
-using SegmentSniper.Data.Entities.Equiment;
-using SegmentSniper.Models.Models.Garage;
+using SegmentSniper.Data.Entities.Garage;
+using SegmentSniper.Models.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -26,7 +26,7 @@ namespace SegmentSniper.Services.Garage
                     {   
                         var bikeActivityToAdd = new BikeActivity
                         {
-                            UserId = bikeActivity.UserId,
+                            AuthUserId = bikeActivity.UserId,
                             StravaActivityId = bikeActivity.StravaActivityId,
                             BikeId = bikeActivity.BikeId,
                             DistanceInMeters = bikeActivity.DistanceInMeters,
