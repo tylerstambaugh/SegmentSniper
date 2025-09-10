@@ -70,14 +70,14 @@ jobs:
       - name: Build .NET application
         run: dotnet build --configuration Release
 
-      - name: Apply Entity Framework migrations
-        run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
-
       - name: Debug DB connection info
         run: |
           echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
           echo "DB_NAME: ${{ secrets.DB_NAME }}"
           echo "DB_USER: ${{ secrets.DB_USER }}"
+          
+      - name: Apply Entity Framework migrations
+        run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
 
       - name: Verify migration success
         run: |
