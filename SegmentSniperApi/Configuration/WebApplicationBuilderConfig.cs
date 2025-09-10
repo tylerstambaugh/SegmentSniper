@@ -34,11 +34,11 @@ namespace SegmentSniper.Api.Configuration
             }
             else
             {
+                builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
+
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
                 if (!string.IsNullOrEmpty(keyVaultEndpoint))
                     builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
-
-                builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
             }
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
