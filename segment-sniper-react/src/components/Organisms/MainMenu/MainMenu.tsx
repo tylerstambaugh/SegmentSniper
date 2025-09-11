@@ -61,7 +61,7 @@ export default function MainMenu() {
                     </Link>
                   </Col>
                 </Row>
-                {roleArray?.some((r) => r.toString() === 'Admin') ? (
+                {roleArray?.some((r) => r.toString() === 'admin') ? (
                   <Row>
                     <Col
                       md={12}

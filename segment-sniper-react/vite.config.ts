@@ -17,7 +17,7 @@ export default ({ mode }) => {
     react(),
     mkcert(),
     graphqlLoader(),
-    ...(mode !== 'production' ? [codegen()] : []), // Only include codegen in non-production
+    ...(mode !== 'production' ? [codegen()] : []),
   ];
 
   return defineConfig({
