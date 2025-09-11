@@ -1,13 +1,10 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../enums/AppRoutes";
-
-import useUserStore from "../../stores/useUserStore";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 
 export default function AutoLoggedOut() {
-    const user = useUserStore((state) => state.user);
 
     return (
         <>
