@@ -33,13 +33,13 @@ namespace SegmentSniper.Api.Controllers
 
                 if (string.IsNullOrEmpty(userId))
                 {
-                    return NotFound("User ID not found in token.");
+                    return StatusCode(499, $"User ID not found in token.");
                 }
 
                 var user = await _getAppUserByAuthUserIdActionHandler.HandleAsync(new GetAppUserByAuthIdRequest(userId));
 
                 if (user.AppUserModel == null)
-                    return NotFound(user);
+                    return StatusCode(499, $"Unable to get user information. User ID ${userId}");
 
                 return Ok(user);
             }

@@ -1,4 +1,5 @@
 ﻿using SegmentSniper.Services.User;
+using Serilog;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
 {
@@ -14,6 +15,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
         public async Task<AddAppUserRequest.Response> HandleAsync(AddAppUserRequest request)
         {
             ValidateRequest(request);
+            Log.Debug($"calling add user service from handler");
             var result = await _addUser.ExecuteAsync(new AddAppUserContract(request.UserId));
             return new AddAppUserRequest.Response(result.Success, result.Message);
         }
@@ -22,11 +24,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
         {
             if (request == null)
             {
+                Log.Debug($"add user request is null");
                 throw new ArgumentNullException(nameof(request), "Request cannot be null.");
             }
 
             if (string.IsNullOrWhiteSpace(request.UserId))
             {
+                Log.Debug($"add user request.userId is null");
                 throw new ArgumentException("UserId cannot be null or empty.", nameof(request.UserId));
             }
         }

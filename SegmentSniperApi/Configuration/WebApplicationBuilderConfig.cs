@@ -23,22 +23,24 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            var isDevelopment = builder.Environment.IsDevelopment();
+            // Always load base appsettings first
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
 
-            if (isDevelopment)
+            if (builder.Environment.IsDevelopment())
             {
+                // In dev, also load from local secrets.json (or user secrets)
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
-                builder.Configuration.AddJsonFile(secretsFilePath, optional: true)
-                     .AddJsonFile($"appsettings.{environment}.json", optional: false);
+                builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
             }
             else
             {
-                builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
-
+                // Add Azure Key Vault in non-dev
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
                 if (!string.IsNullOrEmpty(keyVaultEndpoint))
+                {
                     builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
+                }
             }
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
@@ -82,12 +84,23 @@ namespace SegmentSniper.Api.Configuration
                 options.Authority = jwtSettings["Issuer"];
                 options.Audience = jwtSettings["Audience"];
 
+                //options.TokenValidationParameters = new TokenValidationParameters
+                //{
+                //    ValidateIssuer = true,
+                //    ValidIssuer = jwtSettings["Issuer"],
+                //    ValidateAudience = true,
+                //    ValidAudience = jwtSettings["Audience"],
+                //    ValidateLifetime = true,
+                //    ValidateIssuerSigningKey = true,
+                //    RoleClaimType = "roles"
+                //};
+
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidIssuer = "https://fresh-fowl-84.clerk.accounts.dev",
                     ValidateAudience = true,
-                    ValidAudience = jwtSettings["Audience"],
+                    ValidAudience = "SegmentSniperAPI",
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     RoleClaimType = "roles"
@@ -130,7 +143,9 @@ namespace SegmentSniper.Api.Configuration
             //add clerkApiClient
             builder.Services.AddClerkApiClient(options =>
             {
-                var secretKey = configuration["ClerkSecretKey"];
+                var secretKey = builder.Configuration["ClerkSecretKey"];
+
+                Log.Debug($"Clerk secret key: {secretKey}");
 
                 if (string.IsNullOrEmpty(secretKey))
                     throw new InvalidOperationException("Clerk SecretKey is not configured.");
