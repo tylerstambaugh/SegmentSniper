@@ -28,33 +28,40 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
             _configuration = configuration;
         }
 
-        public async Task<bool> ExecuteAsync()
+        public async Task<CreateStravaWebhookSubscriptionResponse> ExecuteAsync()
         {
-
-            Validate();
-
-
-            var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
-                verifyToken: "segment-sniper",
-                callbackUrl: CallbackUrl,
-                clientId: ClientId,
-                clientSecret: ClientSecret
-            );
-
-            //strava should response to this with the subscription ID
-            var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
-
-            if (stravaResponse.Id != 0)
+            try
             {
-                // Save the subscription ID to the database
-                await _saveStravaWebhookSubscriptionId.ExecuteAsync(new SaveStravaWebhookSubscriptionIdContract
-                {
-                    StravaWebhookSubscriptionId = stravaResponse.Id
-                });
 
-                return true;
+                Validate();
+
+
+                var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
+                    verifyToken: "segment-sniper",
+                    callbackUrl: CallbackUrl,
+                    clientId: ClientId,
+                    clientSecret: ClientSecret
+                );
+
+                //strava should response to this with the subscription ID
+                var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
+
+                if (stravaResponse.Id != 0)
+                {
+                    // Save the subscription ID to the database
+                    await _saveStravaWebhookSubscriptionId.ExecuteAsync(new SaveStravaWebhookSubscriptionIdContract
+                    {
+                        StravaWebhookSubscriptionId = stravaResponse.Id
+                    });
+
+                    return new CreateStravaWebhookSubscriptionResponse(true);
+                }
+                return new CreateStravaWebhookSubscriptionResponse(false, "Error 657");
             }
-            return false;
+            catch (Exception ex)
+            {
+                return new CreateStravaWebhookSubscriptionResponse(false, ex.Message);
+            }
         }
 
         private async Task Validate()

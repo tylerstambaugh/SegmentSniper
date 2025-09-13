@@ -16,8 +16,7 @@ namespace StravaApiClient.Services.Webhook
 
             var url = $"https://www.strava.com/api/v3/push_subscriptions/{contract.SubscriptionId}";
 
-
-            var apiResponse = await _stravaRequestClient.DeleteAsync<HttpResponseMessage>(url);
+            var apiResponse = await _stravaRequestClient.DeleteWebhookSubscription<HttpResponseMessage>(url);
 
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
             if (apiResponse != null) 
@@ -32,6 +31,12 @@ namespace StravaApiClient.Services.Webhook
             if (contract == null) throw new ArgumentNullException(nameof(contract));
             if (string.IsNullOrEmpty(contract.ClientId)) throw new ArgumentException("Client ID must be provided", nameof(contract.ClientId));
             if (string.IsNullOrEmpty(contract.ClientSecret)) throw new ArgumentException("Client secret must be provided", nameof(contract.ClientSecret));
+        }
+
+        public class StravaErrorResponse
+        {
+            public string Message { get; set; } = string.Empty;  // General error message
+            public string? Errors { get; set; }                  // Optional detailed error info
         }
     }
 }

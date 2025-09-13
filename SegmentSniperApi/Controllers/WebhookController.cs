@@ -90,9 +90,9 @@ namespace SegmentSniper.Api.Controllers
 
             var response = await _createStravaWebhookSubscriptionHandler.ExecuteAsync();
 
-            if (!response)
+            if (!response.Success)
             {
-                return StatusCode(500, "Failed to initiate subscription.");
+                return StatusCode(400, $"Failed to initiate subscription. {response.Error}");
             }
 
             return Ok(new

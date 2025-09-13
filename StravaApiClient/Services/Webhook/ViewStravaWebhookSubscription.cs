@@ -1,18 +1,14 @@
-﻿
-using AutoMapper;
-using StravaApiClient.Models.Webhook;
+﻿using StravaApiClient.Models.Webhook;
 
 namespace StravaApiClient.Services.Webhook
 {
     public class ViewStravaWebhookSubscription : IViewStravaWebhookSubscription
     {
-        private readonly IStravaRequestClient _stravaRequestClient;
-        private readonly IMapper _mapper;
+        private readonly IStravaRequestClient _stravaRequestClient;        
 
-        public ViewStravaWebhookSubscription(IStravaRequestClient stravaRequestClient, IMapper mapper)
+        public ViewStravaWebhookSubscription(IStravaRequestClient stravaRequestClient)
         {
             _stravaRequestClient = stravaRequestClient;
-            _mapper = mapper;
         }
 
         public async Task<ViewStravaWebhookSubscriptionContract.Result> ExecuteAsync(ViewStravaWebhookSubscriptionContract contract)
@@ -22,15 +18,14 @@ namespace StravaApiClient.Services.Webhook
             var url = $"https://www.strava.com/api/v3/push_subscriptions/?client_id={contract.ClientId}&client_secret={contract.ClientSecret}";
 
 
-            var apiResponse = await _stravaRequestClient.GetWebhookSubscription<ViewSubscriptionApiResponse>(url);
+            var apiResponse = await _stravaRequestClient.GetWebhookSubscription<List<ViewSubscriptionApiResponse>>(url);
 
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
-            if (apiResponse != null)            {
-                
-                return new ViewStravaWebhookSubscriptionContract.Result(apiResponse);
+            if (apiResponse.Count > 0) 
+            {                
+                return new ViewStravaWebhookSubscriptionContract.Result(apiResponse.FirstOrDefault());
             }
             throw new InvalidOperationException("Failed to retrieve Strava webhook subscription details.");
-
         }
 
         private void ValidateContract(ViewStravaWebhookSubscriptionContract contract)
