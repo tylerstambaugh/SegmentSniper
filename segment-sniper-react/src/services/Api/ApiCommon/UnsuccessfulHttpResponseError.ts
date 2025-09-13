@@ -9,14 +9,15 @@ export default class UnsuccessfulHttpResponseError extends Error {
   static async fromResponse(
     response: Response
   ): Promise<UnsuccessfulHttpResponseError> {
-    let message = "An unexpected error occurred.";
+    let message = 'An unexpected error occurred.';
     try {
-      const contentType = response.headers.get("content-type")!;
-      if (contentType.startsWith("text/plain;")) {
+      const contentType = response.headers.get('content-type')!;
+      if (contentType.startsWith('text/plain;')) {
         message = await response.text();
       }
-    } finally {
-      return new UnsuccessfulHttpResponseError(response, message);
+    } catch (e) {
+      // Optionally handle error
     }
+    return new UnsuccessfulHttpResponseError(response, message);
   }
 }
