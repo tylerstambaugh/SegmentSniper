@@ -210,6 +210,20 @@ namespace StravaApiClient
             return result;
         }
 
+        public async Task<TResponse> DeleteWebhookSubscription<TResponse>(string url) where TResponse : class
+        {
+            TResponse result = null;
+            using (var httpClient = new HttpClient(Handler))
+            {
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await httpClient.DeleteAsync(url);
+                await VerifyResponse(response);
+                var stringResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<TResponse>(stringResult);
+            }
+            return result;
+        }
+
         private void ConfigureHttpClient(HttpClient httpClient)
         {
             httpClient.BaseAddress = new Uri(_config.BaseUrl);

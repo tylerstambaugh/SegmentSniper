@@ -90,9 +90,9 @@ namespace SegmentSniper.Api.Controllers
 
             var response = await _createStravaWebhookSubscriptionHandler.ExecuteAsync();
 
-            if (!response)
+            if (!response.Success)
             {
-                return StatusCode(500, "Failed to initiate subscription.");
+                return StatusCode(400, $"Failed to initiate subscription. {response.Error}");
             }
 
             return Ok(new
@@ -107,7 +107,7 @@ namespace SegmentSniper.Api.Controllers
         public async Task<IActionResult> ViewSubscription()
         {
             var response = await _viewStravaWebhookSubscriptionHandler.HandleAsync();
-            if (response == null)
+            if (response.ViewSubscriptionResponseModel == null)
             {
                 return NotFound("No subscription found.");
             }
@@ -125,7 +125,7 @@ namespace SegmentSniper.Api.Controllers
             var response = await _deleteStravaWebhookSubscriptionHandler.HandleAsync();
             if (!response.Success)
             {
-                return StatusCode(500, "Failed to delete subscription.");
+                return StatusCode(500, $"Failed to delete subscription: {response.Message}");
             }
             return Ok(new
             {
@@ -145,9 +145,8 @@ namespace SegmentSniper.Api.Controllers
             }
             catch (Exception)
             {
-                return Ok(null);
+                return NotFound();
             }
-
         }
     }
 }

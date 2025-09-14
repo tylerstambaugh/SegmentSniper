@@ -54,7 +54,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while viewing the Strava webhook subscription.", ex);
+                return new ViewStravaWebhookSubscriptionRequest.Response(null); 
             }
         }
     }

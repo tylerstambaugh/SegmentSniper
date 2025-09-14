@@ -3,9 +3,7 @@ import { useLocation } from "react-router-dom";
 import { LoadScriptNext } from "@react-google-maps/api";
 import useAppConfigStore from "../stores/useAppConfigStore";
 import { useGetClientConfiguration } from "../hooks/Api/useGetClientConfiguration";
-
 import { CustomToast } from "./Molecules/Toast/CustomToast";
-
 
 interface InitializeComponentProps {
   children: ReactNode;
@@ -17,7 +15,6 @@ const InitializeApp: React.FC<InitializeComponentProps> = ({ children }) => {
 
 
   const { data: appConfigData, isLoading, isError, error } = useGetClientConfiguration();
-  const location = useLocation();
   const [apiKeyLoaded, setApiKeyLoaded] = useState(false);
 
   useEffect(() => {

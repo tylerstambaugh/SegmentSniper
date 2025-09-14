@@ -50,7 +50,7 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         app.UseHsts();
     }
 
-    app.UseMiddleware<UsernameLoggingMiddleware>();
+   //app.UseMiddleware<UsernameLoggingMiddleware>();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
@@ -58,7 +58,6 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
 
     app.UseCors("AllowReactApp");
 
-    //app.UseIdentityServer();
     app.UseAuthentication();
     app.UseAuthorization();
 

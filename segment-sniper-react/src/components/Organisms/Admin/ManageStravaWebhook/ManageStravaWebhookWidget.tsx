@@ -39,8 +39,6 @@ const ManageStravaWebhookWidget = () => {
         error: subscriptionIdError,
     } = useGetSubscriptionId();
 
-    //did sql and rxjs exercises tonight
-
     return (
         <Container className="py-4"> {/* Add vertical padding to the container */}
             <Row >
@@ -62,7 +60,8 @@ const ManageStravaWebhookWidget = () => {
                     </Row>
                     <Row className="justify-content-center">
                         <Col>
-                            <h3>Subscription ID:</h3>
+                            {subscriptionIdIsError ? <h3>Error fetching subscription ID: {subscriptionIdError?.message}</h3>
+                                : <h3>Subscription ID:</h3>}
                         </Col>
                         <Col className="justify-content-left">
                             {subscriptionIdIsLoading ? (
@@ -73,7 +72,7 @@ const ManageStravaWebhookWidget = () => {
                                     role="status"
                                     aria-hidden="true"
                                     animation="border"
-                                />) : (<p>{subscriptionIdData?.subscriptionId ? subscriptionIdData.subscriptionId : "None"}</p>)}
+                                />) : (<h3>{subscriptionIdData?.subscriptionId ? subscriptionIdData.subscriptionId : "None"}</h3>)}
                         </Col>
                     </Row>
                     <Col>

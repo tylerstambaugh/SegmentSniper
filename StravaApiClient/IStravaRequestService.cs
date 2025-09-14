@@ -1,6 +1,7 @@
 ﻿using StravaApiClient.Services.Activity;
 using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
+using StravaApiClient.Services.Webhook;
 
 namespace StravaApiClient
 {
