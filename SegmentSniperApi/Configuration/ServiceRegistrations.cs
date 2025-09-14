@@ -114,7 +114,8 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IGetDetailedActivityById, GetDetailedActivityById>();
             services.AddScoped<IStarSegment, StarSegment>();
             services.AddScoped<IGetGearById, GetGearById>();
-            services.AddScoped<ICreateStravaWebhookSubscription, CreateStravaWebhookSubscription>();
+            
+            services.AddScoped<IDeleteStravaWebhookSubscriptionService, DeleteStravaWebhookSubscriptionService>();
 
             //ML Services
             services.AddScoped<IGetSegmentPredictionTrainingData, GetSegmentPredictionTrainingData>();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SegmentSniper.Services.StravaWebhook;
+using StravaApiClient;
 using StravaApiClient.Services.Webhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
@@ -8,6 +9,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
     {
         private readonly IGetStravaWebhookSubscriptionId _getStravaWebhookSubscriptionId;
         private readonly IDeleteStravaWebhookSubscription _deleteStravaWebhookSubscription;
+        private readonly IStravaRequestService _stravaRequestService;
+        private readonly IDeleteStravaWebhookSubscriptionService _deleteStravaWebhookSubscriptionService;
+        
         private readonly IConfiguration _configuration;
 
         private string ClientId;
@@ -15,10 +19,12 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
         public DeleteStravaWebhookSubscriptionHandler(IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId,
             IDeleteStravaWebhookSubscription deleteStravaWebhookSubscription,
+            IDeleteStravaWebhookSubscriptionService deleteStravaWebhookSubscriptionService,
             IConfiguration configuration)
         {
             _getStravaWebhookSubscriptionId = getStravaWebhookSubscriptionId;
-            _deleteStravaWebhookSubscription = deleteStravaWebhookSubscription;
+            _deleteStravaWebhookSubscription = deleteStravaWebhookSubscription;            
+            _deleteStravaWebhookSubscriptionService = deleteStravaWebhookSubscriptionService;
             _configuration = configuration;
         }
 
@@ -45,12 +51,18 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
             try
             {
-                var response = await _deleteStravaWebhookSubscription.ExecuteAsync(new DeleteStravaWebhookSubscriptionApiRequest(ClientId, ClientSecret, subscriptionIdResult.SubscriptionId));
-                return new DeleteStravaWebhookSubscriptionRequest.Response(response.Success);
+                var response = await _deleteStravaWebhookSubscription.ExecuteAsync(new DeleteStravaWebhookSubscriptionApiContract(ClientId, ClientSecret, subscriptionIdResult.SubscriptionId));
+                
+                if(response.Success)
+                {
+                    var localResponse = await _deleteStravaWebhookSubscriptionService.ExecuteAsync(new DeleteStravaWebhookSubscriptionContract(subscriptionIdResult.SubscriptionId));
+                    return new DeleteStravaWebhookSubscriptionRequest.Response(localResponse.Success);
+                }
+                return new DeleteStravaWebhookSubscriptionRequest.Response(false, "Failed to delete Strava webhook subscription.");
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while deleting the Strava webhook subscription.", ex);
+                return new DeleteStravaWebhookSubscriptionRequest.Response(false, ex.Message);
             }
         }
     }

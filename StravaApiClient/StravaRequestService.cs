@@ -60,11 +60,5 @@ namespace StravaApiClient
             var service = new GetGearById(_client);
             return service.ExecuteAsync(contract);
         }
-
-        public Task<CreateStravaWebhookSubscriptionContract.Result> CreateStravaWebhookSubscription(CreateStravaWebhookSubscriptionContract contract)
-        {
-            var service = new CreateStravaWebhookSubscription(_client, _config);
-            return service.ExecuteAsync(contract);
-        }
     }
 }
