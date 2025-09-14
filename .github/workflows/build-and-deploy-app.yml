@@ -75,6 +75,7 @@ jobs:
           echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
           echo "DB_NAME: ${{ secrets.DB_NAME }}"
           echo "DB_USER: ${{ secrets.DB_USER }}"
+          echo "DB_CONNECTION ${{ secrets.DB_CONNECTION_STRING }}
           
       - name: Apply Entity Framework migrations
         run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
