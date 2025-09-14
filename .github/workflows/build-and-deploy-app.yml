@@ -78,10 +78,14 @@ jobs:
           echo "DB_CONNECTION ${{ secrets.DB_CONNECTION_STRING }}"
           
       - name: Apply Entity Framework migrations
-        run: dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext  --connection '${{ secrets.DB_CONNECTION_STRING }}'
-        env:
-          ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
-
+        run: |
+          dotnet ef database update \
+            --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
+            --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
+            --context SegmentSniperDbContext \
+            --connection "${{ secrets.DB_CONNECTION_STRING }}"
+        shell: bash
+        
       - name: Verify migration success
         run: |
           sqlcmd -S "${{ secrets.DB_SERVER }}" \
