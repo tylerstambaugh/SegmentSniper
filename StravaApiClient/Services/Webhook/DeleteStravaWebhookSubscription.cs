@@ -10,33 +10,29 @@ namespace StravaApiClient.Services.Webhook
             _stravaRequestClient = stravaRequestClient;
         }
 
-        public async Task<DeleteStravaWebhookSubscriptionApiRequest.Response> ExecuteAsync(DeleteStravaWebhookSubscriptionApiRequest contract)
+        public async Task<DeleteStravaWebhookSubscriptionApiContract.Result> ExecuteAsync(DeleteStravaWebhookSubscriptionApiContract contract)
         {
             ValidateContract(contract);
 
-            var url = $"https://www.strava.com/api/v3/push_subscriptions/{contract.SubscriptionId}";
+            var url = $"https://www.strava.com/api/v3/push_subscriptions/{contract.SubscriptionId}?client_id={contract.ClientId}&client_secret={contract.ClientSecret}";
 
             var apiResponse = await _stravaRequestClient.DeleteWebhookSubscription<HttpResponseMessage>(url);
 
             //You will receive a 204 No Content if the delete is successful. Otherwise, an error will be returned containing the reason for a failure.
             if (apiResponse != null) 
             {
-                return new DeleteStravaWebhookSubscriptionApiRequest.Response(apiResponse.StatusCode == System.Net.HttpStatusCode.OK);
+                return new DeleteStravaWebhookSubscriptionApiContract.Result(apiResponse.StatusCode == System.Net.HttpStatusCode.OK);
             }
-            return new DeleteStravaWebhookSubscriptionApiRequest.Response(false);
+            return new DeleteStravaWebhookSubscriptionApiContract.Result(false);
         }
 
-        private void ValidateContract(DeleteStravaWebhookSubscriptionApiRequest contract)
+        private void ValidateContract(DeleteStravaWebhookSubscriptionApiContract contract)
         {
             if (contract == null) throw new ArgumentNullException(nameof(contract));
             if (string.IsNullOrEmpty(contract.ClientId)) throw new ArgumentException("Client ID must be provided", nameof(contract.ClientId));
             if (string.IsNullOrEmpty(contract.ClientSecret)) throw new ArgumentException("Client secret must be provided", nameof(contract.ClientSecret));
         }
 
-        public class StravaErrorResponse
-        {
-            public string Message { get; set; } = string.Empty;  // General error message
-            public string? Errors { get; set; }                  // Optional detailed error info
-        }
+  
     }
 }

@@ -32,9 +32,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
         {
             try
             {
-
-                Validate();
-
+               await Validate();
 
                 var createStravaWebhookSubscriptionContract = new CreateStravaWebhookSubscriptionContract(
                     verifyToken: "segment-sniper",
@@ -69,7 +67,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
 
             var existingId = await _getStravaWebhookSubscriptionId.ExecuteAsync(new GetStravaWebhookSubscriptionIdContract());
 
-            if (existingId.SubscriptionId != null)
+            if (existingId.SubscriptionId != 0)
             {
                 throw new ApplicationException("Strava Webhook Subscription ID already exists.  Please delete the existing subscription before initiating a request for a new subscription.");
             }
