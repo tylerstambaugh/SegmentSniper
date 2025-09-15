@@ -1,31 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using SegmentSniper.Data;
 
-namespace SegmentSniper.Data
+public class SegmentSniperDbContextFactory : IDesignTimeDbContextFactory<SegmentSniperDbContext>
 {
-    public class SegmentSniperDbContextFactory : IDesignTimeDbContextFactory<SegmentSniperDbContext>
+    public SegmentSniperDbContext CreateDbContext(string[] args)
     {
-     //drop the db today and deleted the migrations
-        public SegmentSniperDbContext CreateDbContext(string[] args)
-        {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+        // Try CLI `--connection` first
+        var arg = args?.FirstOrDefault(a => a.StartsWith("--connection="));
+        var cliConnection = arg?.Split('=')[1];
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../SegmentSniperApi"))
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .Build();
+        // Fall back to environment variable (GitHub Actions sets this)
+        var envConnection = Environment.GetEnvironmentVariable("ConnectionStrings__SegmentSniperConnectionString");
 
-            var connectionString = configuration.GetConnectionString("SegmentSniperConnectionString");
+        // Or load appsettings locally for dev
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.Development.json", optional: true)
+            .Build();
 
-            if (string.IsNullOrEmpty(connectionString))
-                throw new InvalidOperationException("Connection string 'SegmentSniperConnectionString' not found.");
+        var connectionString =
+            cliConnection ??
+            envConnection ??
+            config.GetConnectionString("SegmentSniperConnectionString");
 
-            var optionsBuilder = new DbContextOptionsBuilder<SegmentSniperDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException("Connection string not found.");
 
-            return new SegmentSniperDbContext(optionsBuilder.Options);
-        }
+        var optionsBuilder = new DbContextOptionsBuilder<SegmentSniperDbContext>();
+        optionsBuilder.UseSqlServer(connectionString);
+
+        return new SegmentSniperDbContext(optionsBuilder.Options);
     }
 }
