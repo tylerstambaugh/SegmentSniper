@@ -84,27 +84,27 @@ namespace SegmentSniper.Api.Configuration
                 options.Authority = jwtSettings["Issuer"];
                 options.Audience = jwtSettings["Audience"];
 
-                //options.TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    ValidateIssuer = true,
-                //    ValidIssuer = jwtSettings["Issuer"],
-                //    ValidateAudience = true,
-                //    ValidAudience = jwtSettings["Audience"],
-                //    ValidateLifetime = true,
-                //    ValidateIssuerSigningKey = true,
-                //    RoleClaimType = "roles"
-                //};
-
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "https://fresh-fowl-84.clerk.accounts.dev",
+                    ValidIssuer = jwtSettings["Issuer"],
                     ValidateAudience = true,
-                    ValidAudience = "SegmentSniperAPI",
+                    ValidAudience = jwtSettings["Audience"],
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     RoleClaimType = "roles"
                 };
+
+                //options.TokenValidationParameters = new TokenValidationParameters
+                //{
+                //    ValidateIssuer = true,
+                //    ValidIssuer = "https://fresh-fowl-84.clerk.accounts.dev",
+                //    ValidateAudience = true,
+                //    ValidAudience = "SegmentSniperAPI",
+                //    ValidateLifetime = true,
+                //    ValidateIssuerSigningKey = true,
+                //    RoleClaimType = "roles"
+                //};
 
                 options.Events = new JwtBearerEvents
                 {
