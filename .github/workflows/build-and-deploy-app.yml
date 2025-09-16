@@ -143,16 +143,26 @@ jobs:
         package: ${{ github.workspace }}/publish        
 
       #  Deploy React frontend
+      # Download React artifact
     - name: Download React artifact
       uses: actions/download-artifact@v4
       with:
         name: react-app
         path: ./react-build
       
+      # Compress React build folder into a zip
+    - name: Zip React build
+      run: |
+        cd react-build
+        zip -r ../react-app.zip .
+      
+      # Deploy React frontend to Azure Web App
     - name: Deploy React frontend to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_REACT_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
-        package: ./react-build
+        package: react-app.zip
+
+
 
