@@ -82,9 +82,10 @@ jobs:
           dotnet ef database update \
             --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
             --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
-            --context SegmentSniperDbContext \
-            --connection "${{ secrets.DB_CONNECTION_STRING }}"
+            --context SegmentSniperDbContext
         shell: bash
+        env:
+          ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
         
       - name: Verify migration success
         run: |
