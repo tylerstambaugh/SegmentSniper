@@ -126,7 +126,7 @@ namespace SegmentSniper.GraphQL.Mutations
                     });
                     return result.BikeModel;
                 })
-            });
+            }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {
@@ -144,7 +144,7 @@ namespace SegmentSniper.GraphQL.Mutations
                     var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
                     return result.Bike;
                 }),
-            });
+            }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {
@@ -162,7 +162,7 @@ namespace SegmentSniper.GraphQL.Mutations
                     var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeIds));
                     return result.Success;
                 }),
-            });
+            }).AuthorizeWithPolicy("UserPolicy");
         }
     }
 }
