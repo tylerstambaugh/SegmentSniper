@@ -18,10 +18,12 @@ export const ApolloClientProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
-  const authLink = setContext((_, { headers }) => {
+
+
+  const authLink = setContext(async (_, { headers }) => {
 
     //TODO Make this awaited
-    const accessToken = getToken({ template: 'SegmentSniper' });
+    const accessToken = await getToken({ template: 'SegmentSniper' });
 
     if (!accessToken) {
       throw new Error('Unauthorized: No access token provided');

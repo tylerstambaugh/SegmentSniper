@@ -35,7 +35,7 @@ namespace SegmentSniper.GraphQL.Queries
 
                     return result.Bike;
                 })
-            });
+            }).AuthorizeWithPolicy("UserPolicy");
 
             AddField(new FieldType
             {
@@ -69,7 +69,7 @@ namespace SegmentSniper.GraphQL.Queries
                     }
 
                 })
-            });
+            }).AuthorizeWithPolicy("UserPolicy");
         }
 
     }
