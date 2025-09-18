@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using StravaApiClient.Configuration;
+﻿using StravaApiClient.Configuration;
 using StravaApiClient.Models.Webhook;
-using System.Text.Json.Serialization;
 
 namespace StravaApiClient.Services.Webhook
 {
