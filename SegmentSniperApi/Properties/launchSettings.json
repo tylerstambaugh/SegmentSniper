@@ -1,37 +1,28 @@
 {
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:46587",
-      "sslPort": 44351
-    }
-  },
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5261",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "VaultUri": "https://kv-segmentsiper-dev.vault.azure.net/",
         "AZURE_USERNAME": "tyler.stambaugh@gmail.com"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5261"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7201;http://localhost:5261",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "VaultUri": "https://kv-segmentsiper-dev.vault.azure.net/",
         "AZURE_USERNAME": "tyler.stambaugh@gmail.com"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7201;http://localhost:5261"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -42,6 +33,15 @@
         "VaultUri": "https://kv-segmentsiper-dev.vault.azure.net/",
         "AZURE_USERNAME": "tyler.stambaugh@gmail.com"
       }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:46587",
+      "sslPort": 44351
     }
   }
 }
