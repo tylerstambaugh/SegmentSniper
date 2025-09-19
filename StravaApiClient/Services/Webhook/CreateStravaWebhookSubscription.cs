@@ -1,4 +1,5 @@
-﻿using StravaApiClient.Configuration;
+﻿using Serilog;
+using StravaApiClient.Configuration;
 using StravaApiClient.Models.Webhook;
 
 namespace StravaApiClient.Services.Webhook
@@ -25,6 +26,8 @@ namespace StravaApiClient.Services.Webhook
             };
 
             var baseUrl = _configuration.BaseUrl;
+
+            Log.Warning($"Creating Strava Webhook Subscription with Callback URL: {contract.CallbackUrl}");
 
             //the response to this request should return with an 'id' that is the subscriptionId that will need to be persisted
             var apiResponse =  await _stravaRequestClient.PostWebhookSubscription<CreateStravaWebhookSubscriptionData, CreateSubscriptionApiResponse>($"{baseUrl}push_subscriptions", parameters);

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SegmentSniper.Services.StravaWebhook;
+using Serilog;
+using Serilog.Core;
 using StravaApiClient.Services.Webhook;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
@@ -40,6 +42,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook
                     clientId: ClientId,
                     clientSecret: ClientSecret
                 );
+                
+                Log.Warning($"Creating Strava Webhook Subscription with Callback URL: {CallbackUrl}");
 
                 //strava should response to this with the subscription ID
                 var stravaResponse = await _createStravaWebhookSubscription.ExecuteAsync(createStravaWebhookSubscriptionContract);
