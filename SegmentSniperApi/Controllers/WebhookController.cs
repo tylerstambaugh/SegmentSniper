@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
 using SegmentSniper.Services.StravaWebhook;
+using Serilog;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
@@ -46,6 +47,7 @@ namespace SegmentSniper.Api.Controllers
             //strava willl ping this when a subsciption creation request is made.
             if (verifyToken != "segment-sniper")
             {
+                Log.Error($"failing verify token. verifyToken: {verifyToken}, mode: {mode}, challenge: {challenge}");
                 return BadRequest("Invalid verify token.");
             }
 
