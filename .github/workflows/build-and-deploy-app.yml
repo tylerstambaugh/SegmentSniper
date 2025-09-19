@@ -151,11 +151,10 @@ jobs:
         path: ./react-build
       
       # Compress React build folder into a zip
-    - name: Zip React build
+    - name: Zip React build (Windows PowerShell)
       run: |
-        cd react-build
-        zip -r ../react-app.zip .
-      
+        Compress-Archive -Path react-build\* -DestinationPath react-app.zip
+    
       # Deploy React frontend to Azure Web App
     - name: Deploy React frontend to Azure Web App
       uses: azure/webapps-deploy@v2
