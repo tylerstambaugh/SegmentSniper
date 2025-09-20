@@ -17,16 +17,12 @@
   </PropertyGroup>
 	
 	<ItemGroup>
-		<Content Include="web.config" CopyToOutputDirectory="PreserveNewest" />
-	</ItemGroup>
-	
-	<ItemGroup>
     <Compile Remove="Logging\**" />
     <Content Remove="Logging\**" />
     <EmbeddedResource Remove="Logging\**" />
     <None Remove="Logging\**" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
