@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -14,6 +15,10 @@
 	<ApplicationInsightsResourceId>/subscriptions/83edbc45-837e-4ff5-9735-a2e2a57d2387/resourceGroups/rg-segmentsniper-eastus-dev/providers/microsoft.insights/components/appInsights-segmentsniper-eastus-dev</ApplicationInsightsResourceId> 
     <UserSecretsId>09bd8ae1-f273-4c6e-aa51-85553b95f188</UserSecretsId>
   </PropertyGroup>
+	
+	<ItemGroup>
+		<Content Include="web.config" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
 	
 	<ItemGroup>
     <Compile Remove="Logging\**" />
