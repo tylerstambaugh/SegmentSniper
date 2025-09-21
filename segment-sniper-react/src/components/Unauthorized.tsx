@@ -13,7 +13,7 @@ export default function Unauthorized() {
                 </Row>
                 <Row>
 
-                    <p>You do not have permission to view this page.</p>
+                    <p>You do not have permission to view this resource.</p>
                 </Row>
                 <Row>
                     <Button
