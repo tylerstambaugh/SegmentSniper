@@ -7,7 +7,6 @@ import { DateTime } from "luxon";
 import { MAX_DATE_TIME } from "../../../../../Constants/timeConstant";
 import RetireEquipmentModal, { RetireBikeEquipmentBase } from "./RetireEquipmentModal";
 import { EquipmentAccordion } from "./EquipmentAccordion";
-import useUserStore from "../../../../../stores/useUserStore";
 import { useRetireBikeEquipmentMutation } from "./GraphQl/useRetireBikeEquipment";
 import GetBikeByIdQuery from '../../GraphQl/GetBikeById.graphql';
 import { useUpsertBikeEquipmentMutation } from "./GraphQl/useUpsertBikeEquipmentMutation";
@@ -198,9 +197,6 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         }
     }
 
-    //should probably clean this whole file up tomorrow. 
-
-
     // useEffect(() => {
     //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
     //         // Redirect to login or show an error message
@@ -209,12 +205,12 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     // }, [addEquipmentError]);
 
     useEffect(() => {
-        if (retireBikeEquipmentError || addEquipmentError) {
-            toast.error("Dang. An error occurred: " + (retireBikeEquipmentError?.message || addEquipmentError?.message), {
+        if (retireBikeEquipmentError || addEquipmentError || deleteBikeEquipmentError) {
+            toast.error("Dang. An error occurred: " + (retireBikeEquipmentError?.message || addEquipmentError?.message || deleteBikeEquipmentError?.message), {
                 duration: 5000
             })
         }
-    }, [retireBikeEquipmentError, addEquipmentError])
+    }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
 
     return (
 
