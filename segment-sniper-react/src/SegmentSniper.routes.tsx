@@ -24,6 +24,8 @@ import SignIn from "./pages/Authentication/SignIn";
 import ConnectWithStrava from "./components/Organisms/ConnectWithStrava/ConnectWithStrava";
 import Unauthorized from "./components/Unauthorized";
 import SignUpPage from "./pages/Authentication/SignUpPage";
+import UserManagement from "./components/Organisms/Admin/ManageUsers";
+import ViewAssignRoles from "./components/Organisms/Admin/ManageUsers/ViewAssignRoles";
 
 
 export default function AppRoutesComponent() {
@@ -57,7 +59,8 @@ export default function AppRoutesComponent() {
       {/* Admin-protected routes (no strava sync) */}
       <Route element={<PrivateRoute userRoles={[UserRole.Admin]} />}>
         <Route path={AppRoutes.Admin} element={<Admin />} />
-        <Route path={AppRoutes.UserManagement} element={<BikeDetails />} />
+        <Route path={AppRoutes.UserManagement} element={<UserManagement />} />
+        <Route path={AppRoutes.ViewAssignRoles} element={<ViewAssignRoles />} />
         <Route path={AppRoutes.StravaWebhookManageMent} element={<ManageStravaWebhook />} />
       </Route>
     </Routes>

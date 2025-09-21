@@ -20,6 +20,7 @@ export enum AppRoutes {
   Garage = 'garage',
   BikeDetails = 'garage/bike-details/:bikeId',
   UserManagement = 'admin/user-management',
+  ViewAssignRoles = 'admin/user-management/view-assign-roles',
   StravaWebhookManageMent = 'admin/strava-webhook-management',
   Unauthorized = 'unauthorized',
 }
