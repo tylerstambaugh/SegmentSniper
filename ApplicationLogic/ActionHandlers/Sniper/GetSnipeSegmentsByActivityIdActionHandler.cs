@@ -93,13 +93,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     ElapsedTime = dse.ElapsedTime,
                     SegmentPrTime = (int)detailedSegment.AthleteSegmentStats.PrElapsedTime,
                     Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
-                    AverageSpeed = CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
+                    AverageSpeed = CommonConversionHelpers.CalculateAverageSpeed(detailedSegment.Distance, dse.ElapsedTime),
                     ElevationGain = detailedSegment.TotalElevationGain,
                     AverageGrade = detailedSegment.AverageGrade,
                     MaximumGrade = detailedSegment.MaximumGrade,
                     AverageHeartRate = dse.AverageHeartrate,
-                    KomTime = GetTimeFromString(detailedSegment.Xoms.Kom),
-                    QomTime = GetTimeFromString(detailedSegment.Xoms.Qom),
+                    KomTime = SegmentFormattingHelpers.GetTimeFromString(detailedSegment.Xoms.Kom),
+                    QomTime = SegmentFormattingHelpers.GetTimeFromString(detailedSegment.Xoms.Qom),
                     AthleteCount = detailedSegment.AthleteCount,
                     EffortCount = detailedSegment.EffortCount,
                     StarCount = detailedSegment.StarCount,
@@ -148,18 +148,18 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     DetailedSegmentEffort = dse,
                     SegmentId = dse.SummarySegment.Id,
                     Name = dse.Name,
-                    KomTime = ConvertTimeInSeconds(xomsTime?.KomTime ?? 0),
-                    QomTime = ConvertTimeInSeconds(xomsTime?.QomTime ?? 0),
+                    KomTime = SegmentFormattingHelpers.ConvertTimeInSeconds(xomsTime?.KomTime ?? 0),
+                    QomTime = SegmentFormattingHelpers.ConvertTimeInSeconds(xomsTime?.QomTime ?? 0),
                     PercentageFromKom = percentageOffKom,
                     PercentageFromQom = percentageOffQom,
                     PrPercentageFromKom = prPercentageOffKom,
                     PrPercentageFromQom = prPercentageOffQom,
-                    TimeFromKom = secondsOffKom != null ? ConvertTimeInSeconds((int)secondsOffKom) : null,
-                    TimeFromQom = secondsOffQom != null ? ConvertTimeInSeconds((int)secondsOffQom) : null,
+                    TimeFromKom = secondsOffKom != null ? SegmentFormattingHelpers.ConvertTimeInSeconds((int)secondsOffKom) : null,
+                    TimeFromQom = secondsOffQom != null ? SegmentFormattingHelpers.ConvertTimeInSeconds((int)secondsOffQom) : null,
                     SecondsFromKom = secondsOffKom,
                     SecondsFromQom = secondsOffQom,
-                    PrSecondsFromKom = prSecondsOffKom != null ? ConvertTimeInSeconds((int)prSecondsOffKom) : null,
-                    PrSecondsFromQom = prSecondsOffQom != null ? ConvertTimeInSeconds((int)prSecondsOffQom) : null,
+                    PrSecondsFromKom = prSecondsOffKom != null ? SegmentFormattingHelpers.ConvertTimeInSeconds((int)prSecondsOffKom) : null,
+                    PrSecondsFromQom = prSecondsOffQom != null ? SegmentFormattingHelpers.ConvertTimeInSeconds((int)prSecondsOffQom) : null,
                     ActivityType = detailedSegment.ActivityType,
                     Distance = Math.Round(CommonConversionHelpers.ConvertMetersToMiles(detailedSegment.Distance), 2),
                     Elevation = Math.Round(dse.SummarySegment.ElevationHigh - dse.SummarySegment.ElevationLow, 0),
@@ -189,84 +189,16 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         {
             return new XomsTimes
             {
-                KomTime = GetTimeFromString(xoms.Kom),
-                QomTime = GetTimeFromString(xoms.Qom)
+                KomTime = SegmentFormattingHelpers.GetTimeFromString(xoms.Kom),
+                QomTime = SegmentFormattingHelpers.GetTimeFromString(xoms.Qom)
             };
-        }
-
-        private int? GetTimeFromString(string time)
-        {
-            if (string.IsNullOrEmpty(time))
-                return null;
-            time = RemoveLetters(time);
-
-            int returnTime = 0;
-            string[] timeParts = time.Split(':');
-
-            for (int i = 0; i <= timeParts.Length - 1; i++)
-            {
-                int factor = (int)Math.Pow(60, i);
-                returnTime += int.Parse(timeParts[timeParts.Length - (i + 1)]) * factor;
-            }
-            return returnTime;
-        }
-
-        private string RemoveLetters(string input)
-        {
-            Regex regex = new Regex("[^0-9:]");
-            return regex.Replace(input, "");
-        }
+        }  
 
         private class XomsTimes
         {
             public int? KomTime { get; set; }
             public int? QomTime { get; set; }
         }
-
-        private string ConvertTimeInSeconds(int seconds)
-        {
-            int hours = seconds / 3600;
-            int minutes = seconds / 60 - (hours * 60);
-            int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
-
-            var timeAsString = "";
-            if (hours > 0)
-            {
-                timeAsString = $"{hours:D2}:{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
-            }
-            if (hours == 0)
-            {
-                timeAsString = $"{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
-            }
-            if (remainingSeconds < 0)
-            {
-                timeAsString = $"-{timeAsString}";
-            }
-
-            return timeAsString;
-        }
-
-        public double CalculateAverageSpeed(double distanceInMeters, int timeInsecods)
-        {
-            double averageSpeed;
-            double distanceInMiles = CommonConversionHelpers.ConvertMetersToMiles(distanceInMeters);
-            double elapsedTimeInHours = timeInsecods / 3600.0; // Ensure floating-point division
-
-            if (elapsedTimeInHours == 0)
-            {
-                // Handle division by zero error
-                averageSpeed = 0; // Or throw an exception
-            }
-            else
-            {
-                averageSpeed = distanceInMiles / elapsedTimeInHours;
-            }
-
-            averageSpeed = Math.Round(averageSpeed, 2);
-
-            return averageSpeed;
-        }
-
 
         private void ValidateRequest(GetSnipeSegmentsByActivityIdRequest request)
         {

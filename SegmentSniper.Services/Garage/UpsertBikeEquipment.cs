@@ -32,7 +32,7 @@ namespace SegmentSniper.Services.Garage
                     BikeId = contract.BikeId,
                     Name = contract.Equipment.Name,
                     Description = contract.Equipment.Description,
-                    MilesLogged = contract.Equipment.MilesLogged,
+                    TotalMilage = contract.Equipment.TotalMiles,
                     InstallDate = contract.Equipment.InstallDate ?? DateTime.MaxValue,
                     RetiredDate = contract.Equipment.RetiredDate ?? DateTime.MaxValue,
                     Price = contract.Equipment.Price,
@@ -74,9 +74,9 @@ namespace SegmentSniper.Services.Garage
                     existingEquipment.Description = contract.Equipment.Description;
                     isUpdated = true;
                 }
-                if (existingEquipment.MilesLogged != contract.Equipment.MilesLogged)
+                if (existingEquipment.TotalMilage != contract.Equipment.TotalMiles)
                 {
-                    existingEquipment.MilesLogged = contract.Equipment.MilesLogged;
+                    existingEquipment.TotalMilage = contract.Equipment.TotalMiles;
                     isUpdated = true;
                 }
                 if (existingEquipment.InstallDate != (contract.Equipment.InstallDate ?? DateTime.MaxValue))
