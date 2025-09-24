@@ -10,11 +10,11 @@ namespace SendEquipmentReplacementReminder
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var conn = Environment.GetEnvironmentVariable("SqlConnectionString");
+            var connectionString = Environment.GetEnvironmentVariable("SegmentSniperConnectionString");
 
             // Scoped lifetime is correct for EF Core
             builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
-                options.UseSqlServer(conn));
+                options.UseSqlServer(connectionString));
 
             // Register other services or repositories here
             
