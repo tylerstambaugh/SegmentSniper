@@ -48,5 +48,27 @@ namespace SegmentSniper.Services.Common
             int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
             return $"{hours:D2}:{minutes:D2}:{remainingSeconds:D2}";
         }
+        //public static string ConvertTimeInSeconds(int seconds)
+        //{
+        //    int hours = seconds / 3600;
+        //    int minutes = seconds / 60 - (hours * 60);
+        //    int remainingSeconds = seconds - ((hours * 3600) + (minutes * 60));
+
+        //    var timeAsString = "";
+        //    if (hours > 0)
+        //    {
+        //        timeAsString = $"{hours:D2}:{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
+        //    }
+        //    if (hours == 0)
+        //    {
+        //        timeAsString = $"{minutes:D2}:{Math.Abs(remainingSeconds):D2}";
+        //    }
+        //    if (remainingSeconds < 0)
+        //    {
+        //        timeAsString = $"-{timeAsString}";
+        //    }
+
+        //    return timeAsString;
+        //}
     }
 }
