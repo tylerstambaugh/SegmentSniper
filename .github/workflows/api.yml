@@ -1,0 +1,59 @@
+name: Build and Deploy API
+
+on:
+  push:
+    branches: [ "prod" ]
+    paths:
+      - "SegmentSniperApi/**"
+      - "SegmentSniper.Data/**"
+      - "SegmentSniper.GraphQL/**"
+      - "SegmentSniper.MachineLearning/**"
+      - "SegmentSniper.Models/**"
+      - "SegmentSniper.Services/**"
+      - "SegmentSniper.Tests/**"
+      - "ApplicationLogic/**"
+      - "UpdateBikeEquipmentFunction/**"
+      - "SendEquipmentReplacementReminder/**"
+      - ".github/workflows/api.yml"
+  workflow_dispatch:
+
+jobs:
+  build-api:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9'
+
+      - run: dotnet restore
+      - run: dotnet build --configuration Release
+
+      - name: Apply EF Core migrations
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
+        env:
+          ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
+
+      - run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o ./publish
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: api-publish
+          path: ./publish
+
+  deploy-api:
+    runs-on: windows-latest
+    needs: build-api
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: api-publish
+          path: ./publish
+
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: as-segmentsniper-api-eastus-dev
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: ./publish
