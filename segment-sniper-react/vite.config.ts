@@ -8,7 +8,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   const apiUrl = env.VITE_SEGMENT_SNIPER_API_URL;
-  const graphqlUrl = env.VITE_SEGMENt_SNIPER_GRAPHQL_URL;
+  const graphqlUrl = env.VITE_SEGMENT_SNIPER_GRAPHQL_URL;
 
   if (mode === 'development') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
