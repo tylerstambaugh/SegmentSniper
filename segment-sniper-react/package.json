@@ -85,6 +85,7 @@
     "vite": "^6.2.2",
     "vite-plugin-graphql-codegen": "^3.4.4",
     "vite-plugin-graphql-loader": "^4.0.4",
-    "vite-plugin-mkcert": "^1.16.0"
+    "vite-plugin-mkcert": "^1.16.0",
+    "vite-plugin-static-copy": "^3.1.2"
   }
 }
