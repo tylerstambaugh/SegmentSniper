@@ -41,12 +41,29 @@ jobs:
       - name: Publish .NET
         run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o publish
 
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ${{ github.workspace }}/publish
+
+      - name: List published files
+        run: Get-ChildItem -Recurse D:\a\SegmentSniper\SegmentSniper\publish
+        shell: pwsh
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+          path: ${{ github.workspace }}/publish
+  
+      # Deploy .NET API to Azure App Service
       - name: Deploy API to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPI_NAME }}
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-          package: ./publish
+          package: ${{ github.workspace }}/publish
 
   deploy-frontend:
     runs-on: ubuntu-latest
