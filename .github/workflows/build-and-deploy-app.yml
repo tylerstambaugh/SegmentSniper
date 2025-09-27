@@ -1,9 +1,9 @@
 name: Build and Deploy Segment Sniper
+
 env:
   AZURE_WEBAPI_NAME: as-segmentsniper-api-eastus-dev
-  AZURE_REACT_WEBAPP_NAME: as-segmentsniper-frontend-eastus-dev
   AZURE_WEBAPP_PACKAGE_PATH: '.'
-  DOTNET_VERSION: '8'
+  DOTNET_VERSION: '9'
 
 on:
   push:
@@ -14,9 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-and-deploy-api:
     runs-on: windows-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,136 +25,58 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Install EF Core CLI tools
-        run: dotnet tool install --global dotnet-ef
+      - name: Restore .NET dependencies
+        run: dotnet restore
 
-      - name: Set up Node.js for React build
+      - name: Build .NET application
+        run: dotnet build --configuration Release
+
+      - name: Apply Entity Framework migrations
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update \
+            --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
+            --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
+            --context SegmentSniperDbContext
+        env:
+          ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
+
+      - name: Publish .NET
+        run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o publish
+
+      - name: Deploy API to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPI_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: ./publish
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: build-and-deploy-api
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install Node.js dependencies
         working-directory: ./segment-sniper-react
-        run: npm install
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ./segment-sniper-react/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('./segment-sniper-react/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+        run: npm ci
 
       - name: Build React app
         working-directory: ./segment-sniper-react
         run: npm run build
 
-      - name: Upload React build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-app
-          path: ./segment-sniper-react/dist
-
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore .NET dependencies
-        run: dotnet restore            
-
-      - name: Build .NET application
-        run: dotnet build --configuration Release
-
-      - name: Debug DB connection info
-        run: |
-          echo "DB_SERVER: ${{ secrets.DB_SERVER }}"
-          echo "DB_NAME: ${{ secrets.DB_NAME }}"
-          echo "DB_USER: ${{ secrets.DB_USER }}"
-          echo "DB_CONNECTION ${{ secrets.DB_CONNECTION_STRING }}"
-          
-      - name: Apply Entity Framework migrations
-        run: |
-          dotnet ef database update \
-            --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
-            --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
-            --context SegmentSniperDbContext
-        shell: bash
-        env:
-          ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
-        
-      - name: Verify migration success
-        run: |
-          sqlcmd -S "${{ secrets.DB_SERVER }}" \
-                -d "${{ secrets.DB_NAME }}" \
-                -U "${{ secrets.DB_USER }}" \
-                -P "${{ secrets.DB_PASSWORD }}" \
-                -Q "SELECT COUNT(*) FROM __EFMigrationsHistory;"
-        shell: bash
-
-     #- name: Publish .NET app
-      #  run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj  -c Release -o ${{ github.workspace }}/publish -p:PublishTrimmed=false -p:DebugType=None
-      - name: Publish .NET
-        run: dotnet publish SegmentSniperApi/SegmentSniper.Api.csproj -c Release -o publish
-
-      - name: Upload artifact for deployment
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{ github.workspace }}/publish
-      
-      - name: List published files
-        run: Get-ChildItem -Recurse D:\a\SegmentSniper\SegmentSniper\publish
-        shell: pwsh
-      
-      - name: List published files
-        run: Get-ChildItem -Recurse ./react-build
-        shell: pwsh
-
-  deploy:
-    permissions:
-      contents: none
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Azure Dev'
-  
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-          path: ${{ github.workspace }}/publish
-  
-      # Deploy .NET API to Azure App Service
-      - name: Deploy API to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPI_NAME }}
-          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-          package: ${{ github.workspace }}/publish
-  
-      # Download React artifact (dist folder)
-      - name: Download React artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: react-app
-          path: ./segment-sniper-react/dist
-  
-      # Deploy React frontend to Azure Static Web App
       - name: Deploy React to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_DEPLOYMENT_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "./segment-sniper-react"   # Path to your React project
-          api_location: ""                         # Leave blank, API is in App Service
-          output_location: "dist"                  # Vite build output folder
-
-
-
-
+          action: upload
+          app_location: ./segment-sniper-react
+          api_location: "" # blank, since API is separate
+          output_location: dist
