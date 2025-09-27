@@ -3,7 +3,7 @@ import {
   GarageMutationsImportGarageArgs,
   RootMutation,
 } from '../../../../../graphql/generated';
-import ImportGarage from './importGarage.graphql';
+import ImportGarage from './ImportGarage.graphql';
 
 export function useImportGarage(
   baseOptions?: Apollo.MutationHookOptions<

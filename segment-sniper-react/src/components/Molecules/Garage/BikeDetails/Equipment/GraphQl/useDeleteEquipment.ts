@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import DeleteEquipment from './deleteEquipment.graphql';
+import DeleteEquipment from './DeleteEquipment.graphql';
 import {
   RootMutation,
   GarageMutationsDeleteEquipmentArgs,
