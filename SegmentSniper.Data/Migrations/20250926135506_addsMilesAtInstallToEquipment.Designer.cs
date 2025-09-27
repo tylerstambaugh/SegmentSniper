@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SegmentSniper.Data;
 
@@ -11,9 +12,11 @@ using SegmentSniper.Data;
 namespace SegmentSniper.Data.Migrations
 {
     [DbContext(typeof(SegmentSniperDbContext))]
-    partial class SegmentSniperDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926135506_addsMilesAtInstallToEquipment")]
+    partial class addsMilesAtInstallToEquipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
