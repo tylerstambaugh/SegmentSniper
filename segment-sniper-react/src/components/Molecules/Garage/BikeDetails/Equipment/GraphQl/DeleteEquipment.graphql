@@ -11,11 +11,13 @@ mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
         retiredDate
+        updatedDate
       }
     }
   }
