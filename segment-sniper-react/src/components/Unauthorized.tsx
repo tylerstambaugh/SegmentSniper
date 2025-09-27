@@ -12,7 +12,6 @@ export default function Unauthorized() {
                     <h1>Unauthorized</h1>
                 </Row>
                 <Row>
-
                     <p>You do not have permission to view this resource.</p>
                 </Row>
                 <Row>
@@ -21,7 +20,6 @@ export default function Unauthorized() {
                         href="/"> Home</Button>
                 </Row>
             </Col>
-
         </Container>
     );
 }

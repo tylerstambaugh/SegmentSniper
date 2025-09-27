@@ -1,5 +1,8 @@
-﻿using SegmentSniper.ApplicationLogic.ActionHandlers.Sniper;
+﻿using AutoMapper.Configuration.Annotations;
+using SegmentSniper.ApplicationLogic.ActionHandlers.Sniper;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
+using SegmentSniper.Models.Garage;
+using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Services.Garage;
 using SegmentSniper.Services.MachineLearning;
 using SegmentSniper.Services.User;
@@ -14,16 +17,19 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         private readonly IDeleteBikeActivity _deleteBikeActivity;
         private readonly IDeleteMLSegmentEffortsById _deleteMLSegmentEffortsById;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
+        private readonly IAddBikeActivity _addBikeActivity;
 
         public UpdateWebhookEventHandler(IGetUserByStravaAthleteId getUserByStravaAthleteId,
                                          IDeleteBikeActivity deleteBikeActivity,
                                          IDeleteMLSegmentEffortsById deleteMLSegmentEffortsById,
-                                         IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler)
+                                         IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler,
+                                         IAddBikeActivity addBikeActivity)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
             _deleteBikeActivity = deleteBikeActivity;
             _deleteMLSegmentEffortsById = deleteMLSegmentEffortsById;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
+            _addBikeActivity = addBikeActivity;
         }
         public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
         {
@@ -71,6 +77,21 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 var segmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList();
                 var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract(segmentEffortIds, user.UserId.ToString());
 
+                //re add the new bike activity:
+                await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
+                    new BikeActivityModel
+                    {
+                        StravaActivityId = activityDetails.DetailedActivity.ActivityId,
+                        UserId = user.UserId,
+                        BikeId = activityDetails.DetailedActivity.GearId,
+                        ActivityDate = activityDetails.DetailedActivity.StartDate,
+                        DistanceInMeters = activityDetails.DetailedActivity.Distance,
+
+                    })
+                );
+                
+
+
                 scope.Complete();
 
                 return new WebhookEventHandlerResponse(true);
@@ -81,9 +102,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 return new WebhookEventHandlerResponse(false);
             }
 
-            //need to delete the existing bikeactivity and then create a new one with the updated data
 
-            //need to delete the existing ML segment efforts and then create new ones with the updated data
+            
+            //need to query for the activity details and recreate the BiekActivity and the ML_SegmentEfforts
             throw new NotImplementedException();
         }
     }

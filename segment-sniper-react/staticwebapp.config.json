@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "rewrite": "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/api/:path*"
+    },
+    {
+      "route": "/graphql",
+      "rewrite": "https://as-segmentsniper-api-eastus-dev.azurewebsites.net/graphql"
+    }
+  ]
+}

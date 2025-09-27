@@ -5,7 +5,6 @@ export default function SignUpPage() {
     return (
         <>
             <Container>
-
                 <SignUp />
             </Container>
         </>

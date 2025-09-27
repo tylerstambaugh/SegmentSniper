@@ -122,42 +122,40 @@ jobs:
     needs: build
     environment:
       name: 'Azure Dev'
-
+  
     steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v4
-      with:
-        name: .net-app
-        path: ${{ github.workspace }}/publish
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+          path: ${{ github.workspace }}/publish
+  
+      # Deploy .NET API to Azure App Service
+      - name: Deploy API to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPI_NAME }}
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: ${{ github.workspace }}/publish
+  
+      # Download React artifact (dist folder)
+      - name: Download React artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-app
+          path: ./segment-sniper-react/dist
+  
+      # Deploy React frontend to Azure Static Web App
+      - name: Deploy React to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_DEPLOYMENT_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "./segment-sniper-react"   # Path to your React project
+          api_location: ""                         # Leave blank, API is in App Service
+          output_location: "dist"                  # Vite build output folder
 
-      #  Deploy .NET API
-    - name: Deploy API to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPI_NAME }}
-        publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
-        package: ${{ github.workspace }}/publish        
-
-      #  Deploy React frontend
-      # Download React artifact
-    - name: Download React artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: react-app
-        path: ./react-build
-      
-      # Compress React build folder into a zip
-    - name: Zip React build (Windows PowerShell)
-      run: |
-        Compress-Archive -Path react-build\* -DestinationPath react-app.zip
-    
-      # Deploy React frontend to Azure Web App
-    - name: Deploy React frontend to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_REACT_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_FRONTEND_PUBLISH_PROFILE }}
-        package: react-app.zip
 
 
 
