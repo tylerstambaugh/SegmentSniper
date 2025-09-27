@@ -225,7 +225,10 @@ namespace SegmentSniper.Api.Configuration
                             "https://localhost:6767", "https://localhost:6768",
                             "https://127.0.0.1:6767", "https://127.0.0.1:6768",
                             "http://localhost:6767", "http://localhost:6768",
-                            "http://127.0.0.1:6767", "http://127.0.0.1:6768")
+                            "http://127.0.0.1:6767", "http://127.0.0.1:6768",
+                            // Deployed SWA
+                            "https://red-beach-02e49430f.2.azurestaticapps.net"
+)
                                .AllowAnyHeader()
                                .AllowAnyMethod();
                     });
@@ -270,10 +273,10 @@ namespace SegmentSniper.Api.Configuration
     });
             });
 
-            builder.Services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "SegmentSniper.React/dist";
-            });
+            //builder.Services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "SegmentSniper.React/dist";
+            //});
 
             #endregion
 
