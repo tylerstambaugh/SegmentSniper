@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import UpsertBike from './upsertBike.graphql';
+import UpsertBike from './UpsertBike.graphql';
 import {
   RootMutation,
   GarageMutationsUpsertBikeArgs,
