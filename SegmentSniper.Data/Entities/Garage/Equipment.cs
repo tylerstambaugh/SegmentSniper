@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Garage
 {
+
+    //NEED TO DO A MIGRATION !!!!!!!
     public class Equipment
     {
         [Key]
