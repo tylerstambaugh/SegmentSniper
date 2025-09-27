@@ -16,7 +16,7 @@ mutation UpsertBikeEquipment(
         name
         description
         installDate
-        milesLogged
+        totalMiles
         milesUntilReplaceReminder
         price
         replaceAtMiles
