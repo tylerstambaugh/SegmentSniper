@@ -1,5 +1,5 @@
 import * as Apollo from '@apollo/client';
-import DeleteBikes from './deleteBikes.graphql';
+import DeleteBikes from './DeleteBikes.graphql';
 import {
   RootMutation,
   GarageMutationsDeleteBikesArgs,
