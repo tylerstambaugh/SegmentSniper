@@ -3,7 +3,7 @@ name: Build and Deploy Segment Sniper
 env:
   AZURE_WEBAPI_NAME: as-segmentsniper-api-eastus-dev
   AZURE_WEBAPP_PACKAGE_PATH: '.'
-  DOTNET_VERSION: '9'
+  DOTNET_VERSION: '8'
 
 on:
   push:
