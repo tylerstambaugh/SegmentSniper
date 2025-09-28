@@ -32,18 +32,6 @@ const useApiConfigStore = create<ApiConfigStore>()(
           import.meta.env.VITE_SEGMENT_SNIPER_GRAPHQL_URL ||
           'https://localhost:44351/graphql';
 
-        // if (import.meta.env.MODE === 'production') {
-        //   baseRestApiUrl = '/api';
-        //   baseGraphqlUrl = '/graphql';
-        // } else {
-        //   baseRestApiUrl =
-        //     import.meta.env.VITE_SEGMENT_SNIPER_API_URL ||
-        //     'https://localhost:44351/api';
-        //   baseGraphqlUrl =
-        //     import.meta.env.VITE_SEGMENT_SNIPER_GRAPHQL_URL ||
-        //     'https://localhost:44351/graphql';
-        // }
-
         const initialApiConfigState: ApiConfig = {
           baseRestApiUrl,
           baseGraphqlUrl,

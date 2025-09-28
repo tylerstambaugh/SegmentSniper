@@ -95,8 +95,8 @@ export type EquipmentInput = {
   equipmentId?: InputMaybe<Scalars['String']['input']>;
   /** The installation date of the equipment. */
   installDate?: InputMaybe<Scalars['DateTime']['input']>;
-  /** The miles logged on the equipment */
-  milesLogged: Scalars['Decimal']['input'];
+  /** The miles on the equipment when it was added to this bike */
+  milesAtInstall: Scalars['Decimal']['input'];
   /** Miles until a reminder to replace the equipment is sent */
   milesUntilReplaceReminder: Scalars['Int']['input'];
   /** The name of the equipment. */
@@ -107,6 +107,10 @@ export type EquipmentInput = {
   replaceAtMiles: Scalars['Int']['input'];
   /** The date the equipment was retired */
   retiredDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** The miles logged on the equipment */
+  totalMiles: Scalars['Decimal']['input'];
+  /** The installation date of the updated. */
+  updatedDate?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 /** A piece of equipment belonging to a bike */
@@ -118,8 +122,8 @@ export type EquipmentModel = {
   equipmentId: Scalars['ID']['output'];
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
-  /** The miles logged on the equipment */
-  milesLogged?: Maybe<Scalars['Decimal']['output']>;
+  /** The miles on the equipment when it was added to this bike */
+  milesAtInstall?: Maybe<Scalars['Decimal']['output']>;
   /** Miles until a reminder to replace the equipment is sent */
   milesUntilReplaceReminder?: Maybe<Scalars['Int']['output']>;
   /** The name of the piece of equipment */
@@ -130,6 +134,10 @@ export type EquipmentModel = {
   replaceAtMiles?: Maybe<Scalars['Int']['output']>;
   /** The date the equipment was retired */
   retiredDate?: Maybe<Scalars['DateTime']['output']>;
+  /** Total miles on the equipment */
+  totalMiles?: Maybe<Scalars['Decimal']['output']>;
+  /** The date the equipment was last updated */
+  updatedDate?: Maybe<Scalars['DateTime']['output']>;
 };
 
 /** The type of bike frame. */
@@ -211,7 +219,7 @@ export type DeleteEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', deleteEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null, updatedDate?: string | null } | null> | null } | null } | null };
 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -221,7 +229,7 @@ export type RetireEquipmentOnBikeMutationVariables = Exact<{
 }>;
 
 
-export type RetireEquipmentOnBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', retireEquipmentOnBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type RetireEquipmentOnBikeMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', retireEquipmentOnBike?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type UpsertBikeEquipmentMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
@@ -230,7 +238,7 @@ export type UpsertBikeEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, milesLogged?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, totalMiles?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type DeleteBikesMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -245,21 +253,21 @@ export type GetBikeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type GetBikesByAuthUserIdQueryVariables = Exact<{
   authUserId: Scalars['ID']['input'];
 }>;
 
 
-export type GetBikesByAuthUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byAuthUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+export type GetBikesByAuthUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byAuthUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 export type ImportGarageMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
 }>;
 
 
-export type ImportGarageMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', importGarage?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, milesLogged?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
+export type ImportGarageMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', importGarage?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 export type UpsertBikeMutationVariables = Exact<{
   bike: BikeInput;
@@ -284,11 +292,13 @@ export const DeleteEquipmentDocument = gql`
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
         retiredDate
+        updatedDate
       }
     }
   }
@@ -340,7 +350,8 @@ export const RetireEquipmentOnBikeDocument = gql`
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
@@ -390,7 +401,7 @@ export const UpsertBikeEquipmentDocument = gql`
         name
         description
         installDate
-        milesLogged
+        totalMiles
         milesUntilReplaceReminder
         price
         replaceAtMiles
@@ -478,7 +489,8 @@ export const GetBikeByIdDocument = gql`
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
@@ -535,7 +547,8 @@ export const GetBikesByAuthUserIdDocument = gql`
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
@@ -592,7 +605,8 @@ export const ImportGarageDocument = gql`
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
