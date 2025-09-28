@@ -50,7 +50,6 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
         app.UseHsts();
     }
 
-   //app.UseMiddleware<UsernameLoggingMiddleware>();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
@@ -60,11 +59,6 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
 
     app.UseAuthentication();
     app.UseAuthorization();
-
-    //app.UseEndpoints(endpoints =>
-    //{
-    //    endpoints.MapGraphQL("/graphql"); // Ensure the path matches your endpoint
-    //});
 
     app.MapControllers();
 

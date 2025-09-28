@@ -11,7 +11,8 @@ query GetBikesByAuthUserId($authUserId: ID!) {
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles

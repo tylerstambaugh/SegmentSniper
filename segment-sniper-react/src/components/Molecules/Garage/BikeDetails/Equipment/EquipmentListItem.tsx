@@ -28,7 +28,7 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
             </Row>
             <Row>
                 <Col className={styles.equipmentLabel}>Mileage</Col>
-                <Col>{item.milesLogged}</Col>
+                <Col>{item.totalMiles}</Col>
             </Row>
             <Row>
                 <Col className={styles.equipmentLabel}>Installed on</Col>

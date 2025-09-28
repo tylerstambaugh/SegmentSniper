@@ -11,7 +11,8 @@ mutation ImportGarage($userId: ID!) {
         equipmentId
         name
         description
-        milesLogged
+        totalMiles
+        milesAtInstall
         price
         installDate
         replaceAtMiles
