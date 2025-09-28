@@ -20,7 +20,8 @@ export type UpsertEquipmentFormProps = {
 export interface UpsertEquipmentFormValues {
     name: string;
     description: string;
-    milesLogged?: number | null;
+    totalMiles?: number | null;
+    milesAtInstall?: number | null;
     installDate: DateTime | null;
     retiredDate: DateTime | null;
     price?: number | null;
@@ -35,7 +36,8 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
     const initialValues: UpsertEquipmentFormValues = {
         name: editEquipment?.name ?? '',
         description: editEquipment?.description ?? '',
-        milesLogged: editEquipment?.milesLogged ?? undefined,
+        totalMiles: editEquipment?.totalMiles ?? undefined,
+        milesAtInstall: editEquipment?.milesAtInstall ?? null,
         installDate: editEquipment?.installDate ?? null,
         retiredDate: editEquipment?.retiredDate ?? null,
         price: editEquipment?.price ?? null,
@@ -46,7 +48,7 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
     const validationSchema = Yup.object({
         name: Yup.string().required('Required'),
         description: Yup.string(),
-        milesLogged: Yup.number(),
+        totalMiles: Yup.number(),
         installDate: Yup.date().nullable()
             .max(new Date(), "Date must be in the past"),
         retiredDate: Yup.date().nullable()
@@ -163,18 +165,18 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group controlId="milesLogged" className="mb-3">
+                                <Form.Group controlId="totalMiles" className="mb-3">
                                     <Form.Label>Miles Logged</Form.Label>
                                     <Form.Control type="number"
-                                        value={editEquipment?.milesLogged
-                                            ?? formik.values.milesLogged
+                                        value={editEquipment?.totalMiles
+                                            ?? formik.values.totalMiles
                                             ?? ""}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
-                                            formik.setFieldValue("milesLogged", value);
+                                            formik.setFieldValue("totalMiles", value);
                                         }} />
                                     <Form.Control.Feedback type="invalid">
-                                        {formik.errors.milesLogged as FormikErrors<string>}
+                                        {formik.errors.totalMiles as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>

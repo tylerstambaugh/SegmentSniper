@@ -273,10 +273,6 @@ namespace SegmentSniper.Api.Configuration
     });
             });
 
-            //builder.Services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "SegmentSniper.React/dist";
-            //});
 
             #endregion
 
@@ -294,6 +290,7 @@ namespace SegmentSniper.Api.Configuration
         }
     }
 
+    //TODO use or remove these:
     public class CustomAuthorizationHandler : IExceptionHandler
     {
         public Task<ExecutionError> HandleAsync(ResolveFieldContext context, Exception exception)
