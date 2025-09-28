@@ -45,7 +45,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         return {
             name: selectedEquipment?.name,
             description: selectedEquipment?.description ?? "",
-            milesLogged: selectedEquipment?.milesLogged,
+            totalMiles: selectedEquipment?.totalMiles,
+            milesAtInstall: selectedEquipment?.milesAtInstall,
             installDate: selectedEquipment?.installDate ? DateTime.fromISO(selectedEquipment.installDate) : null,
             retiredDate: selectedEquipment?.retiredDate ? DateTime.fromISO(selectedEquipment.retiredDate) : null,
             price: selectedEquipment?.price,
@@ -133,7 +134,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         const equipmentInput: EquipmentInput = {
             name: values.name,
             description: values.description,
-            milesLogged: values.milesLogged ?? 0,
+            totalMiles: values.totalMiles ?? 0,
+            milesAtInstall: values.milesAtInstall ?? 0,
             installDate: installDate,
             retiredDate: retiredDate,
             price: values.price ?? 0,
