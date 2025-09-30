@@ -70,9 +70,8 @@ namespace SegmentSniper.Api.Controllers
                         await handler.HandleEventAsync(payload);
                     }
                     catch (Exception ex)
-                    {
-                        // Log exception here
-                        // e.g., _logger.LogError(ex, "Error processing webhook event.");
+                    {                        
+                      Log.Error(ex, $"Error processing strava webhook event: {ex}");
                     }
                 });
 
