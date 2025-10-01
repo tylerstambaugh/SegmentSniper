@@ -15,6 +15,8 @@ namespace SegmentSniper.Models.Garage
         public DateTime? InstallDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? RetiredDate { get; set; }
+        public DateTime? ReminderDate { get; set; }
+        public TimeSpan? ReminderDuration { get; set; }
         public decimal Price { get; set; }
         public int ReplaceAtMiles { get; set; }
         public int MilesUntilReplaceReminder { get; set; }
