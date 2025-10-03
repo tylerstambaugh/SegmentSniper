@@ -32,5 +32,8 @@ namespace SegmentSniper.Data.Entities.Garage
         public decimal Price { get; set; }
         public int ReplaceAtMiles { get; set; }
         public int MilesUntilReplaceReminder { get; set; }
+
+        public int MaxRemindersToSend { get; set; }
+        public int RemindersSent { get; set; }
     }
 }
