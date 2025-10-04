@@ -27,6 +27,10 @@ export interface UpsertEquipmentFormValues {
     price?: number | null;
     replaceAtMiles?: number | null;
     milesUntilReplaceReminder?: number | null;
+    reminderDate?: DateTime | null;
+    reminderDuration?: number | null;
+    maxRemindersToSend?: number | null;
+    remindersSent?: number | null;
 }
 
 const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: UpsertEquipmentFormProps) => {
@@ -198,6 +202,62 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.price as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group controlId="reminderDAte" className="mb-3">
+                                    <Form.Label>Remind At</Form.Label>
+                                    <Form.Control
+                                        type="date"
+                                        value={editEquipment?.reminderDate?.toISODate()
+                                            ?? formik.values.reminderDate?.toISODate()
+                                            ?? ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value ? parseFloat(e.target.value) : null;
+                                            formik.setFieldValue("reminderDate", value)
+                                        }} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.reminderDate as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group controlId="reminderDuration" className="mb-3">
+                                    <Form.Label>Reminder Duration</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="months"
+                                        value={editEquipment?.reminderDuration
+                                            ?? formik.values.reminderDuration
+                                            ?? undefined}
+                                        onChange={(e) => {
+                                            const value = e.target.value ? parseFloat(e.target.value) : null;
+                                            formik.setFieldValue("reminderDuration", value)
+                                        }} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.reminderDuration as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                                             <Row>
+                            <Col>
+                                <Form.Group controlId="maxRemindersToSend" className="mb-3">
+                                    <Form.Label># Reminders To Send</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        value={editEquipment?.maxRemindersToSend
+                                            ?? formik.values.maxRemindersToSend
+                                            ?? ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value ? parseFloat(e.target.value) : null;
+                                            formik.setFieldValue("maxRemindersToSend", value)
+                                        }} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.maxRemindersToSend as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
