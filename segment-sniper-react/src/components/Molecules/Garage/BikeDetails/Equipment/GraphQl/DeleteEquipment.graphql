@@ -1,6 +1,6 @@
-mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
+mutation DeleteEquipment($equipmentId: ID!) {
   garage {
-    deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
+    deleteEquipment(equipmentId: $equipmentId) {
       bikeId
       name
       brandName

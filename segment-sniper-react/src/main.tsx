@@ -13,6 +13,7 @@ import { ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 import AppRoutesComponent from './SegmentSniper.routes';
+import { AuthProvider } from './context/authContext';
 
 
 const queryClient = new QueryClient({
@@ -36,21 +37,23 @@ root.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-        <ApolloClientProvider>
-          <QueryClientProvider client={queryClient}>
-            <InitializeApp>
-              <Header />
-              <AppRoutesComponent />
-              <Footer />
-            </InitializeApp>
-            <Toaster
-              toastOptions={{
-                success: { duration: 3000, style: { background: 'green' } },
-                error: { duration: 5000, style: { background: '#fd2c60' } },
-              }}
-            />
-          </QueryClientProvider>
-        </ApolloClientProvider>
+          <AuthProvider>
+            <ApolloClientProvider>
+              <QueryClientProvider client={queryClient}>
+                <InitializeApp>
+                  <Header />
+                    <AppRoutesComponent />
+                  <Footer />
+                </InitializeApp>
+                <Toaster
+                  toastOptions={{
+                    success: { duration: 3000, style: { background: 'green' } },
+                    error: { duration: 5000, style: { background: '#fd2c60' } },
+                  }}
+                />
+              </QueryClientProvider>
+            </ApolloClientProvider>
+        </AuthProvider>
       </ClerkProvider>
     </BrowserRouter>
   </ErrorBoundary>

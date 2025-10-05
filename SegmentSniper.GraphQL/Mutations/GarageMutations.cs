@@ -20,12 +20,14 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "ImportGarage",
                 Type = typeof(ListGraphType<BikeTypeDef>),
-                Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
-                ),
+                //Arguments = new QueryArguments(
+                //    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
+                //),
                 Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
 
                     var service = context.RequestServices.GetRequiredService<IImportGarageActionHandler>();
 
@@ -42,12 +44,15 @@ namespace SegmentSniper.GraphQL.Mutations
                 Name = "UpsertBike",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                   // new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<BikeInputTypeDef>> { Name = "bike", Description = "The bike model to be added" }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var bike = context.GetArgument<BikeModel>("bike");
 
                     var service = context.RequestServices.GetRequiredService<IUpsertBike>();
@@ -76,13 +81,16 @@ namespace SegmentSniper.GraphQL.Mutations
                 Name = "UpsertBikeEquipment",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                  //  new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
                     new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> { Name = "equipment", Description = "The details of the equipment being added." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var bikeId = context.GetArgument<string>("bikeId");
                     var equipment = context.GetArgument<EquipmentModel>("equipment");
 
@@ -105,14 +113,17 @@ namespace SegmentSniper.GraphQL.Mutations
                 Name = "RetireEquipmentOnBike",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                    //new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." },
                     new QueryArgument<NonNullGraphType<DateGraphType>> { Name = "retireDate", Description = "The date the equipment is to be retired." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var bikeId = context.GetArgument<string>("bikeId");
                     var equipmentId = context.GetArgument<string>("equipmentId");
                     var retireDate = context.GetArgument<DateTime>("retireDate");
@@ -133,12 +144,15 @@ namespace SegmentSniper.GraphQL.Mutations
                 Name = "DeleteEquipment",
                 Type = typeof(BikeTypeDef),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                   // new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var equipmentId = context.GetArgument<string>("equipmentId");
                     var service = context.RequestServices.GetRequiredService<IDeleteEquipment>();
                     var result = await service.ExecuteAsync(new DeleteEquipmentContract(userId, equipmentId));
@@ -151,12 +165,15 @@ namespace SegmentSniper.GraphQL.Mutations
                 Name = "DeleteBikes",
                 Type = typeof(DeleteResultGraphType),
                 Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                  //  new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
                     new QueryArgument<NonNullGraphType<ListGraphType<IdGraphType>>> { Name = "bikeIds", Description = "The Ids of the bikes being deleted." }
                 ),
                 Resolver = new FuncFieldResolver<bool>(async context =>
                 {
-                    var userId = context.GetArgument<string>("userId");
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var bikeIds = context.GetArgument<List<string>>("bikeIds");
                     var service = context.RequestServices.GetRequiredService<IDeleteBike>();
                     var result = await service.ExecuteAsync(new DeleteBikeContract(userId, bikeIds));

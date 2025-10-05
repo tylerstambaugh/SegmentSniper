@@ -2,11 +2,13 @@ import { Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../../enums/AppRoutes';
 import { useUser } from '@clerk/clerk-react';
+import { useContext } from 'react';
+import { AuthContext } from '../../../context/authContext';
 
 export default function MainMenu() {
-  const { user } = useUser();
-  const roles = user?.publicMetadata?.roles;
-  const roleArray = Array.isArray(roles) ? roles : roles ? [roles] : [];
+  const { roles } = useContext(AuthContext);
+
+  const isAdmin = roles?.some((r) => r.toLowerCase() === 'admin');
 
 
   return (
@@ -61,7 +63,7 @@ export default function MainMenu() {
                     </Link>
                   </Col>
                 </Row>
-                {roleArray?.some((r) => r.toString() === 'admin') ? (
+                {isAdmin ? (
                   <Row>
                     <Col
                       md={12}

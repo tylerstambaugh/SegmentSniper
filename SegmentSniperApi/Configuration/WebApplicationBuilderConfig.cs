@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.GraphQL;
+using SegmentSniper.Models.Auth;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Security.Claims;
@@ -95,17 +96,6 @@ namespace SegmentSniper.Api.Configuration
                     RoleClaimType = "roles"
                 };
 
-                //options.TokenValidationParameters = new TokenValidationParameters
-                //{
-                //    ValidateIssuer = true,
-                //    ValidIssuer = "https://fresh-fowl-84.clerk.accounts.dev",
-                //    ValidateAudience = true,
-                //    ValidAudience = "SegmentSniperAPI",
-                //    ValidateLifetime = true,
-                //    ValidateIssuerSigningKey = true,
-                //    RoleClaimType = "roles"
-                //};
-
                 options.Events = new JwtBearerEvents
                 {
                     OnTokenValidated = context =>
@@ -170,6 +160,8 @@ namespace SegmentSniper.Api.Configuration
                 options.AddSchema<GraphQlSchema>();
                 options.AddGraphTypes(typeof(GraphQlSchema).Assembly);
                 options.AddDataLoader();
+                options.AddUserContextBuilder(httpContext =>
+                   new GraphQLUserContext { User = httpContext.User });
                 options.AddSystemTextJson();
                 options.AddAuthorization(options =>
                 {

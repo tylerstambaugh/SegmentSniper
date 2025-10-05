@@ -19,7 +19,6 @@ type GarageModalState =
     | { type: "import" }
     | { type: "upsertBike" };
 export default function GarageMenu() {
-    const user = useUser();
     const [modalState, setModalState] = useState<GarageModalState>({ type: "none" });
     const abortRef = useRef<AbortController | null>(null);
 
@@ -41,7 +40,6 @@ export default function GarageMenu() {
         try {
             const result = await upsertBike({
                 variables: {
-                    userId: user?.user?.id ?? '',
                     bike: {
                         name: values.bikeName,
                         frameType: FrameTypeToEnumMap[values.bikeFrameType as FrameType],
@@ -58,23 +56,19 @@ export default function GarageMenu() {
                 },
                 update: (cache, { data }) => {
                     const newBike = data?.garage?.upsertBike;
-                    if (!newBike || !user?.user?.id) return
+                    if (!newBike) return
 
-                    const queryVars: GetBikesByAuthUserIdQueryVariables = {
-                        authUserId: user?.user?.id ?? '',
-                    };
+                  
 
                     try {
                         const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
                             query: GetBikesByAuthUserId,
-                            variables: queryVars,
                         });
 
                         if (!existingData?.bikes?.byAuthUserId) return;
 
                         cache.writeQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
                             query: GetBikesByAuthUserId,
-                            variables: queryVars,
                             data: {
                                 bikes: {
                                     ...existingData.bikes,

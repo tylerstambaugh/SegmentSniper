@@ -5,11 +5,9 @@ import { FrameType, FrameTypeToString } from '../../../../enums/FrameTypes';
 import styles from "./BikeList.module.scss";
 import sortBy from 'lodash/sortBy';
 import { useGetBikesByUserIdQuery } from '../GraphQl/useGetBikesByAuthUserId';
-import { useUser } from '@clerk/clerk-react';
 
 export const BikeList = () => {
-    const user = useUser();
-    const { data, loading, error } = useGetBikesByUserIdQuery({ variables: { authUserId: user.user?.id ?? "" } });
+    const { data, loading, error } = useGetBikesByUserIdQuery();
 
     if (loading) return <p>Loading...</p>;
     if (error) {

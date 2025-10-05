@@ -1,7 +1,6 @@
 ﻿using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;
-using SegmentSniper.GraphQL.Mutations;
 using SegmentSniper.GraphQL.Queries;
 
 public class RootQuery : ObjectGraphType

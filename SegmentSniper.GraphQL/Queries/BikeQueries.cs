@@ -22,6 +22,10 @@ namespace SegmentSniper.GraphQL.Queries
                 ),
                 Resolver = new FuncFieldResolver<object>(async context =>
                 {
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var service = context.RequestServices.GetRequiredService<IGetBikeById>();
                     var result = await service.ExecuteAsync(new GetBikeByIdContract
                     {
@@ -42,21 +46,25 @@ namespace SegmentSniper.GraphQL.Queries
                 Name = "byAuthUserId",
                 Description = "Retrieve all bikes for a user",
                 Type = typeof(ListGraphType<BikeTypeDef>),
-                Arguments = new QueryArguments(
-                new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "authUserId", Description = "The AuthUserId of the user" }
-                ),
+                //Arguments = new QueryArguments(
+                //new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "authUserId", Description = "The AuthUserId of the user" }
+                //),
                 Resolver = new FuncFieldResolver<object>(async context =>
                 {
+                    var userId = context.GetUserId();
+                    if (string.IsNullOrEmpty(userId))
+                        throw new ExecutionError("User not authenticated.");
+
                     var service = context.RequestServices.GetRequiredService<IGetBikesByUserIdActionHandler>();
-                    var authUserId = context.GetArgument<string>("authUserId");
+                    //var authUserId = context.GetArgument<string>("authUserId");
 
                     try
                     {
-                        var queriedBikes = await service.ExecuteAsync(new GetBikesByUserIdRequest(authUserId));
+                        var queriedBikes = await service.ExecuteAsync(new GetBikesByUserIdRequest(userId));
 
                         if (queriedBikes == null || queriedBikes.Bikes == null)
                         {
-                            throw new ExecutionError($"User with AuthUserId '{authUserId}' not found or has no bikes.");
+                            throw new ExecutionError($"User with AuthUserId '{userId}' not found or has no bikes.");
                         }
 
                         return queriedBikes.Bikes;
@@ -64,7 +72,7 @@ namespace SegmentSniper.GraphQL.Queries
                     catch (Exception ex)
                     {
                         var error = new ExecutionError("An error occurred while retrieving bikes.", ex);
-                        error.Data.Add("authUserId", authUserId);
+                        error.Data.Add("authUserId", userId);
                         throw error;
                     }
 
