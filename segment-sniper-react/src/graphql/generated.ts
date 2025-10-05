@@ -18,6 +18,7 @@ export type Scalars = {
   Date: { input: any; output: any; }
   DateTime: { input: string; output: string; }
   Decimal: { input: number; output: number; }
+  Seconds: { input: any; output: any; }
 };
 
 export type BikeInput = {
@@ -95,6 +96,8 @@ export type EquipmentInput = {
   equipmentId?: InputMaybe<Scalars['String']['input']>;
   /** The installation date of the equipment. */
   installDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** The maximum number of times to be reminded to replace the equipment */
+  maxRemindersToSend: Scalars['Int']['input'];
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall: Scalars['Decimal']['input'];
   /** Miles until a reminder to replace the equipment is sent */
@@ -103,6 +106,12 @@ export type EquipmentInput = {
   name: Scalars['String']['input'];
   /** The price of the equipment. */
   price: Scalars['Decimal']['input'];
+  /** The date you want to be reminded to replace the equipment */
+  reminderDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** The amount of time until you want to be remined to replace the equipment */
+  reminderDuration?: InputMaybe<Scalars['Seconds']['input']>;
+  /** The number of reminders that have been sent to replace the equipment */
+  remindersSent: Scalars['Int']['input'];
   /** The sum total of miles that the equipment should be replaced */
   replaceAtMiles: Scalars['Int']['input'];
   /** The date the equipment was retired */
@@ -122,6 +131,8 @@ export type EquipmentModel = {
   equipmentId: Scalars['ID']['output'];
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
+  /** The maximum number of times to be reminded to replace the equipment */
+  maxRemindersToSEnd?: Maybe<Scalars['Int']['output']>;
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall?: Maybe<Scalars['Decimal']['output']>;
   /** Miles until a reminder to replace the equipment is sent */
@@ -130,6 +141,12 @@ export type EquipmentModel = {
   name: Scalars['String']['output'];
   /** The amount paid for the equipment */
   price?: Maybe<Scalars['Decimal']['output']>;
+  /** The date you want to be reminded to replace the equipment */
+  reminderDate?: Maybe<Scalars['DateTime']['output']>;
+  /** The amount of time until you want to be remined to replace the equipment */
+  reminderDuration?: Maybe<Scalars['Seconds']['output']>;
+  /** The number of reminders that have been sent to replace the equipment */
+  remindersSent?: Maybe<Scalars['Int']['output']>;
   /** The sum total of miles that the equipment should be replaced */
   replaceAtMiles?: Maybe<Scalars['Int']['output']>;
   /** The date the equipment was retired */

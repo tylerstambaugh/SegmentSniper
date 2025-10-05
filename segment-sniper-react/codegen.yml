@@ -1,5 +1,5 @@
 schema:
-  - https://localhost:44351/graphql:
+  - https://localhost:7201/graphql:
       # customFetch: ../../../../src/utils/custom-fetch.js
       headers:
         GraphQL-Require-Preflight: true
