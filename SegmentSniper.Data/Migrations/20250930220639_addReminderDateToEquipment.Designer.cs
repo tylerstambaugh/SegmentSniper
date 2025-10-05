@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SegmentSniper.Data;
 
@@ -11,9 +12,11 @@ using SegmentSniper.Data;
 namespace SegmentSniper.Data.Migrations
 {
     [DbContext(typeof(SegmentSniperDbContext))]
-    partial class SegmentSniperDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250930220639_addReminderDateToEquipment")]
+    partial class addReminderDateToEquipment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,9 +127,6 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<DateTime?>("InstallDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MaxRemindersToSend")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("MilesAtInstall")
                         .HasColumnType("decimal(18,2)");
 
@@ -145,9 +145,6 @@ namespace SegmentSniper.Data.Migrations
 
                     b.Property<TimeSpan?>("ReminderDuration")
                         .HasColumnType("time");
-
-                    b.Property<int>("RemindersSent")
-                        .HasColumnType("int");
 
                     b.Property<int>("ReplaceAtMiles")
                         .HasColumnType("int");
@@ -351,14 +348,6 @@ namespace SegmentSniper.Data.Migrations
                     b.Property<string>("AuthUserId")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Plan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("Roles")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("StravaAthleteId")
                         .HasColumnType("bigint");

@@ -1,13 +1,11 @@
 mutation UpsertBikeEquipment(
   $bikeId: ID!
   $equipment: EquipmentInput!
-  $userId: ID!
 ) {
   garage {
     upsertBikeEquipment(
       bikeId: $bikeId
       equipment: $equipment
-      userId: $userId
     ) {
       bikeId
       name

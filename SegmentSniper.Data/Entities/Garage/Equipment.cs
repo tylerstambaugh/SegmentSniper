@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Garage
 {
-
-    //NEED TO DO A MIGRATION !!!!!!!
     public class Equipment
     {
         [Key]
         public string EquipmentId { get; set; }
-        
+
         public required string BikeId { get; set; }
 
         [ForeignKey(nameof(BikeId))]
@@ -29,8 +27,13 @@ namespace SegmentSniper.Data.Entities.Garage
         public DateTime? InstallDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public DateTime? RetiredDate { get; set; }
+        public DateTime? ReminderDate { get; set; }
+        public TimeSpan? ReminderDuration { get; set; }
         public decimal Price { get; set; }
         public int ReplaceAtMiles { get; set; }
         public int MilesUntilReplaceReminder { get; set; }
+
+        public int MaxRemindersToSend { get; set; }
+        public int RemindersSent { get; set; }
     }
 }

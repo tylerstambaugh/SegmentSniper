@@ -18,6 +18,7 @@ export type Scalars = {
   Date: { input: any; output: any; }
   DateTime: { input: string; output: string; }
   Decimal: { input: number; output: number; }
+  Seconds: { input: any; output: any; }
 };
 
 export type BikeInput = {
@@ -73,11 +74,6 @@ export type BikeQueries = {
 };
 
 
-export type BikeQueriesByAuthUserIdArgs = {
-  authUserId: Scalars['ID']['input'];
-};
-
-
 export type BikeQueriesByBikeIdArgs = {
   bikeId: Scalars['ID']['input'];
 };
@@ -95,6 +91,8 @@ export type EquipmentInput = {
   equipmentId?: InputMaybe<Scalars['String']['input']>;
   /** The installation date of the equipment. */
   installDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** The maximum number of times to be reminded to replace the equipment */
+  maxRemindersToSend: Scalars['Int']['input'];
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall: Scalars['Decimal']['input'];
   /** Miles until a reminder to replace the equipment is sent */
@@ -103,6 +101,10 @@ export type EquipmentInput = {
   name: Scalars['String']['input'];
   /** The price of the equipment. */
   price: Scalars['Decimal']['input'];
+  /** The date you want to be reminded to replace the equipment */
+  reminderDate?: InputMaybe<Scalars['DateTime']['input']>;
+  /** The amount of time until you want to be remined to replace the equipment */
+  reminderDuration?: InputMaybe<Scalars['Seconds']['input']>;
   /** The sum total of miles that the equipment should be replaced */
   replaceAtMiles: Scalars['Int']['input'];
   /** The date the equipment was retired */
@@ -122,6 +124,8 @@ export type EquipmentModel = {
   equipmentId: Scalars['ID']['output'];
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
+  /** The maximum number of times to be reminded to replace the equipment */
+  maxRemindersToSEnd?: Maybe<Scalars['Int']['output']>;
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall?: Maybe<Scalars['Decimal']['output']>;
   /** Miles until a reminder to replace the equipment is sent */
@@ -130,6 +134,12 @@ export type EquipmentModel = {
   name: Scalars['String']['output'];
   /** The amount paid for the equipment */
   price?: Maybe<Scalars['Decimal']['output']>;
+  /** The date you want to be reminded to replace the equipment */
+  reminderDate?: Maybe<Scalars['DateTime']['output']>;
+  /** The amount of time until you want to be remined to replace the equipment */
+  reminderDuration?: Maybe<Scalars['Seconds']['output']>;
+  /** The number of reminders that have been sent to replace the equipment */
+  remindersSent?: Maybe<Scalars['Int']['output']>;
   /** The sum total of miles that the equipment should be replaced */
   replaceAtMiles?: Maybe<Scalars['Int']['output']>;
   /** The date the equipment was retired */
@@ -166,18 +176,11 @@ export type GarageMutations = {
 
 export type GarageMutationsDeleteBikesArgs = {
   bikeIds: Array<InputMaybe<Scalars['ID']['input']>>;
-  userId: Scalars['ID']['input'];
 };
 
 
 export type GarageMutationsDeleteEquipmentArgs = {
   equipmentId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-};
-
-
-export type GarageMutationsImportGarageArgs = {
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -185,20 +188,17 @@ export type GarageMutationsRetireEquipmentOnBikeArgs = {
   bikeId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
   retireDate: Scalars['Date']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 
 export type GarageMutationsUpsertBikeArgs = {
   bike: BikeInput;
-  userId: Scalars['ID']['input'];
 };
 
 
 export type GarageMutationsUpsertBikeEquipmentArgs = {
   bikeId: Scalars['ID']['input'];
   equipment: EquipmentInput;
-  userId: Scalars['ID']['input'];
 };
 
 export type RootMutation = {
@@ -214,7 +214,6 @@ export type RootQuery = {
 };
 
 export type DeleteEquipmentMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
 }>;
 
@@ -224,7 +223,6 @@ export type DeleteEquipmentMutation = { __typename?: 'RootMutation', garage?: { 
 export type RetireEquipmentOnBikeMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
   equipmentId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
   retireDate: Scalars['Date']['input'];
 }>;
 
@@ -234,14 +232,12 @@ export type RetireEquipmentOnBikeMutation = { __typename?: 'RootMutation', garag
 export type UpsertBikeEquipmentMutationVariables = Exact<{
   bikeId: Scalars['ID']['input'];
   equipment: EquipmentInput;
-  userId: Scalars['ID']['input'];
 }>;
 
 
 export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, totalMiles?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type DeleteBikesMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
   bikeIds: Array<InputMaybe<Scalars['ID']['input']>> | InputMaybe<Scalars['ID']['input']>;
 }>;
 
@@ -255,23 +251,18 @@ export type GetBikeByIdQueryVariables = Exact<{
 
 export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
 
-export type GetBikesByAuthUserIdQueryVariables = Exact<{
-  authUserId: Scalars['ID']['input'];
-}>;
+export type GetBikesByAuthUserIdQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBikesByAuthUserIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byAuthUserId?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
-export type ImportGarageMutationVariables = Exact<{
-  userId: Scalars['ID']['input'];
-}>;
+export type ImportGarageMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ImportGarageMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', importGarage?: Array<{ __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null> | null } | null };
 
 export type UpsertBikeMutationVariables = Exact<{
   bike: BikeInput;
-  userId: Scalars['ID']['input'];
 }>;
 
 
@@ -279,9 +270,9 @@ export type UpsertBikeMutation = { __typename?: 'RootMutation', garage?: { __typ
 
 
 export const DeleteEquipmentDocument = gql`
-    mutation DeleteEquipment($userId: ID!, $equipmentId: ID!) {
+    mutation DeleteEquipment($equipmentId: ID!) {
   garage {
-    deleteEquipment(userId: $userId, equipmentId: $equipmentId) {
+    deleteEquipment(equipmentId: $equipmentId) {
       bikeId
       name
       brandName
@@ -319,7 +310,6 @@ export type DeleteEquipmentMutationFn = Apollo.MutationFunction<DeleteEquipmentM
  * @example
  * const [deleteEquipmentMutation, { data, loading, error }] = useDeleteEquipmentMutation({
  *   variables: {
- *      userId: // value for 'userId'
  *      equipmentId: // value for 'equipmentId'
  *   },
  * });
@@ -332,12 +322,11 @@ export type DeleteEquipmentMutationHookResult = ReturnType<typeof useDeleteEquip
 export type DeleteEquipmentMutationResult = Apollo.MutationResult<DeleteEquipmentMutation>;
 export type DeleteEquipmentMutationOptions = Apollo.BaseMutationOptions<DeleteEquipmentMutation, DeleteEquipmentMutationVariables>;
 export const RetireEquipmentOnBikeDocument = gql`
-    mutation RetireEquipmentOnBike($bikeId: ID!, $equipmentId: ID!, $userId: ID!, $retireDate: Date!) {
+    mutation RetireEquipmentOnBike($bikeId: ID!, $equipmentId: ID!, $retireDate: Date!) {
   garage {
     retireEquipmentOnBike(
       bikeId: $bikeId
       equipmentId: $equipmentId
-      userId: $userId
       retireDate: $retireDate
     ) {
       bikeId
@@ -378,7 +367,6 @@ export type RetireEquipmentOnBikeMutationFn = Apollo.MutationFunction<RetireEqui
  *   variables: {
  *      bikeId: // value for 'bikeId'
  *      equipmentId: // value for 'equipmentId'
- *      userId: // value for 'userId'
  *      retireDate: // value for 'retireDate'
  *   },
  * });
@@ -391,9 +379,9 @@ export type RetireEquipmentOnBikeMutationHookResult = ReturnType<typeof useRetir
 export type RetireEquipmentOnBikeMutationResult = Apollo.MutationResult<RetireEquipmentOnBikeMutation>;
 export type RetireEquipmentOnBikeMutationOptions = Apollo.BaseMutationOptions<RetireEquipmentOnBikeMutation, RetireEquipmentOnBikeMutationVariables>;
 export const UpsertBikeEquipmentDocument = gql`
-    mutation UpsertBikeEquipment($bikeId: ID!, $equipment: EquipmentInput!, $userId: ID!) {
+    mutation UpsertBikeEquipment($bikeId: ID!, $equipment: EquipmentInput!) {
   garage {
-    upsertBikeEquipment(bikeId: $bikeId, equipment: $equipment, userId: $userId) {
+    upsertBikeEquipment(bikeId: $bikeId, equipment: $equipment) {
       bikeId
       name
       equipment {
@@ -428,7 +416,6 @@ export type UpsertBikeEquipmentMutationFn = Apollo.MutationFunction<UpsertBikeEq
  *   variables: {
  *      bikeId: // value for 'bikeId'
  *      equipment: // value for 'equipment'
- *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -440,9 +427,9 @@ export type UpsertBikeEquipmentMutationHookResult = ReturnType<typeof useUpsertB
 export type UpsertBikeEquipmentMutationResult = Apollo.MutationResult<UpsertBikeEquipmentMutation>;
 export type UpsertBikeEquipmentMutationOptions = Apollo.BaseMutationOptions<UpsertBikeEquipmentMutation, UpsertBikeEquipmentMutationVariables>;
 export const DeleteBikesDocument = gql`
-    mutation DeleteBikes($userId: ID!, $bikeIds: [ID]!) {
+    mutation DeleteBikes($bikeIds: [ID]!) {
   garage {
-    deleteBikes(userId: $userId, bikeIds: $bikeIds) {
+    deleteBikes(bikeIds: $bikeIds) {
       success
     }
   }
@@ -463,7 +450,6 @@ export type DeleteBikesMutationFn = Apollo.MutationFunction<DeleteBikesMutation,
  * @example
  * const [deleteBikesMutation, { data, loading, error }] = useDeleteBikesMutation({
  *   variables: {
- *      userId: // value for 'userId'
  *      bikeIds: // value for 'bikeIds'
  *   },
  * });
@@ -534,9 +520,9 @@ export type GetBikeByIdLazyQueryHookResult = ReturnType<typeof useGetBikeByIdLaz
 export type GetBikeByIdSuspenseQueryHookResult = ReturnType<typeof useGetBikeByIdSuspenseQuery>;
 export type GetBikeByIdQueryResult = Apollo.QueryResult<GetBikeByIdQuery, GetBikeByIdQueryVariables>;
 export const GetBikesByAuthUserIdDocument = gql`
-    query GetBikesByAuthUserId($authUserId: ID!) {
+    query GetBikesByAuthUserId {
   bikes {
-    byAuthUserId(authUserId: $authUserId) {
+    byAuthUserId {
       bikeId
       name
       brandName
@@ -571,11 +557,10 @@ export const GetBikesByAuthUserIdDocument = gql`
  * @example
  * const { data, loading, error } = useGetBikesByAuthUserIdQuery({
  *   variables: {
- *      authUserId: // value for 'authUserId'
  *   },
  * });
  */
-export function useGetBikesByAuthUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables> & ({ variables: GetBikesByAuthUserIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetBikesByAuthUserIdQuery(baseOptions?: Apollo.QueryHookOptions<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>(GetBikesByAuthUserIdDocument, options);
       }
@@ -592,9 +577,9 @@ export type GetBikesByAuthUserIdLazyQueryHookResult = ReturnType<typeof useGetBi
 export type GetBikesByAuthUserIdSuspenseQueryHookResult = ReturnType<typeof useGetBikesByAuthUserIdSuspenseQuery>;
 export type GetBikesByAuthUserIdQueryResult = Apollo.QueryResult<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>;
 export const ImportGarageDocument = gql`
-    mutation ImportGarage($userId: ID!) {
+    mutation ImportGarage {
   garage {
-    importGarage(userId: $userId) {
+    importGarage {
       bikeId
       name
       brandName
@@ -631,7 +616,6 @@ export type ImportGarageMutationFn = Apollo.MutationFunction<ImportGarageMutatio
  * @example
  * const [importGarageMutation, { data, loading, error }] = useImportGarageMutation({
  *   variables: {
- *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -643,9 +627,9 @@ export type ImportGarageMutationHookResult = ReturnType<typeof useImportGarageMu
 export type ImportGarageMutationResult = Apollo.MutationResult<ImportGarageMutation>;
 export type ImportGarageMutationOptions = Apollo.BaseMutationOptions<ImportGarageMutation, ImportGarageMutationVariables>;
 export const UpsertBikeDocument = gql`
-    mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
+    mutation UpsertBike($bike: BikeInput!) {
   garage {
-    upsertBike(bike: $bike, userId: $userId) {
+    upsertBike(bike: $bike) {
       bikeId
       name
       description
@@ -673,7 +657,6 @@ export type UpsertBikeMutationFn = Apollo.MutationFunction<UpsertBikeMutation, U
  * const [upsertBikeMutation, { data, loading, error }] = useUpsertBikeMutation({
  *   variables: {
  *      bike: // value for 'bike'
- *      userId: // value for 'userId'
  *   },
  * });
  */

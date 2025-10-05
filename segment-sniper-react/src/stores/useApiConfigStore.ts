@@ -27,10 +27,10 @@ const useApiConfigStore = create<ApiConfigStore>()(
       persist((set) => {
         const baseRestApiUrl: string =
           import.meta.env.VITE_SEGMENT_SNIPER_API_URL ||
-          'https://localhost:44351/api';
+          'https://localhost:7201/api';
         const baseGraphqlUrl: string =
           import.meta.env.VITE_SEGMENT_SNIPER_GRAPHQL_URL ||
-          'https://localhost:44351/graphql';
+          'https://localhost:7201/graphql';
 
         const initialApiConfigState: ApiConfig = {
           baseRestApiUrl,

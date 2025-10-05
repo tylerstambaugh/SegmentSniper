@@ -19,7 +19,6 @@ var app = builder.Build();
 // Configure the application
 Configure(app, app.Environment, app.Services.GetRequiredService<Microsoft.Extensions.Logging.ILoggerFactory>());
 
-//await SeedData.Initialize(app.Services, configuration);
 app.Run();
 
 
@@ -31,7 +30,7 @@ void Configure(WebApplication app, IWebHostEnvironment env, Microsoft.Extensions
     //    var context = scope.ServiceProvider.GetRequiredService<SegmentSniperDbContext>();
     //    context.Database.Migrate();
 
-    //    // Ensure database is created
+    //     //Ensure database is created
     //    //context.Database.EnsureCreated();
     //}
 

@@ -1,6 +1,6 @@
-mutation UpsertBike($bike: BikeInput!, $userId: ID!) {
+mutation UpsertBike($bike: BikeInput!) {
   garage {
-    upsertBike(bike: $bike, userId: $userId) {
+    upsertBike(bike: $bike) {
       bikeId
       name
       description
