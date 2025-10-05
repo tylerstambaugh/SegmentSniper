@@ -7,11 +7,9 @@ import { useConversionHelpers } from "../../../../hooks/useConversionHelpers";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDeleteBikeMutation } from "../GraphQl/useDeleteBike";
-import useUserStore from "../../../../stores/useUserStore";
 import DeleteBikeModal from "./DeleteBikeModal";
 import { AppRoutes } from "../../../../enums/AppRoutes";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
 
 
 type BikeDetailsCardProps = {
@@ -19,7 +17,6 @@ type BikeDetailsCardProps = {
 }
 
 const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
-    const user = useUser();
     const convert = useConversionHelpers();
     const navigate = useNavigate();
     const [showDeleteBikeModal, setShowDeleteBikeModal] = useState(false);
@@ -27,7 +24,6 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
     const [deleteBike] = useDeleteBikeMutation({
         variables: {
             bikeIds: bike?.bikeId ? [bike.bikeId] : [],
-            userId: bike?.userId ?? "",
         },
         onCompleted: (data) => {
             navigate(`/${AppRoutes.Garage}`);
@@ -45,7 +41,6 @@ const BikeDetailsCard = ({ bike }: BikeDetailsCardProps) => {
             await deleteBike({
                 variables: {
                     bikeIds: bike!.bikeId ? [bike.bikeId] : [],
-                    userId: user?.user?.id ?? '',
                 }
             });
             setShowDeleteBikeModal(false);

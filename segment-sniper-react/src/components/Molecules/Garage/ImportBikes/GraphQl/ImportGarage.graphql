@@ -1,6 +1,6 @@
-mutation ImportGarage($userId: ID!) {
+mutation ImportGarage {
   garage {
-    importGarage(userId: $userId) {
+    importGarage {
       bikeId
       name
       brandName

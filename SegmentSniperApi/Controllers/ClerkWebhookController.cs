@@ -67,6 +67,20 @@ public class ClerkWebhookController : ControllerBase
             }
         }
 
+        if(evt == "user.updated")
+        {
+            try
+            {
+                //need to process the update and
+                //add roles to the user etc.
+            }
+            catch(Exception ex)
+            {
+                Log.Debug($"Error updating user: {ex.Message}");
+                return StatusCode(501, $"Internal server error: ${ex.Message}");
+            }
+        }
+
         return Ok();
     }
 

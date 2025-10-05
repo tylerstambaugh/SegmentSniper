@@ -1,38 +1,41 @@
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import { Routes, Route } from "react-router-dom";
+import { SignedIn, SignedOut } from "@clerk/react-router";
 
-import { AppRoutes } from "./enums/AppRoutes";
+import Home from "./pages/Home";
+import About from "./pages/About/About";
+import SignIn from "./pages/Authentication/SignIn";
+import SignUpPage from "./pages/Authentication/SignUpPage";
+import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
+import Unauthorized from "./components/Unauthorized";
 
 import PrivateRoute from "./components/Organisms/Authentication/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
-
-import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
-import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
 import SegmentSniper from "./pages/SegmentSniper/ActivityLookup";
-import Admin from "./pages/Admin/Admin";
-import { UserRole } from "./enums/Roles";
 import ActivitySearchResults from "./pages/SegmentSniper/ActivitySearchResults";
 import ActivityDetails from "./pages/SegmentSniper/ActivityDetails";
 import SegmentPredictions from "./pages/SegmentPrediction";
-import About from "./pages/About/About";
 import GarageMenu from "./components/Organisms/GarageMenu/GarageMenu";
-import AutoLoggedOut from "./pages/Authentication/AutoLoggedOut";
 import BikeDetails from "./pages/Garage/BikeDetails";
-import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
-import SignIn from "./pages/Authentication/SignIn";
+
 import ConnectWithStrava from "./components/Organisms/ConnectWithStrava/ConnectWithStrava";
-import Unauthorized from "./components/Unauthorized";
-import SignUpPage from "./pages/Authentication/SignUpPage";
+import ConnectWithStravaSuccess from "./pages/ConnectWithStrava/Success";
+import ConnectWithStravaError from "./pages/ConnectWithStrava/Error";
+
+import Admin from "./pages/Admin/Admin";
+import ManageStravaWebhook from "./pages/Admin/ManageStravaWebhook";
 import UserManagement from "./components/Organisms/Admin/ManageUsers";
 import ViewAssignRoles from "./components/Organisms/Admin/ManageUsers/ViewAssignRoles";
 
+import { AppRoutes } from "./enums/AppRoutes";
+import { UserRole } from "./enums/Roles";
+
+const memberRoles = [UserRole.Member];
+const adminRoles = [UserRole.Admin];
 
 export default function AppRoutesComponent() {
-
   return (
     <Routes>
-      {/* Public routes */}
+      {/* ----- Public Routes ----- */}
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
       <Route path={`${AppRoutes.SignIn}/*`} element={<SignIn />} />
@@ -40,10 +43,14 @@ export default function AppRoutesComponent() {
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
       <Route path={AppRoutes.Unauthorized} element={<Unauthorized />} />
 
-      {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
-
-      {/* User-protected routes (require strava sync) */}
-      <Route element={<PrivateRoute userRoles={[UserRole.Member]} requireStravaSync />}>
+      {/* ----- Protected Routes ----- */}
+      <Route
+        element={
+          <SignedIn>
+            <PrivateRoute userRoles={memberRoles} requireStravaSync />
+          </SignedIn>
+        }
+      >
         <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.Snipe} element={<SegmentSniper />} />
         <Route path={AppRoutes.ActivitySearchResults} element={<ActivitySearchResults />} />
@@ -51,18 +58,32 @@ export default function AppRoutesComponent() {
         <Route path={AppRoutes.SegmentPredictor} element={<SegmentPredictions />} />
         <Route path={AppRoutes.Garage} element={<GarageMenu />} />
         <Route path={AppRoutes.BikeDetails} element={<BikeDetails />} />
+        <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
         <Route path={AppRoutes.ConnectWithStravaSuccess} element={<ConnectWithStravaSuccess />} />
         <Route path={AppRoutes.ConnectWithStravaError} element={<ConnectWithStravaError />} />
-        <Route path={AppRoutes.ConnectWithStrava} element={<ConnectWithStrava />} />
       </Route>
 
-      {/* Admin-protected routes (no strava sync) */}
-      <Route element={<PrivateRoute userRoles={[UserRole.Admin]} />}>
+      <Route
+        element={
+          <SignedIn>
+            <PrivateRoute userRoles={adminRoles} />
+          </SignedIn>
+        }
+      >
         <Route path={AppRoutes.Admin} element={<Admin />} />
         <Route path={AppRoutes.UserManagement} element={<UserManagement />} />
         <Route path={AppRoutes.ViewAssignRoles} element={<ViewAssignRoles />} />
         <Route path={AppRoutes.StravaWebhookManageMent} element={<ManageStravaWebhook />} />
       </Route>
+
+      {/* ----- Signed-Out Fallback ----- */}
+      <Route
+        element={
+          <SignedOut>
+            <Unauthorized />
+          </SignedOut>
+        }
+      />
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import AddEquipmentForm, { UpsertEquipmentFormValues } from "./AddEquipmentForm";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BikeModel, EquipmentInput, EquipmentModel } from "../../../../../graphql/generated";
 import styles from "./Equipment.module.scss";
 import { DateTime } from "luxon";
@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDeleteEquipmentMutation } from "./GraphQl/useDeleteEquipment";
 import { useUser } from "@clerk/clerk-react";
+import { useEquipmentModalStateStore } from "../../../../../stores/useEquipmentModalStateStore";
 
 
 type EquipmentListProps = {
@@ -29,12 +30,9 @@ export type EquipmentModalState =
     | { type: "addEdit", item?: EquipmentModel }
     | { type: "delete", item?: EquipmentModel };
 
-
-
 const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
 
-    const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
-    const user = useUser();
+    const [modalState, setModalState] =useState<EquipmentModalState>({ type: "none" });
     const handleClosedModal = () => {
 
         setModalState({ type: "none" });
@@ -140,13 +138,13 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             retiredDate: retiredDate,
             price: values.price ?? 0,
             replaceAtMiles: values.replaceAtMiles ?? 0,
-            milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0
+            milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0,
+            maxRemindersToSend: values.maxRemindersToSend ?? 0            
         }
         addEquipmentToBike({
             variables: {
                 bikeId: bike!.bikeId,
                 equipment: equipmentInput,
-                userId: user?.user?.id ?? '',
             },
         });
     }
@@ -163,7 +161,6 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                 variables: {
                     bikeId: bike!.bikeId,
                     equipmentId: values.equipmentId!,
-                    userId: user?.user?.id ?? '',
                     retireDate: values.retireDate?.toISODate() ?? ""
                 }
             });
@@ -186,8 +183,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             }
             await deleteBikeEquipment({
                 variables: {
-                    equipmentId: values.equipmentId!,
-                    userId: user?.user?.id ?? ''
+                    equipmentId: values.equipmentId!
                 }
             });
             handleClosedModal();
@@ -259,7 +255,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     <Row className="pt-1 p-1">
                         <EquipmentAccordion
                             equipment={activeEquipment}
-                            setModalState={setModalState}
+                            setModalState={() => setModalState}
                         />
                     </Row>
                 </Row>
@@ -274,7 +270,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     <Row className="pt-1 p-1">
                         <EquipmentAccordion
                             equipment={retiredEquipment}
-                            setModalState={setModalState}
+                            setModalState={() => setModalState}
                         />
                     </Row>
                 </Row>

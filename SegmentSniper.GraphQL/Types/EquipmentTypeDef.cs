@@ -46,8 +46,6 @@ namespace SegmentSniper.GraphQL.Types
             Field(e => e.MilesAtInstall).Description("The miles on the equipment when it was added to this bike");
             Field(e => e.ReplaceAtMiles).Description("The sum total of miles that the equipment should be replaced");
             Field(e => e.MilesUntilReplaceReminder).Description(("Miles until a reminder to replace the equipment is sent"));
-            Field(e => e.MaxRemindersToSend).Description("The maximum number of times to be reminded to replace the equipment");
-            Field(e => e.RemindersSent).Description("The number of reminders that have been sent to replace the equipment");
-        }
+            Field(e => e.MaxRemindersToSend).Description("The maximum number of times to be reminded to replace the equipment");        }
     }
 }

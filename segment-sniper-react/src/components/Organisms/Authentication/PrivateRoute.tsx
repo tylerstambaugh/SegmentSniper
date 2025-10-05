@@ -1,63 +1,48 @@
-// PrivateRoute.tsx
-import { Link, Outlet } from "react-router-dom";
+
+import { useContext, useMemo } from "react";
+import { Outlet, Link } from "react-router-dom";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { SignedIn, SignedOut, useUser } from "@clerk/react-router";
-import { AppRoutes } from "../../../enums/AppRoutes";
 import { AuthSync } from "./AuthSync";
 import { SessionCleanup } from "./SessionCleanUp";
+import { AppRoutes } from "../../../enums/AppRoutes";
+import { AuthContext } from "../../../context/authContext";
+
 
 type Props = {
-  userRoles?: Array<string>;
-  requireStravaSync?: boolean; // ✅ new prop
+  userRoles?: string[];
+  requireStravaSync?: boolean;
 };
 
 const PrivateRoute = ({ userRoles = [], requireStravaSync = false }: Props) => {
-  const { user } = useUser();
+  const { roles } = useContext(AuthContext);
 
-  const roles = user?.publicMetadata?.roles;
-  const roleArray = Array.isArray(roles) ? roles : roles ? [roles] : [];
+  const hasRequiredRole = useMemo(() => {
+    if (userRoles.length === 0) return true;
+    return userRoles.some((role) => roles.includes(role));
+  }, [roles, userRoles]);
 
-  const userHasRequiredRole =
-    user && (userRoles.length === 0 || userRoles.some((role) => roleArray.includes(role)));
+  if (!hasRequiredRole) {
+    return (
+      <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
+        <Row className="text-center">
+          <Col>
+            <p>You do not have permission to access this resource.</p>
+            <Link to={AppRoutes.Home}>
+              <Button>Home</Button>
+            </Link>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
 
-  return (
-    <>
-      <SignedOut>
-        <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-          <SessionCleanup />
-          <Row className="text-center">
-            <Col>
-              <p>You must be logged in to access this resource.</p>
-              <Link to={AppRoutes.SignIn}>
-                <Button>Login</Button>
-              </Link>
-            </Col>
-          </Row>
-        </Container>
-      </SignedOut>
-
-      <SignedIn>
-        {!userHasRequiredRole ? (
-          <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-            <Row className="text-center">
-              <Col>
-                <p>You do not have permission to access this resource.</p>
-                <Link to={AppRoutes.Home}>
-                  <Button>Home</Button>
-                </Link>
-              </Col>
-            </Row>
-          </Container>
-        ) : requireStravaSync ? (
-
-          <AuthSync>
-            <Outlet />
-          </AuthSync>
-        ) : (
-          <Outlet />
-        )}
-      </SignedIn>
-    </>
+  // Only wrap in AuthSync if Strava is required
+  return requireStravaSync ? (
+    <AuthSync>
+      <Outlet />
+    </AuthSync>
+  ) : (
+    <Outlet />
   );
 };
 

@@ -25,7 +25,6 @@ const BikeDetails = () => {
         return <p>Bike details not found</p>;
     }
 
-
     return (
         <Container>
             <Col className="mb-1 ps-1">

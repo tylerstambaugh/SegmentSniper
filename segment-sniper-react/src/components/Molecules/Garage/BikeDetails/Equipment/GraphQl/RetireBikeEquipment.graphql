@@ -1,14 +1,12 @@
 mutation RetireEquipmentOnBike(
   $bikeId: ID!
   $equipmentId: ID!
-  $userId: ID!
   $retireDate: Date!
 ) {
   garage {
     retireEquipmentOnBike(
       bikeId: $bikeId
       equipmentId: $equipmentId
-      userId: $userId
       retireDate: $retireDate
     ) {
       bikeId
