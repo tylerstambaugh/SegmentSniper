@@ -49,22 +49,16 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
                 update: (cache, { data }) => {
                     const newBike = data?.garage?.upsertBike;
                     if (!newBike || !userId) return
-
-                    const queryVars: GetBikesByAuthUserIdQueryVariables = {
-                        authUserId: userId,
-                    };
-
+                 
                     try {
                         const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
                             query: GetBikesByAuthUserId,
-                            variables: queryVars,
                         });
 
                         if (!existingData?.bikes?.byAuthUserId) return;
 
                         cache.writeQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
                             query: GetBikesByAuthUserId,
-                            variables: queryVars,
                             data: {
                                 bikes: {
                                     ...existingData.bikes,
