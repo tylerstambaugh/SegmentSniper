@@ -2,7 +2,7 @@
 import { useUser } from "@clerk/react-router";
 import { createContext, useMemo, useRef } from "react";
 
-export const AuthContext = createContext<{ roles: string[] }>({ roles: [] });
+export const AuthContext = createContext<{ roles: string[], userId: string | null }>({ roles: [], userId: null });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ roles: stableRoles.current }}>
+    <AuthContext.Provider value={{ roles: stableRoles.current, userId: user?.id ?? null }}>
       {children}
     </AuthContext.Provider>
   );

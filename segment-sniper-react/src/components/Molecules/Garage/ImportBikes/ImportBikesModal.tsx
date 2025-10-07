@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { BikeModel, GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables } from "../../../../graphql/generated";
 import GetBikesByAuthUserId from "../../../Molecules/Garage/GraphQl/GetBikesByAuthUserId.graphql";
 import { ApolloError } from "@apollo/client";
-import { useUser } from "@clerk/clerk-react";
 
 
 export type ImportBikesModalProps = {
@@ -17,9 +16,6 @@ export type ImportBikesModalProps = {
 const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
     const abortRef = useRef<AbortController | null>(null);
 
-
-    const user = useUser();
-    const userId = user?.user?.id ?? '';
     const [importGarage, { loading,
         error }] = useImportGarage();
 
@@ -29,17 +25,9 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
         abortRef.current?.abort();
         abortRef.current = new AbortController();
 
-        if (!userId) {
-            console.error("User ID is not available");
-            return false;
-        }
 
         try {
             const result = await importGarage({
-                variables: {
-                    userId: userId,
-                },
-
                 context: {
                     fetchOptions: {
                         signal: abortRef.current.signal,
@@ -48,7 +36,7 @@ const ImportBikesModal = ({ show, onClose }: ImportBikesModalProps) => {
 
                 update: (cache, { data }) => {
                     const newBike = data?.garage?.upsertBike;
-                    if (!newBike || !userId) return
+                    if (!newBike) return
                  
                     try {
                         const existingData = cache.readQuery<GetBikesByAuthUserIdQuery, GetBikesByAuthUserIdQueryVariables>({
