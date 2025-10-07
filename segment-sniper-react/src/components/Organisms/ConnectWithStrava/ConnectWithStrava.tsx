@@ -4,17 +4,19 @@ import connectWithStravaImage from "../../../assets/stravaImages/btn_strava_conn
 import useUserStore from "../../../stores/useUserStore";
 import useAppConfigStore from "../../../stores/useAppConfigStore";
 import { useUser } from "@clerk/clerk-react";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/authContext";
 const baseUrl = window.origin;
 const apiUrl = import.meta.env.VITE_SEGMENT_SNIPER_API_URL;
 
 export default function ConnectWithStrava() {
 
-  const user = useUser();
+  const { userId } = useContext(AuthContext);
   const appConfig = useAppConfigStore((state) => state.appConfig);
 
   async function handleConnectWithStrava() {
     const encodedRedirectUri = encodeURIComponent(
-      `${apiUrl}/ConnectWithStrava/ExchangeToken/${user?.user?.id}`
+      `${apiUrl}/ConnectWithStrava/ExchangeToken/${userId}`
     );
 
     window.location.href = `http://www.strava.com/oauth/authorize?client_id=${appConfig?.clientId}&response_type=code&redirect_uri=${encodedRedirectUri}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all,profile:write`;
