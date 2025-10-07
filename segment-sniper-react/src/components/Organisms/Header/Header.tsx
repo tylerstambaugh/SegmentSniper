@@ -53,7 +53,7 @@ function Header() {
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleNavbarToggle} />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="w-100 d-flex justify-content-end align-items-center">
+          <Nav className="w-100 d-flex justify-content-end align-items-end">
             
             {/* ----- When Signed In ----- */}
             <SignedIn>
