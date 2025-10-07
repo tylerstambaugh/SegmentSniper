@@ -18,11 +18,8 @@ export const ApolloClientProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
-
-
   const authLink = setContext(async (_, { headers }) => {
 
-    //TODO Make this awaited
     const accessToken = await getToken({ template: 'SegmentSniper' });
 
     if (!accessToken) {

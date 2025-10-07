@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useGetMeQuery from "../../../hooks/Api/User/useGetMe";
 import { AppRoutes } from "../../../enums/AppRoutes";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { AuthContext } from "../../../context/authContext";
 
 export const AuthSync = ({ children }: { children: React.ReactNode }) => {
-  const { isSignedIn, user } = useUser();
+    const { userId } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [checked, setChecked] = useState(false);
-
-  // Derive a stable userId to avoid object reference churn
-  const userId = useMemo(() => user?.id ?? null, [user?.id]);
+  const isSignedIn = !!userId;
+  
 
   // Only enable query when the user is truly ready
   const { data, isLoading, isError } = useGetMeQuery({
