@@ -36,7 +36,9 @@ const root = createRoot(container!);
 root.render(
   <ErrorBoundary>
     <BrowserRouter>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ClerkProvider 
+      publishableKey={PUBLISHABLE_KEY}
+    >
           <AuthProvider>
             <ApolloClientProvider>
               <QueryClientProvider client={queryClient}>
