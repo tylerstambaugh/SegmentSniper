@@ -47,6 +47,10 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
         price: editEquipment?.price ?? null,
         replaceAtMiles: editEquipment?.replaceAtMiles ?? undefined,
         milesUntilReplaceReminder: editEquipment?.milesUntilReplaceReminder ?? undefined,
+        reminderDate: editEquipment?.reminderDate ?? null,
+        reminderDuration: editEquipment?.reminderDuration ?? null,
+        maxRemindersToSend: editEquipment?.maxRemindersToSend ?? 2,
+        remindersSent: editEquipment?.remindersSent ?? 0,
     }
 
     const validationSchema = Yup.object({
@@ -59,6 +63,10 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
             .max(new Date(), "Date must be in the past"),
         price: Yup.number().nullable(),
         replaceAtMiles: Yup.number(),
+        reminderDate: Yup.date().nullable(),
+        reminderDuration: Yup.number().nullable(),
+        maxRemindersToSend: Yup.number().nullable(),
+        remindersSent: Yup.number().nullable(),
         milesUntilReplaceReminder: Yup.number(),
     })
 
