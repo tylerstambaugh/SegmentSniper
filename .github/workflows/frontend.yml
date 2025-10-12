@@ -18,23 +18,24 @@ jobs:
         with:
           node-version: 20
 
-      # Install dependencies with cache
-      - name: Install dependencies
-        run: npm ci
-        env:
-          CI: true
-        # Optional caching
+      # Cache npm dependencies
       - name: Cache node modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/segment-sniper-react/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Build the Vite React app
+      # Install dependencies in the React project
+      - name: Install dependencies
+        working-directory: ./segment-sniper-react
+        run: npm ci
+
+      # Build the React app
       - name: Build React app
-        run: npm run build --if-present
+        working-directory: ./segment-sniper-react
+        run: npm run build
 
       # Deploy to Azure Static Web Apps
       - name: Deploy to Azure Static Web Apps
