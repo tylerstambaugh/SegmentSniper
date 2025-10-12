@@ -1,4 +1,14 @@
 {
+    
+  "platform": {
+    "apiRuntime": "node:20"
+  },
+  
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/images/*", "/favicon.ico"]
+  },
+
   "routes": [
     {
       "route": "/api/*",
