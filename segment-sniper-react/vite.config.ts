@@ -37,5 +37,9 @@ export default ({ mode }) => {
     optimizeDeps: {
       include: ['lodash'],
     },
+    build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+  }
   });
 };
