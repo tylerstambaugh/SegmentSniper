@@ -32,6 +32,15 @@ jobs:
         working-directory: ./segment-sniper-react
         run: npm run build
 
+      - name: Inspect build output
+        working-directory: ./segment-sniper-react
+        run: |
+          echo "Files in dist:"
+          find dist -type f
+          echo
+          echo "Total number of files:"
+          find dist -type f | wc -l
+
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
