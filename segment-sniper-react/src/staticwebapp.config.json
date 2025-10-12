@@ -3,10 +3,15 @@
   "platform": {
     "apiRuntime": "node:20"
   },
-  
+
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/assets/*", "/images/*", "/favicon.ico"]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
   },
 
   "routes": [
