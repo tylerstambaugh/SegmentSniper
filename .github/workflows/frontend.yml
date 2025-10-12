@@ -47,8 +47,6 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_DEPLOYMENT_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: ./segment-sniper-react
-          output_location: dist
-          skip_app_build: true
-          app_artifact_location: ./segment-sniper-react/dist
+          app_location: ./segment-sniper-react/dist
+          output_location: ''
 
