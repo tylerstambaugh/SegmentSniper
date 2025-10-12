@@ -9,8 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Clean previous build
+        working-directory: ./segment-sniper-react
+        run: rm -rf dist
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
