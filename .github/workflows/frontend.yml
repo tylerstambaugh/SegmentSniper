@@ -11,11 +11,16 @@ on:
 jobs:
   deploy-frontend:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: ./segment-sniper-react/package-lock.json
 
       - name: Install dependencies
         working-directory: ./segment-sniper-react
@@ -26,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: Deploy React to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v2
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_DEPLOYMENT_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
