@@ -27,8 +27,8 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                 <Col>{item.description ?? "No description"}</Col>
             </Row>
             <Row>
-                <Col className={styles.equipmentLabel}>Mileage</Col>
-                <Col>{item.totalMiles}</Col>
+                <Col className={styles.equipmentLabel}>Total Miles / Miles At Install</Col>
+                <Col>{item.totalMiles} / {item.milesAtInstall}</Col>
             </Row>
             <Row>
                 <Col className={styles.equipmentLabel}>Installed on</Col>

@@ -177,18 +177,18 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group controlId="totalMiles" className="mb-3">
+                                <Form.Group controlId="milesAtInstall" className="mb-3">
                                     <Form.Label>Miles Logged</Form.Label>
                                     <Form.Control type="number"
-                                        value={editEquipment?.totalMiles
-                                            ?? formik.values.totalMiles
+                                        value={editEquipment?.milesAtInstall
+                                            ?? formik.values.milesAtInstall
                                             ?? ""}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
-                                            formik.setFieldValue("totalMiles", value);
+                                            formik.setFieldValue("milesAtInstall", value);
                                         }} />
                                     <Form.Control.Feedback type="invalid">
-                                        {formik.errors.totalMiles as FormikErrors<string>}
+                                        {formik.errors.milesAtInstall as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
@@ -216,7 +216,7 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group controlId="reminderDAte" className="mb-3">
+                                <Form.Group controlId="reminderDate" className="mb-3">
                                     <Form.Label>Remind At</Form.Label>
                                     <Form.Control
                                         type="date"
@@ -224,8 +224,11 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                                             ?? formik.values.reminderDate?.toISODate()
                                             ?? ""}
                                         onChange={(e) => {
-                                            const value = e.target.value ? parseFloat(e.target.value) : null;
-                                            formik.setFieldValue("reminderDate", value)
+                                            const newDate = DateTime.fromFormat(
+                                                e.target.value,
+                                                "yyyy-MM-dd"
+                                            );
+                                            formik.setFieldValue("reminderDate", newDate)
                                         }} />
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.reminderDate as FormikErrors<string>}
