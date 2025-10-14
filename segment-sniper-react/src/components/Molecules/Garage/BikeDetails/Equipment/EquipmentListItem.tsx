@@ -54,7 +54,7 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                     <Col>{item.milesUntilReplaceReminder} miles</Col>
                 </Row>
             )}
-            <Row className="justify-content-center pb-2 pt-1">
+            <Row className="d-flex justify-content-center pb-2 pt-1">
                 <Col>
                     <Button
                         className="d-flex justify-content-center px-3"

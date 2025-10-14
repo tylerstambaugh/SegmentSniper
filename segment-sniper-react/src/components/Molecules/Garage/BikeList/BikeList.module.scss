@@ -1,11 +1,19 @@
 .cardLabel {
   font-weight: 600;
+  text-align: left;
+}
+
+.cardDataItem {
+  font-weight: 700;
+  justify-content: start;
+  text-align: right;
 }
 
 .bikeCardTitle {
   font-size: 1.5rem;
   font-weight: 900;
   margin-left: 0.5rem;
+  text-decoration: underline;
 }
 
 .bikeDataRow {
