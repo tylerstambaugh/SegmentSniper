@@ -109,10 +109,10 @@ export default function GarageMenu() {
                 onClose={handleClosedModal}
                 handleUpsertBike={handleUpsertBike}
                 error={upsertBikeError} />
-            <Container className="pt-2">
+            <Container className="justify-content-center pt-2">
                 <Row>
-                    <Col>
-                        <h2>Your Garage </h2>
+                    <Col className="text-center mb-3">
+                        <h2>Your Garage</h2>
                         <BikeList />
                     </Col>
                 </Row>

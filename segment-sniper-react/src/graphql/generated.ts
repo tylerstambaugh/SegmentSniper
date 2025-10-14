@@ -109,8 +109,6 @@ export type EquipmentInput = {
   replaceAtMiles: Scalars['Int']['input'];
   /** The date the equipment was retired */
   retiredDate?: InputMaybe<Scalars['DateTime']['input']>;
-  /** The miles logged on the equipment */
-  totalMiles: Scalars['Decimal']['input'];
   /** The installation date of the updated. */
   updatedDate?: InputMaybe<Scalars['DateTime']['input']>;
 };

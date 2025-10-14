@@ -131,8 +131,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
 
         const equipmentInput: EquipmentInput = {
             name: values.name,
-            description: values.description,
-            totalMiles: values.totalMiles ?? 0,
+            description: values.description,            
             milesAtInstall: values.milesAtInstall ?? 0,
             installDate: installDate,
             retiredDate: retiredDate,
