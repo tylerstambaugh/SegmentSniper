@@ -20,9 +20,6 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "ImportGarage",
                 Type = typeof(ListGraphType<BikeTypeDef>),
-                //Arguments = new QueryArguments(
-                //    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose garage is being updated" }
-                //),
                 Resolver = new FuncFieldResolver<List<BikeModel>>(async context =>
                 {
                     var userId = context.GetUserId();
@@ -43,8 +40,7 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "UpsertBike",
                 Type = typeof(BikeTypeDef),
-                Arguments = new QueryArguments(
-                   // new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                Arguments = new QueryArguments(                   
                     new QueryArgument<NonNullGraphType<BikeInputTypeDef>> { Name = "bike", Description = "The bike model to be added" }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
@@ -80,8 +76,7 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "UpsertBikeEquipment",
                 Type = typeof(BikeTypeDef),
-                Arguments = new QueryArguments(
-                  //  new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                Arguments = new QueryArguments(                 
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
                     new QueryArgument<NonNullGraphType<EquipmentInputTypeDef>> { Name = "equipment", Description = "The details of the equipment being added." }
                 ),
@@ -112,8 +107,7 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "RetireEquipmentOnBike",
                 Type = typeof(BikeTypeDef),
-                Arguments = new QueryArguments(
-                    //new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                Arguments = new QueryArguments(                   
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "bikeId", Description = "The Id of the bike the equipment id being added to." },
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." },
                     new QueryArgument<NonNullGraphType<DateGraphType>> { Name = "retireDate", Description = "The date the equipment is to be retired." }
@@ -143,8 +137,7 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "DeleteEquipment",
                 Type = typeof(BikeTypeDef),
-                Arguments = new QueryArguments(
-                   // new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                Arguments = new QueryArguments(                   
                     new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "equipmentId", Description = "The Id of the equipment being retired." }
                 ),
                 Resolver = new FuncFieldResolver<BikeModel>(async context =>
@@ -164,8 +157,7 @@ namespace SegmentSniper.GraphQL.Mutations
             {
                 Name = "DeleteBikes",
                 Type = typeof(DeleteResultGraphType),
-                Arguments = new QueryArguments(
-                  //  new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "userId", Description = "The ID of the user whose bike is being updated" },
+                Arguments = new QueryArguments(                
                     new QueryArgument<NonNullGraphType<ListGraphType<IdGraphType>>> { Name = "bikeIds", Description = "The Ids of the bikes being deleted." }
                 ),
                 Resolver = new FuncFieldResolver<bool>(async context =>
