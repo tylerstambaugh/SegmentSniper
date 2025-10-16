@@ -12,10 +12,8 @@ type EquipmentListItemProps = {
 }
 
 const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => {
+const timeFormatter = useTimeFormatConverter();
 
-
-
-    const timeFormatter = useTimeFormatConverter();
     return (
         <Col>
             <Row>
@@ -27,8 +25,8 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                 <Col>{item.description ?? "No description"}</Col>
             </Row>
             <Row>
-                <Col className={styles.equipmentLabel}>Mileage</Col>
-                <Col>{item.totalMiles}</Col>
+                <Col className={styles.equipmentLabel}>Total Miles / Miles At Install</Col>
+                <Col>{item.totalMiles} / {item.milesAtInstall}</Col>
             </Row>
             <Row>
                 <Col className={styles.equipmentLabel}>Installed on</Col>
@@ -54,7 +52,7 @@ const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => 
                     <Col>{item.milesUntilReplaceReminder} miles</Col>
                 </Row>
             )}
-            <Row className="justify-content-center pb-2 pt-1">
+            <Row className="d-flex justify-content-center pb-2 pt-1">
                 <Col>
                     <Button
                         className="d-flex justify-content-center px-3"

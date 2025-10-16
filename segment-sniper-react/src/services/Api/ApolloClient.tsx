@@ -1,60 +1,56 @@
-
-import React from 'react';
-import useApiConfigStore from '../../stores/useApiConfigStore';
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink, Observable } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import { useAuth } from '@clerk/clerk-react';
+import React, { useMemo } from "react";
+import useApiConfigStore from "../../stores/useApiConfigStore";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { useAuth } from "@clerk/clerk-react";
 
 export const ApolloClientProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const baseUrl = useApiConfigStore((state) => state.apiConfig?.baseGraphqlUrl);
+  const baseUrl = useApiConfigStore(
+    (state) => state.apiConfig?.baseGraphqlUrl
+  );
   const { getToken } = useAuth();
 
-  const httpLink = new HttpLink({
-    uri: `${baseUrl}`,
-    headers: {
-      'GraphQL-Require-Preflight': '1',
-    },
-  });
-
-  const authLink = setContext(async (_, { headers }) => {
-
-    const accessToken = await getToken({ template: 'SegmentSniper' });
-
-    if (!accessToken) {
-      throw new Error('Unauthorized: No access token provided');
-    }
-    return {
-      headers: {
-        ...headers,
-        Authorization: accessToken ? `Bearer ${accessToken}` : '',
-      },
-    };
-  });
-
-  const errorLink = new ApolloLink((operation, forward) => {
-    return new Observable((observer) => {
-      forward(operation).subscribe({
-        next: (result) => {
-          observer.next(result);
-        },
-        error: (error) => {
-          if (error.message.includes('Unauthorized')) {
-            // Handle the unauthorized error (e.g., redirect to login, show a message)
-            console.error('Unauthorized request');
-          }
-          observer.error(error);
-        },
-        complete: observer.complete.bind(observer),
-      });
+  const httpLink = useMemo(() => {
+    return new HttpLink({
+      uri: baseUrl,
+      headers: { "GraphQL-Require-Preflight": "1" },
     });
-  });
+  }, [baseUrl]);
 
-  const client = new ApolloClient({
-    link: ApolloLink.from([authLink, errorLink, httpLink]),
-    cache: new InMemoryCache(),
-  });
+  const authLink = useMemo(() => {
+    return setContext(async (_, { headers }) => {
+      try {
+        const accessToken = await getToken({ template: "SegmentSniper" });
+        return {
+          headers: {
+            ...headers,
+            Authorization: accessToken ? `Bearer ${accessToken}` : "",
+          },
+        };
+      } catch (err) {
+        console.warn("Token fetch failed:", err);
+        return { headers };
+      }
+    });
+  }, [getToken]);
 
-  return <ApolloProvider client={client}>{children} </ApolloProvider>;
+  const client = useMemo(() => {
+    if (!baseUrl) return null;
+    return new ApolloClient({
+      link: authLink.concat(httpLink),
+      cache: new InMemoryCache(),
+      connectToDevTools: import.meta.env.DEV,
+    });
+  }, [authLink, httpLink, baseUrl]);
+
+  if (!client) return null;
+
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

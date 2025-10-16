@@ -9,7 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ClerkProvider } from '@clerk/react-router'
+import { ClerkLoaded, ClerkProvider } from '@clerk/react-router'
 import ErrorBoundary from './components/ErrorBoundary';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 import AppRoutesComponent from './SegmentSniper.routes';
@@ -37,8 +37,8 @@ root.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ClerkProvider 
-      publishableKey={PUBLISHABLE_KEY}
-    >
+      publishableKey={PUBLISHABLE_KEY}>
+        <ClerkLoaded>        
           <AuthProvider>
             <ApolloClientProvider>
               <QueryClientProvider client={queryClient}>
@@ -56,6 +56,7 @@ root.render(
               </QueryClientProvider>
             </ApolloClientProvider>
         </AuthProvider>
+        </ClerkLoaded>
       </ClerkProvider>
     </BrowserRouter>
   </ErrorBoundary>

@@ -25,24 +25,24 @@ export const BikeListItem = ({
         <>
             <Container >
                 <Row className={styles.bikeDataRow}>
-                    <Col className={styles.cardLabel}> Bike Id</Col>
-                    <Col >{id}</Col>
+                    <Col className={styles.cardLabel}>Bike Id</Col>
+                    <Col className={styles.cardDataItem}>{id}</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className={styles.cardLabel}>Brand</Col>
-                    <Col>{brandName}</Col>
+                    <Col className={styles.cardDataItem}>{brandName}</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className={styles.cardLabel}>Model</Col>
-                    <Col>{modelName}</Col>
+                    <Col className={styles.cardDataItem}>{modelName}</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className={styles.cardLabel}>Type</Col>
-                    <Col>{frameType}</Col>
+                    <Col className={styles.cardDataItem}>{frameType}</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className={styles.cardLabel}>Odometer</Col>
-                    <Col>{convert.ConvertMetersToMiles(distanceInMeters)} miles</Col>
+                    <Col className={styles.cardDataItem}>{convert.ConvertMetersToMiles(distanceInMeters)} miles</Col>
                 </Row>
                 <Row className={styles.bikeDataRow}>
                     <Col className='d-flex justify-content-center pb-2 pt-1'>

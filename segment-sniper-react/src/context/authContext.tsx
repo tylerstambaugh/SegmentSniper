@@ -1,45 +1,60 @@
-import { ClerkLoaded, useUser } from "@clerk/react-router";
+import { useUser } from "@clerk/react-router";
 import { createContext, useMemo, useRef } from "react";
 
-export const AuthContext = createContext<{ roles: string[], userId: string | null }>({
+export interface AuthContextValue {
+  roles: string[];
+  userId: string | null;
+  isLoaded: boolean;
+}
+
+export const AuthContext = createContext<AuthContextValue>({
   roles: [],
   userId: null,
+  isLoaded: false,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoaded } = useUser();
+
+  // Keep stable refs to avoid re-renders when Clerk silently refreshes tokens
   const lastUserId = useRef<string | null>(null);
-  const stableRoles = useRef<string[]>([]);
+  const lastRoles = useRef<string[]>([]);
 
-  const roles = useMemo(() => {
-    if (!isLoaded) return undefined; // don’t trigger until ready
-    if (user?.id === lastUserId.current) return undefined;
+  // Only recompute when user changes
+  const computedRoles = useMemo(() => {
+    if (!isLoaded || !user) return undefined;
+    if (user.id === lastUserId.current) return undefined;
 
-    lastUserId.current = user?.id ?? null;
-    const r = user?.publicMetadata?.roles;
-    return Array.isArray(r) ? r : r ? [r] : [];
+    const rawRoles = user.publicMetadata?.roles;
+    const roles = Array.isArray(rawRoles)
+      ? (rawRoles as string[])
+      : rawRoles
+      ? [rawRoles as string]
+      : [];
+
+    lastUserId.current = user.id;
+    lastRoles.current = roles;
+    return roles;
   }, [user?.id, user?.publicMetadata?.roles, isLoaded]);
 
-  if (roles !== undefined) {
-    stableRoles.current = roles;
+  // Update the stable ref only when roles actually change
+  if (computedRoles !== undefined) {
+    lastRoles.current = computedRoles;
   }
 
-  const stableUserId = user?.id ?? null;
-
-  // This ensures consumers don't re-render unless value actually changes
+  // Create stable context value that only updates when something truly changes
   const contextValue = useMemo(
     () => ({
-      roles: stableRoles.current,
-      userId: stableUserId,
+      roles: lastRoles.current,
+      userId: user?.id ?? lastUserId.current,
+      isLoaded,
     }),
-    [stableUserId, stableRoles.current.join(",")] // change only if user or roles actually differ
+    [user?.id, isLoaded, lastRoles.current.join(",")]
   );
 
-return (
-  <ClerkLoaded>
+  return (
     <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
-  </ClerkLoaded>
-);
+  );
 };
