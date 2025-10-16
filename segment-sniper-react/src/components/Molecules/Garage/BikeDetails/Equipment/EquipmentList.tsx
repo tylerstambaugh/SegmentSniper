@@ -32,7 +32,7 @@ export type EquipmentModalState =
 
 const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
 
-    const [modalState, setModalState] =useState<EquipmentModalState>({ type: "none" });
+    const [modalState, setModalState] = useState<EquipmentModalState>({ type: "none" });
     const handleClosedModal = () => {
 
         setModalState({ type: "none" });
@@ -59,9 +59,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     const [addEquipmentToBike,
         { loading: addEquipmentLoading,
             error: addEquipmentError }
-    ] = useUpsertBikeEquipmentMutation(
-
-        {
+    ] = useUpsertBikeEquipmentMutation({
             update(cache, { data }) {
                 const updatedBike = data?.garage?.upsertBikeEquipment;
                 if (!updatedBike) return;
@@ -118,9 +116,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             },
         });
 
-
     async function handleUpsertEquipmentSubmit(values: UpsertEquipmentFormValues) {
-
         const installDate = values.installDate
             ? DateTime.fromISO(values.installDate as unknown as string).toISO()
             : null;
@@ -138,7 +134,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
             price: values.price ?? 0,
             replaceAtMiles: values.replaceAtMiles ?? 0,
             milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0,
-            maxRemindersToSend: values.maxRemindersToSend ?? 0            
+            maxRemindersToSend: values.maxRemindersToSend ?? 1            
         }
         addEquipmentToBike({
             variables: {
@@ -254,7 +250,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     <Row className="pt-1 p-1">
                         <EquipmentAccordion
                             equipment={activeEquipment}
-                            setModalState={() => setModalState}
+                            setModalState={setModalState}
                         />
                     </Row>
                 </Row>
@@ -269,7 +265,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                     <Row className="pt-1 p-1">
                         <EquipmentAccordion
                             equipment={retiredEquipment}
-                            setModalState={() => setModalState}
+                            setModalState={setModalState}
                         />
                     </Row>
                 </Row>

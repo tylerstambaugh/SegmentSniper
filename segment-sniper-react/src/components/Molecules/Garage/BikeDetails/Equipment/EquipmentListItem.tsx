@@ -12,10 +12,8 @@ type EquipmentListItemProps = {
 }
 
 const EquipmentListItem = ({ item, setModalState, }: EquipmentListItemProps) => {
+const timeFormatter = useTimeFormatConverter();
 
-
-
-    const timeFormatter = useTimeFormatConverter();
     return (
         <Col>
             <Row>
