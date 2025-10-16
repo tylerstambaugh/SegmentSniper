@@ -132,7 +132,7 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                             </Form.Group>
                         </Row>
                         <Row>
-                            <Col>
+                            <Col  xs={6}>
                                 <Form.Group controlId="installDate" className="mb-3">
                                     <Form.Label>Install Date</Form.Label>
                                     <Form.Control
@@ -151,6 +151,27 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                                         } />
                                     <Form.Control.Feedback type="invalid">
                                         {formik.errors.installDate as FormikErrors<string>}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col xs={5} >
+                                <Form.Group controlId="price" className="mb-3">
+                                    <Form.Label>Price</Form.Label>
+                                    <CurrencyInput
+                                        id="input-price"
+                                        name="Price"
+                                        value={editEquipment?.price
+                                            ?? formik.values.price
+                                            ?? 0}
+                                        onValueChange={(value) => {
+                                            const numericValue = parseFloat(value ?? "0.00") || 0;
+                                            formik.setFieldValue("price", numericValue);
+                                        }}
+                                        intlConfig={{ locale: 'en-US', currency: 'USD' }}
+                                        decimalScale={2}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {formik.errors.price as FormikErrors<string>}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
@@ -178,11 +199,11 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                         <Row>
                             <Col>
                                 <Form.Group controlId="milesAtInstall" className="mb-3">
-                                    <Form.Label>Miles Logged</Form.Label>
+                                    <Form.Label>Miles At Install</Form.Label>
                                     <Form.Control type="number"
                                         value={editEquipment?.milesAtInstall
                                             ?? formik.values.milesAtInstall
-                                            ?? ""}
+                                            ?? 0}
                                         onChange={(e) => {
                                             const value = e.target.value ? parseFloat(e.target.value) : null;
                                             formik.setFieldValue("milesAtInstall", value);
@@ -193,26 +214,17 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
                                 </Form.Group>
                             </Col>
                             <Col>
-                                <Form.Group controlId="price" className="mb-3">
-                                    <Form.Label>Price</Form.Label>
-                                    <CurrencyInput
-                                        id="input-price"
-                                        name="Price"
-                                        value={editEquipment?.price
-                                            ?? formik.values.price
-                                            ?? 0}
-                                        onValueChange={(value) => {
-                                            const numericValue = parseFloat(value ?? "0.00") || 0;
-                                            formik.setFieldValue("price", numericValue);
-                                        }}
-                                        intlConfig={{ locale: 'en-US', currency: 'USD' }}
-                                        decimalScale={2}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {formik.errors.price as FormikErrors<string>}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
+                                <Form.Group controlId="totalMiles" className="mb-3">
+                                    <Form.Label>Total Miles</Form.Label>
+                                    <Form.Control type="number" 
+                                        value={editEquipment?.totalMiles
+                                            ?? formik.values.totalMiles
+                                            ?? ""} 
+                                        disabled={true}
+                                        />
+                                        </Form.Group>                                    
                             </Col>
+      
                         </Row>
                         <Row>
                             <Col>
