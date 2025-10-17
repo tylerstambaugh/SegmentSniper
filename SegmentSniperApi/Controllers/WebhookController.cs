@@ -22,12 +22,15 @@ namespace SegmentSniper.Api.Controllers
         private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;
         private readonly IGetStravaWebhookSubscriptionId _getStravaWebhookSubscriptionId;
         private readonly WebhookEventHandlerFactory _webhookEventHandlerFactory;
+        private readonly IServiceScopeFactory _scopeFactory;
+
 
         public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
             IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
             IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler,
             IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId,            
-            WebhookEventHandlerFactory webhookEventHandlerFactory
+            WebhookEventHandlerFactory webhookEventHandlerFactory,
+             IServiceScopeFactory scopeFactory
             )
         {
             _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
@@ -35,6 +38,7 @@ namespace SegmentSniper.Api.Controllers
             _deleteStravaWebhookSubscriptionHandler = deleteStravaWebhookSubscriptionHandler;
             _getStravaWebhookSubscriptionId = getStravaWebhookSubscriptionId;
             _webhookEventHandlerFactory = webhookEventHandlerFactory;
+            _scopeFactory = scopeFactory;
         }
 
         [HttpGet]
@@ -57,30 +61,28 @@ namespace SegmentSniper.Api.Controllers
         [HttpPost]
         public IActionResult ReceiveUpdate(WebhookEvent payload)
         {
-            if (payload != null)
-            {
-               
-                // Fire and forget safely
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        var eventType = payload.AspectType;
-                        var handler = _webhookEventHandlerFactory.GetHandler(eventType);
-                        await handler.HandleEventAsync(payload);
-                    }
-                    catch (Exception ex)
-                    {                        
-                      Log.Error(ex, $"Error processing strava webhook event: {ex}");
-                    }
-                });
+            if (payload == null)
+                return BadRequest("Invalid payload.");
 
-                return Ok(); // Return immediately
-            }
-            else
+            _ = Task.Run(async () =>
             {
-                return BadRequest("we don't understand you.");
-            }               
+                try
+                {
+                    using var scope = _scopeFactory.CreateScope();
+
+                    var handlerFactory = scope.ServiceProvider.GetRequiredService<WebhookEventHandlerFactory>();
+                    var handler = handlerFactory.GetHandler(payload.AspectType);
+
+                    await handler.HandleEventAsync(payload);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error processing Strava webhook event");
+                }
+            });
+
+            return Ok(); 
+                         
         }
 
         [Authorize]
