@@ -1,30 +1,32 @@
-import { DetailedActivity } from "../../../models/Activity/DetailedActivity";
-import { ApiContract } from "../ApiCommon/ApiContract";
-import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
-import { apiGet } from "../BaseApiService";
+//TODO : DELETE THIS FILE IF UNUSED
 
-export type DetailedActivityByIdRequest = {
-  activityId: string;
-};
+// import { DetailedActivity } from "../../../models/Activity/DetailedActivity";
+// import { ApiContract } from "../ApiCommon/ApiContract";
+// import UnsuccessfulHttpResponseError from "../ApiCommon/UnsuccessfulHttpResponseError";
+// import { apiGet } from "../BaseApiService";
 
-export type DetailedActivityResponse = {
-  detailedActivity: DetailedActivity;
-};
+// export type DetailedActivityByIdRequest = {
+//   activityId: string;
+// };
 
-export default async function getDetailedActivityById(
-  contract: ApiContract<DetailedActivityByIdRequest>
-) {
-  try {
-    const response = apiGet<DetailedActivityResponse>(
-      `${contract.baseUrl}/sniper/getDetailedActivityById/${contract.request?.activityId}`,
-      contract
-    );
+// export type DetailedActivityResponse = {
+//   detailedActivity: DetailedActivity;
+// };
 
-    return response;
-  } catch (error) {
-    if (error instanceof UnsuccessfulHttpResponseError) {
-      throw error;
-    }
-    throw error;
-  }
-}
+// export default async function getDetailedActivityById(
+//   contract: ApiContract<DetailedActivityByIdRequest>
+// ) {
+//   try {
+//     const response = apiGet<DetailedActivityResponse>(
+//       `${contract.baseUrl}/sniper/getDetailedActivityById/${contract.request?.activityId}`,
+//       contract
+//     );
+
+//     return response;
+//   } catch (error) {
+//     if (error instanceof UnsuccessfulHttpResponseError) {
+//       throw error;
+//     }
+//     throw error;
+//   }
+// }

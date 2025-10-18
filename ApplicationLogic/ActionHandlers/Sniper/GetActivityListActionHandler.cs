@@ -145,6 +145,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                             })
                         );
                     }
+
+                    //TODO Add the mileage to any equipment on the bike
                 }
                 else
                 {
