@@ -64,26 +64,27 @@ namespace SegmentSniper.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [Authorize]
-        [Route("getDetailedActivityById/$activityId")]
-        public async Task<IActionResult> GetDetailedActivityById(string activityId)
-        {
+        //TODO DELETE THIS IF UNUSED
+        //[HttpGet]
+        //[Authorize]
+        //[Route("getDetailedActivityById/$activityId")]
+        //public async Task<IActionResult> GetDetailedActivityById(string activityId)
+        //{
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId))
-            {
-                throw new InvalidOperationException("User ID claim is missing.");
-            }
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userId))
+        //    {
+        //        throw new InvalidOperationException("User ID claim is missing.");
+        //    }
 
-            var request = new GetDetailedActivityByIdRequest(userId, activityId);
-            var returnList = await _getDetailedActivityByIdActionHandler.HandleAsync(request);
+        //    var request = new GetDetailedActivityByIdRequest(userId, activityId);
+        //    var returnList = await _getDetailedActivityByIdActionHandler.HandleAsync(request);
 
-            if (returnList != null)
-                return Ok(returnList);
-            else
-                return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
-        }
+        //    if (returnList != null)
+        //        return Ok(returnList);
+        //    else
+        //        return StatusCode(421, $"Unable to fetch activity Id: {activityId}.");
+        //}
 
         [HttpPost]
         [Authorize]
@@ -105,25 +106,25 @@ namespace SegmentSniper.Api.Controllers
             else return StatusCode(421, "Unable to star segment");
         }
 
+        //TODO DELETE THIS IF UNUSED
+        //[HttpGet]
+        //[Authorize]
+        //[Route("detailedSegment/{segmentId}")]
+        //public async Task<IActionResult> DetailedSegment(string segmentId)
+        //{
+        //    var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+        //        ?? throw new InvalidOperationException("User ID claim is missing.");
 
-        [HttpGet]
-        [Authorize]
-        [Route("detailedSegment/{segmentId}")]
-        public async Task<IActionResult> DetailedSegment(string segmentId)
-        {
-            var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                ?? throw new InvalidOperationException("User ID claim is missing.");
+        //    var request = new GetDetailedSegmentBySegmentIdRequest
+        //    {
+        //        UserId = userId,
+        //        SegmentId = segmentId,
+        //    };
 
-            var request = new GetDetailedSegmentBySegmentIdRequest
-            {
-                UserId = userId,
-                SegmentId = segmentId,
-            };
-
-            var returnSegment = await _getDetailedSegmentBySegmentIdActionHandler.HandleAsync(request);
-            if (returnSegment != null) return Ok(returnSegment);
-            else return StatusCode(421, "Unable to star segment");
-        }
+        //    var returnSegment = await _getDetailedSegmentBySegmentIdActionHandler.HandleAsync(request);
+        //    if (returnSegment != null) return Ok(returnSegment);
+        //    else return StatusCode(421, "Unable to star segment");
+        //}
 
         [HttpGet]
         [Authorize]
