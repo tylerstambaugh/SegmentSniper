@@ -34,10 +34,15 @@ namespace SegmentSniper.Services.Garage
                     Description = contract.Equipment.Description,
                     TotalMilage = contract.Equipment.TotalMiles,
                     InstallDate = contract.Equipment.InstallDate ?? DateTime.MaxValue,
+                    UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.MaxValue,
                     RetiredDate = contract.Equipment.RetiredDate ?? DateTime.MaxValue,
+                    ReminderDate = contract.Equipment.ReminderDate ?? DateTime.MaxValue,
+                    ReminderDuration = contract.Equipment.ReminderDuration,
                     Price = contract.Equipment.Price,
                     ReplaceAtMiles = contract.Equipment.ReplaceAtMiles,
                     MilesUntilReplaceReminder = contract.Equipment.MilesUntilReplaceReminder,
+                    MaxRemindersToSend = contract.Equipment.MaxRemindersToSend,
+                    RemindersSent = contract.Equipment.RemindersSent
                 };
 
                 _context.Equipment.Add(equipmentToAdd);
@@ -84,9 +89,24 @@ namespace SegmentSniper.Services.Garage
                     existingEquipment.InstallDate = contract.Equipment.InstallDate ?? DateTime.MaxValue;
                     isUpdated = true;
                 }
+                if (existingEquipment.UpdatedDate != (contract.Equipment.UpdatedDate ?? DateTime.MaxValue))
+                {
+                    existingEquipment.UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.MaxValue;
+                    isUpdated = true;
+                }                
                 if (existingEquipment.RetiredDate != (contract.Equipment.RetiredDate ?? DateTime.MaxValue))
                 {
                     existingEquipment.RetiredDate = contract.Equipment.RetiredDate ?? DateTime.MaxValue;
+                    isUpdated = true;
+                }
+                if (existingEquipment.ReminderDate != (contract.Equipment.ReminderDate ?? DateTime.MaxValue))
+                {
+                    existingEquipment.ReminderDate = contract.Equipment.ReminderDate ?? DateTime.MaxValue;
+                    isUpdated = true;
+                }
+                if (existingEquipment.ReminderDuration != contract.Equipment.ReminderDuration)
+                {
+                    existingEquipment.ReminderDuration = contract.Equipment.ReminderDuration;
                     isUpdated = true;
                 }
                 if (existingEquipment.Price != contract.Equipment.Price)
@@ -102,6 +122,16 @@ namespace SegmentSniper.Services.Garage
                 if (existingEquipment.MilesUntilReplaceReminder != contract.Equipment.MilesUntilReplaceReminder)
                 {
                     existingEquipment.MilesUntilReplaceReminder = contract.Equipment.MilesUntilReplaceReminder;
+                    isUpdated = true;
+                }
+                if(existingEquipment.MaxRemindersToSend != contract.Equipment.MaxRemindersToSend)
+                {
+                    existingEquipment.MaxRemindersToSend = contract.Equipment.MaxRemindersToSend;
+                    isUpdated = true;
+                }
+                if(existingEquipment.RemindersSent != contract.Equipment.RemindersSent)
+                {
+                    existingEquipment.RemindersSent = contract.Equipment.RemindersSent;
                     isUpdated = true;
                 }
 
