@@ -75,6 +75,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
 
                 //should update the total miles on the equipment on the bike too.
 
+
+
                 List<SnipeSegment> snipeSegments = new List<SnipeSegment>();
                 List<ML_SegmentEffort> MlSegmentEfforts = new List<ML_SegmentEffort>();
 

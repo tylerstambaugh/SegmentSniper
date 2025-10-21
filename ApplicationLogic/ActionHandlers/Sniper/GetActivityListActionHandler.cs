@@ -97,10 +97,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     {
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
-
-                    //Log.Debug($"Activity Search");
-
-
+                    
                     return new GetActivityListRequest.Response { ActivityList = activityList };
 
                 }
