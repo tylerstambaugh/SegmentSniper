@@ -10,6 +10,7 @@ using SegmentSniper.Api.Configuration.MappingProfiles;
 using SegmentSniper.Data;
 using SegmentSniper.GraphQL;
 using SegmentSniper.Models.Auth;
+using SegmentSniper.Services;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System.Security.Claims;
@@ -56,6 +57,9 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.Configure<QueueSettings>(
+                builder.Configuration.GetSection("AzureStorageQueue"));
 
             #region Logging
 
