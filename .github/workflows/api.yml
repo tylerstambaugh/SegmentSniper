@@ -57,3 +57,18 @@ jobs:
           app-name: as-segmentsniper-api-eastus-dev
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
           package: ./publish
+
+  deploy-updatebike-function:
+     runs-on: windows-latest
+     needs: build-api
+     steps:
+       - uses: actions/download-artifact@v4
+         with:
+           name: publish
+           path: ./publish
+  
+       - uses: azure/functions-action@v1
+         with:
+           app-name: as-updatebikeequipment-func
+           publish-profile: ${{ secrets.UPDATE_BIKE_EQUIPMENT_FUNCTION_PUBLISH_PROFILE }}
+           package: ./publish/updatebike
