@@ -10,7 +10,7 @@ namespace UpdateBikeEquipmentFunction
         }
 
         [Function(nameof(UpdateBikeEquipment))]
-        public void Run([QueueTrigger("process-bike-activity-queue", Connection = "AzureWebJobsStorage")] QueueMessage message)
+        public void Run([QueueTrigger("process-bike-activity-queue", Connection = "SegmentSniperDevQueueConnection")] QueueMessage message)
         {
             _logger.LogInformation($"C# Queue trigger function processed: {message.MessageText}");
         }
