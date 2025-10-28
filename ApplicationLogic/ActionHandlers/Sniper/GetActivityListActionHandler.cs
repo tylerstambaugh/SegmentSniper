@@ -186,7 +186,11 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     );
                     if (!bikeActivityAdded.Success)
                     {
-                        Log.Error("Failed to add bikeActivity {ActivityId} from GetActivityListHandler.", summaryActivity.Id);
+                        Log.Error(
+                            "Failed to add bikeActivity {ActivityId} from GetActivityListHandler. Error: {ErrorMessage}",
+                            summaryActivity.Id,
+                            bikeActivityAdded.Message ?? "Unknown error"
+                        );
                     }
                 }
             }

@@ -32,7 +32,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                                          IAddBikeActivity addBikeActivity,
                                          IStravaRequestService stravaRequestService,
                                          ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData,
-                                         IBikeActivityQueuePublisher bikeActivityQueuePublisher,
+                                             IBikeActivityQueuePublisher bikeActivityQueuePublisher,
                                          IMapper mapper)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
