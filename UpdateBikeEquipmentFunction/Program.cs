@@ -17,7 +17,9 @@ builder.ConfigureFunctionsWebApplication();
 //     .ConfigureFunctionsApplicationInsights();
 
 string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
+builder.Configuration
+    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 if (builder.Environment.IsDevelopment())
 {

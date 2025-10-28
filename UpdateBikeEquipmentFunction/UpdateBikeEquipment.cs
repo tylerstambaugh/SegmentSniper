@@ -1,3 +1,7 @@
+using Azure.Storage.Queues.Models;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
+
 namespace UpdateBikeEquipmentFunction
 {
     public class UpdateBikeEquipment

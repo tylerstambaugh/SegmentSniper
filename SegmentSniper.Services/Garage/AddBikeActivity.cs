@@ -41,7 +41,11 @@ namespace SegmentSniper.Services.Garage
                         };
                     }                
             }
-            throw new ArgumentException("BikeActivity already exists.");
+            return new AddBikeActivityContract.Result
+            {
+                Success = false,
+                Message = "Bike activity already exists"
+            };
         }
 
         private void ValidateContract(BikeActivityModel bikeActivity)
