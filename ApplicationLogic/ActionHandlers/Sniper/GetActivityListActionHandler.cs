@@ -26,6 +26,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         private readonly IGetAllBikesByUserId _getAllBikesByUserId;
         private readonly IGetAllBikeActivitiesByUserId _getAllBikeActivitiesByUserId;
         private readonly IAddBikeActivity _addBikeActivity;
+        private readonly IBikeActivityQueuePublisher _bikeActivityQueuePublisher;
         private readonly IUpsertBike _upsertBike;
         private readonly int maxActivityResults = 200;
 
@@ -36,6 +37,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             IGetAllBikesByUserId getAllBikesByUserId,
             IGetAllBikeActivitiesByUserId getAllBikeActivitiesByUserId,
             IAddBikeActivity addBikeActivity,
+            IBikeActivityQueuePublisher bikeActivityQueuePublisher,
             IUpsertBike upsertBike)
         {
             _context = context;
@@ -45,6 +47,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
             _getAllBikesByUserId = getAllBikesByUserId;
             _getAllBikeActivitiesByUserId = getAllBikeActivitiesByUserId;
             _addBikeActivity = addBikeActivity;
+            _bikeActivityQueuePublisher = bikeActivityQueuePublisher;
             _upsertBike = upsertBike;
         }
 
@@ -97,10 +100,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     {
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
-
-                    //Log.Debug($"Activity Search");
-
-
+                    
                     return new GetActivityListRequest.Response { ActivityList = activityList };
 
                 }
@@ -145,6 +145,13 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                             })
                         );
                     }
+
+                    //TODO Add the mileage to any equipment on the bike
+                    await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                    {
+                        AuthUserId = userId,
+                        BikeId = summaryActivity.GearId
+                    });
                 }
                 else
                 {
@@ -179,7 +186,11 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     );
                     if (!bikeActivityAdded.Success)
                     {
-                        Log.Error("Failed to add bikeActivity {ActivityId} from GetActivityListHandler.", summaryActivity.Id);
+                        Log.Error(
+                            "Failed to add bikeActivity {ActivityId} from GetActivityListHandler. Error: {ErrorMessage}",
+                            summaryActivity.Id,
+                            bikeActivityAdded.Message ?? "Unknown error"
+                        );
                     }
                 }
             }

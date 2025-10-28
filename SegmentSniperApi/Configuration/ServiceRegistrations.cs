@@ -139,6 +139,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<IDeleteEquipment, DeleteEquipment>();
             services.AddScoped<IDeleteBike, DeleteBike>();
             services.AddScoped<IDeleteBikeActivity, DeleteBikeActivity>();
+            services.AddScoped<IBikeActivityQueuePublisher, BikeActivityQueuePublisher>();
 
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();

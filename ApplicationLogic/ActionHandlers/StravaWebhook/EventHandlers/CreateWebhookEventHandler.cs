@@ -23,6 +23,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         private readonly IAddBikeActivity _addBikeActivity;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly ISaveSegmentPredictionTrainingData _saveSegmentPredictionTrainingData;
+        private readonly IBikeActivityQueuePublisher _bikeActivityQueuePublisher;
         private readonly IMapper _mapper;
         private string _userId;
 
@@ -31,6 +32,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                                          IAddBikeActivity addBikeActivity,
                                          IStravaRequestService stravaRequestService,
                                          ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData,
+                                             IBikeActivityQueuePublisher bikeActivityQueuePublisher,
                                          IMapper mapper)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
@@ -38,6 +40,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
             _addBikeActivity = addBikeActivity;
             _stravaRequestService = stravaRequestService;
             _saveSegmentPredictionTrainingData = saveSegmentPredictionTrainingData;
+            _bikeActivityQueuePublisher = bikeActivityQueuePublisher;
             _mapper = mapper;
         }
         public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
@@ -70,9 +73,16 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                        UserId = _userId,
                        BikeId = activityDetails.DetailedActivity.GearId,
                        ActivityDate = activityDetails.DetailedActivity.StartDate,
-                       DistanceInMeters = activityDetails.DetailedActivity.Distance,
-
+                       DistanceInMeters = activityDetails.DetailedActivity.Distance
                    }));
+
+                //should update the total miles on the equipment on the bike too.
+                await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                {
+                    AuthUserId = _userId,
+                    BikeId = activityDetails.DetailedActivity.GearId
+                });
+
 
                 List<SnipeSegment> snipeSegments = new List<SnipeSegment>();
                 List<ML_SegmentEffort> MlSegmentEfforts = new List<ML_SegmentEffort>();

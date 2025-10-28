@@ -21,6 +21,7 @@
 	<ItemGroup>
 	  <Folder Include="Entities\StravaToken\" />
 	  <Folder Include="Migrations\" />
+	  <Folder Include="Scripts\StoredProcedures\" />
 	</ItemGroup>
 
 </Project>

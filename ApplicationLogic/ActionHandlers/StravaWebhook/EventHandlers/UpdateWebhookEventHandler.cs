@@ -89,8 +89,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
 
                     })
                 );
-                
 
+                //TODO recalculate the mileage on the equipment on the bike             
 
                 scope.Complete();
 

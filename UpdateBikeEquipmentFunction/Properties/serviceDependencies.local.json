@@ -9,6 +9,15 @@
     },
     "secrets1": {
       "type": "secrets.user"
+    },
+    "storage2": {
+      "containerPorts": "10000:10000,10001:10001,10002:10002",
+      "secretStore": "LocalSecretsFile",
+      "containerName": "azurite",
+      "containerImage": "mcr.microsoft.com/azure-storage/azurite",
+      "type": "storage.container",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=segmentsniperdevqueue;AccountKey=dj8bvIp:cQSSaQOMtBFV15FJNEyEGgKaZJ7edhZ39xN97M7gEDiyTqmF7KdgsWelwMGRjkivm1q8+AStz1bSuA==;EndpointSuffix=core.windows.net",
+      "dynamicId": null
     }
   }
 }

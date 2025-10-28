@@ -1,61 +1,63 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import useApiConfigStore from '../../../stores/useApiConfigStore';
-import useSegmentDetailsStore from '../../../stores/useSegmentDetailsStore';
-import { useEffect } from 'react';
-import { useAuth } from '@clerk/clerk-react';
-import getSegmentDetails, {
-  SegmentDetailsRequest,
-  SegmentDetailsResponse,
-} from '../../../services/Api/Segment/getSegmentDetails';
+//TODO: DELETE THIS FILE IF UNUSED
 
-const useGetSegmentDetailsQuery = (
-  request: SegmentDetailsRequest,
-  options?: Omit<
-    UseQueryOptions<SegmentDetailsResponse, Error>,
-    'queryKey' | 'queryFn'
-  >
-) => {
-  const { getToken } = useAuth();
-  const apiConfig = useApiConfigStore((state) => state.apiConfig);
-  const addSegmentDetails = useSegmentDetailsStore(
-    (state) => state.addSegmentDetails
-  );
+// import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+// import useApiConfigStore from '../../../stores/useApiConfigStore';
+// import useSegmentDetailsStore from '../../../stores/useSegmentDetailsStore';
+// import { useEffect } from 'react';
+// import { useAuth } from '@clerk/clerk-react';
+// import getSegmentDetails, {
+//   SegmentDetailsRequest,
+//   SegmentDetailsResponse,
+// } from '../../../services/Api/Segment/getSegmentDetails';
 
-  const abortController = new AbortController();
+// const useGetSegmentDetailsQuery = (
+//   request: SegmentDetailsRequest,
+//   options?: Omit<
+//     UseQueryOptions<SegmentDetailsResponse, Error>,
+//     'queryKey' | 'queryFn'
+//   >
+// ) => {
+//   const { getToken } = useAuth();
+//   const apiConfig = useApiConfigStore((state) => state.apiConfig);
+//   const addSegmentDetails = useSegmentDetailsStore(
+//     (state) => state.addSegmentDetails
+//   );
 
-  async function getSegmentDetailsQuery(): Promise<SegmentDetailsResponse> {
-    if (!apiConfig) throw new Error('Missing API config');
+//   const abortController = new AbortController();
 
-    const accessToken = await getToken({ template: 'SegmentSniper' });
-    if (!accessToken) throw new Error('Failed to get access token');
+//   async function getSegmentDetailsQuery(): Promise<SegmentDetailsResponse> {
+//     if (!apiConfig) throw new Error('Missing API config');
 
-    const contract = {
-      baseUrl: apiConfig.baseRestApiUrl,
-      token: accessToken,
-      request,
-      abortController,
-    };
+//     const accessToken = await getToken({ template: 'SegmentSniper' });
+//     if (!accessToken) throw new Error('Failed to get access token');
 
-    const response = await getSegmentDetails(contract);
+//     const contract = {
+//       baseUrl: apiConfig.baseRestApiUrl,
+//       token: accessToken,
+//       request,
+//       abortController,
+//     };
 
-    addSegmentDetails(response.detailedSegmentUIModel);
+//     const response = await getSegmentDetails(contract);
 
-    return response;
-  }
+//     addSegmentDetails(response.detailedSegmentUIModel);
 
-  const query = useQuery({
-    queryKey: ['segmentDetails', request],
-    queryFn: getSegmentDetailsQuery,
-    ...options,
-  });
+//     return response;
+//   }
 
-  useEffect(() => {
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+//   const query = useQuery({
+//     queryKey: ['segmentDetails', request],
+//     queryFn: getSegmentDetailsQuery,
+//     ...options,
+//   });
 
-  return query;
-};
+//   useEffect(() => {
+//     return () => {
+//       abortController.abort();
+//     };
+//   }, []);
 
-export default useGetSegmentDetailsQuery;
+//   return query;
+// };
+
+// export default useGetSegmentDetailsQuery;
