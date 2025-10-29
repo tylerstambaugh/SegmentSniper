@@ -1,11 +1,12 @@
-using Azure.Identity;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
 using Microsoft.Azure.Functions.Worker.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
+using SegmentSniper.Services;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -36,6 +37,17 @@ else
         builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
     }
 }
+
+builder.Services.Configure<QueueSettings>(options =>
+{
+    // Pull the connection string (works in both local and Azure)
+    options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
+                               ?? builder.Configuration["SegmentSniperDevQueueConnection"];
+
+    // Set the queue name from your config (non-secret)
+    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+                        ?? "process-bike-activity-queue";
+});
 
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
