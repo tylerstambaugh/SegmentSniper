@@ -75,13 +75,25 @@ jobs:
   deploy-updatebike-function:
     runs-on: windows-latest
     needs: build-updatebike-function
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: updatebike-publish
           path: ./publish/updatebike
-      - uses: azure/functions-action@v1
+  
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DD79BA6246FB4F1AA09C3A84B3F04541 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3219D67F7F404C7AA8EE4EE755E07992 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_66CF16DF1DEE44B48590B36878CCB0AE }}
+  
+      - name: Deploy Function App via RBAC
+        uses: azure/functions-action@v1
         with:
           app-name: as-updatebikeequipment-func
-          publish-profile: ${{ secrets.UPDATE_BIKE_EQUIPMENT_FUNCTIONAPP_PUBLISH_PROFILE }}
           package: ./publish/updatebike
+
