@@ -58,8 +58,11 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.Configure<QueueSettings>(
-                builder.Configuration.GetSection("AzureStorageQueue"));
+            builder.Services.Configure<QueueSettings>(options =>
+            {
+                options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection"];
+                options.QueueName = "process-bike-activity-queue";
+            });
 
             #region Logging
 
