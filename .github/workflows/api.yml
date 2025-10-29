@@ -42,6 +42,20 @@ jobs:
         with:
           name: api-publish
           path: ./publish
+          
+  build-updatebike-function:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9'
+      - run: dotnet restore
+      - run: dotnet publish UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj -c Release -o ./publish/updatebike
+      - uses: actions/upload-artifact@v4
+        with:
+          name: updatebike-publish
+          path: ./publish/updatebike
 
   deploy-api:
     runs-on: windows-latest
@@ -59,16 +73,15 @@ jobs:
           package: ./publish
 
   deploy-updatebike-function:
-     runs-on: windows-latest
-     needs: build-api
-     steps:
-       - uses: actions/download-artifact@v4
-         with:
-           name: publish
-           path: ./publish
-  
-       - uses: azure/functions-action@v1
-         with:
-           app-name: as-updatebikeequipment-func
-           publish-profile: ${{ secrets.UPDATE_BIKE_EQUIPMENT_FUNCTION_PUBLISH_PROFILE }}
-           package: ./publish/updatebike
+    runs-on: windows-latest
+    needs: build-updatebike-function
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: updatebike-publish
+          path: ./publish/updatebike
+      - uses: azure/functions-action@v1
+        with:
+          app-name: as-updatebikeequipment-func
+          publish-profile: ${{ secrets.UPDATE_BIKE_EQUIPMENT_FUNCTION_PUBLISH_PROFILE }}
+          package: ./publish/updatebike
