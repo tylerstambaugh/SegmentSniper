@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.13.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -41,5 +42,6 @@
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
+		<ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
 	</ItemGroup>
 </Project>

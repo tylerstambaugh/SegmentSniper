@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using SegmentSniper.Data;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Garage;
-using System.Data.SqlTypes;
 using System.Text;
 
 namespace UpdateBikeEquipmentFunction
