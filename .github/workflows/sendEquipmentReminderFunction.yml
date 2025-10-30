@@ -4,9 +4,6 @@
 name: Build and Deploy SendEquipmentReminderFunction
 
 on:
-  push:
-    branches:
-      - prod
   workflow_dispatch:
 
 env:
