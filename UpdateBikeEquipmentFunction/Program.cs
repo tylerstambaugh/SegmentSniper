@@ -32,6 +32,8 @@ else
 {
     // Add Azure Key Vault in non-dev
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
+    Console.WriteLine("AzureKeyVault:BaseUrl: " + builder.Configuration["AzureKeyVault:BaseUrl"]);
+
     if (!string.IsNullOrEmpty(keyVaultEndpoint))
     {
         builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
@@ -43,6 +45,7 @@ builder.Services.Configure<QueueSettings>(options =>
     // Pull the connection string (works in both local and Azure)
     options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
                                ?? builder.Configuration["SegmentSniperDevQueueConnection"];
+    Console.WriteLine("Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
 
     // Set the queue name from your config (non-secret)
     options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
