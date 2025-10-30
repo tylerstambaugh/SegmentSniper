@@ -4,9 +4,6 @@
 name: Build and deploy UpdateBikeEquipmentFunction
 
 on:
-  push:
-    branches:
-      - prod
   workflow_dispatch:
 
 env:
