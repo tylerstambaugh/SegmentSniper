@@ -274,18 +274,21 @@ namespace SegmentSniper.Api.Configuration
 
 
             builder.Services.AddMemoryCache();
-
             builder.Services.Configure<QueueSettings>(options =>
             {
-                // Pull the connection string (works in both local and Azure)
-                options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
-                                           ?? builder.Configuration["SegmentSniperDevQueueConnection"];
-                
-               Log.Error("api Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+                options.ConnectionString =
+                    builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
+                    ?? builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
+                    ?? builder.Configuration["SegmentSniperDevQueueConnection"]
+                    ?? "UseDevelopmentStorage=true";
 
-                // Set the queue name from your config (non-secret)
-                options.QueueName = builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]
-                                    ?? "process-bike-activity-queue";
+                options.QueueName =
+                    builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]
+                    ?? builder.Configuration["AzureStorageQueue:QueueName"]
+                    ?? "process-bike-activity-queue";
+
+                Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueName: {QueueName}",
+                    options.ConnectionString, options.QueueName);
             });
 
             ServiceRegistrations.RegisterServices(builder.Services);
