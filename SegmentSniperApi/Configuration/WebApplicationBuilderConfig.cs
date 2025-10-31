@@ -56,13 +56,7 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-            builder.Services.Configure<QueueSettings>(options =>
-            {
-                options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection"];
-                options.QueueName = "process-bike-activity-queue";
-            });
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();   
 
             #region Logging
 
@@ -140,9 +134,7 @@ namespace SegmentSniper.Api.Configuration
             //add clerkApiClient
             builder.Services.AddClerkApiClient(options =>
             {
-                var secretKey = builder.Configuration["ClerkSecretKey"];
-
-                Log.Debug($"Clerk secret key: {secretKey}");
+                var secretKey = builder.Configuration["ClerkSecretKey"];             
 
                 if (string.IsNullOrEmpty(secretKey))
                     throw new InvalidOperationException("Clerk SecretKey is not configured.");
@@ -282,6 +274,19 @@ namespace SegmentSniper.Api.Configuration
 
 
             builder.Services.AddMemoryCache();
+
+            builder.Services.Configure<QueueSettings>(options =>
+            {
+                // Pull the connection string (works in both local and Azure)
+                options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
+                                           ?? builder.Configuration["SegmentSniperDevQueueConnection"];
+                
+               Log.Error("Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+
+                // Set the queue name from your config (non-secret)
+                options.QueueName = builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]
+                                    ?? "process-bike-activity-queue";
+            });
 
             ServiceRegistrations.RegisterServices(builder.Services);
 
