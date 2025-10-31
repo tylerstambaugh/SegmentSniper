@@ -278,13 +278,13 @@ namespace SegmentSniper.Api.Configuration
             builder.Services.Configure<QueueSettings>(options =>
             {
                 // Pull the connection string (works in both local and Azure)
-                options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
+                options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
                                            ?? builder.Configuration["SegmentSniperDevQueueConnection"];
                 
                Log.Error("Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
 
                 // Set the queue name from your config (non-secret)
-                options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+                options.QueueName = builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]
                                     ?? "process-bike-activity-queue";
             });
 
