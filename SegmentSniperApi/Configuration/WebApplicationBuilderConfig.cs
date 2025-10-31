@@ -281,7 +281,7 @@ namespace SegmentSniper.Api.Configuration
                 options.ConnectionString = builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
                                            ?? builder.Configuration["SegmentSniperDevQueueConnection"];
                 
-               Log.Error("Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+               Log.Error("api Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
 
                 // Set the queue name from your config (non-secret)
                 options.QueueName = builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]

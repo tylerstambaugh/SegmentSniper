@@ -46,7 +46,7 @@ builder.Services.Configure<QueueSettings>(options =>
     // Pull the connection string (works in both local and Azure)
     options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
                                ?? builder.Configuration["SegmentSniperDevQueueConnection"];
-    Console.WriteLine("Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
 
     // Set the queue name from your config (non-secret)
     options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
