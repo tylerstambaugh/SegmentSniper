@@ -33,6 +33,7 @@ else
     // Add Azure Key Vault in non-dev
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
     Console.WriteLine("AzureKeyVault:BaseUrl: " + builder.Configuration["AzureKeyVault:BaseUrl"]);
+    
 
     if (!string.IsNullOrEmpty(keyVaultEndpoint))
     {
