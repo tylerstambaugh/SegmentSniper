@@ -144,6 +144,8 @@ namespace SegmentSniper.Api.Configuration
             //adapters:
             services.AddScoped<IActivityAdapter, ActivityAdapter>();
             services.AddScoped<ISegmentAdapter, SegmentAdapter>();
+
+            services.AddSingleton<IBikeActivityQueuePublisher, BikeActivityQueuePublisher>();
         }
     }
 }
