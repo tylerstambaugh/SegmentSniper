@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Queues;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -22,6 +23,8 @@ namespace SegmentSniper.Services.Garage
         public BikeActivityQueuePublisher(IOptions<QueueSettings> options)
         {
             var settings = options.Value;
+            Log.Error("QueueSettings in Publisher => ConnectionString: {ConnectionString}, QueueName: {QueueName}",
+     settings.ConnectionString, settings.QueueName);
             _queueClient = new QueueClient(settings.ConnectionString, settings.QueueName);
         }
 
