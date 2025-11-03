@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SegmentSniper.Data;
-using SegmentSniper.Services;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -41,17 +40,17 @@ else
     }
 }
 
-builder.Services.Configure<QueueSettings>(options =>
-{
-    // Pull the connection string (works in both local and Azure)
-    options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
-                               ?? builder.Configuration["SegmentSniperDevQueueConnection"];
-    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+//builder.Services.Configure<QueueSettings>(options =>
+//{
+//    // Pull the connection string (works in both local and Azure)
+//    options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
+//                               ?? builder.Configuration["SegmentSniperDevQueueConnection"];
+//    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
 
-    // Set the queue name from your config (non-secret)
-    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-                        ?? "process-bike-activity-queue";
-});
+//    // Set the queue name from your config (non-secret)
+//    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+//                        ?? "process-bike-activity-queue";
+//});
 
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
