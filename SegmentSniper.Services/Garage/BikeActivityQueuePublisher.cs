@@ -24,7 +24,7 @@ namespace SegmentSniper.Services.Garage
         {
             var settings = options.Value;
             Log.Error("QueueSettings in Publisher => ConnectionString: {ConnectionString}, QueueName: {QueueName}",
-     settings.ConnectionString, settings.QueueName);
+                        settings.ConnectionString, settings.QueueName);
             _queueClient = new QueueClient(settings.ConnectionString, settings.QueueName);
         }
 
