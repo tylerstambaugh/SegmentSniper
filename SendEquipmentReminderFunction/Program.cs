@@ -1,4 +1,3 @@
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -41,18 +40,6 @@ else
     }
 }
 
-//builder.Services.Configure<QueueSettings>(options =>
-//{
-//    // Pull the connection string (works in both local and Azure)
-//    options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
-//                               ?? builder.Configuration["SegmentSniperDevQueueConnection"];
-//    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
-
-//    // Set the queue name from your config (non-secret)
-//    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-//                        ?? "process-bike-activity-queue";
-//});
-
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
 builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
@@ -61,6 +48,5 @@ builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
 );
 
 builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
-
 
 builder.Build().Run();

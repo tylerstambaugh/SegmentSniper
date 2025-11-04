@@ -7,11 +7,13 @@
 
     public class AddAppUserContract
     {
-        public AddAppUserContract(string userId)
+        public AddAppUserContract(string userId, string? emailAddress)
         {
             UserId = userId;
+            EmailAddress = emailAddress;
         }
         public string UserId { get; }
+        public string? EmailAddress { get; }
         public class Result
         {
             public Result(bool success, string message = null)
