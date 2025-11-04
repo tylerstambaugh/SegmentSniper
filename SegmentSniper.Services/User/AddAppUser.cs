@@ -29,6 +29,7 @@ namespace SegmentSniper.Services.StravaTokenServices
                 var newUser = new AppUser
                 {
                     AuthUserId = contract.UserId,
+                    EmailAddress = contract.EmailAddress
                 };
 
                 _segmentSniperDbContext.Users.Add(newUser);

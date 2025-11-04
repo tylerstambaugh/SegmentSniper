@@ -40,6 +40,7 @@ else
     }
 }
 
+//TODO : clean this up after testing
 //builder.Services.Configure<QueueSettings>(options =>
 //{
 //    // Pull the connection string (works in both local and Azure)

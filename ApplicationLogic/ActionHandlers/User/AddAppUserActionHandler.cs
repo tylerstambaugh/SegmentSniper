@@ -16,7 +16,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.User
         {
             ValidateRequest(request);
             Log.Debug($"calling add user service from handler");
-            var result = await _addUser.ExecuteAsync(new AddAppUserContract(request.UserId));
+            var result = await _addUser.ExecuteAsync(new AddAppUserContract(request.UserId, request.EmailAddress));
             return new AddAppUserRequest.Response(result.Success, result.Message);
         }
 
