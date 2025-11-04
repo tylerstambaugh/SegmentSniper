@@ -7,11 +7,13 @@
 
     public class AddAppUserRequest
     {
-        public AddAppUserRequest(string userId)
+        public AddAppUserRequest(string userId, string? emailAddress)
         {
             UserId = userId;
+            EmailAddress = emailAddress;
         }
         public string UserId { get; }
+        public string? EmailAddress { get; }
         public class Response
         {
             public Response(bool success, string message)

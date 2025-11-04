@@ -9,6 +9,7 @@ namespace SegmentSniper.Data.Entities.User
     {
         [Key]
         public required string AuthUserId { get; set; }
+        public string? EmailAddress { get; set; } = null;
 
         public string? StravaRefreshToken { get; set; }
 

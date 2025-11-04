@@ -53,7 +53,9 @@ public class ClerkWebhookController : ControllerBase
                     Log.Debug($"Clerk update response: ${clerkUpdateResponse}");
                 }
 
-                var addUserResponse = await _addAppUserActionHandler.HandleAsync(new AddAppUserRequest(user.Id));
+                var addUserResponse = await _addAppUserActionHandler.HandleAsync(
+                    new AddAppUserRequest(user.Id, user.EmailAddresses?.FirstOrDefault().EmailAddress)
+                    );
 
                 if(addUserResponse.Success)
                     return Ok();
@@ -71,6 +73,7 @@ public class ClerkWebhookController : ControllerBase
         {
             try
             {
+                //TODO
                 //need to process the update and
                 //add roles to the user etc.
             }
