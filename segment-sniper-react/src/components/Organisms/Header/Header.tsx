@@ -65,6 +65,15 @@ function Header() {
                 </Navbar.Text>
               </Nav.Item>
 
+               <div className="border-end mx-3 d-none d-md-block"></div>
+              <Nav.Item className="fw-semibold text-end">
+                <Navbar.Text>
+                  <Link to={`/${AppRoutes.Pricing}`} onClick={handleLinkClick}>
+                    Pricing
+                  </Link>
+                </Navbar.Text>
+              </Nav.Item>
+
               <div className="border-end mx-3 d-none d-md-block"></div>
               <Nav.Item className="fw-semibold text-end">
                 <Navbar.Text>
@@ -95,10 +104,18 @@ function Header() {
 
             {/* ----- When Signed Out ----- */}
             <SignedOut>
-              <Nav.Item className="fw-semibold">
+
+              <Nav.Item className="fw-semibold pe-2">
                 <Navbar.Text className="d-flex">
                   <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
                     About
+                  </Link>
+                </Navbar.Text>
+              </Nav.Item>
+              <Nav.Item className="fw-semibold">
+                <Navbar.Text className="d-flex">
+                  <Link to={`/${AppRoutes.Pricing}`} onClick={handleLinkClick}>
+                    Pricing
                   </Link>
                 </Navbar.Text>
               </Nav.Item>

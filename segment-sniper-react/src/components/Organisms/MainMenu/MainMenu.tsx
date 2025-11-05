@@ -1,12 +1,11 @@
 import { Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../../enums/AppRoutes';
-import { useUser } from '@clerk/clerk-react';
 import { useContext } from 'react';
 import { AuthContext } from '../../../context/authContext';
 
 export default function MainMenu() {
-  const { roles } = useContext(AuthContext);
+  const { has, roles } = useContext(AuthContext);
 
   const isAdmin = roles?.some((r) => r.toLowerCase() === 'admin');
 
@@ -23,14 +22,25 @@ export default function MainMenu() {
                   <Col
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    <Link
-                      to={`/${AppRoutes.Snipe}`}
-                      className="primary-rounded-button text-decoration-none
-                      "
-                      style={{ width: '155px' }}
-                    >
-                      Segment Sniper
-                    </Link>
+                    {has('segment_sniper') ? (                      
+                        <Link
+                        to={`/${AppRoutes.Snipe}`}
+                        className="primary-rounded-button text-decoration-none
+                        "
+                        style={{ width: '155px' }}
+                        >
+                        Segment Sniper
+                        </Link>
+                      ) : (
+                        <Link
+                          to={`/${AppRoutes.Pricing}`}
+                          className="primary-rounded-button text-decoration-none"
+                          style={{ width: '155px' }}
+                        >
+                          Segment Sniper
+                        </Link>
+                      )
+                    }
                   </Col>
                 </Row>
                 <Row>
@@ -53,6 +63,7 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
+                     {has('garage') ? ( 
                     <Link
                       to={`/${AppRoutes.Garage}`}
                       className="primary-rounded-button text-decoration-none
@@ -61,6 +72,16 @@ export default function MainMenu() {
                     >
                       Garage
                     </Link>
+                     ) : (
+                      <Link
+                        to={`/${AppRoutes.Pricing}`}
+                        className="primary-rounded-button text-decoration-none"
+                        style={{ width: '155px' }}
+                      >
+                        Garage
+                      </Link>
+                     )
+                    }
                   </Col>
                 </Row>
                 {isAdmin ? (
