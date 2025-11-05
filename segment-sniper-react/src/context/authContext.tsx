@@ -5,12 +5,14 @@ export interface AuthContextValue {
   roles: string[];
   userId: string | null;
   isLoaded: boolean;
+  has: (feature: string) => boolean;
 }
 
 export const AuthContext = createContext<AuthContextValue>({
   roles: [],
   userId: null,
   isLoaded: false,
+  has: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -42,12 +44,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     lastRoles.current = computedRoles;
   }
 
+
+  //TODO figure out if this is where the features info lives
+  const has = (feature: string): boolean => {
+    if (!user || !isLoaded) return false;
+
+    // Check Clerk Billing entitlements first
+    const entitlements = (user as any).entitlements ?? [];
+
+    if (Array.isArray(entitlements) && entitlements.includes(feature)) {
+      return true;
+    }
+
+    // Fallback: check publicMetadata.features if present
+    const metadataFeatures =
+      (user.publicMetadata?.features as string[]) ||
+     // (user.privateMetadata?.features as string[]) ||
+      [];
+
+    return Array.isArray(metadataFeatures)
+      ? metadataFeatures.includes(feature)
+      : false;
+  };
+
   // Create stable context value that only updates when something truly changes
   const contextValue = useMemo(
     () => ({
       roles: lastRoles.current,
       userId: user?.id ?? lastUserId.current,
       isLoaded,
+      has
     }),
     [user?.id, isLoaded, lastRoles.current.join(",")]
   );

@@ -28,6 +28,7 @@ import ViewAssignRoles from "./components/Organisms/Admin/ManageUsers/ViewAssign
 
 import { AppRoutes } from "./enums/AppRoutes";
 import { UserRole } from "./enums/Roles";
+import Pricing from "./pages/Pricing/Pricing";
 
 const memberRoles = [UserRole.Member];
 const adminRoles = [UserRole.Admin];
@@ -38,6 +39,7 @@ export default function AppRoutesComponent() {
       {/* ----- Public Routes ----- */}
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
+      <Route path={AppRoutes.Pricing} element={<Pricing />} />
       <Route path={`${AppRoutes.SignIn}/*`} element={<SignIn />} />
       <Route path={`${AppRoutes.SignUp}/*`} element={<SignUpPage />} />
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />

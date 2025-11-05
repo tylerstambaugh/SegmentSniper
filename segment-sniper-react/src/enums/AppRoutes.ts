@@ -2,6 +2,7 @@
 export enum AppRoutes {
   Home = '',
   Dashboard = 'dashboard',
+  Pricing = 'pricing',
   SignIn = 'sign-in',
   SignUp = 'sign-up',
   Logout = 'logout',
