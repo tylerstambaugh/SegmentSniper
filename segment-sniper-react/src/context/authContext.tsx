@@ -1,22 +1,24 @@
-import { useUser } from "@clerk/react-router";
+import { useAuth, useUser  } from "@clerk/react-router";
+
 import { createContext, useMemo, useRef } from "react";
 
 export interface AuthContextValue {
   roles: string[];
   userId: string | null;
   isLoaded: boolean;
-  has: (feature: string) => boolean;
+  userHas: (isAuthorizedParams: string) => boolean;
 }
 
 export const AuthContext = createContext<AuthContextValue>({
   roles: [],
   userId: null,
   isLoaded: false,
-  has: () => false,
+  userHas: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoaded } = useUser();
+  const { has } = useAuth();
 
   // Keep stable refs to avoid re-renders when Clerk silently refreshes tokens
   const lastUserId = useRef<string | null>(null);
@@ -45,27 +47,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
 
-  //TODO figure out if this is where the features info lives
-  const has = (feature: string): boolean => {
-    if (!user || !isLoaded) return false;
-
-    // Check Clerk Billing entitlements first
-    const entitlements = (user as any).entitlements ?? [];
-
-    if (Array.isArray(entitlements) && entitlements.includes(feature)) {
-      return true;
-    }
-
-    // Fallback: check publicMetadata.features if present
-    const metadataFeatures =
-      (user.publicMetadata?.features as string[]) ||
-     // (user.privateMetadata?.features as string[]) ||
-      [];
-
-    return Array.isArray(metadataFeatures)
-      ? metadataFeatures.includes(feature)
-      : false;
-  };
+const userHas = (isAuthorizedParams: string) => {
+    return has?.({feature: isAuthorizedParams}) ?? false;
+  }
 
   // Create stable context value that only updates when something truly changes
   const contextValue = useMemo(
@@ -73,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       roles: lastRoles.current,
       userId: user?.id ?? lastUserId.current,
       isLoaded,
-      has
+      userHas
     }),
     [user?.id, isLoaded, lastRoles.current.join(",")]
   );
