@@ -9,6 +9,11 @@ secrets.json
 SegmentSniper.Data/RunTruncateSegmentSniperLogTableStoredProcedure.ps1
 SegmentSniper.Data/RunTruncateSegmentSniperLogTableStoredProcedure.bat
 
+# appsettings
+**/appsettings.Production.json
+**/appsettings.production.json
+**/local.settings.json
+
 # User-specific files
 *.rsuser
 *.suo

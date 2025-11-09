@@ -53,8 +53,7 @@ namespace UpdateBikeEquipmentFunction
 
                 //_logger.LogInformation("Processing bike activity for AuthUserId: {AuthUserId}, BikeId: {BikeId}",
                 //    queueItem?.AuthUserId, queueItem?.BikeId);
-
-             
+                             
                 //need to query all equipment for the bike
                 var bikeEquipment = _segmentSniperDbContext.Equipment
                     .Where(be => be.BikeId == queueItem.BikeId 
