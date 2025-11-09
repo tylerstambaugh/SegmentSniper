@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../context/authContext';
 
 export default function MainMenu() {
-  const { has, roles } = useContext(AuthContext);
+  const { userHas, roles } = useContext(AuthContext);
 
   const isAdmin = roles?.some((r) => r.toLowerCase() === 'admin');
 
@@ -22,7 +22,7 @@ export default function MainMenu() {
                   <Col
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    {has('segment_sniper') ? (                      
+                    {userHas('segment_sniper') ? (                      
                         <Link
                         to={`/${AppRoutes.Snipe}`}
                         className="primary-rounded-button text-decoration-none
@@ -63,7 +63,7 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                     {has('garage') ? ( 
+                     {userHas('garage') ? ( 
                     <Link
                       to={`/${AppRoutes.Garage}`}
                       className="primary-rounded-button text-decoration-none

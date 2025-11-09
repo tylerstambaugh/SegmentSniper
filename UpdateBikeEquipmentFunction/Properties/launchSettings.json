@@ -1,9 +1,21 @@
 {
   "profiles": {
-    "UpdateBikeEquipmentFunction": {
+    "Development": {
       "commandName": "Project",
       "commandLineArgs": "--port 7265",
-      "launchBrowser": false
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true"
+      },
+      "dotnetRunMessages": true
+    },
+    "Production": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7265",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"       
+      },
+      "dotnetRunMessages": true
     }
   }
 }
