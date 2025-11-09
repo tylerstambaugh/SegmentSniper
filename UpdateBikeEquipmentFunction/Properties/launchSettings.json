@@ -13,7 +13,7 @@
       "commandName": "Project",
       "commandLineArgs": "--port 7265",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"       
+        "AZURE_FUNCTIONS_ENVIRONMENT": "Production"
       },
       "dotnetRunMessages": true
     }
