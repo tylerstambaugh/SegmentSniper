@@ -19,6 +19,7 @@ namespace UpdateBikeEquipmentFunction
             _logger = logger;
             _segmentSniperDbContext = segmentSniperDbContext;
         }
+        //fussed with storage account in Azure
 
         [Function(nameof(UpdateBikeEquipment))]
         public void Run([QueueTrigger("process-bike-activity-queue", Connection = "SegmentSniperDevQueueConnection")] QueueMessage message)
