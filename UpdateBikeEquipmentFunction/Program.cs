@@ -1,4 +1,3 @@
-using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -39,7 +38,7 @@ else
     // Add Azure Key Vault in non-dev
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
     Console.WriteLine("AzureKeyVault:BaseUrl: " + builder.Configuration["AzureKeyVault:BaseUrl"]);
-    
+
 
     if (!string.IsNullOrEmpty(keyVaultEndpoint))
     {
@@ -47,17 +46,17 @@ else
     }
 }
 
-//TODO : clean this up after testing
+//TODO Clean this up after testing
 builder.Services.Configure<QueueSettings>(options =>
 {
     // Pull the connection string (works in both local and Azure)
-    options.ConnectionString = builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
-                               ?? builder.Configuration["SegmentSniperDevQueueConnection"];
-    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]);
+    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"];
+
+    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperStorageAccountConnection"]);
 
     // Set the queue name from your config (non-secret)
-    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-                        ?? "process-bike-activity-queue";
+    //options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+    //                    ?? "process-bike-activity-queue";
 });
 
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
