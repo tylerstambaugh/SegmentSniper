@@ -12,7 +12,7 @@
     },
     "storage2": {
       "type": "storage",
-      "connectionId": "DefaultEndpointsProtocol=https;AccountName=segmentsniperdevqueue;AccountKey=dj8bvIp:cQSSaQOMtBFV15FJNEyEGgKaZJ7edhZ39xN97M7gEDiyTqmF7KdgsWelwMGRjkivm1q8+AStz1bSuA==;EndpointSuffix=core.windows.net",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=segmentsniperstorage;AccountKey=dj8bvIp:cQSSaQOMtBFV15FJNEyEGgKaZJ7edhZ39xN97M7gEDiyTqmF7KdgsWelwMGRjkivm1q8+AStz1bSuA==;EndpointSuffix=core.windows.net",
       "dynamicId": null
     }
   }

@@ -4,8 +4,8 @@
       "type": "appInsights.sdk"
     },
     "storage1": {
-      "type": "storage.emulator",
-      "connectionId": "AzureWebJobsStorage"
+      "type": "storage",
+      "connectionId": "SegmentSniperStorageAccountConnection"
     },
     "secrets1": {
       "type": "secrets.user"
@@ -16,7 +16,7 @@
       "containerName": "azurite",
       "containerImage": "mcr.microsoft.com/azure-storage/azurite",
       "type": "storage.container",
-      "connectionId": "DefaultEndpointsProtocol=https;AccountName=segmentsniperdevqueue;AccountKey=dj8bvIp:cQSSaQOMtBFV15FJNEyEGgKaZJ7edhZ39xN97M7gEDiyTqmF7KdgsWelwMGRjkivm1q8+AStz1bSuA==;EndpointSuffix=core.windows.net",
+      "connectionId": "DefaultEndpointsProtocol=https;AccountName=segmentsniperstorage;AccountKey=dj8bvIp:cQSSaQOMtBFV15FJNEyEGgKaZJ7edhZ39xN97M7gEDiyTqmF7KdgsWelwMGRjkivm1q8+AStz1bSuA==;EndpointSuffix=core.windows.net",
       "dynamicId": null
     }
   }

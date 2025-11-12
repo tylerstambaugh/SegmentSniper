@@ -274,21 +274,29 @@ namespace SegmentSniper.Api.Configuration
 
 
             builder.Services.AddMemoryCache();
+
             builder.Services.Configure<QueueSettings>(options =>
             {
-                options.ConnectionString =
-                    builder.Configuration["ConnectionStrings:SegmentSniperDevQueueConnection"]
-                    ?? builder.Configuration["SegmentSniperDevQueueConnection:ConnectionString"]
-                    ?? builder.Configuration["SegmentSniperDevQueueConnection"]
-                    ?? "UseDevelopmentStorage=true";
+                if (builder.Environment.IsDevelopment())
+                {
+                    // Local dev -> use Azurite
+                    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"]
+                                               ?? "UseDevelopmentStorage=true";
+                    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+                                        ?? "process-bike-activity-queue";
+                }
+                else
+                {
+                    // Production -> Managed Identity
+                    var queueConfig = builder.Configuration.GetSection("SegmentSniperStorageAccountConnection");
+                    options.QueueServiceUri = queueConfig["queueServiceUri"];
+                    options.ClientId = queueConfig["clientId"];
+                    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+                                        ?? "process-bike-activity-queue";
+                }
 
-                options.QueueName =
-                    builder.Configuration["SegmentSniperDevQueueConnection:QueueName"]
-                    ?? builder.Configuration["AzureStorageQueue:QueueName"]
-                    ?? "process-bike-activity-queue";
-
-                Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueName: {QueueName}",
-                    options.ConnectionString, options.QueueName);
+                Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueServiceUri: {QueueServiceUri}, QueueName: {QueueName}",
+                    options.ConnectionString, options.QueueServiceUri, options.QueueName);
             });
 
             ServiceRegistrations.RegisterServices(builder.Services);
