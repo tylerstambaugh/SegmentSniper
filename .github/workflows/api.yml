@@ -50,7 +50,7 @@ jobs:
         with:
           name: api-publish
           path: ./publish
-
+          
   deploy-api:
     runs-on: windows-latest
     needs: build-api
@@ -65,4 +65,3 @@ jobs:
           app-name: as-segmentsniper-api-eastus-dev
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
           package: ./publish
-
