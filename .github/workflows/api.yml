@@ -39,10 +39,8 @@ jobs:
       # Apply EF Core migrations using the local tool
       - name: Apply EF Core migrations
         run: |
-          dotnet ef database update \
-            --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
-            --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
-            --context SegmentSniperDbContext
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
         env:
           ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
 
