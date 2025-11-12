@@ -26,13 +26,23 @@ jobs:
         with:
           dotnet-version: '9'
 
+      # Restore NuGet packages
       - run: dotnet restore
+
+      # Restore any local tools from dotnet-tools.json
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      # Build the solution
       - run: dotnet build --configuration Release
 
+      # Apply EF Core migrations using the local tool
       - name: Apply EF Core migrations
         run: |
-          dotnet tool install --global dotnet-ef
-          dotnet ef database update --project ./SegmentSniper.Data/SegmentSniper.Data.csproj --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj --context SegmentSniperDbContext
+          dotnet ef database update \
+            --project ./SegmentSniper.Data/SegmentSniper.Data.csproj \
+            --startup-project ./SegmentSniperApi/SegmentSniper.Api.csproj \
+            --context SegmentSniperDbContext
         env:
           ConnectionStrings__SegmentSniperConnectionString: ${{ secrets.DB_CONNECTION_STRING }}
 
