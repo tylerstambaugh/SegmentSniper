@@ -64,7 +64,7 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
         price: Yup.number().nullable(),
         replaceAtMiles: Yup.number(),
         reminderDate: Yup.date().nullable(),
-        reminderDuration: Yup.number().nullable(),
+        reminderDuration: Yup.number().nullable().positive("Must be positive"),
         maxRemindersToSend: Yup.number().nullable(),
         remindersSent: Yup.number().nullable(),
         milesUntilReplaceReminder: Yup.number(),
