@@ -58,6 +58,8 @@ const timeFormatter = useTimeFormatConverter();
                         className="d-flex justify-content-center px-3"
                         variant="primary"
                         onClick={() => {
+                            console.log("selected item", item);
+                            
                             setModalState({ type: "addEdit", item: item })
                         }}>
 
