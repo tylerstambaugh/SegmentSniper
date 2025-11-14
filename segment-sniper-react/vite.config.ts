@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import mkcert from 'vite-plugin-mkcert';
 import graphqlLoader from 'vite-plugin-graphql-loader';
 import codegen from 'vite-plugin-graphql-codegen';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -15,9 +14,6 @@ export default ({ mode }) => {
   }
 
   const plugins = [
-    viteStaticCopy({
-      targets: [{ src: 'staticwebapp.config.json', dest: '' }],
-    }),
     react(),
     mkcert(),
     graphqlLoader(),
