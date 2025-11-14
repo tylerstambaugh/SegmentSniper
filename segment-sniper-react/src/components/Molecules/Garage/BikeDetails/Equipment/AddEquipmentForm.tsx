@@ -1,7 +1,7 @@
 import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap"
 import { FormikErrors, useFormik } from "formik"
 import * as Yup from 'yup'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CurrencyInput from 'react-currency-input-field';
 import { DateTime } from "luxon";
 import { Maybe } from "graphql/jsutils/Maybe";
@@ -35,45 +35,50 @@ export interface UpsertEquipmentFormValues {
 
 const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loading, error }: UpsertEquipmentFormProps) => {
 
+    console.log("edit equipment", editEquipment);
+    
     const [validated, setValidated] = useState(false);
     const isEdit = editEquipment !== undefined;
-    const initialValues: UpsertEquipmentFormValues = {
+    const initialValues = useMemo(() => ({
         name: editEquipment?.name ?? '',
         description: editEquipment?.description ?? '',
-        totalMiles: editEquipment?.totalMiles ?? undefined,
+        totalMiles: editEquipment?.totalMiles ?? null,
         milesAtInstall: editEquipment?.milesAtInstall ?? null,
         installDate: editEquipment?.installDate ?? null,
         retiredDate: editEquipment?.retiredDate ?? null,
         price: editEquipment?.price ?? null,
-        replaceAtMiles: editEquipment?.replaceAtMiles ?? undefined,
-        milesUntilReplaceReminder: editEquipment?.milesUntilReplaceReminder ?? undefined,
+        replaceAtMiles: editEquipment?.replaceAtMiles ?? null,
+        milesUntilReplaceReminder: editEquipment?.milesUntilReplaceReminder ?? null,
         reminderDate: editEquipment?.reminderDate ?? null,
         reminderDuration: editEquipment?.reminderDuration ?? null,
         maxRemindersToSend: editEquipment?.maxRemindersToSend ?? 2,
-        remindersSent: editEquipment?.remindersSent ?? 0,
-    }
+        remindersSent: editEquipment?.remindersSent ?? 0
+    }), [editEquipment]);
 
+
+    //TODO : Clean up retiredDate usage
     const validationSchema = Yup.object({
         name: Yup.string().required('Required'),
         description: Yup.string(),
-        totalMiles: Yup.number(),
+        totalMiles: Yup.number().nullable(),
         installDate: Yup.date().nullable()
             .max(new Date(), "Date must be in the past"),
-        retiredDate: Yup.date().nullable()
-            .max(new Date(), "Date must be in the past"),
+        // retiredDate: Yup.date().nullable()
+        //     .max(new Date(), "Date must be in the past"),
         price: Yup.number().nullable(),
-        replaceAtMiles: Yup.number(),
+        replaceAtMiles: Yup.number().nullable(),
         reminderDate: Yup.date().nullable(),
         reminderDuration: Yup.number().nullable().positive("Must be positive"),
         maxRemindersToSend: Yup.number().nullable(),
         remindersSent: Yup.number().nullable(),
-        milesUntilReplaceReminder: Yup.number(),
+        milesUntilReplaceReminder: Yup.number().nullable(),
     })
 
     const formik = useFormik<UpsertEquipmentFormValues>({
         initialValues: initialValues,
         validationSchema: validationSchema,
         validateOnBlur: validated,
+        enableReinitialize: true,
         validateOnChange: validated,
         onSubmit: async (values: UpsertEquipmentFormValues) => {
             setValidated(true);
@@ -93,7 +98,8 @@ const UpsertEquipmentFormUI = ({ show, handleSubmit, onClose, editEquipment, loa
         }
     }, [error])
 
-
+console.log('formik values', formik.values);
+console.log('formik errors', formik.errors);
     return (
         <Modal show={show} onHide={onClose} className="shadow">
             <Modal.Header closeButton>
