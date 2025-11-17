@@ -33,10 +33,10 @@ namespace SegmentSniper.Services.Garage
                     Name = contract.Equipment.Name,
                     Description = contract.Equipment.Description,
                     TotalMilage = contract.Equipment.TotalMiles,
-                    InstallDate = contract.Equipment.InstallDate ?? DateTime.MaxValue,
-                    UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.MaxValue,
-                    RetiredDate = contract.Equipment.RetiredDate ?? DateTime.MaxValue,
-                    ReminderDate = contract.Equipment.ReminderDate ?? DateTime.MaxValue,
+                    InstallDate = contract.Equipment.InstallDate,
+                    UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.Now,
+                    RetiredDate = contract.Equipment.RetiredDate,
+                    ReminderDate = contract.Equipment.ReminderDate,
                     ReminderDuration = contract.Equipment.ReminderDuration,
                     Price = contract.Equipment.Price,
                     ReplaceAtMiles = contract.Equipment.ReplaceAtMiles,
@@ -44,6 +44,21 @@ namespace SegmentSniper.Services.Garage
                     MaxRemindersToSend = contract.Equipment.MaxRemindersToSend,
                     RemindersSent = contract.Equipment.RemindersSent
                 };
+
+                if(contract.Equipment.InstallDate != null)
+                {
+                    equipmentToAdd.InstallDate = contract.Equipment.InstallDate;
+                }
+
+                if (contract.Equipment.ReminderDate != null)
+                {
+                    equipmentToAdd.ReminderDate = contract.Equipment.ReminderDate;
+                }
+
+                if (contract.Equipment.RetiredDate != null)
+                {
+                    equipmentToAdd.RetiredDate = contract.Equipment.RetiredDate;
+                }
 
                 _context.Equipment.Add(equipmentToAdd);
                 var success = await _context.SaveChangesAsync() == 1;
@@ -84,24 +99,24 @@ namespace SegmentSniper.Services.Garage
                     existingEquipment.TotalMilage = contract.Equipment.TotalMiles;
                     isUpdated = true;
                 }
-                if (existingEquipment.InstallDate != (contract.Equipment.InstallDate ?? DateTime.MaxValue))
+                if (existingEquipment.InstallDate != contract.Equipment.InstallDate)
                 {
-                    existingEquipment.InstallDate = contract.Equipment.InstallDate ?? DateTime.MaxValue;
+                    existingEquipment.InstallDate = contract.Equipment.InstallDate;
                     isUpdated = true;
                 }
-                if (existingEquipment.UpdatedDate != (contract.Equipment.UpdatedDate ?? DateTime.MaxValue))
+                if (existingEquipment.UpdatedDate != contract.Equipment.UpdatedDate)
                 {
-                    existingEquipment.UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.MaxValue;
+                    existingEquipment.UpdatedDate = contract.Equipment.UpdatedDate;
                     isUpdated = true;
                 }                
-                if (existingEquipment.RetiredDate != (contract.Equipment.RetiredDate ?? DateTime.MaxValue))
+                if (existingEquipment.RetiredDate != contract.Equipment.RetiredDate)
                 {
-                    existingEquipment.RetiredDate = contract.Equipment.RetiredDate ?? DateTime.MaxValue;
+                    existingEquipment.RetiredDate = contract.Equipment.RetiredDate;
                     isUpdated = true;
                 }
-                if (existingEquipment.ReminderDate != (contract.Equipment.ReminderDate ?? DateTime.MaxValue))
+                if (existingEquipment.ReminderDate != contract.Equipment.ReminderDate)
                 {
-                    existingEquipment.ReminderDate = contract.Equipment.ReminderDate ?? DateTime.MaxValue;
+                    existingEquipment.ReminderDate = contract.Equipment.ReminderDate;
                     isUpdated = true;
                 }
                 if (existingEquipment.ReminderDuration != contract.Equipment.ReminderDuration)

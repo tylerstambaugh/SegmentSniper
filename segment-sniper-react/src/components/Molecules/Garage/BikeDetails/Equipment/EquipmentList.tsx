@@ -15,8 +15,6 @@ import DeleteEquipmentModal, { DeleteBikeEquipmentValues } from "./DeleteEquipme
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDeleteEquipmentMutation } from "./GraphQl/useDeleteEquipment";
-import { useUser } from "@clerk/clerk-react";
-import { useEquipmentModalStateStore } from "../../../../../stores/useEquipmentModalStateStore";
 
 
 type EquipmentListProps = {
@@ -205,6 +203,13 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         }
     }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
 
+    const stableEditValues = useMemo(() => {
+        console.log("recomputed form values");
+    if (modalState.type !== "addEdit" || !modalState.item) return undefined;
+    return adaptEquipmentModelToEquipmentFormValues(modalState.item);
+}, [modalState]);
+
+
     return (
 
         <Container>
@@ -214,11 +219,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
                         show={modalState.type === "addEdit"}
                         handleSubmit={handleUpsertEquipmentSubmit}
                         onClose={handleClosedModal}
-                        editEquipment={
-                            modalState.type === "addEdit" && modalState.item
-                                ? adaptEquipmentModelToEquipmentFormValues(modalState.item)
-                                : undefined
-                        }
+                        editEquipment={stableEditValues}
                         loading={addEquipmentLoading}
                         error={addEquipmentError}
                     />
