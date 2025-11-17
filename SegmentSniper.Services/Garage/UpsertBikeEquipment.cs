@@ -94,9 +94,9 @@ namespace SegmentSniper.Services.Garage
                     existingEquipment.Description = contract.Equipment.Description;
                     isUpdated = true;
                 }
-                if (existingEquipment.TotalMilage != contract.Equipment.TotalMiles)
+                if (existingEquipment.MilesAtInstall != contract.Equipment.MilesAtInstall)
                 {
-                    existingEquipment.TotalMilage = contract.Equipment.TotalMiles;
+                    existingEquipment.MilesAtInstall = contract.Equipment.MilesAtInstall;
                     isUpdated = true;
                 }
                 if (existingEquipment.InstallDate != contract.Equipment.InstallDate)
