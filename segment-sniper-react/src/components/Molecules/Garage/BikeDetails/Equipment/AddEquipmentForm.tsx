@@ -42,8 +42,6 @@ const UpsertEquipmentFormUI = ({
   loading,
   error,
 }: UpsertEquipmentFormProps) => {
-  console.log('edit equipment', editEquipment);
-
   const [validated, setValidated] = useState(false);
   const isEdit = editEquipment !== undefined;
   const initialValues = useMemo(
@@ -108,8 +106,6 @@ const UpsertEquipmentFormUI = ({
     }
   }, [error]);
 
-  console.log('formik values', formik.values);
-  console.log('formik errors', formik.errors);
   return (
     <Modal show={show} onHide={onClose} className="shadow">
       <Modal.Header closeButton>
@@ -211,7 +207,6 @@ const UpsertEquipmentFormUI = ({
                     type="number"
                     value={formik.values.milesAtInstall ?? 0}
                     onChange={(e) => {
-                      console.log('miles at install change', e.target.value);
                       const value = e.target.value
                         ? parseFloat(e.target.value)
                         : null;
@@ -328,7 +323,7 @@ const UpsertEquipmentFormUI = ({
             <Row>
               <Col>
                 <Form.Group controlId="replaceAtMiles" className="mb-3">
-                  <Form.Label>Replace At</Form.Label>
+                  <Form.Label>Replace At (Miles)</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="Miles"
@@ -358,7 +353,7 @@ const UpsertEquipmentFormUI = ({
                   controlId="milesUntilReplaceReminder"
                   className="mb-3"
                 >
-                  <Form.Label>Remind At</Form.Label>
+                  <Form.Label>Remind At (Miles)</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="Miles"
