@@ -64,6 +64,7 @@ namespace SegmentSniper.Api.Controllers
             if (payload == null)
                 return BadRequest("Invalid payload.");
 
+            Log.Information($"Received Strava webhook event: ObjectType={payload.ObjectType}, AspectType={payload.AspectType}, ObjectId={payload.ObjectId}");
             _ = Task.Run(async () =>
             {
                 try
