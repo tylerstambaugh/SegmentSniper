@@ -3,6 +3,8 @@ using SegmentSniper.Data;
 using SegmentSniper.Models.Garage;
 using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Services.Garage;
+using Serilog;
+using Serilog.Core;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
@@ -11,13 +13,15 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 {
     public class GetDetailedActivityByIdActionHandler : IGetDetailedActivityByIdActionHandler
     {
+        private readonly ILogger _logger;
         private readonly ISegmentSniperDbContext _context;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly IUpsertBike _upsertBikeService;
         private readonly IMapper _mapper;
 
-        public GetDetailedActivityByIdActionHandler(ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IUpsertBike addBikeService, IMapper mapper)
+        public GetDetailedActivityByIdActionHandler(ILogger logger, ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IUpsertBike addBikeService, IMapper mapper)
         {
+            _logger = logger;
             _context = context;
             _stravaRequestService = stravaRequestService;
             _upsertBikeService = addBikeService;
@@ -35,8 +39,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     _stravaRequestService.UserId = request.UserId.ToString();
                     _stravaRequestService.RefreshToken = token.StravaRefreshToken;
 
+                    
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
-
+                    _logger.Information("Fetched detailed activity {ActivityId} for user {UserId} from Strava API.", request.ActivityId, request.UserId);
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
 
                     UpsertBike(activity);
