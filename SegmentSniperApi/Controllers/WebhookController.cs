@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook;
 using SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.Factory;
 using SegmentSniper.Services.StravaWebhook;
-using Serilog;
 using System.Text.Json.Serialization;
 
 namespace SegmentSniper.Api.Controllers
@@ -17,6 +16,7 @@ namespace SegmentSniper.Api.Controllers
     [ApiController]
     public class WebhookController : ControllerBase
     {
+        private readonly ILogger<WebhookController> _logger;
         private readonly ICreateStravaWebhookSubscriptionHandler _createStravaWebhookSubscriptionHandler;
         private readonly IViewStravaWebhookSubscriptionHandler _viewStravaWebhookSubscriptionHandler;
         private readonly IDeleteStravaWebhookSubscriptionHandler _deleteStravaWebhookSubscriptionHandler;
@@ -25,7 +25,7 @@ namespace SegmentSniper.Api.Controllers
         private readonly IServiceScopeFactory _scopeFactory;
 
 
-        public WebhookController(ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
+        public WebhookController(ILogger<WebhookController> logger, ICreateStravaWebhookSubscriptionHandler createStravaWebhookSubscriptionHandler,
             IViewStravaWebhookSubscriptionHandler viewStravaWebhookSubscriptionHandler,
             IDeleteStravaWebhookSubscriptionHandler deleteStravaWebhookSubscriptionHandler,
             IGetStravaWebhookSubscriptionId getStravaWebhookSubscriptionId,            
@@ -33,6 +33,7 @@ namespace SegmentSniper.Api.Controllers
              IServiceScopeFactory scopeFactory
             )
         {
+            _logger = logger;
             _createStravaWebhookSubscriptionHandler = createStravaWebhookSubscriptionHandler;
             _viewStravaWebhookSubscriptionHandler = viewStravaWebhookSubscriptionHandler;
             _deleteStravaWebhookSubscriptionHandler = deleteStravaWebhookSubscriptionHandler;
@@ -51,7 +52,7 @@ namespace SegmentSniper.Api.Controllers
             //strava willl ping this when a subsciption creation request is made.
             if (verifyToken != "segment-sniper")
             {
-                Log.Error($"failing verify token. verifyToken: {verifyToken}, mode: {mode}, challenge: {challenge}");
+                _logger.LogError($"failing verify token. verifyToken: {verifyToken}, mode: {mode}, challenge: {challenge}");
                 return BadRequest("Invalid verify token.");
             }
 
@@ -64,7 +65,7 @@ namespace SegmentSniper.Api.Controllers
             if (payload == null)
                 return BadRequest("Invalid payload.");
 
-            Log.Information($"Received Strava webhook event: ObjectType={payload.ObjectType}, AspectType={payload.AspectType}, ObjectId={payload.ObjectId}");
+            _logger.LogInformation($"Received Strava webhook event: ObjectType={payload.ObjectType}, AspectType={payload.AspectType}, ObjectId={payload.ObjectId}");
             _ = Task.Run(async () =>
             {
                 try
@@ -78,7 +79,7 @@ namespace SegmentSniper.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Error processing Strava webhook event");
+                    _logger.LogError(ex, "Error processing Strava webhook event");
                 }
             });
 

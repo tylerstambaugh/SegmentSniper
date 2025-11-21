@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
 using SegmentSniper.Models.Garage;
 using SegmentSniper.Models.Strava.Activity;
 using SegmentSniper.Services.Garage;
-using Serilog;
-using Serilog.Core;
 using StravaApiClient;
 using StravaApiClient.Models.Activity;
 using StravaApiClient.Services.Activity;
@@ -19,7 +18,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
         private readonly IUpsertBike _upsertBikeService;
         private readonly IMapper _mapper;
 
-        public GetDetailedActivityByIdActionHandler(ILogger logger, ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IUpsertBike addBikeService, IMapper mapper)
+        public GetDetailedActivityByIdActionHandler(ILogger<GetDetailedActivityByIdActionHandler> logger, ISegmentSniperDbContext context, IStravaRequestService stravaRequestService, IUpsertBike addBikeService, IMapper mapper)
         {
             _logger = logger;
             _context = context;
@@ -41,7 +40,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 
                     
                     var response = await _stravaRequestService.GetDetailedActivityById(new GetDetailedActivityByIdContract(request.ActivityId));
-                    _logger.Information("Fetched detailed activity {ActivityId} for user {UserId} from Strava API.", request.ActivityId, request.UserId);
+                    _logger.LogInformation("Fetched detailed activity {ActivityId} for user {UserId} from Strava API.", request.ActivityId, request.UserId);
                     DetailedActivity activity = _mapper.Map<DetailedActivityApiModel, DetailedActivity>(response.DetailedActivity);
 
                     UpsertBike(activity);
