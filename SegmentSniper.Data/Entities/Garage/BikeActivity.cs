@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Garage
 {
-    public class BikeActivity
+    public class BikeActivity : BaseEntity
     {
 
         [Key]

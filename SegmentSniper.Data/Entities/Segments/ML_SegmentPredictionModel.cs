@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Segments
 {
-    public class ML_SegmentPredictionModel
+    public class ML_SegmentPredictionModel : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,7 +18,5 @@ namespace SegmentSniper.Data.Entities.Segments
         public virtual AppUser AppUser { get; set; }
 
         public byte[] SegmentPredictionModelData {  get; set; } 
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
     }
 }
