@@ -104,6 +104,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     EffortCount = detailedSegment.EffortCount,
                     StarCount = detailedSegment.StarCount,
                     PrRank = dse.PrRank,
+                    CreatedDate = DateTime.UtcNow
                 };
             }
             catch (Exception ex)

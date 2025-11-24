@@ -31,6 +31,7 @@ namespace SegmentSniper.Services.Garage
                             BikeId = bikeActivity.BikeId,
                             DistanceInMeters = bikeActivity.DistanceInMeters,
                             ActivityDate = bikeActivity.ActivityDate,
+                            CreatedDate = DateTime.UtcNow,
                         };
                         _segmentSniperDbContext.BikeActivities.Add(bikeActivityToAdd);
                         var success = await _segmentSniperDbContext.SaveChangesAsync() == 1;
