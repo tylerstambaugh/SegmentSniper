@@ -42,7 +42,8 @@ namespace SegmentSniper.Services.Garage
                     ReplaceAtMiles = contract.Equipment.ReplaceAtMiles,
                     MilesUntilReplaceReminder = contract.Equipment.MilesUntilReplaceReminder,
                     MaxRemindersToSend = contract.Equipment.MaxRemindersToSend,
-                    RemindersSent = contract.Equipment.RemindersSent
+                    RemindersSent = contract.Equipment.RemindersSent,
+                    CreatedDate = DateTime.Now,
                 };
 
                 if(contract.Equipment.InstallDate != null)
@@ -152,6 +153,7 @@ namespace SegmentSniper.Services.Garage
 
                 if (isUpdated)
                 {
+                    existingEquipment.UpdatedDate = DateTime.Now;
                     var success = await _context.SaveChangesAsync() > 0;
 
                     if (success)

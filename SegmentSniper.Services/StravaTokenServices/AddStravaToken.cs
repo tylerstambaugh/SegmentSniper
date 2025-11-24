@@ -26,7 +26,8 @@ namespace SegmentSniper.Services.StravaTokenServices
                     user.StravaRefreshToken = contract.Token.RefreshToken;
                     user.StravaTokenExpiresAt = contract.Token.ExpiresAt;
                     user.StravaTokenExpiresIn = contract.Token.ExpiresIn;
-                    
+                    user.UpdatedDate = DateTime.UtcNow;
+
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();
                 }

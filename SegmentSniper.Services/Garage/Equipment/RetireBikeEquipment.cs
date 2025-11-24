@@ -24,7 +24,10 @@ namespace SegmentSniper.Services.Garage.Equipment
             {
                 throw new Exception("Equipment not found.");
             }
+
+            existingEquipment.UpdatedDate = DateTime.UtcNow;
             existingEquipment.RetiredDate = contract.RetireDate;
+            _segmentSniperDbContext.Equipment.Update(existingEquipment);
             var success = await _segmentSniperDbContext.SaveChangesAsync() == 1;
             if (success)
             {

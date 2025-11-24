@@ -133,6 +133,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     EffortCount = detailedSegment.EffortCount,
                     StarCount = detailedSegment.StarCount,
                     PrRank = dse.PrRank,
+                    CreatedDate = DateTime.UtcNow
                 };
             }
             catch (Exception ex)
