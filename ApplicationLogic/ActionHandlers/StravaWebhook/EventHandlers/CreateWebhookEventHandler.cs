@@ -12,6 +12,7 @@ using SegmentSniper.Services.User;
 using Serilog;
 using StravaApiClient;
 using StravaApiClient.Models.Segment;
+using StravaApiClient.Services.Gear;
 using StravaApiClient.Services.Segment;
 
 namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandlers
@@ -21,6 +22,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         private readonly IGetUserByStravaAthleteId _getUserByStravaAthleteId;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
         private readonly IAddBikeActivity _addBikeActivity;
+        private readonly IGetAllBikesByUserId _getAllBikesByUserId;
+        private readonly IUpsertBike _upsertBike;
         private readonly IStravaRequestService _stravaRequestService;
         private readonly ISaveSegmentPredictionTrainingData _saveSegmentPredictionTrainingData;
         private readonly IBikeActivityQueuePublisher _bikeActivityQueuePublisher;
@@ -30,14 +33,18 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         public CreateWebhookEventHandler(IGetUserByStravaAthleteId getUserByStravaAthleteId,
                                          IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler,
                                          IAddBikeActivity addBikeActivity,
+                                         IGetAllBikesByUserId getAllBikesByUserId,
+                                         IUpsertBike upsertBike,
                                          IStravaRequestService stravaRequestService,
                                          ISaveSegmentPredictionTrainingData saveSegmentPredictionTrainingData,
-                                             IBikeActivityQueuePublisher bikeActivityQueuePublisher,
+                                         IBikeActivityQueuePublisher bikeActivityQueuePublisher,
                                          IMapper mapper)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
             _addBikeActivity = addBikeActivity;
+            _getAllBikesByUserId = getAllBikesByUserId;
+            _upsertBike = upsertBike;
             _stravaRequestService = stravaRequestService;
             _saveSegmentPredictionTrainingData = saveSegmentPredictionTrainingData;
             _bikeActivityQueuePublisher = bikeActivityQueuePublisher;
@@ -66,6 +73,33 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
+                //this is only adding a bikeActivity if the bike exists. We should
+                // first look to see if the bike exists for the user.
+                //if it doesn't exist, we should get the gear details from strava and create the bike first.
+                var existingBikes = await _getAllBikesByUserId.ExecuteAsync(new GetAllBikesByUserIdContract(_userId));
+
+                var bikeExists = existingBikes.Bikes.Any(b => b.BikeId == activityDetails.DetailedActivity.GearId);
+
+                if(!bikeExists)
+                {
+                    var bikeToAdd = _stravaRequestService.GetGearById(new GetGearByIdContract(activityDetails.DetailedActivity.GearId));
+
+                    var bikeAddResult = await _upsertBike.ExecuteAsync(new UpsertBikeContract
+                    {
+                        Bike = new BikeModel
+                        {
+                            BikeId = bikeToAdd.Result.DetailedGearApiModel.Id,
+                            Name = bikeToAdd.Result.DetailedGearApiModel.Name,
+                            UserId = _userId,                            
+                            ImportedFromStrava = true,
+                            BrandName = bikeToAdd.Result.DetailedGearApiModel.BrandName,
+                            ModelName = bikeToAdd.Result.DetailedGearApiModel.ModelName,
+                            FrameType = (FrameType?)bikeToAdd.Result.DetailedGearApiModel.FrameType,
+                            MetersLogged = bikeToAdd.Result.DetailedGearApiModel.Distance,
+                            Description = bikeToAdd.Result.DetailedGearApiModel.Description,
+                        }
+                    });
+                }
                 await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
                    new BikeActivityModel
                    {
@@ -73,7 +107,8 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                        UserId = _userId,
                        BikeId = activityDetails.DetailedActivity.GearId,
                        ActivityDate = activityDetails.DetailedActivity.StartDate,
-                       DistanceInMeters = activityDetails.DetailedActivity.Distance
+                       DistanceInMeters = activityDetails.DetailedActivity.Distance,
+                       
                    }));
 
                 //should update the total miles on the equipment on the bike too.

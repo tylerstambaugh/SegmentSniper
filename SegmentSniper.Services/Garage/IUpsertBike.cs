@@ -14,6 +14,11 @@ namespace SegmentSniper.Services.Garage
             Bike = bike;
         }
 
+        public UpsertBikeContract()
+        {
+            
+        }
+
         public BikeModel Bike { get; set; }
         public class Result
         {
