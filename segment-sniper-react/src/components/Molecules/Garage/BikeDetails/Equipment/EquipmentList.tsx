@@ -65,12 +65,8 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     };
   }
 
-  const activeEquipment = equipment.filter(
-    (e) => DateTime.fromISO(e.retiredDate!).year === MAX_DATE_TIME.year,
-  );
-  const retiredEquipment = equipment.filter(
-    (e) => DateTime.fromISO(e.retiredDate!).year !== null,
-  );
+  const activeEquipment = equipment.filter((e) => e.retiredDate === null);
+  const retiredEquipment = equipment.filter((e) => e.retiredDate !== null);
 
   const [
     addEquipmentToBike,
@@ -131,7 +127,6 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       },
     });
 
-  //TODO need to pass equipmentId for edit
   async function handleUpsertEquipmentSubmit(
     values: UpsertEquipmentFormValues,
   ) {
@@ -153,6 +148,10 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       replaceAtMiles: values.replaceAtMiles ?? 0,
       milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0,
       maxRemindersToSend: values.maxRemindersToSend ?? 1,
+      equipmentId:
+        modalState.type === 'addEdit' && modalState.item
+          ? modalState.item.equipmentId
+          : undefined,
     };
     addEquipmentToBike({
       variables: {
