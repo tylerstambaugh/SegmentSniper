@@ -19,7 +19,7 @@ namespace SegmentSniper.Services.Garage
             var bikeActivity = contract.BikeActivity;
             var existingBikeActivity = _segmentSniperDbContext.BikeActivities.Where(b => b.StravaActivityId == bikeActivity.StravaActivityId).FirstOrDefault();
 
-            if (existingBikeActivity != null)
+            if (existingBikeActivity == null)
             {
                 var bikeActivityToAdd = new BikeActivity
                 {

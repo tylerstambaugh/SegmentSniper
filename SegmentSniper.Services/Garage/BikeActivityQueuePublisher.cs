@@ -1,6 +1,8 @@
-﻿using Azure.Storage.Queues;
+﻿using Azure.Core;
 using Azure.Identity;
+using Azure.Storage.Queues;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -25,15 +27,27 @@ namespace SegmentSniper.Services.Garage
         {
             var settings = options.Value;
 
-            
-                if (!string.IsNullOrEmpty(settings.QueueServiceUri))
-                {
-                    // Production: Managed Identity
-                    var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-                    {
-                        ManagedIdentityClientId = settings.ClientId
-                    });
+            TokenCredential credential;
 
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                // LOCAL DEVELOPMENT
+                credential = new AzureCliCredential();
+                // Or: new VisualStudioCredential();
+                // Or: Connection string fallback
+            }
+            else
+            {
+                // PRODUCTION (managed identity)
+                credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+                {
+                    ManagedIdentityClientId = settings.ClientId
+                });
+            }
+
+            if (!string.IsNullOrEmpty(settings.QueueServiceUri))
+                {
+                    // Production: Managed Identity       
                     _queueClient = new QueueClient(
                         new Uri($"{settings.QueueServiceUri}/{settings.QueueName}"),
                         credential
@@ -53,6 +67,9 @@ namespace SegmentSniper.Services.Garage
 
         public async Task PublishMessageAsync<T>(T message)
         {
+
+
+
             try
             {
                 var messageJson = JsonConvert.SerializeObject(message);

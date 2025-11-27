@@ -25,13 +25,24 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            // Always load base appsettings first
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
+            // Default config is already loaded:
+            // - appsettings.json
+            // - appsettings.{env}.json
+            // - environment variables
+            // - user secrets (in dev)
+
+            var managedIdentityClientId = builder.Configuration["ManagedIdentityClientId"];
+
+            var credential = new DefaultAzureCredential(
+                new DefaultAzureCredentialOptions
+                {
+                    ManagedIdentityClientId = managedIdentityClientId
+                }
+            );
 
             if (builder.Environment.IsDevelopment())
             {
-                // In dev, also load from local secrets.json (or user secrets)
+                // Optional: load local-only secrets
                 var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
                 builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
             }
@@ -41,9 +52,39 @@ namespace SegmentSniper.Api.Configuration
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
                 if (!string.IsNullOrEmpty(keyVaultEndpoint))
                 {
-                    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
+                    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), credential);
                 }
             }
+            //var builder = WebApplication.CreateBuilder();
+
+            //// Always load base appsettings first
+            //string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            //builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
+
+            //var managedIdentityClientId = builder.Configuration["ManagedIdentityClientId"]; 
+
+            //var credential = new DefaultAzureCredential(
+            //    new DefaultAzureCredentialOptions
+            //    {
+            //        ManagedIdentityClientId = managedIdentityClientId
+            //    }
+            //);
+
+            //if (builder.Environment.IsDevelopment())
+            //{
+            //    // In dev, also load from local secrets.json (or user secrets)
+            //    var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
+            //    builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
+            //}
+            //else
+            //{
+            //    // Add Azure Key Vault in non-dev
+            //    var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
+            //    if (!string.IsNullOrEmpty(keyVaultEndpoint))
+            //    {
+            //        builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), credential);
+            //    }
+            //}
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
@@ -277,23 +318,12 @@ namespace SegmentSniper.Api.Configuration
 
             builder.Services.Configure<QueueSettings>(options =>
             {
-                if (builder.Environment.IsDevelopment())
-                {
-                    // Local dev -> use Azurite
-                    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"]
-                                               ?? "UseDevelopmentStorage=true";
-                    options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-                                        ?? "process-bike-activity-queue";
-                }
-                else
-                {
-                    // Production -> Managed Identity
+            
                     var queueConfig = builder.Configuration.GetSection("SegmentSniperStorageAccountConnection");
                     options.QueueServiceUri = queueConfig["queueServiceUri"];
                     options.ClientId = queueConfig["clientId"];
                     options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
                                         ?? "process-bike-activity-queue";
-                }
 
                 Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueServiceUri: {QueueServiceUri}, QueueName: {QueueName}",
                     options.ConnectionString, options.QueueServiceUri, options.QueueName);
