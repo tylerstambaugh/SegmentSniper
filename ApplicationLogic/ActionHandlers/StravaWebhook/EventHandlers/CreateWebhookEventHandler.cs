@@ -73,9 +73,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
-                //this is only adding a bikeActivity if the bike exists. We should
-                // first look to see if the bike exists for the user.
-                //if it doesn't exist, we should get the gear details from strava and create the bike first.
+                //look to see if the bike exists, add it if it doesn't, before adding the bikeActivity
                 var existingBikes = await _getAllBikesByUserId.ExecuteAsync(new GetAllBikesByUserIdContract(_userId));
 
                 var bikeExists = existingBikes.Bikes.Any(b => b.BikeId == activityDetails.DetailedActivity.GearId);
@@ -176,7 +174,5 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 throw new Exception(ex.Message);
             }
         }
-
-
     }
 }
