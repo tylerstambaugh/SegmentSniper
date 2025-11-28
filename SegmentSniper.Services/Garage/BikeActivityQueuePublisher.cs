@@ -1,8 +1,6 @@
-﻿using Azure.Core;
-using Azure.Identity;
+﻿using Azure.Identity;
 using Azure.Storage.Queues;
 using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -27,32 +25,18 @@ namespace SegmentSniper.Services.Garage
         {
             var settings = options.Value;
 
-            TokenCredential credential;
-
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-            {
-                // LOCAL DEVELOPMENT
-                credential = new AzureCliCredential();
-                // Or: new VisualStudioCredential();
-                // Or: Connection string fallback
-            }
-            else
-            {
-                // PRODUCTION (managed identity)
-                credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-                {
-                    ManagedIdentityClientId = settings.ClientId
-                });
-            }
-
             if (!string.IsNullOrEmpty(settings.QueueServiceUri))
                 {
-                    // Production: Managed Identity       
+                    // production settings, point to azure storage queue using managed id
                     _queueClient = new QueueClient(
                         new Uri($"{settings.QueueServiceUri}/{settings.QueueName}"),
-                        credential
+                        new DefaultAzureCredential(new DefaultAzureCredentialOptions
+                        {
+                            ManagedIdentityClientId = settings.ClientId
+                        })
                     );
 
+                //TODO : Remove this loggings
                     Log.Information("Publisher initialized with Managed Identity: QueueServiceUri={QueueServiceUri}, QueueName={QueueName}",
                         settings.QueueServiceUri, settings.QueueName);
                 }
@@ -67,9 +51,6 @@ namespace SegmentSniper.Services.Garage
 
         public async Task PublishMessageAsync<T>(T message)
         {
-
-
-
             try
             {
                 var messageJson = JsonConvert.SerializeObject(message);

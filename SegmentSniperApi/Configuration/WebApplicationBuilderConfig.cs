@@ -25,12 +25,6 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            // Default config is already loaded:
-            // - appsettings.json
-            // - appsettings.{env}.json
-            // - environment variables
-            // - user secrets (in dev)
-
             var managedIdentityClientId = builder.Configuration["ManagedIdentityClientId"];
 
             var credential = new DefaultAzureCredential(
@@ -55,36 +49,6 @@ namespace SegmentSniper.Api.Configuration
                     builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), credential);
                 }
             }
-            //var builder = WebApplication.CreateBuilder();
-
-            //// Always load base appsettings first
-            //string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            //builder.Configuration.AddJsonFile($"appsettings.{environment}.json", optional: false);
-
-            //var managedIdentityClientId = builder.Configuration["ManagedIdentityClientId"]; 
-
-            //var credential = new DefaultAzureCredential(
-            //    new DefaultAzureCredentialOptions
-            //    {
-            //        ManagedIdentityClientId = managedIdentityClientId
-            //    }
-            //);
-
-            //if (builder.Environment.IsDevelopment())
-            //{
-            //    // In dev, also load from local secrets.json (or user secrets)
-            //    var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
-            //    builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
-            //}
-            //else
-            //{
-            //    // Add Azure Key Vault in non-dev
-            //    var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
-            //    if (!string.IsNullOrEmpty(keyVaultEndpoint))
-            //    {
-            //        builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), credential);
-            //    }
-            //}
 
             var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
@@ -183,7 +147,7 @@ namespace SegmentSniper.Api.Configuration
                 options.SecretKey = secretKey; 
             });
 
-           
+            //TODO : Figure out how to use this:
             //builder.Services.AddAuthorization(options =>
             //{
             //    options.AddPolicy("AdminOnly", policy =>
@@ -332,27 +296,6 @@ namespace SegmentSniper.Api.Configuration
             ServiceRegistrations.RegisterServices(builder.Services);
 
             return builder;
-        }
-    }
-
-    //TODO use or remove these:
-    public class CustomAuthorizationHandler : IExceptionHandler
-    {
-        public Task<ExecutionError> HandleAsync(ResolveFieldContext context, Exception exception)
-        {
-            if (exception is UnauthorizedAccessException)
-            {
-                // Return a custom ExecutionError with your message
-                return Task.FromResult(new ExecutionError("You are not authorized to perform this action."));
-            }
-
-            // Handle other exceptions as needed
-            return Task.FromResult(new ExecutionError("Something bad happened, mmmkay."));
-        }
-
-        public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

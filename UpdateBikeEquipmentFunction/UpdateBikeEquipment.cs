@@ -19,7 +19,6 @@ namespace UpdateBikeEquipmentFunction
             _logger = logger;
             _segmentSniperDbContext = segmentSniperDbContext;
         }
-        //fussed with storage account in Azure
 
         [Function(nameof(UpdateBikeEquipment))]
         public void Run([QueueTrigger("process-bike-activity-queue", Connection = "SegmentSniperStorageAccountConnection")] QueueMessage message)
@@ -51,9 +50,6 @@ namespace UpdateBikeEquipmentFunction
                     _logger.LogError("Failed to deserialize queue message to BikeActivityQueueMessage.");
                     return;
                 }
-
-                //_logger.LogInformation("Processing bike activity for AuthUserId: {AuthUserId}, BikeId: {BikeId}",
-                //    queueItem?.AuthUserId, queueItem?.BikeId);
                              
                 //need to query all equipment for the bike
                 var bikeEquipment = _segmentSniperDbContext.Equipment
