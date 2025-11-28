@@ -24,9 +24,12 @@ jobs:
 
       - name: Publish Function App
         run: |
-          dotnet publish ./UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj `
-            --configuration Release `
-            --output ./publish
+          dotnet publish UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj \
+            --configuration Release \
+            --output ./publish \
+            -p:PublishTrimmed=true \
+            -p:TrimMode=partial \
+            -p:PublishSingleFile=false
 
       - name: List publish folder
         run: |
