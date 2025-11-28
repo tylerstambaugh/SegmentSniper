@@ -1,79 +1,39 @@
+
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy UpdateBikeEquipmentFunction
 
 on:
   workflow_dispatch:
 
 env:
-  DOTNET_VERSION: '9.0.x'
-  PROJECT_PATH: 'UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj'
-  PUBLISH_DIR: './publish'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '9.0.x' # set this to the dotnet version to use
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
-
     permissions:
-      id-token: write
-      contents: read
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
-      # ----------------------------------------------------
-      # Checkout
-      # ----------------------------------------------------
-      - name: Checkout repository
+      - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
 
-      # ----------------------------------------------------
-      # .NET Setup with caching
-      # ----------------------------------------------------
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          cache: true
-          cache-dependency-path: |
-            **/*.csproj
-            **/*.fsproj
-            **/*.vbproj
 
-      # ----------------------------------------------------
-      # Restore
-      # ----------------------------------------------------
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_PATH }}
-
-      # ----------------------------------------------------
-      # Build & Publish (No trimming, no single-file)
-      # ----------------------------------------------------
-      - name: Publish Function App
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
         run: |
-          dotnet publish ${{ env.PROJECT_PATH }} `
-            --configuration Release `
-            --output ${{ env.PUBLISH_DIR }} `
-            -p:PublishTrimmed=false `
-            -p:PublishSingleFile=false `
-            -p:DebugType=None
-
-      # ----------------------------------------------------
-      # Diagnostics: list publish folder
-      # ----------------------------------------------------
-      - name: List publish folder
-        run: |
-          echo "---- PUBLISH FOLDER CONTENTS ----"
-          dir ${{ env.PUBLISH_DIR }}
-
-      # ----------------------------------------------------
-      # Upload artifact for debugging any failed deploy
-      # ----------------------------------------------------
-      - name: Upload publish artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: functionapp-publish
-          path: ${{ env.PUBLISH_DIR }}
-
-      # ----------------------------------------------------
-      # Azure Login
-      # ----------------------------------------------------
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -81,12 +41,10 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # ----------------------------------------------------
-      # Deploy using Azure Functions Action
-      # ----------------------------------------------------
-      - name: Deploy Function App
+      - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
+        id: fa
         with:
           app-name: 'UpdateBikeEquipmentFunction'
           slot-name: 'Production'
-          package: ${{ env.PUBLISH_DIR }}
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
