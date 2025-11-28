@@ -31,6 +31,11 @@ jobs:
           echo "Contents of publish:"
           dir ./publish
 
+      - name: Show ZIP size
+        run: |
+          powershell -command "Compress-Archive -Path ./publish/* -DestinationPath test.zip"
+          powershell -command "(Get-Item test.zip).Length / 1MB"
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
