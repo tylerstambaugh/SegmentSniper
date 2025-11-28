@@ -38,7 +38,8 @@ namespace SegmentSniper.Services.Garage
             foreach (var bike in bikesToAdd)
             {
                 var mappedBike = _mapper.Map<BikeModel, Bike>(bike);
-                mappedBike.ImportedFromStrava = true;
+                mappedBike.CreatedDate = DateTime.UtcNow;
+                    mappedBike.ImportedFromStrava = true;
                 mappedBike.AuthUserId = contract.UserId;
                 mappedBikes.Add(mappedBike);
             }

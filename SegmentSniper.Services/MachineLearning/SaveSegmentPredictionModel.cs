@@ -37,6 +37,7 @@ namespace SegmentSniper.Services.MachineLearning
                 else
                 {
                     modelToSave.Id = Guid.NewGuid().ToString();
+                    modelToSave.CreatedDate = DateTime.Now;
                     _segmentSniperDbContext.ML_SegmentPredictionModels.Add(modelToSave);
                 }
 

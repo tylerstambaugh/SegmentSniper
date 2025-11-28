@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SegmentSniper.Data.Entities.User
 {
-    public class AppUser
+    public class AppUser : BaseEntity
     {
         [Key]
         public required string AuthUserId { get; set; }

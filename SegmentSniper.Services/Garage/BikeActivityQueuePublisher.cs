@@ -1,5 +1,5 @@
-﻿using Azure.Storage.Queues;
-using Azure.Identity;
+﻿using Azure.Identity;
+using Azure.Storage.Queues;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Serilog;
@@ -25,20 +25,18 @@ namespace SegmentSniper.Services.Garage
         {
             var settings = options.Value;
 
-            
-                if (!string.IsNullOrEmpty(settings.QueueServiceUri))
+            if (!string.IsNullOrEmpty(settings.QueueServiceUri))
                 {
-                    // Production: Managed Identity
-                    var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
-                    {
-                        ManagedIdentityClientId = settings.ClientId
-                    });
-
+                    // production settings, point to azure storage queue using managed id
                     _queueClient = new QueueClient(
                         new Uri($"{settings.QueueServiceUri}/{settings.QueueName}"),
-                        credential
+                        new DefaultAzureCredential(new DefaultAzureCredentialOptions
+                        {
+                            ManagedIdentityClientId = settings.ClientId
+                        })
                     );
 
+                //TODO : Remove this loggings
                     Log.Information("Publisher initialized with Managed Identity: QueueServiceUri={QueueServiceUri}, QueueName={QueueName}",
                         settings.QueueServiceUri, settings.QueueName);
                 }

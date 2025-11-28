@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.MachineLearning
 {
-    public class SegmentPredictionRegressionMetrics
+    public class SegmentPredictionRegressionMetrics: BaseEntity
     {
         [Key]
         public int Id { get; set; }

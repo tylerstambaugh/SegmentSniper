@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Segments
 {
-    public class ML_SegmentEffort
+    public class ML_SegmentEffort : BaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -3,7 +3,7 @@
 namespace SegmentSniper.Data.Entities.StravaWebhookSubscription
 
 {
-    public class StravaWebhookSubscription
+    public class StravaWebhookSubscription : BaseEntity
     {
         [Key]
         public int Id { get; set; }

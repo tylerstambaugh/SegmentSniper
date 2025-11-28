@@ -38,8 +38,9 @@ namespace SegmentSniper.Services.Garage
                         ModelName = contract.Bike.ModelName,
                         FrameType = contract.Bike.FrameType.ToString(),
                         MetersLogged = (double)contract.Bike.MetersLogged,
-                        DateAdded = DateTime.Now,
-                        ImportedFromStrava = contract.Bike.ImportedFromStrava
+                        DateAdded = DateTime.Now, //TODO: update this to be the date it was added in strava if imported
+                        ImportedFromStrava = contract.Bike.ImportedFromStrava,
+                        CreatedDate = DateTime.Now,
                     };
 
                     _segmentSniperDbContext.Bikes.Add(bikeToAdd);
@@ -103,6 +104,7 @@ namespace SegmentSniper.Services.Garage
 
                     if (isUpdated)
                     {
+                        existingBike.UpdatedDate = DateTime.Now;
                         _segmentSniperDbContext.Bikes.Update(existingBike);
                         await _segmentSniperDbContext.SaveChangesAsync();
                     }

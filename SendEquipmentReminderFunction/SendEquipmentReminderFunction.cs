@@ -69,6 +69,7 @@ namespace SendEquipmentReminderFunction
                    await buildAndSendEmailAsync(equipment);
                     // Increment the RemindersSent count
                     equipment.RemindersSent += 1;
+                    equipment.UpdatedDate = DateTime.UtcNow;
                 }
 
                 // Save changes to the database

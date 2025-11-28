@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SegmentSniper.Data.Entities.Garage
 {
-    public class Equipment
+    public class Equipment: BaseEntity
     {
         [Key]
         public string EquipmentId { get; set; }
