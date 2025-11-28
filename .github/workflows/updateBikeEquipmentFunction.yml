@@ -5,36 +5,75 @@ on:
 
 env:
   DOTNET_VERSION: '9.0.x'
+  PROJECT_PATH: 'UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj'
+  PUBLISH_DIR: './publish'
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
+
     permissions:
       id-token: write
       contents: read
 
     steps:
-      - name: Checkout
+      # ----------------------------------------------------
+      # Checkout
+      # ----------------------------------------------------
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ----------------------------------------------------
+      # .NET Setup with caching
+      # ----------------------------------------------------
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.fsproj
+            **/*.vbproj
 
+      # ----------------------------------------------------
+      # Restore
+      # ----------------------------------------------------
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      # ----------------------------------------------------
+      # Build & Publish (No trimming, no single-file)
+      # ----------------------------------------------------
       - name: Publish Function App
-        run: dotnet publish UpdateBikeEquipmentFunction/UpdateBikeEquipmentFunction.csproj -c Release -o ./publish
+        run: |
+          dotnet publish ${{ env.PROJECT_PATH }} `
+            --configuration Release `
+            --output ${{ env.PUBLISH_DIR }} `
+            -p:PublishTrimmed=false `
+            -p:PublishSingleFile=false `
+            -p:DebugType=None
 
+      # ----------------------------------------------------
+      # Diagnostics: list publish folder
+      # ----------------------------------------------------
       - name: List publish folder
         run: |
-          echo "Contents of publish:"
-          dir ./publish
+          echo "---- PUBLISH FOLDER CONTENTS ----"
+          dir ${{ env.PUBLISH_DIR }}
 
-      - name: Show ZIP size
-        run: |
-          powershell -command "Compress-Archive -Path ./publish/* -DestinationPath test.zip"
-          powershell -command "(Get-Item test.zip).Length / 1MB"
+      # ----------------------------------------------------
+      # Upload artifact for debugging any failed deploy
+      # ----------------------------------------------------
+      - name: Upload publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: functionapp-publish
+          path: ${{ env.PUBLISH_DIR }}
 
+      # ----------------------------------------------------
+      # Azure Login
+      # ----------------------------------------------------
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -42,9 +81,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      # ----------------------------------------------------
+      # Deploy using Azure Functions Action
+      # ----------------------------------------------------
       - name: Deploy Function App
         uses: Azure/functions-action@v1
         with:
           app-name: 'UpdateBikeEquipmentFunction'
           slot-name: 'Production'
-          package: './publish'
+          package: ${{ env.PUBLISH_DIR }}
