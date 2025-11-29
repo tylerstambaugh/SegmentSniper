@@ -12,8 +12,6 @@ on:
       - "SegmentSniper.Services/**"
       - "SegmentSniper.Tests/**"
       - "ApplicationLogic/**"
-      - "UpdateBikeEquipmentFunction/**"
-      - "SendEquipmentReplacementReminder/**"
       - ".github/workflows/api.yml"
   workflow_dispatch:
 
