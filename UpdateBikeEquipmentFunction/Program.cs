@@ -5,10 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
 using SegmentSniper.Services;
 
 var builder = FunctionsApplication.CreateBuilder(args);
+
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+builder.Logging.AddFilter("Function", LogLevel.Debug);
 
 builder.ConfigureFunctionsWebApplication();
 
@@ -18,6 +23,8 @@ builder.Services
     .ConfigureFunctionsApplicationInsights();
 
 string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
@@ -47,17 +54,17 @@ else
 }
 
 //TODO Clean this up after testing
-builder.Services.Configure<QueueSettings>(options =>
-{
-    // Pull the connection string (works in both local and Azure)
-    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"];
+//builder.Services.Configure<QueueSettings>(options =>
+//{
+//    // Pull the connection string (works in both local and Azure)
+//    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"];
 
-    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperStorageAccountConnection"]);
+//    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperStorageAccountConnection"]);
 
-    // Set the queue name from your config (non-secret)
-    //options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-    //                    ?? "process-bike-activity-queue";
-});
+//    // Set the queue name from your config (non-secret)
+//    //options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
+//    //                    ?? "process-bike-activity-queue";
+//});
 
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
