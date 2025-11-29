@@ -223,7 +223,9 @@ namespace SegmentSniper.Api.Configuration
                             "http://localhost:6767", "http://localhost:6768",
                             "http://127.0.0.1:6767", "http://127.0.0.1:6768",
                             // Deployed SWA
-                            "https://red-beach-02e49430f.2.azurestaticapps.net"
+                            "https://red-beach-02e49430f.2.azurestaticapps.net",
+                            "https://www.segmentsniper.com",
+                            "https://segmentsniper.com"
 )
                                .AllowAnyHeader()
                                .AllowAnyMethod();
