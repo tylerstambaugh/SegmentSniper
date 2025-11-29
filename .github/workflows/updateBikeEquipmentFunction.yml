@@ -27,5 +27,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'UpdateBikeEquipmentFunction'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.UPDATE_BIKE_EQUIPMENT_FUNCTIONAPP_PUBLISH_PROFILE }}
           package: './publish'
