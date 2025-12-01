@@ -7,72 +7,68 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
-using SegmentSniper.Services;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
-builder.Logging.AddFilter("Function", LogLevel.Debug);
+
+var startupLogger = LoggerFactory.Create(logging =>
+{
+    logging.AddConsole();
+}).CreateLogger("Startup");
 
 builder.ConfigureFunctionsWebApplication();
 
-// Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
 builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
 
-string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
-
+// Determine environment from launchSettings or Azure
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                  ?? "Development";
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true)
     .AddEnvironmentVariables();
 
-
-if (builder.Environment.IsDevelopment())
+// LOCAL environments (Development, ProductionLocal)
+if (environment is "Development" or "ProductionLocal")
 {
-    // In dev, also load from local secrets.json (or user secrets)
-    var secretsFilePath = Path.Combine(builder.Environment.ContentRootPath, "secrets.json");
-    builder.Configuration.AddJsonFile(secretsFilePath, optional: true);
+    builder.Configuration.AddJsonFile("secrets.json", optional: true);
+    builder.Configuration.AddUserSecrets<Program>();
 }
-else
-{
-    // Add Azure Key Vault in non-dev
-    var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
-    Console.WriteLine("AzureKeyVault:BaseUrl: " + builder.Configuration["AzureKeyVault:BaseUrl"]);
 
+// CLOUD Production ONLY
+if (environment == "Production")
+{
+    var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
 
     if (!string.IsNullOrEmpty(keyVaultEndpoint))
     {
-        builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
+        try
+        {
+            builder.Configuration.AddAzureKeyVault(
+                new Uri(keyVaultEndpoint),
+                new DefaultAzureCredential());
+        }
+        catch (Exception ex)
+        {
+            startupLogger.LogError(ex, "KeyVault initialization failed.");
+        }
     }
 }
-
-//TODO Clean this up after testing
-//builder.Services.Configure<QueueSettings>(options =>
-//{
-//    // Pull the connection string (works in both local and Azure)
-//    options.ConnectionString = builder.Configuration["SegmentSniperStorageAccountConnection"];
-
-//    Console.WriteLine("function Queue Connection String: " + builder.Configuration["ConnectionStrings:SegmentSniperStorageAccountConnection"]);
-
-//    // Set the queue name from your config (non-secret)
-//    //options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
-//    //                    ?? "process-bike-activity-queue";
-//});
 
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
 builder.Services.AddDbContext<SegmentSniperDbContext>(options =>
-          options.UseSqlServer(connectionString,
-                  b => b.MigrationsAssembly("SegmentSniper.Data"))
+    options.UseSqlServer(connectionString,
+        b => b.MigrationsAssembly("SegmentSniper.Data"))
 );
 
-builder.Services.AddScoped<ISegmentSniperDbContext>(provider => provider.GetService<SegmentSniperDbContext>());
+builder.Services.AddScoped<ISegmentSniperDbContext>(provider =>
+    provider.GetRequiredService<SegmentSniperDbContext>());
 
 builder.Build().Run();
