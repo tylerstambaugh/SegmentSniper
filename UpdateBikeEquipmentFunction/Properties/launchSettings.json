@@ -9,10 +9,20 @@
       },
       "dotnetRunMessages": true
     },
+    "ProductionLocal": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7265",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "ProductionLocal",
+        "AZURE_FUNCTIONS_ENVIRONMENT": "ProductionLocal"
+      },
+      "dotnetRunMessages": true
+    },
     "Production": {
       "commandName": "Project",
       "commandLineArgs": "--port 7265",
       "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
         "AZURE_FUNCTIONS_ENVIRONMENT": "Production"
       },
       "dotnetRunMessages": true
