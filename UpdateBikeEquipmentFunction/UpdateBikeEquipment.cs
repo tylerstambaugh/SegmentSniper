@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using SegmentSniper.Data;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Garage;
-using System.Text;
 
 namespace UpdateBikeEquipmentFunction
 {
@@ -39,11 +38,11 @@ namespace UpdateBikeEquipmentFunction
                     return;
                 }
 
-                // Decode Base64 → string
-                var json = Encoding.UTF8.GetString(Convert.FromBase64String(message.MessageText));
+                //// Decode Base64 → string
+                //var json = Encoding.UTF8.GetString(Convert.FromBase64String(message.MessageText));
 
                 // Deserialize JSON → BikeActivityQueueMessage
-                var queueItem = JsonConvert.DeserializeObject<BikeActivityQueueMessage>(json);
+                var queueItem = JsonConvert.DeserializeObject<BikeActivityQueueMessage>(message.MessageText);
 
                 if (queueItem == null)
                 {
@@ -55,7 +54,7 @@ namespace UpdateBikeEquipmentFunction
                 var bikeEquipment = _segmentSniperDbContext.Equipment
                     .Where(be => be.BikeId == queueItem.BikeId 
                                  && be.AuthUserId == queueItem.AuthUserId
-                                 && be.RetiredDate < DateTime.MaxValue)
+                                 && be.RetiredDate == null)
                     .ToList();
 
                 foreach (var equipment in bikeEquipment)
@@ -75,6 +74,7 @@ namespace UpdateBikeEquipmentFunction
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"{ex} {message.MessageText}");
                 _logger.LogError(ex, "Failed to parse or process queue message: {MessageText}", message.MessageText);
             }
         }
