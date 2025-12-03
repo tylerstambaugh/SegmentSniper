@@ -69,7 +69,7 @@ const UpsertEquipmentFormUI = ({
     description: Yup.string(),
     totalMiles: Yup.number().nullable(),
     installDate: Yup.date()
-      .nullable()
+      .required('Install date is required')
       .max(new Date(), 'Date must be in the past'),
     price: Yup.number().nullable(),
     replaceAtMiles: Yup.number().nullable(),
@@ -205,7 +205,7 @@ const UpsertEquipmentFormUI = ({
                   <Form.Label>Miles At Install</Form.Label>
                   <Form.Control
                     type="number"
-                    value={formik.values.milesAtInstall ?? 0}
+                    value={formik.values.milesAtInstall ?? ''}
                     onChange={(e) => {
                       const value = e.target.value
                         ? parseFloat(e.target.value)
@@ -231,7 +231,11 @@ const UpsertEquipmentFormUI = ({
                   <Form.Label>Total Miles</Form.Label>
                   <Form.Control
                     type="number"
-                    value={formik.values.totalMiles ?? ''}
+                    value={
+                      formik.values.totalMiles ??
+                      formik.values.milesAtInstall ??
+                      ''
+                    }
                     disabled={true}
                   />
                 </Form.Group>
@@ -323,10 +327,9 @@ const UpsertEquipmentFormUI = ({
             <Row>
               <Col>
                 <Form.Group controlId="replaceAtMiles" className="mb-3">
-                  <Form.Label>Replace At (Miles)</Form.Label>
+                  <Form.Label>Replace At Miles</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Miles"
                     value={formik.values.replaceAtMiles ?? ''}
                     onChange={(e) => {
                       const value = e.target.value
@@ -353,10 +356,9 @@ const UpsertEquipmentFormUI = ({
                   controlId="milesUntilReplaceReminder"
                   className="mb-3"
                 >
-                  <Form.Label>Remind At (Miles)</Form.Label>
+                  <Form.Label>Remind At Miles</Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder="Miles"
                     value={formik.values.milesUntilReplaceReminder ?? undefined}
                     onChange={(e) => {
                       const value = e.target.value

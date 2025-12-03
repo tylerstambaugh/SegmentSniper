@@ -32,7 +32,8 @@ namespace SegmentSniper.Services.Garage
                     BikeId = contract.BikeId,
                     Name = contract.Equipment.Name,
                     Description = contract.Equipment.Description,
-                    TotalMilage = contract.Equipment.TotalMiles,
+                    MilesAtInstall = contract.Equipment.MilesAtInstall,
+                    TotalMilage = contract.Equipment.MilesAtInstall,
                     InstallDate = contract.Equipment.InstallDate,
                     UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.Now,
                     RetiredDate = contract.Equipment.RetiredDate,
@@ -45,21 +46,6 @@ namespace SegmentSniper.Services.Garage
                     RemindersSent = contract.Equipment.RemindersSent,
                     CreatedDate = DateTime.Now,
                 };
-
-                if(contract.Equipment.InstallDate != null)
-                {
-                    equipmentToAdd.InstallDate = contract.Equipment.InstallDate;
-                }
-
-                if (contract.Equipment.ReminderDate != null)
-                {
-                    equipmentToAdd.ReminderDate = contract.Equipment.ReminderDate;
-                }
-
-                if (contract.Equipment.RetiredDate != null)
-                {
-                    equipmentToAdd.RetiredDate = contract.Equipment.RetiredDate;
-                }
 
                 _context.Equipment.Add(equipmentToAdd);
                 var success = await _context.SaveChangesAsync() == 1;
