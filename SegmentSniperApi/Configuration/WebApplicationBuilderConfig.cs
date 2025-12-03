@@ -25,15 +25,6 @@ namespace SegmentSniper.Api.Configuration
 
             var builder = WebApplication.CreateBuilder();
 
-            var managedIdentityClientId = builder.Configuration["ManagedIdentityClientId"];
-
-            var credential = new DefaultAzureCredential(
-                new DefaultAzureCredentialOptions
-                {
-                    ManagedIdentityClientId = managedIdentityClientId
-                }
-            );
-
             if (builder.Environment.IsDevelopment())
             {
                 // Optional: load local-only secrets
@@ -46,7 +37,7 @@ namespace SegmentSniper.Api.Configuration
                 var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
                 if (!string.IsNullOrEmpty(keyVaultEndpoint))
                 {
-                    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), credential);
+                    builder.Configuration.AddAzureKeyVault(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
                 }
             }
 
