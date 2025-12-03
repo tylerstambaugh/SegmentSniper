@@ -35,10 +35,6 @@ namespace SegmentSniper.Services.Garage
                             ManagedIdentityClientId = settings.ClientId
                         })
                     );
-
-                //TODO : Remove this loggings
-                    Log.Information("Publisher initialized with Managed Identity: QueueServiceUri={QueueServiceUri}, QueueName={QueueName}",
-                        settings.QueueServiceUri, settings.QueueName);
                 }
                 else
                 {

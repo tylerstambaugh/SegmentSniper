@@ -1,5 +1,17 @@
 {
   "profiles": {
+    "production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "VaultUri": "https://kv-segmentsiper-dev.vault.azure.net/",
+        "AZURE_USERNAME": "tyler.stambaugh@gmail.com"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7201;http://localhost:5261"
+    },
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
