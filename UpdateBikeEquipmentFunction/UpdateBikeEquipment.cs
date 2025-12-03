@@ -38,9 +38,6 @@ namespace UpdateBikeEquipmentFunction
                     return;
                 }
 
-                //// Decode Base64 → string
-                //var json = Encoding.UTF8.GetString(Convert.FromBase64String(message.MessageText));
-
                 // Deserialize JSON → BikeActivityQueueMessage
                 var queueItem = JsonConvert.DeserializeObject<BikeActivityQueueMessage>(message.MessageText);
 
@@ -74,7 +71,6 @@ namespace UpdateBikeEquipmentFunction
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex} {message.MessageText}");
                 _logger.LogError(ex, "Failed to parse or process queue message: {MessageText}", message.MessageText);
             }
         }
