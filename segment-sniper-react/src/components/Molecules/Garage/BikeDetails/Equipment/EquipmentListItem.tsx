@@ -76,7 +76,7 @@ const EquipmentListItem = ({ item, setModalState }: EquipmentListItemProps) => {
             Edit
           </Button>
         </Col>
-        {item.retiredDate && item.retiredDate === MAX_DATE_STRING ? (
+        {!item.retiredDate ? (
           <Col>
             <Button
               variant="secondary"
