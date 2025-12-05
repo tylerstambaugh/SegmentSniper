@@ -2,8 +2,8 @@ name: Build and Deploy Frontend
 
 on:
   push:
-    paths: "segment-sniper-react"
     branches: [ "prod" ]
+    paths: "segment-sniper-react/**"
 
 jobs:
   build-and-deploy:
