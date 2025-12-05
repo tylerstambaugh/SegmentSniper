@@ -3,6 +3,7 @@ export enum AppRoutes {
   Home = '',
   Dashboard = 'dashboard',
   Pricing = 'pricing',
+  BillingSuccess = 'billing/success',
   SignIn = 'sign-in',
   SignUp = 'sign-up',
   Logout = 'logout',

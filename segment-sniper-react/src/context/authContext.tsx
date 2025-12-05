@@ -1,6 +1,6 @@
-import { useAuth, useUser  } from "@clerk/react-router";
+import { useAuth, useUser } from '@clerk/react-router';
 
-import { createContext, useMemo, useRef } from "react";
+import { createContext, useMemo, useRef } from 'react';
 
 export interface AuthContextValue {
   roles: string[];
@@ -27,29 +27,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Only recompute when user changes
   const computedRoles = useMemo(() => {
     if (!isLoaded || !user) return undefined;
-    if (user.id === lastUserId.current) return undefined;
 
     const rawRoles = user.publicMetadata?.roles;
     const roles = Array.isArray(rawRoles)
       ? (rawRoles as string[])
       : rawRoles
-      ? [rawRoles as string]
-      : [];
+        ? [rawRoles as string]
+        : [];
 
-    lastUserId.current = user.id;
-    lastRoles.current = roles;
-    return roles;
-  }, [user?.id, user?.publicMetadata?.roles, isLoaded]);
+    // Only update if roles actually changed
+    if (JSON.stringify(roles) !== JSON.stringify(lastRoles.current)) {
+      lastRoles.current = roles;
+      return roles;
+    }
+
+    return undefined;
+  }, [isLoaded, user?.publicMetadata?.roles]);
 
   // Update the stable ref only when roles actually change
   if (computedRoles !== undefined) {
     lastRoles.current = computedRoles;
   }
 
-
-const userHas = (isAuthorizedParams: string) => {
-    return has?.({feature: isAuthorizedParams}) ?? false;
-  }
+  const userHas = (isAuthorizedParams: string) => {
+    return has?.({ feature: isAuthorizedParams }) ?? false;
+  };
 
   // Create stable context value that only updates when something truly changes
   const contextValue = useMemo(
@@ -57,14 +59,12 @@ const userHas = (isAuthorizedParams: string) => {
       roles: lastRoles.current,
       userId: user?.id ?? lastUserId.current,
       isLoaded,
-      userHas
+      userHas,
     }),
-    [user?.id, isLoaded, lastRoles.current.join(",")]
+    [user?.id, isLoaded, lastRoles.current.join(',')],
   );
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };

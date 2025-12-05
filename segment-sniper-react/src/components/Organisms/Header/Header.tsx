@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from '../../../assets/images/segment_sniper_logo_v3.webp';
 import { AppRoutes } from '../../../enums/AppRoutes';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from '@clerk/clerk-react';
 import { AuthContext } from '../../../context/authContext';
 
 function Header() {
@@ -47,25 +52,34 @@ function Header() {
             to={`/${AppRoutes.Dashboard}`}
             className="d-flex text-white text-decoration-none"
           >
-            <img src={logo} alt="segmentSniperLogo" className="header-image p-0" />
+            <img
+              src={logo}
+              alt="segmentSniperLogo"
+              className="header-image p-0"
+            />
           </Link>
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleNavbarToggle} />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={handleNavbarToggle}
+        />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="w-100 d-flex justify-content-end align-items-end">
-            
             {/* ----- When Signed In ----- */}
             <SignedIn>
               <Nav.Item className="fw-semibold text-end">
                 <Navbar.Text>
-                  <Link to={`/${AppRoutes.Dashboard}`} onClick={handleLinkClick}>
+                  <Link
+                    to={`/${AppRoutes.Dashboard}`}
+                    onClick={handleLinkClick}
+                  >
                     Menu
                   </Link>
                 </Navbar.Text>
               </Nav.Item>
 
-               <div className="border-end mx-3 d-none d-md-block"></div>
+              <div className="border-end mx-3 d-none d-md-block"></div>
               <Nav.Item className="fw-semibold text-end">
                 <Navbar.Text>
                   <Link to={`/${AppRoutes.Pricing}`} onClick={handleLinkClick}>
@@ -89,7 +103,10 @@ function Header() {
                   <div className="border-end mx-3 d-none d-md-block"></div>
                   <Nav.Item className="fw-semibold text-end">
                     <Navbar.Text>
-                      <Link to={`/${AppRoutes.Admin}`} onClick={handleLinkClick}>
+                      <Link
+                        to={`/${AppRoutes.Admin}`}
+                        onClick={handleLinkClick}
+                      >
                         Admin
                       </Link>
                     </Navbar.Text>
@@ -104,7 +121,6 @@ function Header() {
 
             {/* ----- When Signed Out ----- */}
             <SignedOut>
-
               <Nav.Item className="fw-semibold pe-2">
                 <Navbar.Text className="d-flex">
                   <Link to={`/${AppRoutes.About}`} onClick={handleLinkClick}>
@@ -122,7 +138,7 @@ function Header() {
 
               <div className="ms-3">
                 <SignInButton mode="modal">
-                  <button className="btn btn-outline-primary">Login</button>
+                  <Button>Login</Button>
                 </SignInButton>
               </div>
             </SignedOut>

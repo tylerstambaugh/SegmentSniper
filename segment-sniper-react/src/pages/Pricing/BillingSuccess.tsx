@@ -1,17 +1,23 @@
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { AppRoutes } from '../../enums/AppRoutes';
-import { useUser } from '@clerk/clerk-react';
 import { useEffect } from 'react';
+import { useSession, useUser } from '@clerk/clerk-react';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { AppRoutes } from '../../enums/AppRoutes';
+import { useNavigate } from 'react-router';
 
-function ConnectWithStravaSuccess() {
+export default function BillingSuccess() {
   const { user, isLoaded } = useUser();
+  const { session } = useSession();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isLoaded) {
-      user?.reload();
-    }
+    if (!isLoaded) return;
+
+    (async () => {
+      console.log('Reloading user and session after billing success');
+      await user?.reload();
+      await session?.reload();
+    })();
   }, []);
+
   return (
     <Container className="d-flex flex-column justify-content-center">
       <Row className="d-flex justify-content-center pt-3 ">
@@ -19,7 +25,7 @@ function ConnectWithStravaSuccess() {
           <Card className="shadow">
             <Card.Body className="mx-3">
               <div className="mb-2 text-center">
-                <h2 className="fw-bold mb-2 ">Authorization successful</h2>
+                <h2 className="fw-bold mb-2 ">Subscription Updated</h2>
                 <Row>
                   <Col className="d-flex p-2 mb-2 justify-content-center">
                     <Button
@@ -39,5 +45,3 @@ function ConnectWithStravaSuccess() {
     </Container>
   );
 }
-
-export default ConnectWithStravaSuccess;
