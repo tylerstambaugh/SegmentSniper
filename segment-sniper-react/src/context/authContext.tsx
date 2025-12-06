@@ -4,6 +4,7 @@ import { createContext, useMemo, useRef } from 'react';
 
 export interface AuthContextValue {
   roles: string[];
+  isSignedIn?: boolean;
   userId: string | null;
   isLoaded: boolean;
   userHas: (isAuthorizedParams: string) => boolean;
@@ -13,11 +14,12 @@ export const AuthContext = createContext<AuthContextValue>({
   roles: [],
   userId: null,
   isLoaded: false,
+  isSignedIn: false,
   userHas: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded, isSignedIn } = useUser();
   const { has } = useAuth();
 
   // Keep stable refs to avoid re-renders when Clerk silently refreshes tokens
@@ -58,6 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({
       roles: lastRoles.current,
       userId: user?.id ?? lastUserId.current,
+      isSignedIn,
       isLoaded,
       userHas,
     }),

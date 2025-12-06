@@ -1,12 +1,8 @@
-
-import { useContext, useMemo } from "react";
-import { Outlet, Link } from "react-router-dom";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import { AuthSync } from "./AuthSync";
-import { SessionCleanup } from "./SessionCleanUp";
-import { AppRoutes } from "../../../enums/AppRoutes";
-import { AuthContext } from "../../../context/authContext";
-
+import { useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import { AuthContext } from '../../../context/authContext';
+import Unauthorized from '../../Unauthorized';
+import { AuthSync } from './AuthSync';
 
 type Props = {
   userRoles?: string[];
@@ -14,29 +10,19 @@ type Props = {
 };
 
 const PrivateRoute = ({ userRoles = [], requireStravaSync = false }: Props) => {
-  const { roles } = useContext(AuthContext);
+  const { isLoaded, isSignedIn, roles } = useContext(AuthContext);
 
-  const hasRequiredRole = useMemo(() => {
-    if (userRoles.length === 0) return true;
-    return userRoles.some((role) => roles.includes(role));
-  }, [roles, userRoles]);
+  if (!isLoaded) return null;
 
-  if (!hasRequiredRole) {
-    return (
-      <Container className="d-flex flex-column align-items-center justify-content-center pt-5">
-        <Row className="text-center">
-          <Col>
-            <p>You do not have permission to access this resource.</p>
-            <Link to={AppRoutes.Home}>
-              <Button>Home</Button>
-            </Link>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+  if (!isSignedIn) return <Unauthorized />;
 
-  // Only wrap in AuthSync if Strava is required
+  const hasRequiredRole =
+    userRoles.length === 0 ||
+    userRoles.some((required) => roles.includes(required));
+
+  if (!hasRequiredRole) return <Unauthorized />;
+
+  // Optional StravaSync wrapper
   return requireStravaSync ? (
     <AuthSync>
       <Outlet />

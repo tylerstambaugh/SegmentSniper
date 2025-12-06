@@ -18,7 +18,6 @@ export default function BillingSuccess() {
     })();
   }, []);
 
-  //testing github actions
   return (
     <Container className="d-flex flex-column justify-content-center">
       <Row className="d-flex justify-content-center pt-3 ">
