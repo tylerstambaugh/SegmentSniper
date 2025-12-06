@@ -1,13 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/react-router';
-
 import Home from './pages/Home';
 import About from './pages/About/About';
 import SignIn from './pages/Authentication/SignIn';
 import SignUpPage from './pages/Authentication/SignUpPage';
 import AutoLoggedOut from './pages/Authentication/AutoLoggedOut';
 import Unauthorized from './components/Unauthorized';
-
 import PrivateRoute from './components/Organisms/Authentication/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import SegmentSniper from './pages/SegmentSniper/ActivityLookup';
@@ -16,16 +13,13 @@ import ActivityDetails from './pages/SegmentSniper/ActivityDetails';
 import SegmentPredictions from './pages/SegmentPrediction';
 import GarageMenu from './components/Organisms/GarageMenu/GarageMenu';
 import BikeDetails from './pages/Garage/BikeDetails';
-
 import ConnectWithStrava from './components/Organisms/ConnectWithStrava/ConnectWithStrava';
 import ConnectWithStravaSuccess from './pages/ConnectWithStrava/Success';
 import ConnectWithStravaError from './pages/ConnectWithStrava/Error';
-
 import Admin from './pages/Admin/Admin';
 import ManageStravaWebhook from './pages/Admin/ManageStravaWebhook';
 import UserManagement from './components/Organisms/Admin/ManageUsers';
 import ViewAssignRoles from './components/Organisms/Admin/ManageUsers/ViewAssignRoles';
-
 import { AppRoutes } from './enums/AppRoutes';
 import { UserRole } from './enums/Roles';
 import Pricing from './pages/Pricing/Pricing';
@@ -37,7 +31,7 @@ const adminRoles = [UserRole.Admin];
 export default function AppRoutesComponent() {
   return (
     <Routes>
-      {/* ----- Public Routes ----- */}
+      {/* ---------- Public Routes ---------- */}
       <Route path={AppRoutes.Home} element={<Home />} />
       <Route path={AppRoutes.About} element={<About />} />
       <Route path={AppRoutes.Pricing} element={<Pricing />} />
@@ -46,13 +40,9 @@ export default function AppRoutesComponent() {
       <Route path={AppRoutes.InactiveLogout} element={<AutoLoggedOut />} />
       <Route path={AppRoutes.Unauthorized} element={<Unauthorized />} />
 
-      {/* ----- Protected Routes ----- */}
+      {/* ---------- MEMBER PROTECTED ---------- */}
       <Route
-        element={
-          <SignedIn>
-            <PrivateRoute userRoles={memberRoles} requireStravaSync />
-          </SignedIn>
-        }
+        element={<PrivateRoute userRoles={memberRoles} requireStravaSync />}
       >
         <Route path={AppRoutes.Dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.BillingSuccess} element={<BillingSuccess />} />
@@ -82,13 +72,8 @@ export default function AppRoutesComponent() {
         />
       </Route>
 
-      <Route
-        element={
-          <SignedIn>
-            <PrivateRoute userRoles={adminRoles} />
-          </SignedIn>
-        }
-      >
+      {/* ---------- ADMIN PROTECTED ---------- */}
+      <Route element={<PrivateRoute userRoles={adminRoles} />}>
         <Route path={AppRoutes.Admin} element={<Admin />} />
         <Route path={AppRoutes.UserManagement} element={<UserManagement />} />
         <Route path={AppRoutes.ViewAssignRoles} element={<ViewAssignRoles />} />
@@ -98,14 +83,8 @@ export default function AppRoutesComponent() {
         />
       </Route>
 
-      {/* ----- Signed-Out Fallback ----- */}
-      <Route
-        element={
-          <SignedOut>
-            <Unauthorized />
-          </SignedOut>
-        }
-      />
+      {/* ---------- CATCH-ALL ---------- */}
+      <Route path="*" element={<Unauthorized />} />
     </Routes>
   );
 }

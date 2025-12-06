@@ -1,15 +1,11 @@
-import { Container } from "react-bootstrap";
+import { Container } from 'react-bootstrap';
 
-import MainMenu from "../components/Organisms/MainMenu/MainMenu";
+import MainMenu from '../components/Organisms/MainMenu/MainMenu';
 
 export default function Dashboard() {
-
-
   return (
     <>
-      <Container
-        className="d-flex flex-column justify-content-center"
-      >
+      <Container className="d-flex flex-column justify-content-center">
         <MainMenu />
       </Container>
     </>

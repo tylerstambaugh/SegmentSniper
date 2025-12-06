@@ -1,6 +1,6 @@
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { BikeList } from '../../Molecules/Garage/BikeList/BikeList';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import ImportBikesModal from '../../Molecules/Garage/ImportBikes/ImportBikesModal';
 import UpsertBikeModal, {
   UpsertBikeFormValues,
@@ -16,12 +16,16 @@ import {
   GetBikesByAuthUserIdQuery,
   GetBikesByAuthUserIdQueryVariables,
 } from '../../../graphql/generated';
+import { AuthContext } from '../../../context/authContext';
+import Unauthorized from '../../Unauthorized';
 
 type GarageModalState =
   | { type: 'none' }
   | { type: 'import' }
   | { type: 'upsertBike' };
 export default function GarageMenu() {
+  const { userHas, roles } = useContext(AuthContext);
+
   const [modalState, setModalState] = useState<GarageModalState>({
     type: 'none',
   });
@@ -104,7 +108,7 @@ export default function GarageMenu() {
     }
   }
 
-  return (
+  return userHas('garage') ? (
     <>
       <ImportBikesModal
         show={modalState.type === 'import'}
@@ -140,5 +144,7 @@ export default function GarageMenu() {
         </Row>
       </Container>
     </>
+  ) : (
+    <Unauthorized />
   );
 }

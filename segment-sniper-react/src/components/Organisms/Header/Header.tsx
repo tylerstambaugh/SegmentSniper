@@ -48,16 +48,30 @@ function Header() {
       <Container fluid>
         {/* Brand / Logo */}
         <Navbar.Brand className="ps-3">
-          <Link
-            to={`/${AppRoutes.Dashboard}`}
-            className="d-flex text-white text-decoration-none"
-          >
-            <img
-              src={logo}
-              alt="segmentSniperLogo"
-              className="header-image p-0"
-            />
-          </Link>
+          <SignedIn>
+            <Link
+              to={`/${AppRoutes.Dashboard}`}
+              className="d-flex text-white text-decoration-none"
+            >
+              <img
+                src={logo}
+                alt="segmentSniperLogo"
+                className="header-image p-0"
+              />
+            </Link>
+          </SignedIn>
+          <SignedOut>
+            <Link
+              to={`/${AppRoutes.Home}`}
+              className="d-flex text-white text-decoration-none"
+            >
+              <img
+                src={logo}
+                alt="segmentSniperLogo"
+                className="header-image p-0"
+              />
+            </Link>
+          </SignedOut>
         </Navbar.Brand>
 
         <Navbar.Toggle
