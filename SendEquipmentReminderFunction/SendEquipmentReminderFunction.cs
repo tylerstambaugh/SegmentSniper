@@ -21,42 +21,40 @@ namespace SendEquipmentReminderFunction
         }
 
         [Function(nameof(SendEquipmentReminderFunction))]
-        public async Task Run([TimerTrigger("0 0 19 * * *")] TimerInfo myTimer)
-        {
-            _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-
-            if (myTimer.ScheduleStatus is not null)
-            {
-                _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
-            }
+        //public async Task Run([TimerTrigger("0 0 19 * * *")] TimerInfo myTimer)
+public async Task Run([TimerTrigger("0 */3 * * * *")] TimerInfo myTimer)        {
+            _logger.LogInformation($"Send equipment reminder function ran at: {DateTime.Now}");
 
             try
             {
                 var today = DateTime.UtcNow.Date;
 
-                var equipmentWithReminderDate = _segmentSniperDbContext.Equipment
-                    .Where(eq => eq.ReminderDate <= today
-                              && eq.MaxRemindersToSend < eq.RemindersSent)
-                    .Include(eq => eq.AppUser);
+                var equipments =
+                    await _segmentSniperDbContext.Equipment
+                        .Where(eq =>
+                            eq.MaxRemindersToSend < eq.RemindersSent && (
 
-                var equipmentWithReminderDuration = _segmentSniperDbContext.Equipment
-                    .Where(eq => eq.InstallDate.HasValue 
-                              && eq.ReminderDuration.HasValue
-                              && eq.InstallDate.Value.Add(eq.ReminderDuration.Value) <= today
-                              && eq.MaxRemindersToSend < eq.RemindersSent)
-                    .Include(eq => eq.AppUser);
+                                //reminded date has passed
+                                (eq.ReminderDate <= today)
 
-                var equipmentPassedMileageThreshold = _segmentSniperDbContext.Equipment
-                    .Where(eq => eq.ReplaceAtMiles - eq.MilesUntilReplaceReminder >= eq.TotalMilage
-                              && eq.MaxRemindersToSend < eq.RemindersSent)
-                    .Include(eq => eq.AppUser); 
+                                ||
 
-                var equipmentsToNotify = equipmentWithReminderDate
-                    .Union(equipmentWithReminderDuration)
-                    .Union(equipmentPassedMileageThreshold)
-                    .Distinct();
+                                //reminder based on install date + duration
+                                (eq.InstallDate.HasValue &&
+                                 eq.ReminderDuration.HasValue &&
+                                 EF.Functions.DateDiffDay(eq.InstallDate.Value, today)
+                                     >= eq.ReminderDuration.Value.Days)
 
-                var equipments = await equipmentsToNotify.ToListAsync();
+                                ||
+
+                                //reminder based on exeeding mileage threshold
+                                (eq.ReplaceAtMiles - eq.MilesUntilReplaceReminder >= eq.TotalMilage)
+                            )
+                        )
+                        .Include(eq => eq.AppUser)
+                        .Distinct()
+                        .ToListAsync();
+
 
                 foreach (var equipment in equipments)
                 {
