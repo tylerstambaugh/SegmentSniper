@@ -21,8 +21,9 @@ namespace SendEquipmentReminderFunction
         }
 
         [Function(nameof(SendEquipmentReminderFunction))]
-        //public async Task Run([TimerTrigger("0 0 19 * * *")] TimerInfo myTimer)
-public async Task Run([TimerTrigger("0 */3 * * * *")] TimerInfo myTimer)        {
+        public async Task Run([TimerTrigger("0 0 19 * * *")] TimerInfo myTimer)
+        //public async Task Run([TimerTrigger("0 */3 * * * *")] TimerInfo myTimer)      
+        {
             _logger.LogInformation($"Send equipment reminder function ran at: {DateTime.Now}");
 
             try
