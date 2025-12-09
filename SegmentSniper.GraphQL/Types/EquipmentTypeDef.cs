@@ -18,7 +18,7 @@ namespace SegmentSniper.GraphQL.Types
             Field<DateTimeGraphType>("updatedDate").Description("The date the equipment was last updated");
             Field<DateTimeGraphType>("retiredDate").Description("The date the equipment was retired");
             Field<DateTimeGraphType>("reminderDate").Description("The date you want to be reminded to replace the equipment");
-            Field<TimeSpanSecondsGraphType>("reminderDuration").Description("The amount of time until you want to be remined to replace the equipment");
+            Field<IntGraphType>("reminderDurationInMonths").Description("The amount of time until you want to be remined to replace the equipment");
             Field<DecimalGraphType>("totalMiles").Description("Total miles on the equipment");
             Field<DecimalGraphType>("milesAtInstall").Description("The miles on the equipment when it was added to this bike");
             Field<IntGraphType>("replaceAtMiles").Description("The sum total of miles that the equipment should be replaced");
@@ -41,7 +41,7 @@ namespace SegmentSniper.GraphQL.Types
             Field(e => e.UpdatedDate).Description("The installation date of the updated.");
             Field(e => e.RetiredDate).Description("The date the equipment was retired");
             Field(e => e.ReminderDate).Description("The date you want to be reminded to replace the equipment");
-            Field(e => e.ReminderDuration).Description("The amount of time until you want to be remined to replace the equipment");
+            Field(e => e.ReminderDurationInMonths).Description("The amount of time until you want to be remined to replace the equipment");
             Field(e => e.MilesAtInstall).Description("The miles on the equipment when it was added to this bike");
             Field(e => e.ReplaceAtMiles).Description("The sum total of miles that the equipment should be replaced");
             Field(e => e.MilesUntilReplaceReminder).Description(("Miles until a reminder to replace the equipment is sent"));

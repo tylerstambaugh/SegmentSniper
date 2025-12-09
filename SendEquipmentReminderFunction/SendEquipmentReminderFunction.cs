@@ -41,9 +41,9 @@ public async Task Run([TimerTrigger("0 */3 * * * *")] TimerInfo myTimer)        
 
                                 //reminder based on install date + duration
                                 (eq.InstallDate.HasValue &&
-                                 eq.ReminderDuration.HasValue &&
+                                 eq.ReminderDurationInMonths > 0 &&
                                  EF.Functions.DateDiffDay(eq.InstallDate.Value, today)
-                                     >= eq.ReminderDuration.Value.Days)
+                                     >= eq.ReminderDurationInMonths * 30)
 
                                 ||
 
