@@ -269,7 +269,6 @@ const UpsertEquipmentFormUI = ({
                 </Form.Group>
               </Col>
               <Col>
-                {/* the typedef for this is a timespan in seconds, but we need to convert or save it different so the user can enter months. */}
                 <Form.Group controlId="reminderDuration" className="mb-3">
                   <Form.Label>Reminder Duration</Form.Label>
                   <Form.Control
