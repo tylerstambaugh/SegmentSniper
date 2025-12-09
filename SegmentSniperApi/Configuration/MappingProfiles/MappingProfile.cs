@@ -280,7 +280,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
                 .ForMember(dest => dest.RetiredDate, opt => opt.MapFrom(src => src.RetiredDate))
                 .ForMember(dest => dest.ReminderDate, opt => opt.MapFrom(src => src.ReminderDate))
-                .ForMember(dest => dest.ReminderDuration, opt => opt.MapFrom(src => src.ReminderDuration))
+                .ForMember(dest => dest.ReminderDurationInMonths, opt => opt.MapFrom(src => src.ReminderDurationInMonths))
                 .ForMember(dest => dest.MaxRemindersToSend, opt => opt.MapFrom(src => src.MaxRemindersToSend))
                 .ForMember(dest => dest.RemindersSent, opt => opt.MapFrom(src => src.RemindersSent))
                 .ReverseMap();

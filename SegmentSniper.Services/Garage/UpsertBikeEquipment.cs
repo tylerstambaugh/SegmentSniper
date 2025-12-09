@@ -38,7 +38,7 @@ namespace SegmentSniper.Services.Garage
                     UpdatedDate = contract.Equipment.UpdatedDate ?? DateTime.Now,
                     RetiredDate = contract.Equipment.RetiredDate,
                     ReminderDate = contract.Equipment.ReminderDate,
-                    ReminderDuration = contract.Equipment.ReminderDuration,
+                    ReminderDurationInMonths = contract.Equipment.ReminderDurationInMonths,
                     Price = contract.Equipment.Price,
                     ReplaceAtMiles = contract.Equipment.ReplaceAtMiles,
                     MilesUntilReplaceReminder = contract.Equipment.MilesUntilReplaceReminder,
@@ -106,9 +106,9 @@ namespace SegmentSniper.Services.Garage
                     existingEquipment.ReminderDate = contract.Equipment.ReminderDate;
                     isUpdated = true;
                 }
-                if (existingEquipment.ReminderDuration != contract.Equipment.ReminderDuration)
+                if (existingEquipment.ReminderDurationInMonths != contract.Equipment.ReminderDurationInMonths)
                 {
-                    existingEquipment.ReminderDuration = contract.Equipment.ReminderDuration;
+                    existingEquipment.ReminderDurationInMonths = contract.Equipment.ReminderDurationInMonths;
                     isUpdated = true;
                 }
                 if (existingEquipment.Price != contract.Equipment.Price)
