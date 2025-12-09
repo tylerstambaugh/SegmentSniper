@@ -23,7 +23,7 @@ import ViewAssignRoles from './components/Organisms/Admin/ManageUsers/ViewAssign
 import { AppRoutes } from './enums/AppRoutes';
 import { UserRole } from './enums/Roles';
 import Pricing from './pages/Pricing/Pricing';
-import BillingSuccess from './pages/Pricing/billingSuccess';
+import BillingSuccess from './pages/Pricing/BillingSuccess';
 
 const memberRoles = [UserRole.Member];
 const adminRoles = [UserRole.Admin];
