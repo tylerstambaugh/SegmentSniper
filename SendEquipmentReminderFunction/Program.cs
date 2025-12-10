@@ -43,7 +43,9 @@ if (environment is "Development" or "ProductionLocal")
 }
 
 // CLOUD Production ONLY
-if (environment == "Production")
+var isAzure = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"));
+
+if (isAzure)
 {
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
 
