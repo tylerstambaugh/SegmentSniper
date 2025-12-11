@@ -7,7 +7,6 @@ import { DateTime } from 'luxon';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { ApolloError } from '@apollo/client';
 import toast from 'react-hot-toast';
-import { log } from 'console';
 
 export type UpsertEquipmentFormProps = {
   show: boolean;
@@ -29,7 +28,7 @@ export interface UpsertEquipmentFormValues {
   replaceAtMiles?: number | null;
   milesUntilReplaceReminder?: number | null;
   reminderDate?: DateTime | null;
-  reminderDuration?: number | null;
+  reminderDurationInMonths?: number | null;
   maxRemindersToSend?: number | null;
   remindersSent?: number | null;
 }
@@ -57,7 +56,7 @@ const UpsertEquipmentFormUI = ({
       milesUntilReplaceReminder:
         editEquipment?.milesUntilReplaceReminder ?? null,
       reminderDate: editEquipment?.reminderDate ?? null,
-      reminderDuration: editEquipment?.reminderDuration ?? null,
+      reminderDurationInMonths: editEquipment?.reminderDurationInMonths ?? null,
       maxRemindersToSend: editEquipment?.maxRemindersToSend ?? 2,
       remindersSent: editEquipment?.remindersSent ?? 0,
     }),
@@ -74,7 +73,9 @@ const UpsertEquipmentFormUI = ({
     price: Yup.number().nullable(),
     replaceAtMiles: Yup.number().nullable(),
     reminderDate: Yup.date().nullable(),
-    reminderDuration: Yup.number().nullable().positive('Must be positive'),
+    reminderDurationInMonths: Yup.number()
+      .nullable()
+      .positive('Must be positive'),
     maxRemindersToSend: Yup.number().nullable(),
     remindersSent: Yup.number().nullable(),
     milesUntilReplaceReminder: Yup.number().nullable(),
@@ -269,29 +270,35 @@ const UpsertEquipmentFormUI = ({
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="reminderDuration" className="mb-3">
+                <Form.Group
+                  controlId="reminderDurationinMonths"
+                  className="mb-3"
+                >
                   <Form.Label>Reminder Duration</Form.Label>
                   <Form.Control
                     type="number"
                     placeholder="months"
-                    value={formik.values.reminderDuration ?? undefined}
+                    value={formik.values.reminderDurationInMonths ?? undefined}
                     onChange={(e) => {
                       const value = e.target.value
                         ? parseFloat(e.target.value)
                         : null;
-                      formik.setFieldValue('reminderDuration', value);
+                      formik.setFieldValue('reminderDurationInMonths', value);
                     }}
                     isInvalid={
-                      formik.touched.reminderDuration &&
-                      !!formik.errors.reminderDuration
+                      formik.touched.reminderDurationInMonths &&
+                      !!formik.errors.reminderDurationInMonths
                     }
                     isValid={
-                      formik.touched.reminderDuration &&
-                      !formik.errors.reminderDuration
+                      formik.touched.reminderDurationInMonths &&
+                      !formik.errors.reminderDurationInMonths
                     }
                   />
                   <Form.Control.Feedback type="invalid">
-                    {formik.errors.reminderDuration as FormikErrors<string>}
+                    {
+                      formik.errors
+                        .reminderDurationInMonths as FormikErrors<string>
+                    }
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>

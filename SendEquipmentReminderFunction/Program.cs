@@ -2,12 +2,12 @@ using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
-using SegmentSniper.Services.Common;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -53,9 +53,19 @@ if (isAzure)
     {
         try
         {
+            // Register SecretClient with DI (modern pattern)
+            builder.Services.AddAzureClients(clientBuilder =>
+            {
+                clientBuilder.AddSecretClient(new Uri(keyVaultEndpoint));
+                clientBuilder.UseCredential(new DefaultAzureCredential());
+            });
+
+            // Load secrets into IConfiguration (configuration source)
             builder.Configuration.AddAzureKeyVault(
                 new Uri(keyVaultEndpoint),
                 new DefaultAzureCredential());
+
+            startupLogger.LogInformation("Key Vault connected: " + keyVaultEndpoint);
         }
         catch (Exception ex)
         {
@@ -63,7 +73,6 @@ if (isAzure)
         }
     }
 }
-
 var connectionString = builder.Configuration.GetConnectionString("SegmentSniperConnectionString");
 
 builder.Services.AddDbContext<SegmentSniperDbContext>(options =>

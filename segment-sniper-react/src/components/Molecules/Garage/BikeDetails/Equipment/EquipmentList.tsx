@@ -146,6 +146,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       retiredDate: retiredDate,
       price: values.price ?? 0,
       replaceAtMiles: values.replaceAtMiles ?? 0,
+      reminderDurationInMonths: values.reminderDurationInMonths ?? 0,
       milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0,
       maxRemindersToSend: values.maxRemindersToSend ?? 1,
       equipmentId:
