@@ -18,7 +18,6 @@ export type Scalars = {
   Date: { input: any; output: any; }
   DateTime: { input: string; output: string; }
   Decimal: { input: number; output: number; }
-  Seconds: { input: any; output: any; }
 };
 
 export type BikeInput = {
@@ -104,7 +103,7 @@ export type EquipmentInput = {
   /** The date you want to be reminded to replace the equipment */
   reminderDate?: InputMaybe<Scalars['DateTime']['input']>;
   /** The amount of time until you want to be remined to replace the equipment */
-  reminderDuration?: InputMaybe<Scalars['Seconds']['input']>;
+  reminderDurationInMonths: Scalars['Int']['input'];
   /** The sum total of miles that the equipment should be replaced */
   replaceAtMiles: Scalars['Int']['input'];
   /** The date the equipment was retired */
@@ -135,7 +134,7 @@ export type EquipmentModel = {
   /** The date you want to be reminded to replace the equipment */
   reminderDate?: Maybe<Scalars['DateTime']['output']>;
   /** The amount of time until you want to be remined to replace the equipment */
-  reminderDuration?: Maybe<Scalars['Seconds']['output']>;
+  reminderDurationInMonths?: Maybe<Scalars['Int']['output']>;
   /** The number of reminders that have been sent to replace the equipment */
   remindersSent?: Maybe<Scalars['Int']['output']>;
   /** The sum total of miles that the equipment should be replaced */
