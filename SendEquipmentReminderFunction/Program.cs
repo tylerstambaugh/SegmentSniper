@@ -48,24 +48,23 @@ var isAzure = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_
 if (isAzure)
 {
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
+    var uamiClientId = builder.Configuration["AZURE_CLIENT_ID"]; // User-assigned MI
 
-    if (!string.IsNullOrEmpty(keyVaultEndpoint))
+    if (!string.IsNullOrEmpty(keyVaultEndpoint) && !string.IsNullOrEmpty(uamiClientId))
     {
         try
         {
-            // Register SecretClient with DI (modern pattern)
-            builder.Services.AddAzureClients(clientBuilder =>
-            {
-                clientBuilder.AddSecretClient(new Uri(keyVaultEndpoint));
-                clientBuilder.UseCredential(new DefaultAzureCredential());
-            });
+            var credential = new DefaultAzureCredential(
+                new DefaultAzureCredentialOptions
+                {
+                    ManagedIdentityClientId = uamiClientId
+                });
 
-            // Load secrets into IConfiguration (configuration source)
             builder.Configuration.AddAzureKeyVault(
                 new Uri(keyVaultEndpoint),
-                new DefaultAzureCredential());
+                credential);
 
-            startupLogger.LogInformation("Key Vault connected: " + keyVaultEndpoint);
+            startupLogger.LogInformation($"Key Vault initialized using UAMI: {uamiClientId}");
         }
         catch (Exception ex)
         {
