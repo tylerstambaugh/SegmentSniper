@@ -2,6 +2,7 @@ using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,14 +48,23 @@ var isAzure = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_
 if (isAzure)
 {
     var keyVaultEndpoint = builder.Configuration["AzureKeyVault:BaseUrl"];
+    var uamiClientId = builder.Configuration["AZURE_CLIENT_ID"]; // User-assigned MI
 
-    if (!string.IsNullOrEmpty(keyVaultEndpoint))
+    if (!string.IsNullOrEmpty(keyVaultEndpoint) && !string.IsNullOrEmpty(uamiClientId))
     {
         try
         {
+            var credential = new DefaultAzureCredential(
+                new DefaultAzureCredentialOptions
+                {
+                    ManagedIdentityClientId = uamiClientId
+                });
+
             builder.Configuration.AddAzureKeyVault(
                 new Uri(keyVaultEndpoint),
-                new DefaultAzureCredential());
+                credential);
+
+            startupLogger.LogInformation($"Key Vault initialized using UAMI: {uamiClientId}");
         }
         catch (Exception ex)
         {
