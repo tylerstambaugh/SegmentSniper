@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<LangVersion>11</LangVersion>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GraphQL" Version="8.5.0" />
-  </ItemGroup>
-	
 	<ItemGroup>
-    <ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
-    <ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
-    <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
-  </ItemGroup>
+		<PackageReference Include="GraphQL" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ApplicationLogic\SegmentSniper.ApplicationLogic.csproj" />
+		<ProjectReference Include="..\SegmentSniper.Models\SegmentSniper.Models.csproj" />
+		<ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
+	</ItemGroup>
 
 </Project>
