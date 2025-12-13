@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.ML" Version="5.0.0" />
-    <PackageReference Include="Microsoft.ML.DataView" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.ML" Version="3.0.1" />
+		<PackageReference Include="Microsoft.ML.DataView" Version="3.0.1" />
 
-  <ItemGroup>
-    <Folder Include="Models\Admin\" />
-  </ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Models\Admin\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SegmentSniper.Data\SegmentSniper.Data.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj" />
-    <ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
-    <ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
-  </ItemGroup>
+		<ProjectReference Include="..\SegmentSniper.MachineLearning\SegmentSniper.MachineLearning.csproj" />
+		<ProjectReference Include="..\SegmentSniper.Services\SegmentSniper.Services.csproj" />
+		<ProjectReference Include="..\StravaApiClient\StravaApiClient.csproj" />
+	</ItemGroup>
 
 </Project>
