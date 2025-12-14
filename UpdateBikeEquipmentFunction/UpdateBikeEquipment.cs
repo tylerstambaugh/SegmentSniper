@@ -49,11 +49,11 @@ namespace UpdateBikeEquipmentFunction
                     return;
                 }
 
-                _logger.LogInformation("processing queue item:")
-                             
+                _logger.LogInformation("processing queue item:");
+
                 //need to query all equipment for the bike
                 var bikeEquipment = _segmentSniperDbContext.Equipment
-                    .Where(be => be.BikeId == queueItem.BikeId 
+                    .Where(be => be.BikeId == queueItem.BikeId
                                  && be.AuthUserId == queueItem.AuthUserId
                                  && be.RetiredDate == null)
                     .ToList();
@@ -67,7 +67,7 @@ namespace UpdateBikeEquipmentFunction
                                      && ba.ActivityDate >= equipment.InstallDate)
                         .Sum(ba => ba.DistanceInMeters);
                     // Update equipment total distance
-                    equipment.TotalMilage =(decimal)CommonConversionHelpers.ConvertMetersToMiles(totalDistance);
+                    equipment.TotalMilage = (decimal)CommonConversionHelpers.ConvertMetersToMiles(totalDistance);
                     equipment.UpdatedDate = DateTime.UtcNow;
                 }
 
