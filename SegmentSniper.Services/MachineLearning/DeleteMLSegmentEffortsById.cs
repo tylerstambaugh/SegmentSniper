@@ -4,28 +4,28 @@ using SegmentSniper.Services.Interface;
 
 namespace SegmentSniper.Services.MachineLearning
 {
-    public class DeleteMLSegmentEffortsByActivityId : IDeleteMLSegmentEffortsByActivityId, IExecutableServiceAsync<DeleteMLSegmentEffortsByActivityIdContract, DeleteMLSegmentEffortsByActivityIdContract.Result>
+    public class DeleteMLSegmentEffortsById : IDeleteMLSegmentEffortsById, IExecutableServiceAsync<DeleteMLSegmentEffortsByIdContract, DeleteMLSegmentEffortsByIdContract.Result>
     {
         private readonly ISegmentSniperDbContext _segmentSniperDbContext;
 
-        public DeleteMLSegmentEffortsByActivityId(ISegmentSniperDbContext segmentSniperDbContext)
+        public DeleteMLSegmentEffortsById(ISegmentSniperDbContext segmentSniperDbContext)
         {
             _segmentSniperDbContext = segmentSniperDbContext;
         }
 
-        public async Task<DeleteMLSegmentEffortsByActivityIdContract.Result> ExecuteAsync(DeleteMLSegmentEffortsByActivityIdContract contract)
+        public async Task<DeleteMLSegmentEffortsByIdContract.Result> ExecuteAsync(DeleteMLSegmentEffortsByIdContract contract)
         {
             try
             {
                 var segmentsToDelete = await _segmentSniperDbContext.ML_SegmentEfforts
-                    .Where(e => e.ActivityId == contract.ActivityId)
+                    .Where(e => contract.SegmentEffortIds.Contains(e.StravaSegmentEffortId))
                     .ToListAsync();
 
                 _segmentSniperDbContext.ML_SegmentEfforts.RemoveRange(segmentsToDelete);
 
                 await _segmentSniperDbContext.SaveChangesAsync();
 
-                return new DeleteMLSegmentEffortsByActivityIdContract.Result
+                return new DeleteMLSegmentEffortsByIdContract.Result
                 {
                     Success = true,
                     Error = null
@@ -33,7 +33,7 @@ namespace SegmentSniper.Services.MachineLearning
             }
             catch (Exception ex)
             {
-                return new DeleteMLSegmentEffortsByActivityIdContract.Result
+                return new DeleteMLSegmentEffortsByIdContract.Result
                 {
                     Success = false,
                     Error = ex.Message

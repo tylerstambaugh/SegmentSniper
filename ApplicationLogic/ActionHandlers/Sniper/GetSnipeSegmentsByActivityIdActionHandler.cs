@@ -87,6 +87,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                 return new ML_SegmentEffort
                 {
                     AuthUserId = _userId,
+                    ActivityId = dse.ActivityId,
                     StravaSegmentEffortId = dse.SegmentEffortId,
                     StravaSegmentId = detailedSegment.SegmentId,
                     SegmentName = detailedSegment.Name,

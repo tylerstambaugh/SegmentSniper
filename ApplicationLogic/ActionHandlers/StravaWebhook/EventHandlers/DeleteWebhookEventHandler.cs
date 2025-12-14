@@ -12,17 +12,17 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
     {
         private readonly IGetUserByStravaAthleteId _getUserByStravaAthleteId;
         private readonly IDeleteBikeActivity _deleteBikeActivity;
-        private readonly IDeleteMLSegmentEffortsById _deleteMLSegmentEffortsById;
+        private readonly IDeleteMLSegmentEffortsByActivityId _deleteMLSegmentEffortsByActivityId;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
 
         public DeleteWebhookEventHandler(IGetUserByStravaAthleteId getUserByStravaAthleteId, 
                                          IDeleteBikeActivity deleteBikeActivity, 
-                                         IDeleteMLSegmentEffortsById deleteMLSegmentEffortsById,
+                                         IDeleteMLSegmentEffortsByActivityId deleteMLSegmentEffortsByActivityId,
                                          IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
             _deleteBikeActivity = deleteBikeActivity;
-            _deleteMLSegmentEffortsById = deleteMLSegmentEffortsById;
+            _deleteMLSegmentEffortsByActivityId = deleteMLSegmentEffortsByActivityId;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
         }
         public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
@@ -61,16 +61,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
-                var activityDetails = await _getDetailedActivityByIdActionHandler.HandleAsync(new GetDetailedActivityByIdRequest(user.UserId.ToString(), payload.ObjectId.ToString()));
-
-                if (activityDetails == null || activityDetails.DetailedActivity == null)
-                {
-                    Log.Error("DeleteWebhookHandler: Activity details not found for activity ID: {ActivityId}", payload.ObjectId);
-                    return new WebhookEventHandlerResponse(false);
-                }
-
-                var segmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList();
-                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract(segmentEffortIds, user.UserId.ToString());                
+                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByActivityIdContract(deleteBikeActivityContract.ActivityId, user.UserId.ToString());                
 
                 scope.Complete(); 
 

@@ -9,7 +9,8 @@ namespace SegmentSniper.Data.Entities.Segments
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SegmentEffortId { get; set; }
-                
+        public string ActivityId { get; set; }  
+
         public required string AuthUserId { get; set; }
         [ForeignKey(nameof(AuthUserId))]
         public virtual AppUser AppUser { get; set; }

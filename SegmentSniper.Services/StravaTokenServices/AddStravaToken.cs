@@ -18,6 +18,12 @@ namespace SegmentSniper.Services.StravaTokenServices
             ValidateContract(contract);
             try
             {
+                var stravaAtheleteIdExists = _context.Users.Where(u => u.StravaAthleteId == contract.Token.StravaAthlete.Id).ToList();
+
+                if (stravaAtheleteIdExists.Any())
+                {
+                    throw new ApplicationException("StravaAthleteId already exists for a user. Please log in as existing user, or contact support.");
+                }
                 var user = await _context.Users.Where(a => a.AuthUserId == contract.AuthUserId).FirstOrDefaultAsync();
 
                 if (user != null && contract.Token.StravaAthlete?.Id != 0)
