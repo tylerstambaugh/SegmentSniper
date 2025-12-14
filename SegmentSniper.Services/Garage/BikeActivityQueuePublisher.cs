@@ -40,8 +40,6 @@ namespace SegmentSniper.Services.Garage
                 {
                     // Local dev: Connection string (Azurite)
                     _queueClient = new QueueClient(settings.ConnectionString!, settings.QueueName);
-
-                    Log.Information("Publisher initialized with ConnectionString: QueueName={QueueName}", settings.QueueName);
                 }           
         }
 
