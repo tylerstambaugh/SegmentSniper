@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
 using SegmentSniper.Services.Common;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var host = new HostBuilder()
     // 1. Configure the Worker to use ASP.NET Core Integration
@@ -57,11 +59,32 @@ var host = new HostBuilder()
         services.AddScoped<ISendEmail, SendEmail>();
     })
 
-    // 4. Configure Logging
-    .ConfigureLogging(logging =>
+// 4. Configure Logging
+    .ConfigureLogging((context, logging) =>
     {
-        logging.AddConsole();
-        logging.SetMinimumLevel(LogLevel.Debug);
+        // 2. Build the Serilog configuration
+        // Grab the connection string that was loaded during ConfigureAppConfiguration
+        var connectionString = context.Configuration.GetConnectionString("SegmentSniperConnectionString");
+
+        var loggerConfig = new LoggerConfiguration()
+            .ReadFrom.Configuration(context.Configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.MSSqlServer(
+                connectionString: connectionString,
+                sinkOptions: new MSSqlServerSinkOptions
+                {
+                    TableName = "SegmentSniperLog",
+                    AutoCreateSqlTable = false
+                })
+            .WriteTo.Console() // Always good for local debugging
+            .MinimumLevel.Debug()
+            .CreateLogger();
+
+        // 3. Clear default providers if you want Serilog to be the source of truth
+        logging.ClearProviders();
+
+        // 4. Add Serilog to the Functions Logging pipeline
+        logging.AddSerilog(loggerConfig, dispose: true);
     })
     .Build();
 

@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SegmentSniper.Data;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -18,6 +20,7 @@ var host = new HostBuilder()
         if (isAzure)
         {
             // IMPORTANT: Build a mini-config to get ONLY the endpoint/ID
+            
             var partialConfig = config.Build();
             var keyVaultEndpoint = partialConfig["AzureKeyVault:BaseUrl"];
             var uamiClientId = partialConfig["AZURE_CLIENT_ID"];
@@ -55,10 +58,31 @@ var host = new HostBuilder()
         services.AddScoped<ISegmentSniperDbContext>(provider =>
             provider.GetRequiredService<SegmentSniperDbContext>());
     })
-    .ConfigureLogging(logging =>
+    .ConfigureLogging((context, logging) =>
     {
-        
-        logging.SetMinimumLevel(LogLevel.Debug);
+        // 2. Build the Serilog configuration
+        // Grab the connection string that was loaded during ConfigureAppConfiguration
+        var connectionString = context.Configuration.GetConnectionString("SegmentSniperConnectionString");
+
+        var loggerConfig = new LoggerConfiguration()
+            .ReadFrom.Configuration(context.Configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.MSSqlServer(
+                connectionString: connectionString,
+                sinkOptions: new MSSqlServerSinkOptions
+                {
+                    TableName = "SegmentSniperLog",
+                    AutoCreateSqlTable = false
+                })
+            .WriteTo.Console() // Always good for local debugging
+            .MinimumLevel.Debug()
+            .CreateLogger();
+
+        // 3. Clear default providers if you want Serilog to be the source of truth
+        logging.ClearProviders();
+
+        // 4. Add Serilog to the Functions Logging pipeline
+        logging.AddSerilog(loggerConfig, dispose: true);
     })
     .Build();
 

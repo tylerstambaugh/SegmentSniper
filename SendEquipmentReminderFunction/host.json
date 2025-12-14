@@ -12,5 +12,11 @@
       },
       "enableLiveMetricsFilters": true
     }
+  },
+    "logLevel": {
+      "default": "Information",
+      "Function": "Debug",
+      "SegmentSniper": "Debug"
+    }
   }
 }
