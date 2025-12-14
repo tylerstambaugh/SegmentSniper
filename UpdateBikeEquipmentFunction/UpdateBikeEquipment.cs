@@ -67,7 +67,7 @@ namespace UpdateBikeEquipmentFunction
                                      && ba.ActivityDate >= equipment.InstallDate)
                         .Sum(ba => ba.DistanceInMeters);
                     // Update equipment total distance
-                    equipment.TotalMilage = (decimal)CommonConversionHelpers.ConvertMetersToMiles(totalDistance);
+                    equipment.TotalMilage = (decimal)CommonConversionHelpers.ConvertMetersToMiles(totalDistance) + equipment.MilesAtInstall;
                     equipment.UpdatedDate = DateTime.UtcNow;
                 }
 

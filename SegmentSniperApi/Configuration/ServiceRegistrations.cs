@@ -125,6 +125,7 @@ namespace SegmentSniper.Api.Configuration
             services.AddScoped<ISegmentPredictionDataProcessor, SegmentPredictionDataProcessor>();
             services.AddScoped<ISaveSegmentPredictionRegressionMetrics, SaveSegmentPredictionRegressionMetrics>();
             services.AddScoped<IDeleteMLSegmentEffortsById, DeleteMLSegmentEffortsById>();
+            services.AddScoped<IDeleteMLSegmentEffortsByActivityId, DeleteMLSegmentEffortsByActivityId>();
 
             //Garage Services
             services.AddScoped<IGetBikeById, GetBikeById>();

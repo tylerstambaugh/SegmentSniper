@@ -149,6 +149,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 return new ML_SegmentEffort
                 {
                     AuthUserId = _userId,
+                    ActivityId = dse.ActivityId,
                     StravaSegmentEffortId = dse.SegmentEffortId,
                     StravaSegmentId = detailedSegment.SegmentId,
                     SegmentName = detailedSegment.Name,
