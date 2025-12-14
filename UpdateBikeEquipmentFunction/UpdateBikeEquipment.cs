@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using SegmentSniper.Data;
 using SegmentSniper.Services.Common;
 using SegmentSniper.Services.Garage;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 namespace UpdateBikeEquipmentFunction
 {
@@ -46,6 +48,8 @@ namespace UpdateBikeEquipmentFunction
                     _logger.LogError("Failed to deserialize queue message to BikeActivityQueueMessage.");
                     return;
                 }
+
+                _logger.LogInformation("processing queue item:")
                              
                 //need to query all equipment for the bike
                 var bikeEquipment = _segmentSniperDbContext.Equipment
