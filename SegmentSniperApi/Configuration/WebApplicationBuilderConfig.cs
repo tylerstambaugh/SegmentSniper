@@ -281,6 +281,7 @@ namespace SegmentSniper.Api.Configuration
                     options.ClientId = queueConfig["clientId"];
                     options.QueueName = builder.Configuration["AzureStorageQueue:QueueName"]
                                         ?? "process-bike-activity-queue";
+                    options.ConnectionString = queueConfig["connectionString"];
 
                 Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueServiceUri: {QueueServiceUri}, QueueName: {QueueName}",
                     options.ConnectionString, options.QueueServiceUri, options.QueueName);
