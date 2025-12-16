@@ -23,6 +23,10 @@ namespace SegmentSniper.Data.Entities.User
         public ICollection<Bike>? Bikes { get; set; } = new List<Bike>();
         public ICollection<Equipment>? Equipment { get; set; } = new List<Equipment>();
         public ICollection<BikeActivity>? BikeActivities { get; set; } = new List<BikeActivity>();
+
+        //TODO do we add the ML_SegmentEfforts collection here?
+
+        //TODO do we add the ML_SegmentPredictionModel here? 
         public virtual SegmentPredictionRegressionMetrics? RegressionMetrics { get; set; }
     }
 }

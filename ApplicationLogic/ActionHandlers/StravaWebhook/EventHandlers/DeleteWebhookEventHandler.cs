@@ -55,12 +55,6 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
 
                 var deleteResult = await _deleteBikeActivity.ExecuteAsync(deleteBikeActivityContract);
 
-                if (!deleteResult)
-                {
-                    Log.Error("DeleteWebhookHandler: Failed to delete activity with ID: {ActivityId}", payload.ObjectId);
-                    return new WebhookEventHandlerResponse(false);
-                }
-
                 var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByActivityIdContract(deleteBikeActivityContract.ActivityId, user.UserId.ToString());                
 
                 scope.Complete(); 
