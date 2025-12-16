@@ -22,6 +22,8 @@ namespace SegmentSniper.Data.Entities.Garage
 
         public required string Name { get; set; }
         public string? Description { get; set; }
+
+
         public decimal MilesAtInstall { get; set; }
         public decimal TotalMilage { get; set; }
         public DateTime? InstallDate { get; set; }
