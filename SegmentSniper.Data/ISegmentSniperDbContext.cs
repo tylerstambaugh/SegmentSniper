@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
@@ -11,15 +12,16 @@ namespace SegmentSniper.Data
     {
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
-        DbSet<AppUser> Users { get; set; }
-        DbSet<ML_SegmentEffort> ML_SegmentEfforts { get; set; }
-        DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get; set; }
-        DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; set; }
-        DbSet<Bike> Bikes { get; set; }
-        DbSet<Equipment> Equipment { get; set; }
+        DbSet<AppUser> Users { get;  }
+        DbSet<ML_SegmentEffort> ML_SegmentEfforts { get;  }
+        DbSet<ML_SegmentPredictionModel> ML_SegmentPredictionModels { get;  }
+        DbSet<SegmentPredictionRegressionMetrics> SegmentPredictionRegressionMetrics { get; }
+        DbSet<Bike> Bikes { get; }
+        DbSet<Equipment> Equipment { get; }
 
-        DbSet<BikeActivity> BikeActivities { get; set; }
-        DbSet<StravaWebhookSubscription> StravaWebhookSubscription { get; set; }
+        DbSet<BikeActivity> BikeActivities { get; }
+        DbSet<StravaWebhookSubscription> StravaWebhookSubscription { get; }
+        DatabaseFacade Database { get; }
 
         int SaveChanges();
 

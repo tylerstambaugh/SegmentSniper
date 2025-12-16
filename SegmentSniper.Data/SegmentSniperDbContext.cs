@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data.Entities;
 using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Data.Entities.MachineLearning;
 using SegmentSniper.Data.Entities.Segments;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
 using SegmentSniper.Data.Entities.User;
+using System.Linq.Expressions;
 
 namespace SegmentSniper.Data
 {
@@ -24,7 +26,47 @@ namespace SegmentSniper.Data
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var now = DateTime.UtcNow;
+
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedDate = now;
+                    entry.Entity.UpdatedDate = now;
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedDate = now;
+                }
+            }
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override int SaveChanges()
+        {
+            var now = DateTime.UtcNow;
+
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedDate = now;
+                    entry.Entity.UpdatedDate = now;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedDate = now;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
+        public IQueryable<TEntity> QueryAll<TEntity>() where TEntity : BaseEntity
+        {
+            return Set<TEntity>().IgnoreQueryFilters();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,6 +77,24 @@ namespace SegmentSniper.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "e");
+                    var property = Expression.Property(parameter, nameof(BaseEntity.DeletedDate));
+                    var nullValue = Expression.Constant(null, typeof(DateTime?));
+                    var body = Expression.Equal(property, nullValue);
+
+                    var lambda = Expression.Lambda(
+                        typeof(Func<,>).MakeGenericType(entityType.ClrType, typeof(bool)),
+                        body,
+                        parameter);
+                    
+                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+                }
+            }
 
             // Ignore the SegmentSniperLog table by its name
             modelBuilder.Entity<SegmentSniperLogEntity>().ToTable("SegmentSniperLog", t => t.ExcludeFromMigrations());
@@ -69,14 +129,32 @@ namespace SegmentSniper.Data
             {
                 entity.HasOne(e => e.Bike)
                       .WithMany(b => b.Equipment)
-                      .HasForeignKey(e => e.BikeId)
+                      .HasForeignKey(e => e.BikeId)                      
                       .OnDelete(DeleteBehavior.Cascade);
                 // Relationship to AppUser
                 entity.HasOne(e => e.AppUser)
                       .WithMany(u => u.Equipment)
                       .HasForeignKey(e => e.AuthUserId)
                       .OnDelete(DeleteBehavior.NoAction);
+
+                entity.Property(e => e.MilesAtInstall)
+                    .HasColumnType("decimal(7,2)");
+
+                entity.Property(e => e.Price)
+                    .HasColumnType("decimal(10,2)");
+
+                entity.Property(e => e.TotalMilage)
+                    .HasColumnType("decimal(7,2)");
             });
+
+            modelBuilder.Entity<Bike>()
+                 .HasIndex(e => new { e.AuthUserId, e.DeletedDate });
+
+            modelBuilder.Entity<Equipment>()
+                .HasIndex(e => new { e.AuthUserId, e.DeletedDate });
+
+            modelBuilder.Entity<BikeActivity>()
+                .HasIndex(e => new { e.AuthUserId, e.DeletedDate });
         }
 
         // Define a dummy entity class for the log table

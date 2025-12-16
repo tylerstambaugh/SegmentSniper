@@ -45,6 +45,7 @@ namespace SegmentSniper.Api.Configuration
 
             //strava action handlers
             services.AddScoped<IAddAppUserActionHandler, AddAppUserActionHandler>();
+            services.AddScoped<IDeleteAppUserActionHandler, DeleteAppUserActionHandler>();
             services.AddScoped<IGetActivityListActionHandler, GetActivityListActionHandler>();
             services.AddScoped<IGetDetailedActivityByIdActionHandler, GetDetailedActivityByIdActionHandler>();
             services.AddScoped<ISnipeSegmentsActionHandler, SnipeSegmentsActionHandler>();
@@ -107,6 +108,7 @@ namespace SegmentSniper.Api.Configuration
 
             //strava services
             services.AddScoped<IAddAppUser, AddAppUser>();
+            services.AddScoped<IDeleteAppUser, DeleteAppUser>();
             services.AddScoped<IGetStravaTokenForUser, GetStravaTokenForUser>();
             services.AddScoped<IUpdateStravaTokenForUser, UpdateStravaTokenForUser>();
             services.AddScoped<IAddStravaToken, AddStravaToken>();

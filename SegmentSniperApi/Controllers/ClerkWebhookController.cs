@@ -3,6 +3,7 @@ using Clerk.Net.Client.Users.Item;
 using GraphQL;
 using Microsoft.AspNetCore.Mvc;
 using SegmentSniper.ApplicationLogic.ActionHandlers.User;
+using SegmentSniper.Services.User;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -14,11 +15,13 @@ public class ClerkWebhookController : ControllerBase
 {
     private readonly ClerkApiClient _clerk;
     private readonly IAddAppUserActionHandler _addAppUserActionHandler;
+    private readonly IDeleteAppUserActionHandler _deleteAppUserActionHandler;
 
-    public ClerkWebhookController(ClerkApiClient clerk, IAddAppUserActionHandler addAppUserActionHandler)
+    public ClerkWebhookController(ClerkApiClient clerk, IAddAppUserActionHandler addAppUserActionHandler, IDeleteAppUserActionHandler deleteAppUserActionHandler)
     {
         _clerk = clerk;
         _addAppUserActionHandler = addAppUserActionHandler;
+        _deleteAppUserActionHandler = deleteAppUserActionHandler;
     }
 
     [AllowAnonymous]
@@ -57,19 +60,19 @@ public class ClerkWebhookController : ControllerBase
                     new AddAppUserRequest(user.Id, user.EmailAddresses?.FirstOrDefault().EmailAddress)
                     );
 
-                if(addUserResponse.Success)
+                if (addUserResponse.Success)
                     return Ok();
 
                 return StatusCode(502, "addUserResponse.Success was false");
             }
             catch (Exception ex)
             {
-                Log.Debug($"Error adding user: {ex.Message}");
-                return StatusCode(501, $"Internal server error: ${ex.Message}");
+                Log.Error($"Error adding user: {ex.Message}");
+                return StatusCode(501, $"Internal server error adding user from clerk webhook controller: ${ex.Message}");
             }
         }
 
-        if(evt == "user.updated")
+        if (evt == "user.updated")
         {
             try
             {
@@ -77,12 +80,30 @@ public class ClerkWebhookController : ControllerBase
                 //need to process the update and
                 //add roles to the user etc.
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Debug($"Error updating user: {ex.Message}");
-                return StatusCode(501, $"Internal server error: ${ex.Message}");
+                return StatusCode(501, $"Internal server error updating user from clerk webhook controller: ${ex.Message}");
             }
         }
+
+        if (evt == "user.deleted")
+            try
+            {
+                var deleteUserResponse = await _deleteAppUserActionHandler.HandleAsync(
+                    new DeleteAppUserRequest(user.Id)
+                    );
+
+                if (deleteUserResponse.Success)
+                    return Ok();
+
+                return StatusCode(502, "deleteUserResponse.Success was false");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error updating user: {ex.Message}");
+                return StatusCode(501, $"Internal server error deleting user from clerk webhook controller: ${ex.Message}");
+            }
 
         return Ok();
     }

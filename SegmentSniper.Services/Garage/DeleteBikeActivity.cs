@@ -32,7 +32,7 @@ namespace SegmentSniper.Services.Garage
             }
             if (string.IsNullOrEmpty(contract.ActivityId))
             {
-                throw new ArgumentException("ActivityId must be a positive number.", nameof(contract.ActivityId));
+                throw new ArgumentException("ActivityId must be a string.", nameof(contract.ActivityId));
             }
         }
     }
