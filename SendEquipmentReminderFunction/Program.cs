@@ -13,8 +13,6 @@ using Serilog.Sinks.MSSqlServer;
 var host = new HostBuilder()
     // 1. Configure the Worker to use ASP.NET Core Integration
     .ConfigureFunctionsWebApplication()
-
-    // 2. Configure App Configuration (Key Vault & Secrets)
     .ConfigureAppConfiguration((context, config) =>
     {
         var settings = config.Build();
@@ -37,15 +35,11 @@ var host = new HostBuilder()
             config.AddUserSecrets<Program>(optional: true);
         }
     })
-
-    // 3. Configure Services (DI)
     .ConfigureServices((context, services) =>
     {
-        // Application Insights
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
 
-        // Database Context
         var connectionString = context.Configuration.GetConnectionString("SegmentSniperConnectionString");
         services.AddDbContext<SegmentSniperDbContext>(options =>
             options.UseSqlServer(connectionString,
@@ -55,37 +49,36 @@ var host = new HostBuilder()
         services.AddScoped<ISegmentSniperDbContext>(provider =>
             provider.GetRequiredService<SegmentSniperDbContext>());
 
-        // Business Services
         services.AddScoped<ISendEmail, SendEmail>();
     })
-
-// 4. Configure Logging
     .ConfigureLogging((context, logging) =>
     {
-        // 2. Build the Serilog configuration
-        // Grab the connection string that was loaded during ConfigureAppConfiguration
-        var connectionString = context.Configuration.GetConnectionString("SegmentSniperConnectionString");
-
         var loggerConfig = new LoggerConfiguration()
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.FromLogContext()
-            .WriteTo.MSSqlServer(
-                connectionString: connectionString,
-                sinkOptions: new MSSqlServerSinkOptions
+            .WriteTo.Console()
+            .MinimumLevel.Debug();
+
+        var connectionString =
+            context.Configuration.GetConnectionString("SegmentSniperConnectionString");
+
+        if (!string.IsNullOrWhiteSpace(connectionString))
+        {
+            loggerConfig.WriteTo.MSSqlServer(
+                connectionString,
+                new MSSqlServerSinkOptions
                 {
                     TableName = "SegmentSniperLog",
                     AutoCreateSqlTable = false
-                })
-            .WriteTo.Console() // Always good for local debugging
-            .MinimumLevel.Debug()
-            .CreateLogger();
+                });
+        }
 
-        // 3. Clear default providers if you want Serilog to be the source of truth
+        Log.Logger = loggerConfig.CreateLogger();
+
         logging.ClearProviders();
-
-        // 4. Add Serilog to the Functions Logging pipeline
-        logging.AddSerilog(loggerConfig, dispose: true);
+        logging.AddSerilog(Log.Logger, dispose: true);
     })
+
     .Build();
 
 await host.RunAsync();
