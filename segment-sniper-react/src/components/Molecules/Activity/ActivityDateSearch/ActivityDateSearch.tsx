@@ -1,8 +1,8 @@
-import { FormikErrors } from "formik";
-import { DateTime } from "luxon";
+import { FormikErrors } from 'formik';
+import { DateTime } from 'luxon';
 
-import { Row, Col, FloatingLabel, Form } from "react-bootstrap";
-import { ActivityListSearchForm } from "../../../Organisms/ActivityListLookupForm/ActivityListLookupForm";
+import { Row, Col, FloatingLabel, Form } from 'react-bootstrap';
+import { ActivityListSearchForm } from '../../../Organisms/ActivityListLookupForm/ActivityListLookupForm';
 
 type Props = {
   startDate: DateTime | null;
@@ -14,6 +14,7 @@ type Props = {
   errors: FormikErrors<ActivityListSearchForm>;
 };
 
+//replace this with better calendar picker
 const ActivityDateSearch = ({
   startDate,
   endDate,
@@ -31,14 +32,14 @@ const ActivityDateSearch = ({
           >
             <Form.Control
               type="date"
-              value={startDate?.toISODate() ?? ""}
+              value={startDate?.toISODate() ?? ''}
               max={new Date(new Date().setDate(new Date().getDate() - 1))
                 .toISOString()
                 .slice(0, 10)}
               onChange={(e) => {
                 const newStartDate = DateTime.fromFormat(
                   e.target.value,
-                  "yyyy-MM-dd"
+                  'yyyy-MM-dd',
                 );
                 onChange({
                   startDate: newStartDate,
@@ -63,12 +64,12 @@ const ActivityDateSearch = ({
           >
             <Form.Control
               type="date"
-              value={endDate?.toISODate() ?? ""}
+              value={endDate?.toISODate() ?? ''}
               max={new Date().toLocaleDateString('en-CA')}
               onChange={(e) => {
                 const newEndDate = DateTime.fromFormat(
                   e.target.value,
-                  "yyyy-MM-dd"
+                  'yyyy-MM-dd',
                 );
                 onChange({
                   startDate: startDate,
