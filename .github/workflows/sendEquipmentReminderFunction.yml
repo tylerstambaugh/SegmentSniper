@@ -1,38 +1,39 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and Deploy SendEquipmentReminderFunction
+name: Build and deploy SendEquipmentReminderFunction
 
 on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
+  # Path to the project file relative to the repo root
+  PROJECT_PATH: './SendEquipmentReminderFunction/SendEquipmentReminderFunction.csproj' 
+  # Path where the build artifacts will be placed
+  PACKAGE_OUTPUT_PATH: './output'
+  DOTNET_VERSION: '8.0.x'
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
 
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: 'Resolve Project Dependencies Using Dotnet'
+      - name: 'Publish Project'
         shell: pwsh
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          dotnet build --configuration Release --output ./output
-          popd
-      
+          # 'dotnet publish' is mandatory for Isolated Workers to bundle DLLs
+          dotnet publish "${{ env.PROJECT_PATH }}" `
+            --configuration Release `
+            --output "${{ env.PACKAGE_OUTPUT_PATH }}"
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -46,7 +47,5 @@ jobs:
         with:
           app-name: 'SendEquipmentReminderFunction'
           slot-name: 'Production'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-
-          
-
+          # Pointing directly to the publish output folder
+          package: '${{ env.PACKAGE_OUTPUT_PATH }}'
