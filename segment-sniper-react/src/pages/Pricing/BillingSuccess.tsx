@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import { useSession, useUser } from '@clerk/clerk-react';
+import { useAuth, useSession, useUser } from '@clerk/clerk-react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { AppRoutes } from '../../enums/AppRoutes';
 import { useNavigate } from 'react-router';
 
 export default function BillingSuccess() {
   const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
   const { session } = useSession();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -17,6 +19,14 @@ export default function BillingSuccess() {
       await session?.reload();
     })();
   }, []);
+
+  const handleNavigate = async () => {
+    await user?.reload();
+    await session?.reload();
+    await getToken({ skipCache: true });
+
+    navigate(`/${AppRoutes.Dashboard}`);
+  };
 
   return (
     <Container className="d-flex flex-column justify-content-center">
@@ -29,7 +39,7 @@ export default function BillingSuccess() {
                 <Row>
                   <Col className="d-flex p-2 mb-2 justify-content-center">
                     <Button
-                      onClick={() => navigate(`/${AppRoutes.Dashboard}`)}
+                      onClick={() => handleNavigate()}
                       variant="primary"
                       className="mt-3"
                     >
