@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import { DateTime } from "luxon";
-import * as yup from "yup";
-import { Row, Col, Form, Button, Spinner, Card, Modal } from "react-bootstrap";
-import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ActivityTypes } from "../../../enums/ActivityTypes";
-import { useHandleActivitySearch } from "../../../hooks/Api/Activity/useHandleActivitySearch";
-import useSegmentEffortsListStore from "../../../stores/useSegmentEffortsListStore";
-import useSnipeSegmentsListStore from "../../../stores/useSnipeSegmentsListStore";
-import { Link, useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../../enums/AppRoutes";
-import useActivityListStore from "../../../stores/useActivityListStore";
-import ActivityNameSearchInput from "../../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput";
-import ActivityDateSearch from "../../Molecules/Activity/ActivityDateSearch/ActivityDateSearch";
-import ActivityTypeDropdown from "../../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown";
-import styles from "./ActivityListLookupForm.module.scss";
-import { ActivityListLookupRequest } from "../../../services/Api/Activity/getActivityList";
-import { CustomToast } from "../../Molecules/Toast/CustomToast";
+import { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import { DateTime } from 'luxon';
+import * as yup from 'yup';
+import { Row, Col, Form, Button, Spinner, Card, Modal } from 'react-bootstrap';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ActivityTypes } from '../../../enums/ActivityTypes';
+import { useHandleActivitySearch } from '../../../hooks/Api/Activity/useHandleActivitySearch';
+import useSegmentEffortsListStore from '../../../stores/useSegmentEffortsListStore';
+import useSnipeSegmentsListStore from '../../../stores/useSnipeSegmentsListStore';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../../enums/AppRoutes';
+import useActivityListStore from '../../../stores/useActivityListStore';
+import ActivityNameSearchInput from '../../Molecules/Activity/ActivityNameSearch/ActivityNameSearchInput';
+import ActivityDateSearch from '../../Molecules/Activity/ActivityDateSearch/ActivityDateSearch';
+import ActivityTypeDropdown from '../../Molecules/Activity/ActivityTypeDropdown/ActivityTypeDropdown';
+import styles from './ActivityListLookupForm.module.scss';
+import { ActivityListLookupRequest } from '../../../services/Api/Activity/getActivityList';
+import { CustomToast } from '../../Molecules/Toast/CustomToast';
 export interface ActivityListSearchForm {
   activityName?: string | null;
   startDate?: DateTime | null;
@@ -31,13 +31,13 @@ function ActivityListLookupForm() {
   const handleActivitySearch = useHandleActivitySearch();
   const navigate = useNavigate();
   const resetSegmentsList = useSegmentEffortsListStore(
-    (state) => state.resetSegmentEffortsList
+    (state) => state.resetSegmentEffortsList,
   );
   const resetSnipedSegments = useSnipeSegmentsListStore(
-    (state) => state.resetSnipedSegmentsList
+    (state) => state.resetSnipedSegmentsList,
   );
   const setSelectedActivityId = useActivityListStore(
-    (state) => state.setSelectedActivityId
+    (state) => state.setSelectedActivityId,
   );
 
   const validationSchema = yup
@@ -45,39 +45,39 @@ function ActivityListLookupForm() {
       activityName: yup
         .string()
         .nullable()
-        .when(["startDate", "endDate"], ([startDate, endDate], schema) => {
+        .when(['startDate', 'endDate'], ([startDate, endDate], schema) => {
           return startDate === null && endDate === null
-            ? schema.required("Must provide name or dates")
+            ? schema.required('Must provide name or dates')
             : schema;
         }),
       startDate: yup
         .date()
         .nullable()
-        .max(new Date(), "Date must be in the past")
-        .when(["endDate"], {
+        .max(new Date(), 'Date must be in the past')
+        .when(['endDate'], {
           is: (endDate: DateTime) => endDate !== null,
-          then: (schema) => schema.required("Start date required"),
+          then: (schema) => schema.required('Start date required'),
         })
-        .typeError("Enter a valid date"),
+        .typeError('Enter a valid date'),
       endDate: yup
         .date()
         .nullable()
-        .max(new Date(), "Date must be in the past")
-        .typeError("Enter a valid date")
+        .max(new Date(), 'Date must be in the past')
+        .typeError('Enter a valid date')
         .test(
-          "startDateAndEndDateRequired",
-          "End date required",
+          'startDateAndEndDateRequired',
+          'End date required',
           function (endDate, { parent }) {
             if (parent.startDate && !endDate) {
               return false;
             }
             return true;
-          }
+          },
         ),
     })
     .test(
-      "endDateBeforeStartDate",
-      "End Date must be before Start Date",
+      'endDateBeforeStartDate',
+      'End Date must be before Start Date',
       function (values) {
         if (
           values.startDate &&
@@ -88,12 +88,12 @@ function ActivityListLookupForm() {
           return values.endDate < values.startDate;
         }
         return true;
-      }
+      },
     );
 
   const initialValues = {
     activityName: null,
-    activityType: "Ride",
+    activityType: 'Ride',
     startDate: null,
     endDate: null,
   };
@@ -101,7 +101,7 @@ function ActivityListLookupForm() {
   async function handleSearch(request: ActivityListLookupRequest) {
     resetSegmentsList();
     resetSnipedSegments();
-    setSelectedActivityId("");
+    setSelectedActivityId('');
     await handleActivitySearch.mutateAsync(request);
     if (!handleActivitySearch.isError) {
       navigate(`/${AppRoutes.ActivitySearchResults}`);
@@ -112,9 +112,9 @@ function ActivityListLookupForm() {
     if (handleActivitySearch.error !== null) {
       const error = handleActivitySearch.error as Error;
       CustomToast({
-        message: "Search failed",
+        message: 'Search failed',
         error: `Error: ${error.message}`,
-        type: "error",
+        type: 'error',
       });
     }
   }, [handleActivitySearch.error]);
@@ -142,15 +142,15 @@ function ActivityListLookupForm() {
     formik.resetForm({
       values: {
         activityName: null,
-        activityType: "Ride",
+        activityType: 'Ride',
         startDate: null,
         endDate: null,
       },
     });
     formik.setErrors({});
-    formik.setFieldValue("activityName", null);
-    formik.setFieldValue("startDate", null);
-    formik.setFieldValue("endDate", null);
+    formik.setFieldValue('activityName', null);
+    formik.setFieldValue('startDate', null);
+    formik.setFieldValue('endDate', null);
     setValidated(false);
   };
 
@@ -178,9 +178,9 @@ function ActivityListLookupForm() {
                     icon={faQuestionCircle}
                     size="sm"
                     style={{
-                      color: "#ffca14",
-                      paddingTop: ".6rem",
-                      font: "black",
+                      color: '#ffca14',
+                      paddingTop: '.6rem',
+                      font: 'black',
                     }}
                   />
                 </Link>
@@ -196,15 +196,16 @@ function ActivityListLookupForm() {
                 <Row className="justify-content-center">
                   <Col md={6}>
                     <ActivityNameSearchInput
-                      activityName={formik.values.activityName ?? ""}
+                      activityName={formik.values.activityName ?? ''}
                       onChange={(name: string) => {
-                        formik.setFieldValue("activityName", name);
+                        formik.setFieldValue('activityName', name);
                       }}
                       errors={formik.errors}
                     />
                   </Col>
                 </Row>
-                <Row className="justify-content-around mb-0">
+                <Row className="justify-content-around mb-2">
+                  <hr className="hr-75" />
                   <p className="mb-0">Search by date range:</p>
                   <ActivityDateSearch
                     startDate={formik.values.startDate ?? null}
@@ -213,8 +214,8 @@ function ActivityListLookupForm() {
                       startDate: DateTime | null;
                       endDate: DateTime | null;
                     }) => {
-                      formik.setFieldValue("startDate", dateRange.startDate);
-                      formik.setFieldValue("endDate", dateRange.endDate);
+                      formik.setFieldValue('startDate', dateRange.startDate);
+                      formik.setFieldValue('endDate', dateRange.endDate);
                     }}
                     errors={formik.errors}
                   />
@@ -223,7 +224,7 @@ function ActivityListLookupForm() {
                 <Row className="justify-content-around">
                   <ActivityTypeDropdown
                     onChange={(selection: string) => {
-                      formik.setFieldValue("activityType", selection);
+                      formik.setFieldValue('activityType', selection);
                     }}
                     selection={formik.values.activityType ?? ActivityTypes.Ride}
                     errors={formik.errors}
@@ -246,8 +247,8 @@ function ActivityListLookupForm() {
                       {handleActivitySearch.isPending ? (
                         <Button
                           variant="secondary"
-                          className={"me-1"}
-                          style={{ width: "75px" }}
+                          className={'me-1'}
+                          style={{ width: '75px' }}
                         >
                           <Spinner
                             size="sm"
