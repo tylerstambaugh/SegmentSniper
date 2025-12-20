@@ -4,6 +4,8 @@ import { DateRangePicker, RangeKeyDict } from 'react-date-range';
 import { Row, Col, FloatingLabel, Form } from 'react-bootstrap';
 import { ActivityListSearchForm } from '../../../Organisms/ActivityListLookupForm/ActivityListLookupForm';
 import { useState } from 'react';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 type Props = {
   startDate: DateTime | null;
@@ -22,6 +24,14 @@ const ActivityDateSearch = ({
   onChange,
   errors,
 }: Props) => {
+  const [ranges, setRanges] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection',
+    },
+  ]);
+
   const handleChange = (item: RangeKeyDict) => {
     onChange({
       startDate: item.selection.startDate
@@ -101,6 +111,7 @@ const ActivityDateSearch = ({
       <Row>
         <Col>
           <DateRangePicker
+            ranges={ranges}
             onChange={(item) => {
               handleChange(item);
             }}
