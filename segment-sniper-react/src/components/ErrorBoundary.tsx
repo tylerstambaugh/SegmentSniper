@@ -1,36 +1,52 @@
-import React, { Component, ReactNode } from 'react';
-import Header from './Organisms/Header/Header';
-import { Footer } from './Organisms/Footer/Footer';
+import React from 'react';
 import ErrorPage from './Atoms/ErrorPage';
+import { Footer } from './Organisms/Footer/Footer';
+import ErrorHeader from './Organisms/Header/ErrorHeader';
 
-class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean, error?: string }> {
-    constructor(props: { children: ReactNode }) {
-        super(props);
-        this.state = { hasError: false };
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  resetKey?: string;
+}
+
+class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  { hasError: boolean; error?: string }
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return {
+      hasError: true,
+      error: error.message,
+    };
+  }
+
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+    if (this.props.resetKey !== prevProps.resetKey && this.state.hasError) {
+      this.setState({ hasError: false, error: undefined });
+    }
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('Error caught by ErrorBoundary:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <>
+          <ErrorHeader />
+          <ErrorPage error={this.state.error} />
+          <Footer />
+        </>
+      );
     }
 
-    static getDerivedStateFromError(error: Error) {
-        // Update state so the next render shows the fallback UI.
-        return { hasError: true };
-    }
-
-    componentDidCatch(error: Error, info: React.ErrorInfo) {
-        // Log the error to an error reporting service
-        console.error("Error caught by ErrorBoundary:", error, info);
-    }
-
-    render() {
-        if (this.state.hasError) {
-            <>
-
-                <Header />
-                <ErrorPage error={this.state.error} />
-                <Footer />
-            </>
-        }
-
-        return this.props.children;
-    }
+    return this.props.children;
+  }
 }
 
 export default ErrorBoundary;

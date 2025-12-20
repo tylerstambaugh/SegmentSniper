@@ -9,7 +9,6 @@ export default function MainMenu() {
 
   const isAdmin = roles?.some((r) => r.toLowerCase() === 'admin');
 
-
   return (
     <>
       <Row className="d-flex justify-content-center pt-3 ">
@@ -18,29 +17,26 @@ export default function MainMenu() {
             <Card.Body className="mx-3">
               <div className="mb-2 text-center">
                 <h2 className="fw-bold mb-2 ">Main Menu</h2>
-                <Row >
-                  <Col
-                    className="d-flex p-2 mb-2 justify-content-center"
-                  >
-                    {userHas('segment_sniper') ? (                      
-                        <Link
+                <Row>
+                  <Col className="d-flex p-2 mb-2 justify-content-center">
+                    {userHas('segment_sniper') ? (
+                      <Link
                         to={`/${AppRoutes.Snipe}`}
                         className="primary-rounded-button text-decoration-none
                         "
                         style={{ width: '155px' }}
-                        >
+                      >
                         Segment Sniper
-                        </Link>
-                      ) : (
-                        <Link
-                          to={`/${AppRoutes.Pricing}`}
-                          className="primary-rounded-button text-decoration-none"
-                          style={{ width: '155px' }}
-                        >
-                          Segment Sniper
-                        </Link>
-                      )
-                    }
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/${AppRoutes.Pricing}`}
+                        className="primary-rounded-button text-decoration-none"
+                        style={{ width: '155px' }}
+                      >
+                        Segment Sniper
+                      </Link>
+                    )}
                   </Col>
                 </Row>
                 <Row>
@@ -48,14 +44,24 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                    <Link
-                      to={`/${AppRoutes.SegmentPredictor}`}
-                      className="primary-rounded-button text-decoration-none
+                    {userHas('segment_predictor') ? (
+                      <Link
+                        to={`/${AppRoutes.SegmentPredictor}`}
+                        className="primary-rounded-button text-decoration-none
                       "
-                      style={{ width: '155px' }}
-                    >
-                      Segment Time Predictor
-                    </Link>
+                        style={{ width: '155px' }}
+                      >
+                        Segment Time Predictor
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/${AppRoutes.Pricing}`}
+                        className="primary-rounded-button text-decoration-none"
+                        style={{ width: '155px' }}
+                      >
+                        Segment Time Predictor
+                      </Link>
+                    )}
                   </Col>
                 </Row>
                 <Row>
@@ -63,16 +69,16 @@ export default function MainMenu() {
                     md={12}
                     className="d-flex p-2 mb-2 justify-content-center"
                   >
-                     {userHas('garage') ? ( 
-                    <Link
-                      to={`/${AppRoutes.Garage}`}
-                      className="primary-rounded-button text-decoration-none
+                    {userHas('garage') ? (
+                      <Link
+                        to={`/${AppRoutes.Garage}`}
+                        className="primary-rounded-button text-decoration-none
                       "
-                      style={{ width: '155px' }}
-                    >
-                      Garage
-                    </Link>
-                     ) : (
+                        style={{ width: '155px' }}
+                      >
+                        Garage
+                      </Link>
+                    ) : (
                       <Link
                         to={`/${AppRoutes.Pricing}`}
                         className="primary-rounded-button text-decoration-none"
@@ -80,8 +86,7 @@ export default function MainMenu() {
                       >
                         Garage
                       </Link>
-                     )
-                    }
+                    )}
                   </Col>
                 </Row>
                 {isAdmin ? (
