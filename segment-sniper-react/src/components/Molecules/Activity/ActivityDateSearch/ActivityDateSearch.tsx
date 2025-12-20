@@ -1,11 +1,19 @@
 import { FormikErrors } from 'formik';
 import { DateTime } from 'luxon';
-import { DateRangePicker, RangeKeyDict } from 'react-date-range';
+import {
+  DateRangePicker,
+  RangeKeyDict,
+  Range,
+  DateRange,
+  Calendar,
+} from 'react-date-range';
 import { Row, Col, FloatingLabel, Form } from 'react-bootstrap';
 import { ActivityListSearchForm } from '../../../Organisms/ActivityListLookupForm/ActivityListLookupForm';
 import { useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import { addDays } from 'date-fns';
+import styles from './ActivityDateSearchInput.module.scss';
 
 type Props = {
   startDate: DateTime | null;
@@ -24,9 +32,9 @@ const ActivityDateSearch = ({
   onChange,
   errors,
 }: Props) => {
-  const [ranges, setRanges] = useState([
+  const [state, setState] = useState<Range[]>([
     {
-      startDate: new Date(),
+      startDate: addDays(new Date(), -7),
       endDate: new Date(),
       key: 'selection',
     },
@@ -45,7 +53,7 @@ const ActivityDateSearch = ({
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col md={6} className="mb-2">
           <Form.Group className="" controlId="startDate">
             <FloatingLabel
@@ -107,15 +115,21 @@ const ActivityDateSearch = ({
             </FloatingLabel>
           </Form.Group>
         </Col>
-      </Row>
+      </Row> */}
       <Row>
-        <Col>
-          <DateRangePicker
-            ranges={ranges}
-            onChange={(item) => {
-              handleChange(item);
-            }}
-          />
+        <Col md={6}>
+          <div className={styles.wrapper}>
+            <DateRange
+              onChange={(item) => {
+                handleChange(item);
+                setState([item.selection]);
+              }}
+              moveRangeOnFirstSelection={false}
+              months={1}
+              ranges={state}
+              editableDateInputs={true}
+            />
+          </div>
         </Col>
       </Row>
     </>

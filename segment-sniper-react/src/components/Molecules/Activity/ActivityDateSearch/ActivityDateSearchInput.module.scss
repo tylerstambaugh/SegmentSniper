@@ -1,0 +1,42 @@
+.wrapper {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font: 10px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* 👇 Global overrides scoped to this component */
+:global {
+  .wrapper {
+
+    .rdrDateRangeWrapper {
+        font: 10px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    .rdrCalendarWrapper {
+       font: 10px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    }
+
+    .rdrMonth {
+       font: 10px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    }
+
+    .rdrDayNumber span {
+      font-size: 0.65rem;
+    }
+
+    .rdrDateDisplayWrapper {
+    
+    }
+    .rdrDaySelected,
+    .rdrStartEdge,
+    .rdrEndEdge {
+      background-color: var(--bs-primary);
+    }
+
+    .rdrInRange {
+      background-color: rgba(var(--bs-primary-rgb), 0.15);
+    }
+  }
+}
