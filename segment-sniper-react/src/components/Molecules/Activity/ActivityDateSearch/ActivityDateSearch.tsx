@@ -34,8 +34,8 @@ const ActivityDateSearch = ({
 }: Props) => {
   const [state, setState] = useState<Range[]>([
     {
-      startDate: addDays(new Date(), -7),
-      endDate: new Date(),
+      startDate: startDate ? startDate.toJSDate() : addDays(new Date(), -7),
+      endDate: endDate ? endDate.toJSDate() : new Date(),
       key: 'selection',
     },
   ]);
@@ -117,20 +117,18 @@ const ActivityDateSearch = ({
         </Col>
       </Row> */}
       <Row>
-        <Col md={6}>
-          <div className={styles.wrapper}>
-            <DateRange
-              onChange={(item) => {
-                handleChange(item);
-                setState([item.selection]);
-              }}
-              moveRangeOnFirstSelection={false}
-              months={1}
-              ranges={state}
-              editableDateInputs={true}
-            />
-          </div>
-        </Col>
+        <div className={styles.wrapper}>
+          <DateRange
+            onChange={(item) => {
+              handleChange(item);
+              setState([item.selection]);
+            }}
+            moveRangeOnFirstSelection={false}
+            months={1}
+            ranges={state}
+            editableDateInputs={true}
+          />
+        </div>
       </Row>
     </>
   );
