@@ -1,4 +1,4 @@
-import { BrowserRouter } from 'react-router'
+import { BrowserRouter } from 'react-router';
 import './index.css';
 import Header from './components/Organisms/Header/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,12 +9,11 @@ import { Toaster } from 'react-hot-toast';
 import InitializeApp from './components/InitializeApp';
 import { Footer } from './components/Organisms/Footer/Footer';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ClerkLoaded, ClerkProvider } from '@clerk/react-router'
-import ErrorBoundary from './components/ErrorBoundary';
+import { ClerkLoaded, ClerkProvider } from '@clerk/react-router';
 import { ApolloClientProvider } from './services/Api/ApolloClient';
 import AppRoutesComponent from './SegmentSniper.routes';
 import { AuthProvider } from './context/authContext';
-
+import ErrorBoundaryWithReset from './components/ErrorBoundaryWithReset';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,26 +24,25 @@ const queryClient = new QueryClient({
   },
 });
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
-  throw new Error('Missing Publishable Key')
+  throw new Error('Missing Publishable Key');
 }
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
-  <ErrorBoundary>
-    <BrowserRouter>
-      <ClerkProvider 
-      publishableKey={PUBLISHABLE_KEY}>
-        <ClerkLoaded>        
+  <BrowserRouter>
+    <ErrorBoundaryWithReset>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <ClerkLoaded>
           <AuthProvider>
             <ApolloClientProvider>
               <QueryClientProvider client={queryClient}>
                 <InitializeApp>
                   <Header />
-                    <AppRoutesComponent />
+                  <AppRoutesComponent />
                   <Footer />
                 </InitializeApp>
                 <Toaster
@@ -55,9 +53,9 @@ root.render(
                 />
               </QueryClientProvider>
             </ApolloClientProvider>
-        </AuthProvider>
+          </AuthProvider>
         </ClerkLoaded>
       </ClerkProvider>
-    </BrowserRouter>
-  </ErrorBoundary>
+    </ErrorBoundaryWithReset>
+  </BrowserRouter>,
 );

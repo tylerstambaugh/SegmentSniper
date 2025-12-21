@@ -24,6 +24,7 @@ import { AppRoutes } from './enums/AppRoutes';
 import { UserRole } from './enums/Roles';
 import Pricing from './pages/Pricing/Pricing';
 import BillingSuccess from './pages/Pricing/BillingSuccess';
+import ErrorPage from './components/Atoms/ErrorPage';
 
 const memberRoles = [UserRole.Member];
 const adminRoles = [UserRole.Admin];
@@ -84,7 +85,7 @@ export default function AppRoutesComponent() {
       </Route>
 
       {/* ---------- CATCH-ALL ---------- */}
-      <Route path="*" element={<Unauthorized />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
