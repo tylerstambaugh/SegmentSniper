@@ -71,9 +71,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
 
                     var response = await _stravaRequestService.GetSummaryActivityForTimeRange(new GetSummaryActivityForTimeRangeContract(daysRange.StartDateUnix, daysRange.EndDateUnix, maxActivityResults));
 
-                    listOfSummaryActivities = response.SummaryActivities;
-
-                    await UpdateGarage(listOfSummaryActivities, request.UserId);
+                    listOfSummaryActivities = response.SummaryActivities;                    
 
                     if (parsedActivity != ActivityTypeEnum.ActivityType.All)
                     {
@@ -100,7 +98,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                     {
                         activityList.Add(_activityAdapter.AdaptDetailedActivitytoActivityList(activity));
                     }
-                    
+
+                    await UpdateGarage(listOfSummaryActivities, request.UserId);
+
                     return new GetActivityListRequest.Response { ActivityList = activityList };
 
                 }
@@ -145,13 +145,6 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                             })
                         );
                     }
-
-                    //TODO Add the mileage to any equipment on the bike
-                    await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
-                    {
-                        AuthUserId = userId,
-                        BikeId = summaryActivity.GearId
-                    });
                 }
                 else
                 {
@@ -193,6 +186,16 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.Sniper
                         );
                     }
                 }
+            }
+
+            //now update the equipment mileage on each of the bikes:
+            foreach(var bike in existingBikes.Bikes)
+            {              
+                await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                {
+                    AuthUserId = userId,
+                    BikeId = bike.BikeId
+                });
             }
         }
 

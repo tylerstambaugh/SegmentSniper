@@ -43,13 +43,13 @@
 
   :global(.rdrSelected) {
   border-radius: 2.042em;
-}
+ }
+
  :global(.rdrDayStartPreview .rdrDayEndPreview) {
      content: '';
     position: absolute;
     bottom: 4px;
-}
-
+ }
 
  :global(.rdrDayToday .rdrDayNumber span:after) {
     content: '';
@@ -57,5 +57,13 @@
     bottom: -5px;
     left: 50%;
     background-color: #ffca14;
+ }
+
+ :global(.is-invalid) {
+  border-color: var(--bs-danger);
+
+  .rdrCalendarWrapper {
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25);
+  }
  }
 }
