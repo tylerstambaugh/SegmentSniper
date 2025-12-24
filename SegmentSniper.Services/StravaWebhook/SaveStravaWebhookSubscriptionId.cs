@@ -1,4 +1,5 @@
-﻿using SegmentSniper.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SegmentSniper.Data;
 using SegmentSniper.Data.Entities.StravaWebhookSubscription;
 
 namespace SegmentSniper.Services.StravaWebhook
@@ -15,6 +16,13 @@ namespace SegmentSniper.Services.StravaWebhook
         public async Task<SaveStravaWebhookSubscriptionIdContract.Result> ExecuteAsync(SaveStravaWebhookSubscriptionIdContract contract)
         {
             ValidateContract(contract);
+
+            var existingSubscription = await _segmentSniperDbContext.StravaWebhookSubscription.FirstOrDefaultAsync();
+
+            if(existingSubscription != null)
+            {
+               throw new ApplicationException("A Strava Webhook Subscription ID already exists in the system. Please delete the existing subscription before registering a new one.");
+            }
 
             StravaWebhookSubscription subscrpitionoSave = new StravaWebhookSubscription
             {
