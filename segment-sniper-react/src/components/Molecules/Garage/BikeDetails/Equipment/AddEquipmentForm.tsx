@@ -71,15 +71,19 @@ const UpsertEquipmentFormUI = ({
     installDate: Yup.date()
       .required('Install date is required')
       .max(new Date(), 'Date must be in the past'),
-    price: Yup.number().nullable(),
+    price: Yup.number().nullable().min(0, 'Price must be non-negative'),
     replaceAtMiles: Yup.number().nullable(),
-    reminderDate: Yup.date().nullable(),
+    reminderDate: Yup.date()
+      .nullable()
+      .min(new Date(0), 'Reminder date must be after today.'),
     reminderDurationInMonths: Yup.number()
       .nullable()
       .positive('Must be positive'),
-    maxRemindersToSend: Yup.number().nullable(),
-    remindersSent: Yup.number().nullable(),
-    milesUntilReplaceReminder: Yup.number().nullable(),
+    maxRemindersToSend: Yup.number().nullable().min(0, 'Must be non-negative'),
+    remindersSent: Yup.number().nullable().min(0, 'Must be non-negative'),
+    milesUntilReplaceReminder: Yup.number()
+      .nullable()
+      .min(0, 'Must be non-negative'),
   });
 
   const formik = useFormik<UpsertEquipmentFormValues>({
@@ -107,6 +111,9 @@ const UpsertEquipmentFormUI = ({
       toast.error(`Error: ${error.message}`);
     }
   }, [error]);
+
+  console.log('formik values', formik.values);
+  console.log('equipment values', editEquipment);
 
   return (
     <Modal show={show} onHide={onClose} className="shadow">
@@ -181,19 +188,24 @@ const UpsertEquipmentFormUI = ({
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col xs={5}>
+              <Col xs={6}>
                 <Form.Group controlId="price" className="mb-3">
                   <Form.Label>Price</Form.Label>
                   <CurrencyInput
-                    id="input-price"
-                    name="Price"
-                    value={formik.values.price ?? 0}
+                    customInput={Form.Control}
+                    name="price"
+                    value={formik.values.price ?? ''}
                     onValueChange={(value) => {
-                      const numericValue = parseFloat(value ?? '0.00') || 0;
-                      formik.setFieldValue('price', numericValue);
+                      formik.setFieldValue(
+                        'price',
+                        value !== undefined ? Number(value) : null,
+                      );
                     }}
                     intlConfig={{ locale: 'en-US', currency: 'USD' }}
                     decimalScale={2}
+                    fixedDecimalLength={2}
+                    allowNegativeValue={false}
+                    width={100}
                   />
                   <Form.Control.Feedback type="invalid">
                     {formik.errors.price as FormikErrors<string>}

@@ -23,7 +23,7 @@ namespace SegmentSniper.GraphQL.Types
             Field<DecimalGraphType>("milesAtInstall").Description("The miles on the equipment when it was added to this bike");
             Field<IntGraphType>("replaceAtMiles").Description("The sum total of miles that the equipment should be replaced");
             Field<IntGraphType>("milesUntilReplaceReminder").Description("Miles until a reminder to replace the equipment is sent");
-            Field<IntGraphType>("maxRemindersToSEnd").Description("The maximum number of times to be reminded to replace the equipment");
+            Field<IntGraphType>("maxRemindersToSend").Description("The maximum number of times to be reminded to replace the equipment");
             Field<IntGraphType>("remindersSent").Description("The number of reminders that have been sent to replace the equipment");
         }
     }
