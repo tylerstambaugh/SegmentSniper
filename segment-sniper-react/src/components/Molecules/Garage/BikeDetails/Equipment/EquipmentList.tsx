@@ -45,9 +45,9 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     setModalState({ type: 'none' });
   };
 
-  function adaptEquipmentModelToEquipmentFormValues(
+  const adaptEquipmentModelToEquipmentFormValues = (
     selectedEquipment: EquipmentModel,
-  ): UpsertEquipmentFormValues {
+  ): UpsertEquipmentFormValues => {
     return {
       name: selectedEquipment?.name,
       description: selectedEquipment?.description ?? '',
@@ -63,7 +63,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       replaceAtMiles: selectedEquipment?.replaceAtMiles,
       milesUntilReplaceReminder: selectedEquipment?.milesUntilReplaceReminder,
     };
-  }
+  };
 
   const activeEquipment = equipment.filter((e) => e.retiredDate === null);
   const retiredEquipment = equipment.filter((e) => e.retiredDate !== null);
@@ -234,6 +234,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
   }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
 
   const stableEditValues = useMemo(() => {
+    console.log('modalState', modalState.type !== 'none' && modalState.item);
     if (modalState.type !== 'addEdit' || !modalState.item) return undefined;
     return adaptEquipmentModelToEquipmentFormValues(modalState.item);
   }, [modalState]);

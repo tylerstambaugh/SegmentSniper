@@ -1,12 +1,6 @@
-mutation UpsertBikeEquipment(
-  $bikeId: ID!
-  $equipment: EquipmentInput!
-) {
+mutation UpsertBikeEquipment($bikeId: ID!, $equipment: EquipmentInput!) {
   garage {
-    upsertBikeEquipment(
-      bikeId: $bikeId
-      equipment: $equipment
-    ) {
+    upsertBikeEquipment(bikeId: $bikeId, equipment: $equipment) {
       bikeId
       name
       equipment {
@@ -19,6 +13,9 @@ mutation UpsertBikeEquipment(
         price
         replaceAtMiles
         retiredDate
+        reminderDate
+        reminderDurationInMonths
+        maxRemindersToSend
       }
     }
   }
