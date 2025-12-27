@@ -213,6 +213,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     }
   }
 
+  //TODO: Clean this up later
   // useEffect(() => {
   //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
   //         // Redirect to login or show an error message
