@@ -9,5 +9,5 @@ export type Equipment = {
   retiredDate: Date;
   price: number;
   replaceAtMiles: number;
-  milesUntilReplaceReminder: number;
+  remindAtMiles: number;
 };

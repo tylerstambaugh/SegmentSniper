@@ -26,7 +26,7 @@ export interface UpsertEquipmentFormValues {
   retiredDate: DateTime | null;
   price?: number | null;
   replaceAtMiles?: number | null;
-  milesUntilReplaceReminder?: number | null;
+  remindAtMiles?: number | null;
   reminderDate?: DateTime | null;
   reminderDurationInMonths?: number | null;
   maxRemindersToSend?: number | null;
@@ -53,8 +53,7 @@ const UpsertEquipmentFormUI = ({
       retiredDate: editEquipment?.retiredDate ?? null,
       price: editEquipment?.price ?? null,
       replaceAtMiles: editEquipment?.replaceAtMiles ?? null,
-      milesUntilReplaceReminder:
-        editEquipment?.milesUntilReplaceReminder ?? null,
+      remindAtMiles: editEquipment?.remindAtMiles ?? null,
       reminderDate: editEquipment?.reminderDate ?? null,
       reminderDurationInMonths: editEquipment?.reminderDurationInMonths ?? null,
       maxRemindersToSend: editEquipment?.maxRemindersToSend ?? 2,
@@ -81,9 +80,7 @@ const UpsertEquipmentFormUI = ({
       .positive('Must be positive'),
     maxRemindersToSend: Yup.number().nullable().min(0, 'Must be non-negative'),
     remindersSent: Yup.number().nullable().min(0, 'Must be non-negative'),
-    milesUntilReplaceReminder: Yup.number()
-      .nullable()
-      .min(0, 'Must be non-negative'),
+    remindAtMiles: Yup.number().nullable().min(0, 'Must be non-negative'),
   });
 
   const formik = useFormik<UpsertEquipmentFormValues>({
@@ -372,34 +369,28 @@ const UpsertEquipmentFormUI = ({
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group
-                  controlId="milesUntilReplaceReminder"
-                  className="mb-3"
-                >
+                <Form.Group controlId="remindAtMiles" className="mb-3">
                   <Form.Label>Remind At Miles</Form.Label>
                   <Form.Control
                     type="number"
-                    value={formik.values.milesUntilReplaceReminder ?? undefined}
+                    value={formik.values.remindAtMiles ?? undefined}
                     onChange={(e) => {
                       const value = e.target.value
                         ? parseFloat(e.target.value)
                         : null;
-                      formik.setFieldValue('milesUntilReplaceReminder', value);
+                      formik.setFieldValue('remindAtMiles', value);
                     }}
                     isInvalid={
-                      formik.touched.milesUntilReplaceReminder &&
-                      !!formik.errors.milesUntilReplaceReminder
+                      formik.touched.remindAtMiles &&
+                      !!formik.errors.remindAtMiles
                     }
                     isValid={
-                      formik.touched.milesUntilReplaceReminder &&
-                      !formik.errors.milesUntilReplaceReminder
+                      formik.touched.remindAtMiles &&
+                      !formik.errors.remindAtMiles
                     }
                   />
                   <Form.Control.Feedback type="invalid">
-                    {
-                      formik.errors
-                        .milesUntilReplaceReminder as FormikErrors<string>
-                    }
+                    {formik.errors.remindAtMiles as FormikErrors<string>}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>

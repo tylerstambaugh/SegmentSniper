@@ -49,7 +49,7 @@ namespace SendEquipmentReminderFunction
                                 ||
 
                                 //reminder based on exeeding mileage threshold
-                                (eq.ReplaceAtMiles - eq.MilesUntilReplaceReminder >= eq.TotalMilage)
+                                (eq.RemindAtMiles >= eq.TotalMilage)
                             )
                         )
                         .Include(eq => eq.AppUser)
