@@ -246,7 +246,7 @@ export type GetBikeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, retiredDate?: string | null } | null> | null } | null } | null };
+export type GetBikeByIdQuery = { __typename?: 'RootQuery', bikes?: { __typename?: 'BikeQueries', byBikeId?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, brandName?: string | null, modelName?: string | null, frameType?: number | null, metersLogged?: number | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, totalMiles?: number | null, milesAtInstall?: number | null, price?: number | null, installDate?: string | null, replaceAtMiles?: number | null, remindAtMiles?: number | null, reminderDurationInMonths?: number | null, maxRemindersToSend?: number | null, reminderDate?: string | null, retiredDate?: string | null } | null> | null } | null } | null };
 
 export type GetBikesByAuthUserIdQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -480,6 +480,10 @@ export const GetBikeByIdDocument = gql`
         price
         installDate
         replaceAtMiles
+        remindAtMiles
+        reminderDurationInMonths
+        maxRemindersToSend
+        reminderDate
         retiredDate
       }
     }
