@@ -9,7 +9,7 @@ mutation UpsertBikeEquipment($bikeId: ID!, $equipment: EquipmentInput!) {
         description
         installDate
         totalMiles
-        milesUntilReplaceReminder
+        remindAtMiles
         price
         replaceAtMiles
         retiredDate

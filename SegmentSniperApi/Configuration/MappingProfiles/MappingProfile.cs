@@ -275,7 +275,7 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.MilesAtInstall, opt => opt.MapFrom(src => src.MilesAtInstall))
                 .ForMember(dest => dest.TotalMiles, opt => opt.MapFrom(src => src.TotalMilage))
                 .ForMember(dest => dest.ReplaceAtMiles, opt => opt.MapFrom(src => src.ReplaceAtMiles))
-                .ForMember(dest => dest.MilesUntilReplaceReminder, opt => opt.MapFrom(src => src.MilesUntilReplaceReminder))
+                .ForMember(dest => dest.RemindAtMiles, opt => opt.MapFrom(src => src.RemindAtMiles))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
                 .ForMember(dest => dest.RetiredDate, opt => opt.MapFrom(src => src.RetiredDate))

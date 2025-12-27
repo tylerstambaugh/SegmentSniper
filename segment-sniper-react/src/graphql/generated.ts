@@ -94,12 +94,12 @@ export type EquipmentInput = {
   maxRemindersToSend: Scalars['Int']['input'];
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall: Scalars['Decimal']['input'];
-  /** Miles until a reminder to replace the equipment is sent */
-  milesUntilReplaceReminder: Scalars['Int']['input'];
   /** The name of the equipment. */
   name: Scalars['String']['input'];
   /** The price of the equipment. */
   price: Scalars['Decimal']['input'];
+  /** Miles until a reminder to replace the equipment is sent */
+  remindAtMiles: Scalars['Int']['input'];
   /** The date you want to be reminded to replace the equipment */
   reminderDate?: InputMaybe<Scalars['DateTime']['input']>;
   /** The amount of time until you want to be remined to replace the equipment */
@@ -122,15 +122,15 @@ export type EquipmentModel = {
   /** The date the equipment was installed */
   installDate?: Maybe<Scalars['DateTime']['output']>;
   /** The maximum number of times to be reminded to replace the equipment */
-  maxRemindersToSEnd?: Maybe<Scalars['Int']['output']>;
+  maxRemindersToSend?: Maybe<Scalars['Int']['output']>;
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall?: Maybe<Scalars['Decimal']['output']>;
-  /** Miles until a reminder to replace the equipment is sent */
-  milesUntilReplaceReminder?: Maybe<Scalars['Int']['output']>;
   /** The name of the piece of equipment */
   name: Scalars['String']['output'];
   /** The amount paid for the equipment */
   price?: Maybe<Scalars['Decimal']['output']>;
+  /** Miles until a reminder to replace the equipment is sent */
+  remindAtMiles?: Maybe<Scalars['Int']['output']>;
   /** The date you want to be reminded to replace the equipment */
   reminderDate?: Maybe<Scalars['DateTime']['output']>;
   /** The amount of time until you want to be remined to replace the equipment */
@@ -232,7 +232,7 @@ export type UpsertBikeEquipmentMutationVariables = Exact<{
 }>;
 
 
-export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, totalMiles?: number | null, milesUntilReplaceReminder?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null, reminderDate?: string | null } | null> | null } | null } | null };
+export type UpsertBikeEquipmentMutation = { __typename?: 'RootMutation', garage?: { __typename?: 'GarageMutations', upsertBikeEquipment?: { __typename?: 'BikeModel', bikeId: string, name?: string | null, equipment?: Array<{ __typename?: 'EquipmentModel', equipmentId: string, name: string, description?: string | null, installDate?: string | null, totalMiles?: number | null, remindAtMiles?: number | null, price?: number | null, replaceAtMiles?: number | null, retiredDate?: string | null, reminderDate?: string | null, reminderDurationInMonths?: number | null, maxRemindersToSend?: number | null } | null> | null } | null } | null };
 
 export type DeleteBikesMutationVariables = Exact<{
   bikeIds: Array<InputMaybe<Scalars['ID']['input']>> | InputMaybe<Scalars['ID']['input']>;
@@ -387,11 +387,13 @@ export const UpsertBikeEquipmentDocument = gql`
         description
         installDate
         totalMiles
-        milesUntilReplaceReminder
+        remindAtMiles
         price
         replaceAtMiles
         retiredDate
         reminderDate
+        reminderDurationInMonths
+        maxRemindersToSend
       }
     }
   }

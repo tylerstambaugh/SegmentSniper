@@ -61,7 +61,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
         : null,
       price: selectedEquipment?.price,
       replaceAtMiles: selectedEquipment?.replaceAtMiles,
-      milesUntilReplaceReminder: selectedEquipment?.milesUntilReplaceReminder,
+      remindAtMiles: selectedEquipment?.remindAtMiles,
     };
   };
 
@@ -147,7 +147,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       price: values.price ?? 0,
       replaceAtMiles: values.replaceAtMiles ?? 0,
       reminderDurationInMonths: values.reminderDurationInMonths ?? 0,
-      milesUntilReplaceReminder: values.milesUntilReplaceReminder ?? 0,
+      remindAtMiles: values.remindAtMiles ?? 0,
       maxRemindersToSend: values.maxRemindersToSend ?? 1,
       equipmentId:
         modalState.type === 'addEdit' && modalState.item
