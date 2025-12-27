@@ -59,9 +59,14 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
       retiredDate: selectedEquipment?.retiredDate
         ? DateTime.fromISO(selectedEquipment.retiredDate)
         : null,
+      reminderDate: selectedEquipment?.reminderDate
+        ? DateTime.fromISO(selectedEquipment.reminderDate)
+        : null,
       price: selectedEquipment?.price,
       replaceAtMiles: selectedEquipment?.replaceAtMiles,
       remindAtMiles: selectedEquipment?.remindAtMiles,
+      maxRemindersToSend: selectedEquipment?.maxRemindersToSend,
+      reminderDurationInMonths: selectedEquipment?.reminderDurationInMonths,
     };
   };
 
@@ -208,6 +213,7 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     }
   }
 
+  //TODO: Clean this up later
   // useEffect(() => {
   //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
   //         // Redirect to login or show an error message
@@ -215,23 +221,23 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
   //     }
   // }, [addEquipmentError]);
 
-  useEffect(() => {
-    if (
-      retireBikeEquipmentError ||
-      addEquipmentError ||
-      deleteBikeEquipmentError
-    ) {
-      toast.error(
-        'Dang. An error occurred: ' +
-          (retireBikeEquipmentError?.message ||
-            addEquipmentError?.message ||
-            deleteBikeEquipmentError?.message),
-        {
-          duration: 5000,
-        },
-      );
-    }
-  }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
+  // useEffect(() => {
+  //   if (
+  //     retireBikeEquipmentError ||
+  //     addEquipmentError ||
+  //     deleteBikeEquipmentError
+  //   ) {
+  //     toast.error(
+  //       'Dang. An error occurred: ' +
+  //         (retireBikeEquipmentError?.message ||
+  //           addEquipmentError?.message ||
+  //           deleteBikeEquipmentError?.message),
+  //       {
+  //         duration: 5000,
+  //       },
+  //     );
+  //   }
+  // }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
 
   const stableEditValues = useMemo(() => {
     console.log('modalState', modalState.type !== 'none' && modalState.item);

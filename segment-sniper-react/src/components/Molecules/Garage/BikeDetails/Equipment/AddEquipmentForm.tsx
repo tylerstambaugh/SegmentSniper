@@ -62,7 +62,7 @@ const UpsertEquipmentFormUI = ({
     [editEquipment],
   );
 
-  //TODO add a validation that replace at miles must be greater than remind at miles.
+  //TODO: add a validation that replace at miles must be greater than remind at miles.
   const validationSchema = Yup.object({
     name: Yup.string().required('Required'),
     description: Yup.string(),
