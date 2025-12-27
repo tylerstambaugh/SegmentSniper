@@ -58,10 +58,10 @@ const EquipmentListItem = ({ item, setModalState }: EquipmentListItemProps) => {
         <Col className={styles.equipmentLabel}>Replace at </Col>
         <Col>{item.replaceAtMiles} miles</Col>
       </Row>
-      {item.milesUntilReplaceReminder && item.milesUntilReplaceReminder > 0 && (
+      {item.remindAtMiles && item.remindAtMiles > 0 && (
         <Row>
           <Col className={styles.equipmentLabel}>Reminder </Col>
-          <Col>{item.milesUntilReplaceReminder} miles</Col>
+          <Col>{item.remindAtMiles} miles</Col>
         </Row>
       )}
       <Row className="d-flex justify-content-center pb-2 pt-1">

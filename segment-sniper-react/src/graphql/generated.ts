@@ -95,7 +95,7 @@ export type EquipmentInput = {
   /** The miles on the equipment when it was added to this bike */
   milesAtInstall: Scalars['Decimal']['input'];
   /** Miles until a reminder to replace the equipment is sent */
-  milesUntilReplaceReminder: Scalars['Int']['input'];
+  remindAtMiles: Scalars['Int']['input'];
   /** The name of the equipment. */
   name: Scalars['String']['input'];
   /** The price of the equipment. */
