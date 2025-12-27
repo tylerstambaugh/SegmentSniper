@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { useSnipeSegments } from "../../hooks/Api/Segments/useSnipeSegments";
-import useActivityListStore from "../../stores/useActivityListStore";
-import toast from "react-hot-toast";
-import { Button, Col, Row, } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "../../enums/AppRoutes";
-import ActivityCard from "../../components/Molecules/Activity/ActivityCard/ActivityCard";
-import SnipeSegmentsCardList from "../../components/Molecules/SnipeSegment/SnipeSegmentCardList/SnipeSegmentCardList";
-import useSnipeSegmentsListStore from "../../stores/useSnipeSegmentsListStore";
+import { useEffect, useState } from 'react';
+import { useSnipeSegments } from '../../hooks/Api/Segments/useSnipeSegments';
+import useActivityListStore from '../../stores/useActivityListStore';
+import toast from 'react-hot-toast';
+import { Button, Col, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../enums/AppRoutes';
+import ActivityCard from '../../components/Molecules/Activity/ActivityCard/ActivityCard';
+import SnipeSegmentsCardList from '../../components/Molecules/SnipeSegment/SnipeSegmentCardList/SnipeSegmentCardList';
+import useSnipeSegmentsListStore from '../../stores/useSnipeSegmentsListStore';
 import SnipeOptions, {
   FilterOptions,
-} from "../../components/Organisms/SnipeOptions/SnipeOptions";
-import useHandleSortChange from "../../hooks/SegmentSniper/useHandleSortChange";
-import useHandlePercentageFromLeaderFilter from "../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter";
-import useHandleSecondsFromLeaderFilter from "../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter";
-import useHandleHeadingsFilter from "../../hooks/SegmentSniper/useHandleHeadingsFilter";
-import { SnipeSegmentListItem } from "../../models/Segment/SnipeSegmentListItem";
+} from '../../components/Organisms/SnipeOptions/SnipeOptions';
+import useHandleSortChange from '../../hooks/SegmentSniper/useHandleSortChange';
+import useHandlePercentageFromLeaderFilter from '../../hooks/SegmentSniper/useHandlePercentageFromLeaderFilter';
+import useHandleSecondsFromLeaderFilter from '../../hooks/SegmentSniper/useHandleSecondsFromLeaderFilter';
+import useHandleHeadingsFilter from '../../hooks/SegmentSniper/useHandleHeadingsFilter';
+import { SnipeSegmentListItem } from '../../models/Segment/SnipeSegmentListItem';
 
 const ActivityDetails = () => {
   const navigate = useNavigate();
@@ -45,17 +45,20 @@ const ActivityDetails = () => {
     secondsFromLeader: undefined,
     leaderTypeQom: false,
     headings: [],
-    sortBy: "SortBy",
+    sortBy: 'SortBy',
   });
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
 
   function backToActivitiesButtonClick() {
-    setSelectedActivityId("");
+    setSelectedActivityId('');
     navigate(`/${AppRoutes.ActivitySearchResults}`);
   }
 
-  const { data: snipeSegmentsData, isLoading, error } = useSnipeSegments({ activityId: selectedActivityId });
-
+  const {
+    data: snipeSegmentsData,
+    isLoading,
+    error,
+  } = useSnipeSegments({ activityId: selectedActivityId });
 
   useEffect(() => {
     // Only run this effect when the selectedActivityId changes
@@ -65,10 +68,10 @@ const ActivityDetails = () => {
           // If the query was successful, filter the snipe segments
           setQueriedSnipeSegmentList(
             snipeSegmentsData.snipedSegments.filter(
-              (s) => s.activityId === selectedActivityId
-            )
+              (s) => s.activityId === selectedActivityId,
+            ),
           );
-          handleSorting.Sort("date", snipeSegmentsData.snipedSegments);
+          handleSorting.Sort('date', snipeSegmentsData.snipedSegments);
         }
       } catch (error) {
         toast.error(`Error fetching snipe segments: ${error}`);
@@ -78,16 +81,24 @@ const ActivityDetails = () => {
     // Trigger fetching logic only when there's no existing snipe segment for the selectedActivityId
     if (
       !Array.isArray(snipeSegmentList) ||
-      snipeSegmentList.filter((s) => s.activityId === selectedActivityId).length === 0
+      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
+        .length === 0
     ) {
       fetchSnipeSegments();
     }
-  }, [selectedActivityId, snipeSegmentsData, isLoading, error, snipeSegmentList, setQueriedSnipeSegmentList, handleSorting]);
-
+  }, [
+    selectedActivityId,
+    snipeSegmentsData,
+    isLoading,
+    error,
+    snipeSegmentList,
+    setQueriedSnipeSegmentList,
+    handleSorting,
+  ]);
 
   async function handleFilterOptionsChange(values: FilterOptions) {
     const segmentList = snipeSegmentList.filter(
-      (s) => s.activityId === selectedActivityId
+      (s) => s.activityId === selectedActivityId,
     );
 
     setFiltering(true);
@@ -101,19 +112,19 @@ const ActivityDetails = () => {
       await handlePercentageFromLeaderFilter.Handle(
         values.percentageFromLeader ?? 0,
         values.leaderTypeQom,
-        segmentList
+        segmentList,
       );
 
     secondsFilteredSegmentList = await handleSecondsFromLeaderFilter.Handle(
       values.secondsFromLeader ?? 0,
       values.leaderTypeQom,
-      segmentList
+      segmentList,
     );
 
     if (values.headings) {
       headingsFilteredSegmentList = await handleHeadingsFilter.Handle(
         values.headings,
-        segmentList
+        segmentList,
       );
     }
 
@@ -126,17 +137,17 @@ const ActivityDetails = () => {
 
     filteredSegmentList = await handleSorting.Sort(
       values.sortBy!,
-      filteredSegmentList
+      filteredSegmentList,
     );
     setQueriedSnipeSegmentList(filteredSegmentList);
     setCarouselIndex(0);
     setFiltering(false);
   }
 
-  //TODO
+  //TODO: I'm not sure what this todo was for?
   useEffect(() => {
     setQueriedSnipeSegmentList(
-      snipeSegmentList.filter((s) => s.activityId === selectedActivityId)
+      snipeSegmentList.filter((s) => s.activityId === selectedActivityId),
     );
   }, [snipeSegmentList]);
 
@@ -193,7 +204,7 @@ const ActivityDetails = () => {
             <Button
               name="backToSearch"
               onClick={() => {
-                setSelectedActivityId("");
+                setSelectedActivityId('');
                 navigate(`/${AppRoutes.ActivitySearchResults}`);
               }}
             >
