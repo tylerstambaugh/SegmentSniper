@@ -213,32 +213,6 @@ const EquipmentList = ({ equipment, bike }: EquipmentListProps) => {
     }
   }
 
-  //TODO: Clean this up later
-  // useEffect(() => {
-  //     if (addEquipmentError && addEquipmentError.message.includes('Unauthorized')) {
-  //         // Redirect to login or show an error message
-  //         console.error('User is not authorized. Please log in.');
-  //     }
-  // }, [addEquipmentError]);
-
-  // useEffect(() => {
-  //   if (
-  //     retireBikeEquipmentError ||
-  //     addEquipmentError ||
-  //     deleteBikeEquipmentError
-  //   ) {
-  //     toast.error(
-  //       'Dang. An error occurred: ' +
-  //         (retireBikeEquipmentError?.message ||
-  //           addEquipmentError?.message ||
-  //           deleteBikeEquipmentError?.message),
-  //       {
-  //         duration: 5000,
-  //       },
-  //     );
-  //   }
-  // }, [retireBikeEquipmentError, addEquipmentError, deleteBikeEquipmentError]);
-
   const stableEditValues = useMemo(() => {
     console.log('modalState', modalState.type !== 'none' && modalState.item);
     if (modalState.type !== 'addEdit' || !modalState.item) return undefined;
