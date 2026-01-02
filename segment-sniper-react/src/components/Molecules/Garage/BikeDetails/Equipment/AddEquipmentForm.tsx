@@ -62,7 +62,6 @@ const UpsertEquipmentFormUI = ({
     [editEquipment],
   );
 
-  //TODO: add a validation that replace at miles must be greater than remind at miles.
   const validationSchema = Yup.object({
     name: Yup.string().required('Required'),
     description: Yup.string(),
@@ -71,7 +70,24 @@ const UpsertEquipmentFormUI = ({
       .required('Install date is required')
       .max(new Date(), 'Date must be in the past'),
     price: Yup.number().nullable().min(0, 'Price must be non-negative'),
-    replaceAtMiles: Yup.number().nullable(),
+    milesAtInstall: Yup.number()
+      .nullable()
+      .min(0, 'Miles at install must be non-negative'),
+    replaceAtMiles: Yup.number()
+      .nullable()
+      .test({
+        name: 'replaceAtGreaterThanInstall',
+        message: `'Replace At' miles must be greater than 'Miles At Install'`,
+        test: function (value) {
+          const milesAtInstall = this.resolve(
+            Yup.ref('milesAtInstall'),
+          ) as number;
+          if (value && milesAtInstall && value <= milesAtInstall) {
+            return false;
+          }
+          return true;
+        },
+      }),
     reminderDate: Yup.date()
       .nullable()
       .min(new Date(0), 'Reminder date must be after today.'),
@@ -80,7 +96,22 @@ const UpsertEquipmentFormUI = ({
       .positive('Must be positive'),
     maxRemindersToSend: Yup.number().nullable().min(0, 'Must be non-negative'),
     remindersSent: Yup.number().nullable().min(0, 'Must be non-negative'),
-    remindAtMiles: Yup.number().nullable().min(0, 'Must be non-negative'),
+    remindAtMiles: Yup.number()
+      .nullable()
+      .min(0, 'Must be non-negative')
+      .test({
+        name: 'remindAtLessThanReplaceAt',
+        message: `'Remind At' miles must be less than 'Replace At' miles`,
+        test: function (value) {
+          const replaceAtMiles = this.resolve(
+            Yup.ref('replaceAtMiles'),
+          ) as number;
+          if (value && replaceAtMiles && value >= replaceAtMiles) {
+            return false;
+          }
+          return true;
+        },
+      }),
   });
 
   const formik = useFormik<UpsertEquipmentFormValues>({
