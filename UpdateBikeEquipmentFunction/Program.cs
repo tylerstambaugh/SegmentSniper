@@ -83,3 +83,5 @@ var host = new HostBuilder()
     .Build();
 
 await host.RunAsync();
+
+public partial class Program { }

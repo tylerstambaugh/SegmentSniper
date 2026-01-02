@@ -18,18 +18,22 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
         private readonly IDeleteMLSegmentEffortsById _deleteMLSegmentEffortsById;
         private readonly IGetDetailedActivityByIdActionHandler _getDetailedActivityByIdActionHandler;
         private readonly IAddBikeActivity _addBikeActivity;
+        private readonly IBikeActivityQueuePublisher _bikeActivityQueuePublisher;
+        private string _userId;
 
         public UpdateWebhookEventHandler(IGetUserByStravaAthleteId getUserByStravaAthleteId,
                                          IDeleteBikeActivity deleteBikeActivity,
                                          IDeleteMLSegmentEffortsById deleteMLSegmentEffortsById,
                                          IGetDetailedActivityByIdActionHandler getDetailedActivityByIdActionHandler,
-                                         IAddBikeActivity addBikeActivity)
+                                         IAddBikeActivity addBikeActivity,
+                                         IBikeActivityQueuePublisher bikeActivityQueuePublisher)
         {
             _getUserByStravaAthleteId = getUserByStravaAthleteId;
             _deleteBikeActivity = deleteBikeActivity;
             _deleteMLSegmentEffortsById = deleteMLSegmentEffortsById;
             _getDetailedActivityByIdActionHandler = getDetailedActivityByIdActionHandler;
             _addBikeActivity = addBikeActivity;
+            _bikeActivityQueuePublisher = bikeActivityQueuePublisher;
         }
         public async Task<WebhookEventHandlerResponse> HandleEventAsync(WebhookEvent payload)
         {
@@ -52,9 +56,11 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
+                _userId = user.UserId;
+
                 var deleteBikeActivityContract = new DeleteBikeActivityContract
                 {
-                    UserId = user.UserId,
+                    UserId = _userId,
                     ActivityId = payload.ObjectId.ToString()
                 };
 
@@ -66,7 +72,7 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                     return new WebhookEventHandlerResponse(false);
                 }
 
-                var activityDetails = await _getDetailedActivityByIdActionHandler.HandleAsync(new GetDetailedActivityByIdRequest(user.UserId.ToString(), payload.ObjectId.ToString()));
+                var activityDetails = await _getDetailedActivityByIdActionHandler.HandleAsync(new GetDetailedActivityByIdRequest(_userId.ToString(), payload.ObjectId.ToString()));
 
                 if (activityDetails == null || activityDetails.DetailedActivity == null)
                 {
@@ -75,23 +81,34 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 }
 
                 var segmentEffortIds = activityDetails.DetailedActivity.SegmentEfforts.Select(se => se.SegmentEffortId).ToList();
-                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract(segmentEffortIds, user.UserId.ToString());
+                var deleteMLSegmentEffortsContract = new DeleteMLSegmentEffortsByIdContract(segmentEffortIds, _userId.ToString());
 
                 //re add the new bike activity:
                 await _addBikeActivity.ExecuteAsync(new AddBikeActivityContract(
                     new BikeActivityModel
                     {
                         StravaActivityId = activityDetails.DetailedActivity.ActivityId,
-                        UserId = user.UserId,
+                        UserId = _userId,
                         BikeId = activityDetails.DetailedActivity.GearId,
                         ActivityDate = activityDetails.DetailedActivity.StartDate,
                         DistanceInMeters = activityDetails.DetailedActivity.Distance,
-
                     })
                 );
+            
+                //should update the total miles on the equipment on the bike too.
+                try
+                {
 
-                //TODO recalculate the mileage on the equipment on the bike             
-
+                    await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                    {
+                        AuthUserId = _userId,
+                        BikeId = activityDetails.DetailedActivity.GearId
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error publishing bike activity queue message for user {UserId} and bike {BikeId}", _userId, activityDetails.DetailedActivity.GearId);
+                }
                 scope.Complete();
 
                 return new WebhookEventHandlerResponse(true);
@@ -101,11 +118,9 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                 Log.Error(ex, "Error in UpdateeWebhookEventHandler.");
                 return new WebhookEventHandlerResponse(false);
             }
-
-
-            
-            //need to query for the activity details and recreate the BiekActivity and the ML_SegmentEfforts
-            throw new NotImplementedException();
+                        
+            //TODO need to query for the activity details and recreate the BiekActivity and the ML_SegmentEfforts
+           
         }
     }
 }

@@ -110,11 +110,19 @@ namespace SegmentSniper.ApplicationLogic.ActionHandlers.StravaWebhook.EventHandl
                    }));
 
                 //should update the total miles on the equipment on the bike too.
-                await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                try
                 {
-                    AuthUserId = _userId,
-                    BikeId = activityDetails.DetailedActivity.GearId
-                });
+
+                    await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                    {
+                        AuthUserId = _userId,
+                        BikeId = activityDetails.DetailedActivity.GearId
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error publishing bike activity queue message for user {UserId} and bike {BikeId}", _userId, activityDetails.DetailedActivity.GearId);
+                }
 
 
                 List<SnipeSegment> snipeSegments = new List<SnipeSegment>();
