@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SegmentSniper.Data;
-using EquipmentEntity = SegmentSniper.Data.Entities.Garage;
+using SegmentSniper.Data.Entities.Garage;
 using SegmentSniper.Models.Garage;
+using EquipmentEntity = SegmentSniper.Data.Entities.Garage;
 
 namespace SegmentSniper.Services.Garage
 {
@@ -10,11 +11,13 @@ namespace SegmentSniper.Services.Garage
     {
         private readonly ISegmentSniperDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IBikeActivityQueuePublisher _bikeActivityQueuePublisher;
 
-        public UpsertBikeEquipment(ISegmentSniperDbContext context, IMapper mapper)
+        public UpsertBikeEquipment(ISegmentSniperDbContext context, IMapper mapper, IBikeActivityQueuePublisher bikeActivityQueuePublisher)
         {
             _context = context;
             _mapper = mapper;
+            _bikeActivityQueuePublisher = bikeActivityQueuePublisher;
         }
 
         public async Task<UpsertBikeEquipmentContract.Result> ExecuteAsync(UpsertBikeEquipmentContract contract)
@@ -159,6 +162,13 @@ namespace SegmentSniper.Services.Garage
 
                     throw new Exception($"Problem updating equipment on bike ID: {contract.BikeId}");
                 }
+
+                //recalculate equipment on the bike since the miles/install date may have changed
+                await _bikeActivityQueuePublisher.PublishMessageAsync(new BikeActivityQueueMessage
+                {
+                    AuthUserId = contract.UserId,
+                    BikeId = contract.BikeId
+                });
 
                 return new UpsertBikeEquipmentContract.Result
                 {
