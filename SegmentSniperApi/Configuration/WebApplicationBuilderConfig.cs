@@ -283,8 +283,8 @@ namespace SegmentSniper.Api.Configuration
                                         ?? "process-bike-activity-queue";
                     options.ConnectionString = queueConfig["connectionString"];
 
-                Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueServiceUri: {QueueServiceUri}, QueueName: {QueueName}",
-                    options.ConnectionString, options.QueueServiceUri, options.QueueName);
+                Log.Information("Configured QueueSettings => ConnectionString: {ConnectionString}, QueueServiceUri: {QueueServiceUri}, QueueName: {QueueName}, ClientId: {ClientId}",
+                    options.ConnectionString, options.QueueServiceUri, options.QueueName, options.ClientId);
             });
 
             ServiceRegistrations.RegisterServices(builder.Services);
