@@ -124,7 +124,17 @@ namespace SegmentSniper.Api.Configuration.MappingProfiles
                 .ForMember(dest => dest.SegmentEfforts, opt => opt.MapFrom(src => src.SegmentEfforts))
                 .ForMember(dest => dest.PrivateNote, opt => opt.MapFrom(src => src.PrivateNote))
                 .ForMember(dest => dest.AvailableZones, opt => opt.MapFrom(src => src.AvailableZones))
-                .ForMember(dest => dest.SummaryGear, opt => opt.MapFrom(src => src.Gear));
+                .ForMember(dest => dest.SummaryGear, opt => opt.MapFrom(src => src.Gear))
+                .AfterMap((src, dest) =>
+                {
+                    if (dest.SegmentEfforts == null)
+                        return;
+
+                    foreach (var effort in dest.SegmentEfforts)
+                    {
+                        effort.ActivityId = dest.ActivityId;
+                    }
+                });
 
 
             CreateMap<DetailedActivityApiModel, SummaryActivity>()
