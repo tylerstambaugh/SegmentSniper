@@ -28,7 +28,9 @@ namespace SegmentSniper.Services.Garage
             if (!string.IsNullOrEmpty(settings.QueueServiceUri))
                 {
                     // production settings, point to azure storage queue using managed id
-                    _queueClient = new QueueClient(
+
+                Log.Information("Initializing QueueClient for Azure Queue with Managed Identity: {clientId}. QueueUri:{queueUri}", $"{settings.ClientId}, {settings.QueueServiceUri}/{settings.QueueName}");
+                _queueClient = new QueueClient(
                         new Uri($"{settings.QueueServiceUri}/{settings.QueueName}"),
                         new DefaultAzureCredential(new DefaultAzureCredentialOptions
                         {
