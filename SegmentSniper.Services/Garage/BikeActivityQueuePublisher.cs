@@ -42,7 +42,8 @@ namespace SegmentSniper.Services.Garage
                 {
                     // Local dev: Connection string (Azurite)
                     _queueClient = new QueueClient(settings.ConnectionString!, settings.QueueName);
-                }           
+                }      
+            //can't figure out why this isn't publishing. 
         }
 
         public async Task PublishMessageAsync<T>(T message)
